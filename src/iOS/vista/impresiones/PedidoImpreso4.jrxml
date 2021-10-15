@@ -130,7 +130,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="388" y="3" width="50" height="10" uuid="7a1e8679-876f-42de-8f24-e85365f01d9f">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -170,7 +170,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{precioProducto}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="331" y="3" width="50" height="10" uuid="5e1ca332-3bae-4021-8cd5-f68e5334b3ce">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -413,7 +413,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="388" y="3" width="50" height="10" uuid="2d647a6e-dda4-49c2-a310-dc0d5c1d1e49">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -453,7 +453,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{precioProducto}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="331" y="3" width="50" height="10" uuid="6e0c71db-0b9a-4fa3-a31f-a08d6acfdf05">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -696,7 +696,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="388" y="3" width="50" height="10" uuid="ae3c09c2-14d5-4d2d-9e9f-e7c59c39ce6d">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -716,7 +716,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{archivo}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="331" y="3" width="50" height="10" uuid="e08bdee8-dc4d-4cdf-84ad-a8c1eb6d66ef">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -941,7 +941,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="388" y="3" width="50" height="10" uuid="368982da-45b0-4975-981a-d27a1d62da05">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -961,7 +961,7 @@
 								</textElement>
 								<textFieldExpression><![CDATA[$F{archivo}]]></textFieldExpression>
 							</textField>
-							<textField>
+							<textField pattern="#,###.###;#,###.###-">
 								<reportElement x="331" y="3" width="50" height="10" uuid="d728db0c-44f8-4c87-8804-532ca89fb1d4">
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>

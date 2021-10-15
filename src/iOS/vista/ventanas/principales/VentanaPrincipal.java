@@ -43,6 +43,7 @@ import iOS.vista.ventanas.VentanaMarca;
 import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.pedidos.PedidoCarteleria;
+import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
@@ -432,7 +433,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		});
 		toolBar.add(mbtnCaja);
 
-		mbtnPedidoCarteleria = new MiBoton("Pedido Impresion");
+		mbtnPedidoCarteleria = new MiBoton("Impresion");
 		mbtnPedidoCarteleria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				abrirTransaccionPedidoCarteleria();
@@ -441,7 +442,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mbtnPedidoCarteleria.setFont(new Font("Tahoma", Font.BOLD, 15));
 		toolBar.add(mbtnPedidoCarteleria);
 		
-		mbtnPedidoConfeccion = new MiBoton("Pedido Confeccion");
+		mbtnPedidoConfeccion = new MiBoton("Confeccion");
 		mbtnPedidoConfeccion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				abrirTransaccionPedidoConfeccion();
@@ -526,7 +527,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		}
 	}
 	private void abrirTransaccionPedidoConfeccion() {
-		PedidoCarteleria ventana = new PedidoCarteleria();
+		PedidoConfeccion ventana = new PedidoConfeccion();
 		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
 			ventana.getControlador().setColaborador(colaborador);

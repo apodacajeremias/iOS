@@ -73,10 +73,10 @@ public class Producto {
 	@Column(nullable = false)
 	private boolean esServicio;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Boolean productoCarteleria;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Boolean productoCostura;
 	
 	@OneToMany(mappedBy = "producto", cascade=CascadeType.ALL, orphanRemoval=false)
