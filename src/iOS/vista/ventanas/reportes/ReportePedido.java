@@ -45,6 +45,8 @@ public class ReportePedido extends ReporteGenerico {
 	}
 
 	public ReportePedido() {
+		getRb2().setText("Incluir presupuestos");
+		getRb1().setText("Incluir anulados");
 		getBtnImprimir().setText("Reporte Hoy");
 		setTitle("REPORTE DE "+modulo);
 	}

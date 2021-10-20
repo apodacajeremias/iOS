@@ -47,7 +47,6 @@ public class PedidoGenerico extends JDialog {
 	private MiBoton btnAnular;
 	private LabelPersonalizado lMetrosPedido;
 	private JList<?> lstTipoPago;
-	private MiBoton btnImprimir;
 	private LabelPersonalizado lblprsnlzdMetrosDelPedido;
 
 
@@ -304,13 +303,6 @@ public class PedidoGenerico extends JDialog {
 		getContentPane().add(btnAnular);
 		btnAnular.setText("Anular");
 		btnAnular.setActionCommand("Quitar");
-		
-		btnImprimir = new MiBoton("Imprimir");
-		btnImprimir.setVisible(false);
-		btnImprimir.setText("Imprimir");
-		btnImprimir.setActionCommand("Imprimir");
-		btnImprimir.setBounds(970, 529, 100, 30);
-		getContentPane().add(btnImprimir);
 	}
 
 
@@ -435,12 +427,6 @@ public class PedidoGenerico extends JDialog {
 	public JList<?> getLstTipoPago() {
 		return lstTipoPago;
 	}
-
-
-	public MiBoton getBtnImprimir() {
-		return btnImprimir;
-	}
-
 
 	public LabelPersonalizado getLblprsnlzdMetrosDelPedido() {
 		return lblprsnlzdMetrosDelPedido;

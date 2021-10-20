@@ -12,12 +12,10 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import iOS.controlador.util.ConexionReporte;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
@@ -33,7 +31,6 @@ import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorProducto;
 import iOS.vista.ventanas.pedidos.PedidoCarteleria;
-import net.sf.jasperreports.engine.JRException;
 
 
 public class PedidoCarteleriaControlador implements ActionListener, MouseListener, KeyListener, ColaboradorInterface, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
@@ -69,7 +66,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		this.transaccion.getBtnAnular().addActionListener(this);
 		this.transaccion.getBtnBuscarCliente().addActionListener(this);
 		this.transaccion.getBtnBuscarProducto().addActionListener(this);
-		this.transaccion.getBtnImprimir().addActionListener(this);
 		this.transaccion.getBtnSalir().addActionListener(this);
 		
 		this.transaccion.getBtnGuardar().addActionListener(this);
@@ -434,39 +430,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		return true;
 	}
 	
-	private String esPresupuesto(Pedido p) {
-		if (p.isEsPresupuesto()) {
-			return "PRESUPUESTO";
-		} else {
-			return "PEDIDO";
-		}
-
-	}
 	
-	private void imprimir(Pedido p) {
-		if (p == null) {
-			return;
-		}
-		HashMap<String, Object> parametros = new HashMap<>();
-		parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
-		parametros.put("esPresupuesto", esPresupuesto(p));
-		
-		pedidos.clear();
-		
-		pedidos.add(p);
-
-		// Creando reportes
-		ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
-		try {
-			conexionReporte.generarReporte(pedidos, parametros, "PedidoImpreso4");
-			conexionReporte.ventanaReporte.setLocationRelativeTo(transaccion);
-			conexionReporte.ventanaReporte.setVisible(true);
-			transaccion.dispose();
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
 
 	public void nuevo() {
 		accion = "NUEVO";
@@ -517,15 +481,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 				dao.modificar(pedido);
 			}
 			dao.commit();			
-			int opcion = JOptionPane.showConfirmDialog(null,"¿Desea imprimir?",
-					"Impresion", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.INFORMATION_MESSAGE);
-			if (opcion == JOptionPane.OK_OPTION) {
-				imprimir(pedido);
-			} else {
-				transaccion.dispose();
-				return;
-			}		
+			transaccion.dispose();
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);
@@ -627,9 +583,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		case "Quitar":
 			quitarItem();
 			break;
-		case "Imprimir":
-			imprimir(pedido);
-			break;
 		default:
 			break;
 		}
@@ -703,7 +656,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		EventosUtil.estadosBotones(transaccion.getBtnAnular(), true);
 		EventosUtil.estadosBotones(transaccion.getBtnBuscarProducto(), true);
 		EventosUtil.estadosBotones(transaccion.getBtnGuardar(), true);
-		transaccion.getBtnImprimir().setVisible(true);
 
 
 		//Datos del cliente

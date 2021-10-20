@@ -4,13 +4,19 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JYearChooser;
 
 public class ReporteGenerico extends JDialog {
 	/**
@@ -21,6 +27,20 @@ public class ReporteGenerico extends JDialog {
 	private JTable tableDetalle;
 	private MiBoton btnFiltrar;
 	private MiBoton btnImprimir;
+	@SuppressWarnings("rawtypes")
+	private JComboBox cbColaborador;
+	private JMonthChooser dcMeses;
+	private JYearChooser dcAnos;
+	private JRadioButton rb1;
+	private JRadioButton rb2;
+	private LabelPersonalizado l1;
+	private JLabel l2;
+	private LabelPersonalizado l3;
+	private JLabel lblPorPeriodos;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
+	private JLabel lblNewLabel;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -42,27 +62,29 @@ public class ReporteGenerico extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings("rawtypes")
 	public ReporteGenerico() {
 		getContentPane().setBackground(Color.WHITE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(this);
 		setModal(true);
 		getContentPane().setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 113, 764, 200);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 148, 864, 225);
 		getContentPane().add(scrollPane);
 
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
-		LabelPersonalizado lblDetalleDePedido = new LabelPersonalizado(14);
-		lblDetalleDePedido.setText("Detalles del registro");
-		lblDetalleDePedido.setBounds(10, 324, 135, 15);
-		getContentPane().add(lblDetalleDePedido);
+		l3 = new LabelPersonalizado(14);
+		l3.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		l3.setText("Detalles del registro");
+		l3.setBounds(10, 384, 135, 15);
+		getContentPane().add(l3);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 350, 764, 200);
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 400, 864, 150);
 		getContentPane().add(scrollPane_1);
 
 		tableDetalle = new JTable();
@@ -72,34 +94,67 @@ public class ReporteGenerico extends JDialog {
 		separator_2.setBounds(10, 11, 1, 68);
 		getContentPane().add(separator_2);
 
-		LabelPersonalizado lblPedido = new LabelPersonalizado( 20);
-		lblPedido.setText("Registros");
-		lblPedido.setBounds(10, 87, 95, 25);
-		getContentPane().add(lblPedido);
+		l1 = new LabelPersonalizado( 20);
+		l1.setText("Registros");
+		l1.setBounds(10, 122, 95, 25);
+		getContentPane().add(l1);
 
-		JLabel lblDobleClickSobre = new JLabel("Doble click sobre pedido para abrir");
-		lblDobleClickSobre.setForeground(Color.LIGHT_GRAY);
-		lblDobleClickSobre.setFont(new Font("Tahoma", Font.ITALIC, 9));
-		lblDobleClickSobre.setBounds(115, 96, 185, 14);
-		getContentPane().add(lblDobleClickSobre);
+		l2 = new JLabel("Doble click sobre registro para abrir");
+		l2.setForeground(Color.LIGHT_GRAY);
+		l2.setFont(new Font("Tahoma", Font.ITALIC, 9));
+		l2.setBounds(115, 133, 150, 14);
+		getContentPane().add(l2);
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBorder(new TitledBorder(null, "Informaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 764, 65);
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Criterios", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBounds(10, 11, 864, 100);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
 		btnFiltrar = new MiBoton("Filtrar");
-		btnFiltrar.setBounds(544, 24, 100, 30);
+		btnFiltrar.setBounds(754, 20, 100, 30);
 		panel.add(btnFiltrar);
 		btnFiltrar.setActionCommand("Filtrar");
 
 		btnImprimir = new MiBoton("Imprimir");
 		btnImprimir.setText("Imprimir");
-		btnImprimir.setBounds(654, 24, 100, 30);
+		btnImprimir.setBounds(754, 61, 100, 30);
 		panel.add(btnImprimir);
 		btnImprimir.setActionCommand("Imprimir");
+		
+		lblNewLabel = new JLabel("Colaborador");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setBounds(10, 36, 75, 14);
+		panel.add(lblNewLabel);
+		
+		cbColaborador = new JComboBox();
+		cbColaborador.setFont(new Font("Tahoma", Font.BOLD, 12));
+		cbColaborador.setBounds(10, 61, 250, 25);
+		panel.add(cbColaborador);
+		
+		dcMeses = new JMonthChooser();
+		dcMeses.setBounds(299, 61, 99, 25);
+		panel.add(dcMeses);
+		
+		dcAnos = new JYearChooser();
+		dcAnos.setBounds(408, 61, 47, 25);
+		panel.add(dcAnos);
+		
+		lblPorPeriodos = new JLabel("Por periodos");
+		lblPorPeriodos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblPorPeriodos.setBounds(299, 36, 77, 14);
+		panel.add(lblPorPeriodos);
+		
+		rb1 = new JRadioButton("Incluir");
+		rb1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		rb1.setBounds(490, 25, 150, 25);
+		panel.add(rb1);
+		
+		rb2 = new JRadioButton("Incluir");
+		rb2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		rb2.setBounds(490, 61, 150, 25);
+		panel.add(rb2);
 
 	}
 
@@ -122,5 +177,60 @@ public class ReporteGenerico extends JDialog {
 	public MiBoton getBtnImprimir() {
 		return btnImprimir;
 	}
+
+	@SuppressWarnings("rawtypes")
+	public JComboBox getCbColaborador() {
+		return cbColaborador;
+	}
+
+	public JMonthChooser getDcMeses() {
+		return dcMeses;
+	}
+
+	public JYearChooser getDcAnos() {
+		return dcAnos;
+	}
+
+	public JRadioButton getRb1() {
+		return rb1;
+	}
+
+	public JRadioButton getRb2() {
+		return rb2;
+	}
+
+	public LabelPersonalizado getL1() {
+		return l1;
+	}
+
+	public JLabel getL2() {
+		return l2;
+	}
+
+	public LabelPersonalizado getL3() {
+		return l3;
+	}
+
+	public JLabel getLblPorPeriodos() {
+		return lblPorPeriodos;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public JScrollPane getScrollPane_1() {
+		return scrollPane_1;
+	}
+
+	public JLabel getLblNewLabel() {
+		return lblNewLabel;
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+	
+	
 	
 }

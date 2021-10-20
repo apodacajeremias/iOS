@@ -90,6 +90,9 @@ public class Pedido {
 	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=false)
 	private List<PedidoDetalleConfeccion> pedidosConfecciones;
 	
+	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=false)
+	private List<CajaMovimiento> pagosPedido;
+	
 	@Column(nullable = true)
 	private Boolean pedidoCostura;
 	
@@ -256,6 +259,16 @@ public class Pedido {
 		this.pedidoCarteleria = pedidoCarteleria;
 	}
 
+
+	public List<CajaMovimiento> getPagosPedido() {
+		return pagosPedido;
+	}
+
+
+	public void setPagosPedido(List<CajaMovimiento> pagosPedido) {
+		this.pagosPedido = pagosPedido;
+	}
+	
 
 
 

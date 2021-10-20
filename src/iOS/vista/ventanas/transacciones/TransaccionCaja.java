@@ -1,7 +1,6 @@
 package iOS.vista.ventanas.transacciones;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.JDialog;
@@ -30,7 +29,6 @@ public class TransaccionCaja extends JDialog {
 	private LabelPersonalizado lSaldoInicialUS;
 	private JTable tableMovimientos;
 	private MiBoton btnIngresar;
-	private MiBoton btnAnular;
 	private TransaccionCajaControlador controlador;
 	private MiBoton btnCerrarCaja;
 	private JPanel panel;
@@ -43,23 +41,7 @@ public class TransaccionCaja extends JDialog {
 	private LabelPersonalizado lSaldoRetiroRS;
 	private LabelPersonalizado lSaldoRetiroUS;
 	private MiBoton btnRetirar;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TransaccionCaja dialog = new TransaccionCaja();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setUpControlador();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private MiBoton btnEntrega;
 	
 	public void setUpControlador() {
 		controlador = new TransaccionCajaControlador(this);
@@ -71,7 +53,7 @@ public class TransaccionCaja extends JDialog {
 	 */
 	public TransaccionCaja() {
 		getContentPane().setBackground(Color.WHITE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(this);
 		setModal(true);
 		getContentPane().setLayout(null);
@@ -87,7 +69,7 @@ public class TransaccionCaja extends JDialog {
 		getContentPane().add(lFecha);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(22, 114, 750, 2);
+		separator.setBounds(9, 114, 865, 2);
 		getContentPane().add(separator);
 		
 		btnIngresar = new MiBoton("Guardar");
@@ -96,15 +78,8 @@ public class TransaccionCaja extends JDialog {
 		btnIngresar.setBounds(22, 123, 100, 30);
 		getContentPane().add(btnIngresar);
 		
-		btnAnular = new MiBoton("Eliminar");
-		btnAnular.setVisible(true);
-		btnAnular.setActionCommand("Anular");
-		btnAnular.setText("Anular");
-		btnAnular.setBounds(562, 123, 100, 30);
-		getContentPane().add(btnAnular);
-		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(9, 164, 775, 396);
+		scrollPane.setBounds(9, 164, 865, 396);
 		getContentPane().add(scrollPane);
 		
 		tableMovimientos = new JTable();
@@ -114,13 +89,13 @@ public class TransaccionCaja extends JDialog {
 		btnCerrarCaja = new MiBoton("Salir");
 		btnCerrarCaja.setActionCommand("CerrarCaja");
 		btnCerrarCaja.setText("Cerrar Caja");
-		btnCerrarCaja.setBounds(672, 123, 100, 30);
+		btnCerrarCaja.setBounds(774, 123, 100, 30);
 		getContentPane().add(btnCerrarCaja);
 		
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Saldo Inicial", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(302, 7, 150, 100);
+		panel.setBounds(404, 11, 150, 100);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -140,7 +115,7 @@ public class TransaccionCaja extends JDialog {
 		panel_1.setLayout(null);
 		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Ingreso", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(462, 7, 150, 100);
+		panel_1.setBounds(564, 11, 150, 100);
 		getContentPane().add(panel_1);
 		
 		lSaldoIngresoGS = new LabelPersonalizado(0);
@@ -159,7 +134,7 @@ public class TransaccionCaja extends JDialog {
 		panel_2.setLayout(null);
 		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Retiro", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(622, 7, 150, 100);
+		panel_2.setBounds(724, 11, 150, 100);
 		getContentPane().add(panel_2);
 		
 		lSaldoRetiroGS = new LabelPersonalizado(0);
@@ -179,6 +154,12 @@ public class TransaccionCaja extends JDialog {
 		btnRetirar.setActionCommand("RetirarValor");
 		btnRetirar.setBounds(132, 123, 100, 30);
 		getContentPane().add(btnRetirar);
+		
+		btnEntrega = new MiBoton("");
+		btnEntrega.setText("Entrega");
+		btnEntrega.setActionCommand("Entrega");
+		btnEntrega.setBounds(664, 123, 100, 30);
+		getContentPane().add(btnEntrega);
 		
 		tableMovimientos.setDefaultRenderer(Object.class, new CeldaRenderer(0, "Color"));
 	}
@@ -209,10 +190,6 @@ public class TransaccionCaja extends JDialog {
 
 	public MiBoton getBtnIngresar() {
 		return btnIngresar;
-	}
-
-	public MiBoton getBtnAnular() {
-		return btnAnular;
 	}
 
 	public TransaccionCajaControlador getControlador() {
@@ -249,6 +226,26 @@ public class TransaccionCaja extends JDialog {
 
 	public MiBoton getBtnRetirar() {
 		return btnRetirar;
+	}
+
+	public String getModulo() {
+		return modulo;
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public JPanel getPanel_1() {
+		return panel_1;
+	}
+
+	public JPanel getPanel_2() {
+		return panel_2;
+	}
+
+	public MiBoton getBtnEntrega() {
+		return btnEntrega;
 	}
 	
 	

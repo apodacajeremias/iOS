@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -12,15 +13,21 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CajaDao;
+import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.CajaInterface;
 import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
@@ -37,14 +44,17 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	private Caja caja;
 	private Colaborador colaborador;
 	private ArrayList<Double> ingresos = new ArrayList<>();
-	private ArrayList<Double> retiros = new ArrayList<>(); 
+	private ArrayList<Double> retiros = new ArrayList<>();
+	private CajaDao cajaDao; 
 
 	public TransaccionCajaControlador(TransaccionCaja transaccion) {
 		this.transaccion = transaccion;
 		this.mtCajaMovimiento = new ModeloTablaCajaMovimiento();
 		transaccion.getTableMovimientos().setModel(mtCajaMovimiento);
+		tableMenu(transaccion.getTableMovimientos());
 
 		dao = new CajaDao();
+		cajaDao = new CajaDao();
 
 		setUpEvents();
 	}
@@ -54,10 +64,50 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		this.transaccion.getTableMovimientos().addMouseListener(this);
 		this.transaccion.getTableMovimientos().addPropertyChangeListener(this);
 		this.transaccion.getBtnCerrarCaja().addActionListener(this);
+		this.transaccion.getBtnEntrega().addActionListener(this);
 		this.transaccion.getBtnIngresar().addActionListener(this);
 		this.transaccion.getBtnRetirar().addActionListener(this);
-		this.transaccion.getBtnAnular().addActionListener(this);
+		
 	}
+	
+	private void tableMenu(final JTable table) {
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
+				if (r >= 0 && r < table.getRowCount()) {
+					table.setRowSelectionInterval(r, r);
+				} else {
+					table.clearSelection();
+				}
+
+				int rowindex = table.getSelectedRow();
+				if (rowindex < 0) {
+					return;
+				}
+				if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+					JPopupMenu popup = tablePopup(table, rowindex);
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
+	}
+
+	private JPopupMenu tablePopup(final JTable table, final int row) {
+		cajaMovimiento = movimientos.get(row);
+		JPopupMenu popup = new JPopupMenu("Popup");		
+		JMenuItem imprimirItem = new JMenuItem("Anular");
+		imprimirItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				anular(cajaMovimiento);
+
+			}
+		});
+		popup.add(imprimirItem);
+		return popup;
+	}
+
 
 	private void visualizarDetalles(int posicion) {
 		if (posicion < 0) {
@@ -115,8 +165,8 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 
 	}
 
-	private void anular() {
-		if (cajaMovimiento == null) {
+	private void anular(CajaMovimiento cm) {
+		if (cm == null) {
 			return;
 		}
 		int respuesta = JOptionPane
@@ -125,8 +175,8 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 						"ATENCION", JOptionPane.YES_NO_OPTION);
 
 		if (respuesta == JOptionPane.YES_OPTION) {
-			cajaMovimiento.setEsAnulado(true);
-			movimientos.add(cajaMovimiento);
+			cm.setEsAnulado(true);
+			movimientos.add(cm);
 			caja.setCajaMovimientos(movimientos);
 			try {
 				dao = new CajaDao();
@@ -136,6 +186,69 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 			} catch (Exception e) {
 				dao.rollBack();
 				EventosUtil.formatException(e);
+			}
+		}
+	}
+	
+	public Caja cajaAbierta() {
+		Date date = new Date();
+		cajaDao = new CajaDao();
+		Caja caja = cajaDao.encontrarCajaHoy(date, colaborador.getId());
+		return caja;
+	}
+	
+	private void entrega() {
+		if (cajaAbierta() == null) {
+			JOptionPane.showMessageDialog(transaccion, "Debe abrir el caja para realizar el pago de la entrega");
+			return;
+		}
+		
+		if (!(cajaAbierta() == null)) {
+			
+			String pedidoID = JOptionPane.showInputDialog("Introduzca la referencia del pedido");
+			
+			PedidoDao pedidoDao = new PedidoDao();
+			
+			Pedido pedido = pedidoDao.recuperarPorId(Integer.parseInt(pedidoID));
+			if (pedido == null) {
+				JOptionPane.showMessageDialog(transaccion, "No se ha encontrado el pedido indicado.");
+				return;
+			}
+			
+			if (verificarValidezPago(pedido) <= 0) {
+				abrirVentanaCajaMovimiento(true, cajaAbierta(), pedido);
+			}else {
+				String mensaje = "El cliente ya ha realizado una entrega de "+EventosUtil.separadorMiles(verificarValidezPago(pedido));
+				JOptionPane.showMessageDialog(transaccion, mensaje);
+			}
+			
+		}
+
+	}
+	
+	private double verificarValidezPago(Pedido pedido) {
+		List<CajaMovimiento> pagos = cajaDao.recuperarPagoValido(pedido.getId());
+		for (int i = 0; i < pagos.size(); i++) {
+			if (!pagos.get(i).isEsAnulado()) {
+				return pagos.get(i).getValorGS();
+			}
+		}
+		return 0;
+	}
+	
+	private void abrirVentanaCajaMovimiento(boolean esIngreso, Caja c, Pedido p) {
+		VentanaCajaMovimiento ventana = new VentanaCajaMovimiento();
+		if (esIngreso == true) {
+			if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "INGRESAR")) {
+				ventana.setUpControlador(esIngreso);
+				ventana.getControlador().setCaja(c);
+				ventana.getControlador().setColaborador(colaborador);
+				ventana.getControlador().setCliente(p.getCliente());
+				ventana.getControlador().setPedido(p);
+				ventana.getTxtObservacion().setText("ENTREGA PEDIDO "+p.getId());
+				ventana.getControlador().setInterfaz(this);
+				ventana.setVisible(true);
+				return;
 			}
 		}
 	}
@@ -207,8 +320,8 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		case "CerrarCaja":
 			abrirVentanaCajaCierre();
 			break;
-		case "Anular":
-			anular();
+		case "Entrega":
+			entrega();
 			break;
 		default:
 			break;
@@ -243,7 +356,6 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		}		
 		
 		if (caja.isCajaCerrada()) {
-			EventosUtil.estadosBotones(transaccion.getBtnAnular(), false);
 			EventosUtil.estadosBotones(transaccion.getBtnCerrarCaja(), false);
 			EventosUtil.estadosBotones(transaccion.getBtnIngresar(), false);
 			EventosUtil.estadosBotones(transaccion.getBtnRetirar(), false);

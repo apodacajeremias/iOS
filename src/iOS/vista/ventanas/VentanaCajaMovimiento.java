@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
@@ -39,10 +38,9 @@ public class VentanaCajaMovimiento extends VentanaGenerica {
 	@SuppressWarnings("rawtypes")
 	private JList lstAsociarPor;
 	private CampoNumeroPersonalizado tValorUs;
-	private JRadioButton rdAnulado;
 	private VentanaCajaMovimientoControlador controlador;
 	private LabelPersonalizado lDatosCriticos;
-	private MiBoton btnAnular;
+	private LabelPersonalizado lDatosCriticos2;
 	
 	public void setUpControlador(boolean esIngreso) {
 		controlador = new VentanaCajaMovimientoControlador(this, esIngreso);
@@ -62,12 +60,11 @@ public class VentanaCajaMovimiento extends VentanaGenerica {
 		setModal(true);
 		getContentPane().setLayout(null);
 		
-		getPanelFormulario().setLocation(10, 102);
+		getPanelFormulario().setLocation(10, 132);
 		getPanelFormulario().setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Datos cr\u00EDticos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		getPanelFormulario().setSize(474, 100);
 		
 		lstAsociarPor = new JList();
-		lstAsociarPor.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Asociar por", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		lstAsociarPor.setModel(new AbstractListModel() {
 			String[] values = new String[] {"CLIENTE", "COLABORADOR"};
 			public int getSize() {
@@ -79,23 +76,28 @@ public class VentanaCajaMovimiento extends VentanaGenerica {
 		});
 		lstAsociarPor.setSelectedIndex(0);
 		lstAsociarPor.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		lstAsociarPor.setBounds(10, 11, 110, 78);
+		lstAsociarPor.setBounds(10, 15, 110, 40);
 		getPanelFormulario().add(lstAsociarPor);
 		
 		lDatosCriticos = new LabelPersonalizado(0);
-		lDatosCriticos.setBounds(130, 20, 334, 25);
+		lDatosCriticos.setBounds(130, 20, 334, 20);
 		getPanelFormulario().add(lDatosCriticos);
 		
 		btnBuscar = new MiBoton("Buscar");
 		btnBuscar.setActionCommand("Buscar");
 		btnBuscar.setText("Buscar");
-		btnBuscar.setBounds(130, 56, 100, 30);
+		btnBuscar.setBounds(10, 56, 100, 30);
 		getPanelFormulario().add(btnBuscar);
+		
+		lDatosCriticos2 = new LabelPersonalizado(0);
+		lDatosCriticos2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lDatosCriticos2.setBounds(130, 46, 334, 15);
+		getPanelFormulario().add(lDatosCriticos2);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Tipo de movimiento", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 11, 474, 80);
+		panel.setBounds(10, 11, 474, 120);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -114,16 +116,10 @@ public class VentanaCajaMovimiento extends VentanaGenerica {
 		lstTipoMovimiento.setBounds(36, 20, 110, 49);
 		panel.add(lstTipoMovimiento);
 		
-		rdAnulado = new JRadioButton("Anulado");
-		rdAnulado.setBackground(Color.WHITE);
-		rdAnulado.setEnabled(false);
-		rdAnulado.setBounds(364, 18, 80, 20);
-		panel.add(rdAnulado);
-		
 		lstTipoPago = new JList();
 		lstTipoPago.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		lstTipoPago.setModel(new AbstractListModel() {
-			String[] values = new String[] {"EFECTIVO", "CHEQUE", "TARJETA"};
+			String[] values = new String[] {"EFECTIVO", "CHEQUE", "TARJETA", "GIRO", "BANCO"};
 			public int getSize() {
 				return values.length;
 			}
@@ -132,20 +128,13 @@ public class VentanaCajaMovimiento extends VentanaGenerica {
 			}
 		});
 		lstTipoPago.setSelectedIndex(0);
-		lstTipoPago.setBounds(182, 20, 110, 49);
+		lstTipoPago.setBounds(182, 20, 110, 89);
 		panel.add(lstTipoPago);
-		
-		btnAnular = new MiBoton("Cancelar");
-		btnAnular.setVisible(false);
-		btnAnular.setActionCommand("Anular");
-		btnAnular.setText("Anular");
-		btnAnular.setBounds(364, 39, 100, 30);
-		panel.add(btnAnular);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Valor del movimiento", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(10, 213, 474, 166);
+		panel_1.setBounds(10, 243, 474, 166);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -238,10 +227,6 @@ public class VentanaCajaMovimiento extends VentanaGenerica {
 		return tValorUs;
 	}
 
-	public JRadioButton getRdAnulado() {
-		return rdAnulado;
-	}
-
 	public VentanaCajaMovimientoControlador getControlador() {
 		return controlador;
 	}
@@ -250,8 +235,9 @@ public class VentanaCajaMovimiento extends VentanaGenerica {
 		return lDatosCriticos;
 	}
 
-	public MiBoton getBtnAnular() {
-		return btnAnular;
+	public LabelPersonalizado getlDatosCriticos2() {
+		return lDatosCriticos2;
 	}
+	
 	
 }

@@ -19,15 +19,17 @@ import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.CajaInterface;
 import iOS.modelo.interfaces.ClienteInterface;
 import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.interfaces.PedidoInterface;
 import iOS.vista.ventanas.VentanaCajaMovimiento;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorColaborador;
 
-public class VentanaCajaMovimientoControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, ClienteInterface, ColaboradorInterface, AccionesABM, CajaInterface {
+public class VentanaCajaMovimientoControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, ClienteInterface, ColaboradorInterface, AccionesABM, CajaInterface, PedidoInterface {
 	private VentanaCajaMovimiento ventana;
 	private CajaDao dao;
 	private CajaInterface interfaz;
@@ -42,6 +44,7 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 
 	private String accion;
 	private Colaborador colaboradorQueRegistra;
+	private Pedido pedido;
 
 	public VentanaCajaMovimientoControlador(VentanaCajaMovimiento ventana, boolean esIngreso) {
 		this.ventana = ventana;
@@ -61,7 +64,6 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 
 	private void setUpEvents() {
 		ventana.getBtnBuscar().addActionListener(this);
-		ventana.getBtnAnular().addActionListener(this);
 		ventana.getLstAsociarPor().addPropertyChangeListener(this);
 		ventana.getLstTipoMovimiento().addPropertyChangeListener(this);
 		ventana.getLstTipoPago().addPropertyChangeListener(this);
@@ -180,6 +182,14 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 		if (caja == null) {
 			return;
 		}
+		
+		if (pedido != null) {
+			if (ventana.gettValorGs().getValue() > pedido.getPrecioPagar()) {
+				JOptionPane.showMessageDialog(ventana, "El valor de la entrega es superior al valor total del pedido. \n"
+						+ "Valor a Pagar: "+EventosUtil.separadorMiles((double) pedido.getPrecioPagar()));
+				return;
+			}
+		}
 		if (!validarFormulario()) {
 			return;
 		}
@@ -190,6 +200,7 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 		cajaMovimiento.setCaja(caja);
 		cajaMovimiento.setCliente(cliente);
 		cajaMovimiento.setColaborador(colaborador);
+		cajaMovimiento.setPedido(pedido);
 		cajaMovimiento.setEsAnulado(false);
 		cajaMovimiento.setObservacion(ventana.getTxtObservacion().getText());
 		cajaMovimiento.setTipoValor(ventana.getLstTipoPago().getSelectedValue().toString());
@@ -210,7 +221,6 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 			dao = new CajaDao();
 			dao.modificar(caja);
 			dao.commit();
-			System.out.println("try");
 			interfaz.setCaja(caja);
 			ventana.dispose();
 
@@ -416,5 +426,16 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 		buscador.getControlador().setColaborador(colaborador);
 		buscador.getControlador().setInterfaz(this);
 		buscador.setVisible(true);
+	}
+
+	@Override
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+		gestionarPedido();
+	}
+	private void gestionarPedido() {
+		if (pedido == null) {
+			return;
+		}
 	}
 }

@@ -67,7 +67,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		this.ventana.getBtnAnular().addActionListener(this);
 		this.ventana.getBtnBuscarCliente().addActionListener(this);
 		this.ventana.getBtnBuscarProducto().addActionListener(this);
-		this.ventana.getBtnImprimir().addActionListener(this);
 		this.ventana.getBtnSalir().addActionListener(this);
 		
 		this.ventana.getBtnGuardar().addActionListener(this);
@@ -541,7 +540,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		EventosUtil.estadosBotones(ventana.getBtnAnular(), true);
 		EventosUtil.estadosBotones(ventana.getBtnBuscarProducto(), true);
 		EventosUtil.estadosBotones(ventana.getBtnGuardar(), true);
-		ventana.getBtnImprimir().setVisible(true);
 
 
 		//Datos del cliente

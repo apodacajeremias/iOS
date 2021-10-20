@@ -45,6 +45,7 @@ import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.pedidos.PedidoCarteleria;
 import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import iOS.vista.ventanas.reportes.ReporteCaja;
+import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 
@@ -97,6 +98,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 	private JMenuItem mnItemReportePedido;
 	private JMenuItem mntmPedidoCostura;
 	private MiBoton mbtnPedidoConfeccion;
+	private JMenuItem mntmNewMenuItem;
 
 
 	/**
@@ -399,6 +401,17 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 				abrirReportePedidoCarteleria();
 			}
 		});
+		
+		mntmNewMenuItem = new JMenuItem("Reporte deudas y pagos");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReporteDeudasPagos reporte = new ReporteDeudasPagos();
+				reporte.setUpControlador();
+				reporte.getControlador().setColaborador(colaborador);
+				reporte.setVisible(true);
+			}
+		});
+		mnReportes.add(mntmNewMenuItem);
 		mnItemReportePedido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReportePedido);
 		

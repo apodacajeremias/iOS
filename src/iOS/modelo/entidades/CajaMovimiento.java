@@ -54,6 +54,10 @@ public class CajaMovimiento {
 	
 	@ManyToOne
 	@JoinColumn(nullable = true)
+	private Pedido pedido;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
 	private Colaborador colaborador;
 	
 	@ManyToOne
@@ -181,4 +185,26 @@ public class CajaMovimiento {
 	public void setValorUS(double valorUS) {
 		this.valorUS = valorUS;
 	}
+
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+	
+	
 }
