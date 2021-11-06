@@ -29,7 +29,7 @@ public class CajaMovimiento {
 	private boolean estado = true;
 	
 	@ManyToOne
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable = false)
 	private Colaborador colaboradorQueRegistra;	
 
 	public Date getFechaRegistro() {
@@ -59,10 +59,6 @@ public class CajaMovimiento {
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Colaborador colaborador;
-	
-	@ManyToOne
-	@JoinColumn(nullable = true)
-	private Sector sector;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -80,6 +76,10 @@ public class CajaMovimiento {
 	
 	@Column(nullable = false)
 	private boolean esRetiro;
+	
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean esVale;
 
 	@Column(nullable = false)
 	private double valorGS;
@@ -114,13 +114,6 @@ public class CajaMovimiento {
 		this.colaborador = colaborador;
 	}
 
-	public Sector getSector() {
-		return sector;
-	}
-
-	public void setSector(Sector sector) {
-		this.sector = sector;
-	}
 
 	public Caja getCaja() {
 		return caja;
@@ -204,6 +197,16 @@ public class CajaMovimiento {
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
+	}
+
+
+	public boolean isEsVale() {
+		return esVale;
+	}
+
+
+	public void setEsVale(boolean esVale) {
+		this.esVale = esVale;
 	}
 	
 	

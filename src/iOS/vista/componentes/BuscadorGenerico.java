@@ -60,16 +60,8 @@ public class BuscadorGenerico extends JDialog {
 		});
 		toolbar.setBounds(10, 570, 474, 40);
 		getContentPane().add(toolbar);
-		
-		@SuppressWarnings("unused")
-		TextPrompt buscador = new TextPrompt("Buscar registro", tBuscador);
 
 	}
-
-
-	
-	//metodos getters
-
 
 	public JTable getTable() {
 		return table;

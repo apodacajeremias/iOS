@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.JToolBar;
 
-import iOS.controlador.util.EventosUtil;
 import iOS.modelo.interfaces.AccionesABM;
 
 public class ToolbarBuscador extends JToolBar implements ActionListener {
@@ -107,28 +106,28 @@ public class ToolbarBuscador extends JToolBar implements ActionListener {
 		case "Nuevo":
 			acciones.nuevo();
 
-			EventosUtil.estadosBotones(btNuevo, true);
-			EventosUtil.estadosBotones(btModificar, true);
-			EventosUtil.estadosBotones(btGuardar, true);
-			EventosUtil.estadosBotones(btCancelar, true);
+//			EventosUtil.estadosBotones(btNuevo, true);
+//			EventosUtil.estadosBotones(btModificar, true);
+//			EventosUtil.estadosBotones(btGuardar, true);
+//			EventosUtil.estadosBotones(btCancelar, true);
 			break;
 
 		case "Modificar":
 			acciones.modificar();
-			EventosUtil.estadosBotones(btNuevo, false);
-			EventosUtil.estadosBotones(btModificar, false);
-			EventosUtil.estadosBotones(btEliminar, false);
-			EventosUtil.estadosBotones(btGuardar, true);
-			EventosUtil.estadosBotones(btCancelar, true);
+//			EventosUtil.estadosBotones(btNuevo, false);
+//			EventosUtil.estadosBotones(btModificar, false);
+//			EventosUtil.estadosBotones(btEliminar, false);
+//			EventosUtil.estadosBotones(btGuardar, true);
+//			EventosUtil.estadosBotones(btCancelar, true);
 			break;
 
 		case "Eliminar":
 			acciones.eliminar();
-			EventosUtil.estadosBotones(btNuevo, true);
-			EventosUtil.estadosBotones(btModificar, false);
-			EventosUtil.estadosBotones(btEliminar, false);
-			EventosUtil.estadosBotones(btGuardar, false);
-			EventosUtil.estadosBotones(btCancelar, true);
+//			EventosUtil.estadosBotones(btNuevo, true);
+//			EventosUtil.estadosBotones(btModificar, false);
+//			EventosUtil.estadosBotones(btEliminar, false);
+//			EventosUtil.estadosBotones(btGuardar, false);
+//			EventosUtil.estadosBotones(btCancelar, true);
 			break;
 
 		case "Guardar":

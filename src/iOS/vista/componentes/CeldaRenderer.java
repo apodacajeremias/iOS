@@ -40,37 +40,18 @@ public class CeldaRenderer extends DefaultTableCellRenderer {
 			}
 			break;
 		case "Color":
-			 String estado = (String) table.getValueAt(row, 0);
-			 
-		        if (estado.equalsIgnoreCase("ingreso")) {
-		            setBackground(Color.YELLOW);
-		            setForeground(Color.BLACK);
-		        } else {
-		            setBackground(Color.RED);
-		            setForeground(Color.WHITE);
-		        }
+
+			String estado = (String) table.getValueAt(row, 0);			 
+			if (estado.startsWith(("INGRESO"))) {
+				setBackground(Color.YELLOW);
+				setForeground(Color.BLACK);
+			} else {
+				setBackground(Color.RED);
+				setForeground(Color.WHITE);
+			}
 		default:
 			break;
 		}
-
 		return cellComponent;
 	}
-
-	//	@Override
-	//	public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column)
-	//	{        
-	//		setBackground(Color.white);
-	//		table.setForeground(Color.black);
-	//		super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-	//		if(table.getValueAt(row,columna).equals("A"))
-	//		{
-	//			this.setForeground(Color.RED);
-	//		}else if(table.getValueAt(row,columna).equals("B")){
-	//			this.setForeground(Color.BLUE);
-	//		}else if(table.getValueAt(row, columna).equals("C")){
-	//			this.setForeground(Color.GREEN);
-	//		}
-	//		return this;
-	//	}
-	//}
 }

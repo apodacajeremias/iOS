@@ -89,15 +89,13 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 		}
 
 		CompraDetalle row = detalle.get(r);
-		String nv = aValue.toString().replace(",", ".");
+		String nv = aValue.toString().replace(",", ".").replace(".0", "");
 		DecimalFormat df = new DecimalFormat("#,##");
 		double precioMinorista = detalle.get(r).getPrecioMinorista();
 		double porcentajeMinorista = detalle.get(r).getPorcentajeMinorista();
 		double precioMayorista = detalle.get(r).getPrecioMayorista5();
 		double porcentajeMayorista = detalle.get(r).getPorcentajeMayorista();
 		double costo = detalle.get(r).getCostoMaterial();
-
-		nv.replace(".0", "");
 
 		//Al seleccionar marca
 		if(1 == c) {

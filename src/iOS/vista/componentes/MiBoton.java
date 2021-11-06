@@ -30,7 +30,7 @@ public class MiBoton extends JButton {
 		super.setText(text);
 		setIcono(text);
 	}
-	
+
 
 	public void setIcono(String nombreIcono) {
 		try {
@@ -41,6 +41,10 @@ public class MiBoton extends JButton {
 
 		} catch (Exception e) {
 		}
+	}
+
+	public void callToAction() {
+		setBackground(Color.GREEN);
 	}
 
 }

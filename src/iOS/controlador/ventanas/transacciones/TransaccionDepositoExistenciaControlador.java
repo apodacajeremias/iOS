@@ -17,15 +17,14 @@ import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.DepositoExistenciaDao;
 import iOS.modelo.dao.ExistenciaDao;
 import iOS.modelo.dao.SectorDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.DepositoExistencia;
 import iOS.modelo.entidades.Existencia;
 import iOS.modelo.entidades.Sector;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.DepositoInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.transacciones.TransaccionDepositoExistencia;
 
-public class TransaccionDepositoExistenciaControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, DepositoInterface, ColaboradorInterface {
+public class TransaccionDepositoExistenciaControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, DepositoInterface {
 	private TransaccionDepositoExistencia transaccion;
 	
 	private Sector deposito;
@@ -40,9 +39,6 @@ public class TransaccionDepositoExistenciaControlador implements ActionListener,
 	private ExistenciaDao daoExistencia;
 	private DepositoExistenciaDao dao;
 
-	private Colaborador colaborador;
-	 
-	
 	public TransaccionDepositoExistenciaControlador(TransaccionDepositoExistencia transaccion) {
 		this.transaccion = transaccion;
 		
@@ -121,7 +117,7 @@ public class TransaccionDepositoExistenciaControlador implements ActionListener,
 		existencia = existencias.get(0);
 		
 		depositoExistencia = new DepositoExistencia();
-		depositoExistencia.setColaborador(colaborador);
+		depositoExistencia.setColaborador(Sesion.getInstance().getColaborador());
 		depositoExistencia.setDeposito((Sector) transaccion.getCbDepositos().getSelectedItem());
 		depositoExistencia.setExistencia(existencia);
 		depositoExistencia.setFechaRegistro(new Date());
@@ -228,18 +224,4 @@ public class TransaccionDepositoExistenciaControlador implements ActionListener,
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 }

@@ -48,9 +48,19 @@ public class ModeloTablaPedido extends AbstractTableModel {
 			return EventosUtil.separadorMiles((double) lista.get(r).getPrecioPagar());
 		case 3:
 			if (lista.get(r).isEsPresupuesto()) {
-				return "PRESUPUESTO";
+				if (lista.get(r).isEstado()) {
+					return "PRESUPUESTO";
+				} else {
+					return "PRESUPUESTO ANULADO";
+				}
+				
 			}else {
-				return "PEDIDO";
+				if (lista.get(r).isEstado()) {
+					return "PEDIDO";
+				} else {
+					return "PEDIDO ANULADO";
+				}
+				
 			}
 		default:
 			break;

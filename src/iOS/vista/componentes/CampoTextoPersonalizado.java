@@ -6,16 +6,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 public class CampoTextoPersonalizado extends JTextField {
-	
-	private Border border;
 
 	/**
 	 * 
@@ -107,15 +102,15 @@ public class CampoTextoPersonalizado extends JTextField {
 		});
 	}
 	
-	public void error() {
-		this.setBorder(BorderFactory.createLineBorder(Color.RED));
-		new Timer().schedule(new TimerTask() {
-			 
-			public void run() {
-				CampoTextoPersonalizado.this.setBorder(border);
-			}
-		}, 300);
-	}
+//	public void error() {
+//		this.setBorder(BorderFactory.createLineBorder(Color.RED));
+//		new Timer().schedule(new TimerTask() {
+//			 
+//			public void run() {
+//				CampoTextoPersonalizado.this.setBorder(border);
+//			}
+//		}, 300);
+//	}
 
 
 }

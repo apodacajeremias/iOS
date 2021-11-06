@@ -17,7 +17,7 @@ import iOS.vista.ventanas.buscadores.BuscadorColaborador;
 
 
 
-public class BuscadorColaboradorControlador implements KeyListener, MouseListener, AccionesABM, ColaboradorInterface {
+public class BuscadorColaboradorControlador implements KeyListener, MouseListener, AccionesABM {
 
 	// ATRIBUTOS
 	private BuscadorColaborador buscador;
@@ -67,7 +67,6 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 		Colaborador cliente = lista.get(posicion);
 		// Se pasa la categoria seleccionada a la interfaz
 		interfaz.setColaborador(cliente);
-
 		buscador.dispose();
 	}
 
@@ -143,18 +142,5 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 	public void cancelar() {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
 	}
 }

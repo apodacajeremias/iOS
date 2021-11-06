@@ -17,19 +17,18 @@ import org.hibernate.exception.ConstraintViolationException;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ClienteDao;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.ClienteInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaCliente;
 
-public class VentanaClienteControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ClienteInterface, ColaboradorInterface{
+public class VentanaClienteControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ClienteInterface{
 	private VentanaCliente ventanaCliente;
 	private ClienteDao dao;
 	private Cliente cliente;
 
 	private String accion;
-	private Colaborador colaborador;
+	
 
 	public VentanaClienteControlador(VentanaCliente ventanaCliente) {
 		this.ventanaCliente = ventanaCliente;
@@ -230,15 +229,8 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 
 		if (accion.equals("NUEVO")) {
 			cliente = new Cliente();
-			cliente.setColaborador(colaborador);
-		}
-		
-		if (colaborador == null) {
-			JOptionPane.showMessageDialog(ventanaCliente, "Debe iniciar sesion");			
-			return;
-		}
-		
-		
+			cliente.setColaborador(Sesion.getInstance().getColaborador());
+		}		
 		cliente.setNombreCompleto(ventanaCliente.gettNombreCompleto().getText());
 		cliente.setContacto(ventanaCliente.gettContacto().getText());
 		cliente.setDireccion(ventanaCliente.gettDireccion().getText());
@@ -300,19 +292,5 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 		ventanaCliente.gettDireccion().setText(cliente.getDireccion());
 
 	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			JOptionPane.showMessageDialog(ventanaCliente, "Debe iniciar sesion");			
-			return;
-		}
-	}
-
 }
 

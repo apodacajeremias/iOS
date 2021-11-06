@@ -21,7 +21,6 @@ public class ModeloTablaCajaMovimiento extends AbstractTableModel {
 
 	public void setMovimiento(List<CajaMovimiento> movimientos) {
 		this.movimientos = movimientos;
-		fireTableDataChanged();
 	}
 
 	@Override
@@ -47,12 +46,12 @@ public class ModeloTablaCajaMovimiento extends AbstractTableModel {
 				if (movimientos.get(r).isEsAnulado() == true) {
 					return "INGRESO ANULADO";
 				}
-				return "INGRESO";
+				return "INGRESO "+movimientos.get(r).getTipoValor().toUpperCase();
 			} else {
 				if (movimientos.get(r).isEsAnulado() == true) {
 					return "RETIRO ANULADO";
 				}
-				return "RETIRO";
+				return "RETIRO "+movimientos.get(r).getTipoValor().toUpperCase();
 			}
 		case 1:
 			return EventosUtil.separadorMiles(movimientos.get(r).getValorGS());

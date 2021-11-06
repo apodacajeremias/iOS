@@ -12,22 +12,21 @@ import iOS.controlador.util.ConexionReporte;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.entidades.Caja;
-import iOS.modelo.entidades.Colaborador;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.entidades.CajaMovimiento;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCaja;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 import net.sf.jasperreports.engine.JRException;
 
-public class ReporteCajaControlador implements ActionListener, ColaboradorInterface, MouseListener {
+public class ReporteCajaControlador implements ActionListener, MouseListener {
 	private ReporteCaja reporte;
 	private ModeloTablaCaja modeloTabla;
 	private ModeloTablaCajaMovimiento modeloTablaMovimiento;
 	private CajaDao dao;
 	private Caja caja;
 	private List<Caja> cajas = new ArrayList<Caja>();
-	private Colaborador colaborador;
 
 	public ReporteCajaControlador(ReporteCaja reporte) {
 		this.reporte = reporte;
@@ -59,12 +58,12 @@ public class ReporteCajaControlador implements ActionListener, ColaboradorInterf
 	}
 
 	private void filtro() {
-		if (EventosUtil.liberarAccesoSegunRol(colaborador, "ADMINISTRADOR")){
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")){
 			filtrarTodo();
 			return;
 		}
 		
-		if (EventosUtil.liberarAcceso(colaborador, reporte.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), reporte.modulo, "ABRIR")) {
 			filtrarPorColaborador();
 			return;
 		}
@@ -90,7 +89,7 @@ public class ReporteCajaControlador implements ActionListener, ColaboradorInterf
 
 	private void filtrarPorColaborador() {
 		vaciarTabla();
-		cajas = dao.recuperarTodoPorColaborador(colaborador.getId());
+		cajas = dao.recuperarTodoPorColaborador((Sesion.getInstance().getColaborador().getId()));
 		modeloTabla.setCajas(cajas);
 		modeloTabla.fireTableDataChanged();
 	}
@@ -127,15 +126,12 @@ public class ReporteCajaControlador implements ActionListener, ColaboradorInterf
 		HashMap<String, Object> parametros = new HashMap<>();
 		parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
 		parametros.put("cajaCerrada", cajaCerrada(c));
-		parametros.put("estado", estadoCaja(c) );
-
-		cajas.clear();
-		cajas.add(c);
+		parametros.put("estado", estadoCaja(c));
 
 		// Creando reportes
-		ConexionReporte<Caja> conexionReporte = new ConexionReporte<Caja>();
+		ConexionReporte<CajaMovimiento> conexionReporte = new ConexionReporte<CajaMovimiento>();
 		try {
-			conexionReporte.generarReporte(cajas, parametros, "ReporteCaja");
+			conexionReporte.generarReporte(dao.recuperarMovimientoNoAnulados(c.getId()), parametros, "ReporteCaja2");
 			filtro();
 			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
 			conexionReporte.ventanaReporte.setVisible(true);
@@ -179,25 +175,12 @@ public class ReporteCajaControlador implements ActionListener, ColaboradorInterf
 
 	}
 
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		gestionarColaborador();
-	}
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
-		filtro();
-
-	}
-
 	private void abrirTransaccionCaja() {
 		if (caja == null) {
 			return;
 		}
 		TransaccionCaja ventana = new TransaccionCaja();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
 			ventana.getControlador().setCaja(caja);
 			ventana.setVisible(true);

@@ -29,7 +29,7 @@ public class Pago {
 	private boolean estado = true;
 	
 	@ManyToOne
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 	
 

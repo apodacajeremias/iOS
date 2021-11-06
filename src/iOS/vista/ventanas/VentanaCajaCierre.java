@@ -54,7 +54,7 @@ public class VentanaCajaCierre extends JDialog {
 		setTitle("Cierre Caja");
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		setBounds(100, 100, 500, 200);
+		setBounds(100, 100, 500, 210);
 
 		btnCerrarCaja = new MiBoton((String) null);
 		btnCerrarCaja.setActionCommand("CerrarCaja");

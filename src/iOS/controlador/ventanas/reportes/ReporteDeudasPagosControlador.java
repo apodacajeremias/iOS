@@ -12,16 +12,14 @@ import iOS.modelo.dao.CajaDao;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.ClienteInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.modelotabla.ModeloTablaPedido;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 
-public class ReporteDeudasPagosControlador implements ActionListener, ClienteInterface, ColaboradorInterface {
+public class ReporteDeudasPagosControlador implements ActionListener, ClienteInterface {
 	private ReporteDeudasPagos reporte;
 
 	private PedidoDao pedidoDao;
@@ -34,10 +32,6 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 	
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 	private List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
-
-	private Colaborador colaborador;
-
-
 
 	public ReporteDeudasPagosControlador(ReporteDeudasPagos reporte) {
 		this.reporte = reporte;
@@ -124,24 +118,9 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 	private void abrirBuscadorCliente() {
 		BuscadorCliente ventana = new BuscadorCliente();
 		ventana.setUpControlador();
-		ventana.getControlador().setColaborador(colaborador);
 		ventana.getControlador().setInterfaz(this);
 		ventana.setVisible(true);
 	}
 
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		gestionarColaborador();
-	}
-
-	@Override
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			JOptionPane.showMessageDialog(reporte, "INICIE SESION");
-			return;
-		}
-		
-	}
 
 }

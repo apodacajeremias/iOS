@@ -1,6 +1,7 @@
 package iOS.modelo.dao;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.query.Query;
@@ -31,6 +32,7 @@ public class PedidoDao extends GenericDao<Pedido> {
 			commit();
 			return lista;
 		} catch (Exception e) {
+			e.printStackTrace();
 			rollBack();
 			return null;
 		}
@@ -65,39 +67,9 @@ public class PedidoDao extends GenericDao<Pedido> {
 		return lista;
 	}
 
-	public List<PedidoDetalles> recuperarDetallesPorPedido (int id) {
+	public List<PedidoDetalles> reporteVentasDiarioCarteleria (int colaborador) {
 		getSession().beginTransaction();
-
-		String sql = "from PedidoDetalles where pedido.id = :id order by id ASC";
-
-		@SuppressWarnings("unchecked")
-		Query<PedidoDetalles> query = getSession().createQuery(sql);
-		query.setParameter("id", id);
-		List<PedidoDetalles> lista = query.getResultList();
-		commit();
-		return lista;
-	}
-	
-	public List<Pedido> recuperarTodoPorColaborador(int colaborador){
-		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where colaborador.id = :colaborador "
-				+ "order by id DESC";
-		@SuppressWarnings("unchecked")
-		Query<Pedido> query = getSession().createQuery(sql);
-		query.setParameter("colaborador", colaborador);
-		try {
-			List<Pedido> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-	
-	public List<PedidoDetalles> reporteVentasCarteleria (int colaborador, java.util.Date fecha) {
-		getSession().beginTransaction();
+		Date fecha = new Date();
 		String sql = "from PedidoDetalles "
 				+ "where colaborador.id = :colaborador "
 				+ "and DATE(pedido.fechaRegistro) = :fecha "
@@ -119,8 +91,82 @@ public class PedidoDao extends GenericDao<Pedido> {
 		}
 	}
 	
-	public List<PedidoDetalleConfeccion> reporteVentasConfeccion(int colaborador, java.util.Date fecha) {
+	public List<PedidoDetalles> reporteVentasMensualCarteleria (int colaborador, Integer mes, Integer anho) {
+		System.out.println(colaborador+" "+mes+" "+anho);
 		getSession().beginTransaction();
+		String sql = "from PedidoDetalles "
+				+ "where colaborador.id = :colaborador "
+				+ "and MONTH(fechaRegistro) = :mes "
+				+ "and YEAR(fechaRegistro) = :anho "
+				+ "and pedido.esPresupuesto = false "
+				+ "and pedido.pedidoCarteleria = true "
+				+ "order by id DESC";
+		@SuppressWarnings("unchecked")
+		Query<PedidoDetalles> query = getSession().createQuery(sql);
+		query.setParameter("colaborador", colaborador);
+		query.setParameter("mes", mes);
+		query.setParameter("anho", anho);
+		try {
+			List<PedidoDetalles> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+
+	public List<Pedido> recuperarPedidosDiarioCarteleriaPorFiltros(Integer colaborador) {
+		getSession().beginTransaction();
+		Date fecha = new Date();
+		String sql = "FROM Pedido "
+				+ "WHERE pedidoCarteleria = true "
+				+ "AND colaborador.id = :colaborador "
+				+ "and DATE(fechaRegistro) = :fecha "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Pedido> query = getSession().createQuery(sql);
+		query.setParameter("colaborador", colaborador);
+		query.setParameter("fecha", fecha);
+		try {
+			List<Pedido> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<Pedido> recuperarPedidosMensualCarteleriaPorFiltros(int colaborador, int mes, int ano) {
+		getSession().beginTransaction();
+		String sql = "FROM Pedido "
+				+ "WHERE pedidoCarteleria = true "
+				+ "AND colaborador.id = :colaborador "
+				+ "AND MONTH(fechaRegistro) = :mes "
+				+ "AND YEAR(fechaRegistro) = :ano "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Pedido> query = getSession().createQuery(sql);
+		query.setParameter("colaborador", colaborador);
+		query.setParameter("mes", mes);
+		query.setParameter("ano", ano);
+		try {
+			List<Pedido> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+
+	public List<PedidoDetalleConfeccion> reporteVentasDiarioCostura (int colaborador) {
+		getSession().beginTransaction();
+		Date fecha = new Date();
 		String sql = "from PedidoDetalleConfeccion "
 				+ "where colaborador.id = :colaborador "
 				+ "and DATE(pedido.fechaRegistro) = :fecha "
@@ -142,155 +188,76 @@ public class PedidoDao extends GenericDao<Pedido> {
 		}
 	}
 	
-	public List<Pedido> recuperarPedidosCarteleria() {
+	public List<PedidoDetalleConfeccion> reporteVentasMensualCostura (int colaborador, Integer mes, Integer anho) {
 		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where pedidoCarteleria = true "
-				+ "order by id DESC";
-		@SuppressWarnings("unchecked")
-		Query<Pedido> query = getSession().createQuery(sql);
-		try {
-			List<Pedido> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-
-	
-	public List<Pedido> recuperarPedidosCostura() {
-		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where pedidoCostura = true "
-				+ "order by id DESC";
-		@SuppressWarnings("unchecked")
-		Query<Pedido> query = getSession().createQuery(sql);
-		try {
-			List<Pedido> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-	
-	public List<Pedido> recuperarPedidosCarteleria(int colaborador) {
-		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where pedidoCarteleria = true "
-				+ "and colaborador.id = :colaborador "
-				+ "order by id DESC";
-		@SuppressWarnings("unchecked")
-		Query<Pedido> query = getSession().createQuery(sql);
-		query.setParameter("colaborador", colaborador);
-		try {
-			List<Pedido> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-
-	
-	public List<Pedido> recuperarPedidosCostura(int colaborador) {
-		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where pedidoCostura = true "
-				+ "and colaborador.id = :colaborador "
-				+ "order by id DESC";
-		@SuppressWarnings("unchecked")
-		Query<Pedido> query = getSession().createQuery(sql);
-		query.setParameter("colaborador", colaborador);
-		try {
-			List<Pedido> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-
-	
-	public List<Pedido> recuperarPedidosCarteleriaPorFiltros(int colaborador, int mes, int ano, boolean estado, boolean esPresupuesto) {
-		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where pedidoCarteleria = true "
-				+ "and colaborador.id = :colaborador "
+		String sql = "from PedidoDetalleConfeccion "
+				+ "where colaborador.id = :colaborador "
 				+ "and MONTH(fechaRegistro) = :mes "
-				+ "and YEAR(fechaRegistro) = :ano "
-				+ "and estado = :estado "
-				+ "and esPresupuesto = :esPresupuesto "
+				+ "and YEAR(fechaRegistro) = :anho "
+				+ "and pedido.esPresupuesto = false "
+				+ "and pedido.pedidoCostura = true "
 				+ "order by id DESC";
+		@SuppressWarnings("unchecked")
+		Query<PedidoDetalleConfeccion> query = getSession().createQuery(sql);
+		query.setParameter("colaborador", colaborador);
+		query.setParameter("mes", mes);
+		query.setParameter("anho", anho);
+		try {
+			List<PedidoDetalleConfeccion> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+
+	public List<Pedido> recuperarPedidosDiarioCosturaPorFiltros(Integer colaborador) {
+		getSession().beginTransaction();
+		Date fecha = new Date();
+		String sql = "FROM Pedido "
+				+ "WHERE pedidoCostura = true "
+				+ "AND colaborador.id = :colaborador "
+				+ "and DATE(fechaRegistro) = :fecha "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Pedido> query = getSession().createQuery(sql);
+		query.setParameter("colaborador", colaborador);
+		query.setParameter("fecha", fecha);
+		try {
+			List<Pedido> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<Pedido> recuperarPedidosMensualCosturaPorFiltros(int colaborador, int mes, int ano) {
+		getSession().beginTransaction();
+		String sql = "FROM Pedido "
+				+ "WHERE pedidoCostura = true "
+				+ "AND colaborador.id = :colaborador "
+				+ "AND MONTH(fechaRegistro) = :mes "
+				+ "AND YEAR(fechaRegistro) = :ano "
+				+ "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<Pedido> query = getSession().createQuery(sql);
 		query.setParameter("colaborador", colaborador);
 		query.setParameter("mes", mes);
 		query.setParameter("ano", ano);
-		query.setParameter("estado", estado);
-		query.setParameter("esPresupuesto", esPresupuesto);
 		try {
 			List<Pedido> lista = query.getResultList();
 			commit();
 			return lista;
 		} catch (Exception e) {
+			e.printStackTrace();
 			rollBack();
 			return null;
 		}
 	}
-	
-	public List<Pedido> recuperarTodosPedidosCarteleriaPorFiltros(int mes, int ano, boolean estado, boolean esPresupuesto) {
-		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where pedidoCarteleria = true "
-				+ "and MONTH(fechaRegistro) = :mes "
-				+ "and YEAR(fechaRegistro) = :ano "
-				+ "and estado = true and estado = :estado "
-				+ "and esPresupuesto = false and esPresupuesto = :esPresupuesto "
-				+ "order by id DESC";
-		@SuppressWarnings("unchecked")
-		Query<Pedido> query = getSession().createQuery(sql);
-		try {
-			List<Pedido> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-	
-	public List<Pedido> recuperarPedidosConfeccionPorFiltros(int colaborador, int mes, int ano, boolean estado, boolean esPresupuesto) {
-		getSession().beginTransaction();
-		String sql = "from Pedido "
-				+ "where pedidoCostura = true "
-				+ "and colaborador.id = :colaborador "
-				+ "and MONTH(fechaRegistro) = :mes "
-				+ "and YEAR(fechaRegistro) = :ano "
-				+ "and estado = :estado "
-				+ "and esPresupuesto = :esPresupuesto "
-				+ "order by id DESC";
-		@SuppressWarnings("unchecked")
-		Query<Pedido> query = getSession().createQuery(sql);
-		query.setParameter("colaborador", colaborador);
-		query.setParameter("mes", mes);
-		query.setParameter("ano", ano);
-		query.setParameter("estado", estado);
-		query.setParameter("esPresupuesto", esPresupuesto);
-		try {
-			List<Pedido> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-	
 }
 

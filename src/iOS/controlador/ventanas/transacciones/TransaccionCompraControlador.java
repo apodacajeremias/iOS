@@ -21,25 +21,24 @@ import javax.swing.JComboBox;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CompraDao;
 import iOS.modelo.dao.MarcaDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Compra;
 import iOS.modelo.entidades.CompraDetalle;
 import iOS.modelo.entidades.InformacionPago;
 import iOS.modelo.entidades.Marca;
 import iOS.modelo.entidades.Material;
 import iOS.modelo.entidades.Proveedor;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.CompraInterface;
 import iOS.modelo.interfaces.MarcaInterface;
 import iOS.modelo.interfaces.MaterialInterface;
 import iOS.modelo.interfaces.ProveedorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.componentes.CeldaRenderer;
 import iOS.vista.modelotabla.ModeloTablaCompraDetalle;
 import iOS.vista.ventanas.buscadores.BuscadorMaterial;
 import iOS.vista.ventanas.buscadores.BuscadorProveedor;
 import iOS.vista.ventanas.transacciones.TransaccionCompra;
 
-public class TransaccionCompraControlador implements ActionListener, MouseListener, KeyListener, CompraInterface, ProveedorInterface, MaterialInterface, PropertyChangeListener, MarcaInterface, ColaboradorInterface {
+public class TransaccionCompraControlador implements ActionListener, MouseListener, KeyListener, CompraInterface, ProveedorInterface, MaterialInterface, PropertyChangeListener, MarcaInterface {
 	private TransaccionCompra transaccionCompra;
 	private ModeloTablaCompraDetalle mtCompraDetalle;
 	private CompraDao dao;
@@ -59,8 +58,6 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 	private int total;
 	private int dif;
 	private int descuento;
-	private Colaborador colaborador;
-
 
 	public TransaccionCompraControlador(TransaccionCompra transaccionCompra) {
 		this.transaccionCompra = transaccionCompra;
@@ -289,7 +286,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		}
 		if (accion.equals("NUEVO")) {
 			compra = new Compra();
-			compra.setColaborador(colaborador);
+			compra.setColaborador(Sesion.getInstance().getColaborador());
 		}
 		totalCompra();
 		compra.setProveedor(proveedor);
@@ -488,13 +485,14 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 	private void crearTablaCombo() {
 		//Combo y valores
 		JComboBox<Marca> comboBox = new JComboBox<Marca>();
-		if (marcas == null) {
-			comboBox.setEditable(true);
-			System.out.println("SIN MARCAS");
-		}
 
-		for (int i = 0; i < marcas.size(); i++) {
-			comboBox.addItem(marcas.get(i));
+		try {
+			for (int i = 0; i < marcas.size(); i++) {
+				comboBox.addItem(marcas.get(i));
+			}
+		} catch (Exception e) {
+			comboBox.addItem(null);
+			e.printStackTrace();
 		}
 
 		//se agrega model al JTable
@@ -546,19 +544,5 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		this.marca = marca;
 
 	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 
 }

@@ -17,24 +17,24 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import iOS.controlador.util.EventosUtil;
+import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.ClienteInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.interfaces.ProductoInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorProducto;
 import iOS.vista.ventanas.pedidos.PedidoCarteleria;
 
 
-public class PedidoCarteleriaControlador implements ActionListener, MouseListener, KeyListener, ColaboradorInterface, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
-	private PedidoCarteleria transaccion;
+public class PedidoCarteleriaControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
+	private PedidoCarteleria ventana;
 	
 	private ModeloTablaPedidoDetalle mtPedidoDetalle;
 	private PedidoDao dao;
@@ -46,12 +46,11 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	private PedidoDetalles detalle;
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 	private double sumaMetrosPorCliente;
-	private Colaborador colaborador;
 	
-	public PedidoCarteleriaControlador(PedidoCarteleria transaccionPedido) {
-		this.transaccion = transaccionPedido;
+	public PedidoCarteleriaControlador(PedidoCarteleria ventana) {
+		this.ventana = ventana;
 		mtPedidoDetalle = new ModeloTablaPedidoDetalle();
-		transaccionPedido.getTable().setModel(mtPedidoDetalle);
+		ventana.getTable().setModel(mtPedidoDetalle);
 
 		dao = new PedidoDao();
 		pedido = new Pedido();
@@ -62,67 +61,67 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 
 	private void setUpEvents() {
-		this.transaccion.getBtnAgregar().addActionListener(this);
-		this.transaccion.getBtnAnular().addActionListener(this);
-		this.transaccion.getBtnBuscarCliente().addActionListener(this);
-		this.transaccion.getBtnBuscarProducto().addActionListener(this);
-		this.transaccion.getBtnSalir().addActionListener(this);
+		this.ventana.getBtnAgregar().addActionListener(this);
+		this.ventana.getBtnAnular().addActionListener(this);
+		this.ventana.getBtnBuscarCliente().addActionListener(this);
+		this.ventana.getBtnBuscarProducto().addActionListener(this);
+		this.ventana.getBtnSalir().addActionListener(this);
 		
-		this.transaccion.getBtnGuardar().addActionListener(this);
+		this.ventana.getBtnGuardar().addActionListener(this);
 		
 
-		this.transaccion.getTable().addMouseListener(this);
-		this.transaccion.getTable().addPropertyChangeListener(this);
-				this.transaccion.getRbConsiderarMetraje().addPropertyChangeListener(this);
-		this.transaccion.getRbGenerarPresupuesto().addPropertyChangeListener(this);
-		this.transaccion.getRbConsiderarMetraje().addMouseListener(this);
-		this.transaccion.getRbGenerarPresupuesto().addMouseListener(this);
+		this.ventana.getTable().addMouseListener(this);
+		this.ventana.getTable().addPropertyChangeListener(this);
+				this.ventana.getRbConsiderarMetraje().addPropertyChangeListener(this);
+		this.ventana.getRbGenerarPresupuesto().addPropertyChangeListener(this);
+		this.ventana.getRbConsiderarMetraje().addMouseListener(this);
+		this.ventana.getRbGenerarPresupuesto().addMouseListener(this);
 
-		this.transaccion.gettDescuentoPedido().addKeyListener(this);
+		this.ventana.gettDescuentoPedido().addKeyListener(this);
 	}
 
 	private void estadoInicial(boolean b) {
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlCliente());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlContacto());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlEstadoPedido());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlFechaHora());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlGanancia());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlIdentificacion());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlProducto());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlMetrosFechaEmision());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlMetrosPedido());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlNroPedido());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlSumatoria());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.getlTotalPagar());
-		EventosUtil.limpiarCampoPersonalizado(transaccion.gettDescuentoPedido());
-		EventosUtil.estadosCampoPersonalizado(transaccion.gettDescuentoPedido(), !b);
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlCliente());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlContacto());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlEstadoPedido());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlFechaHora());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlGanancia());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlIdentificacion());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlProducto());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlMetrosFechaEmision());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlMetrosPedido());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlNroPedido());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlSumatoria());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlTotalPagar());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettDescuentoPedido());
+		EventosUtil.estadosCampoPersonalizado(ventana.gettDescuentoPedido(), !b);
 
-		transaccion.getRbConsiderarMetraje().setSelected(false);
-		transaccion.getlMetrosFechaEmision().setForeground(Color.RED);
-		transaccion.getRbGenerarPresupuesto().setSelected(false);
+		ventana.getRbConsiderarMetraje().setSelected(false);
+		ventana.getlMetrosFechaEmision().setForeground(Color.RED);
+		ventana.getRbGenerarPresupuesto().setSelected(false);
 
 		//Botones que se mantienen disponibles si o si
-		EventosUtil.estadosBotones(transaccion.getBtnBuscarCliente(), true);
-		EventosUtil.estadosBotones(transaccion.getBtnSalir(), true);
+		EventosUtil.estadosBotones(ventana.getBtnBuscarCliente(), true);
+		EventosUtil.estadosBotones(ventana.getBtnSalir(), true);
 
 		//Cuando setCliente, se activa
-		EventosUtil.estadosBotones(transaccion.getBtnBuscarProducto(), !b);
+		EventosUtil.estadosBotones(ventana.getBtnBuscarProducto(), !b);
 
 		//Cuando setProducto, se activa
-		EventosUtil.estadosBotones(transaccion.getBtnAgregar(), false);
+		EventosUtil.estadosBotones(ventana.getBtnAgregar(), false);
 
 		//Si se selecciona un detalle
-		EventosUtil.estadosBotones(transaccion.getBtnAnular(), !b);
+		EventosUtil.estadosBotones(ventana.getBtnAnular(), !b);
 
-		EventosUtil.estadosBotones(transaccion.getBtnGuardar(), false);
+		EventosUtil.estadosBotones(ventana.getBtnGuardar(), false);
 		
 		vaciarTabla();
 
 	}
 
 	private void formatoTabla() {
-		transaccion.getTable().getColumnModel().getColumn(0).setPreferredWidth(250);
-		transaccion.getTable().getColumnModel().getColumn(1).setPreferredWidth(100);
+		ventana.getTable().getColumnModel().getColumn(0).setPreferredWidth(250);
+		ventana.getTable().getColumnModel().getColumn(1).setPreferredWidth(100);
 
 	}
 	
@@ -142,7 +141,8 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			return;
 		}
 		detalle = new PedidoDetalles();
-		detalle.setColaborador(colaborador);
+		detalle.setColaborador(Sesion.getInstance().getColaborador());
+		detalle.setArchivo("Sin indicaciones");
 
 		//Medidas
 		if (producto.isTieneMedidaFija()) {
@@ -170,7 +170,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		items.add(detalle);
 		mtPedidoDetalle.setDetalle(items);
 		mtPedidoDetalle.fireTableDataChanged();
-		transaccion.getBtnBuscarProducto().requestFocus();
+		ventana.getBtnBuscarProducto().requestFocus();
 
 		//Metodos referentes
 		realizarCalculos();
@@ -185,7 +185,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 	
 	private void quitarItem() {
-		if (transaccion.getTable().getSelectedRow() < 0) {
+		if (ventana.getTable().getSelectedRow() < 0) {
 			return;
 		}
 		
@@ -193,7 +193,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 				"Confirmar", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
-			items.remove(transaccion.getTable().getSelectedRow());
+			items.remove(ventana.getTable().getSelectedRow());
 			mtPedidoDetalle.setDetalle(items);
 		} else {
 			return;
@@ -203,11 +203,11 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 
 	private boolean considerarMetraje() {
-		boolean considerarMetraje = transaccion.getRbConsiderarMetraje().isSelected();
+		boolean considerarMetraje = ventana.getRbConsiderarMetraje().isSelected();
 		if (considerarMetraje == true) {
-			transaccion.getlMetrosFechaEmision().setForeground(Color.YELLOW);
+			ventana.getlMetrosFechaEmision().setForeground(Color.YELLOW);
 		} else {
-			transaccion.getlMetrosFechaEmision().setForeground(Color.RED);
+			ventana.getlMetrosFechaEmision().setForeground(Color.RED);
 		}
 		System.out.println(considerarMetraje+ " considerarMetraje");
 		return considerarMetraje;
@@ -215,7 +215,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 
 	private boolean generarPresupuesto() {
-		boolean esPresupuesto = transaccion.getRbGenerarPresupuesto().isSelected();
+		boolean esPresupuesto = ventana.getRbGenerarPresupuesto().isSelected();
 		System.out.println(esPresupuesto+ " esPresupuesto");
 		return esPresupuesto;
 
@@ -228,45 +228,8 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		if (estado == false) {
 			sumaMetrosPorCliente = 0;
 		} else {
-			transaccion.getlMetrosFechaEmision().setText(
-					String.valueOf(calcularHistoricoMetros(cliente.getId()+"", fechaHoy(), restarFechas())));
+			ventana.getlMetrosFechaEmision().setText(String.valueOf(calcularHistoricoMetros(cliente.getId()+"", fechaHoy(), restarFechas())));
 		}
-
-		//		if (sumaMetrosPorCliente < 5) {
-		//			detalle.setPrecioProducto(producto.getPrecio_5Menos());
-		//			detalle.setPrecioPagar(producto.getPrecio_5Menos());
-		//			detalle.setGananciaDetalle(producto.getPrecio_5Menos()-producto.getCosto());
-		//		}
-		//		if (sumaMetrosPorCliente >= 5) {
-		//			detalle.setPrecioProducto(producto.getPrecio_5Mas());
-		//			detalle.setPrecioPagar(producto.getPrecio_5Mas());
-		//			detalle.setGananciaDetalle(producto.getPrecio_5Mas()-producto.getCosto());
-		//		}
-		//		if (sumaMetrosPorCliente >= 10) {
-		//			detalle.setPrecioProducto(producto.getPrecio_10Mas());
-		//			detalle.setPrecioPagar(producto.getPrecio_10Mas());
-		//			detalle.setGananciaDetalle(producto.getPrecio_10Mas()-producto.getCosto());
-		//		}
-		//		if (sumaMetrosPorCliente >= 50) {
-		//			detalle.setPrecioProducto(producto.getPrecio_50Mas());
-		//			detalle.setPrecioPagar(producto.getPrecio_50Mas());
-		//			detalle.setGananciaDetalle(producto.getPrecio_50Mas()-producto.getCosto());
-		//		}
-		//		if (sumaMetrosPorCliente >= 100) {
-		//			detalle.setPrecioProducto(producto.getPrecio_100Mas());
-		//			detalle.setPrecioPagar(producto.getPrecio_100Mas());
-		//			detalle.setGananciaDetalle(producto.getPrecio_100Mas()-producto.getCosto());
-		//		}
-		//		if (sumaMetrosPorCliente >= 200) {
-		//			detalle.setPrecioProducto(producto.getPrecio_200Mas());
-		//			detalle.setPrecioPagar(producto.getPrecio_200Mas());
-		//			detalle.setGananciaDetalle(producto.getPrecio_200Mas()-producto.getCosto());
-		//		}
-		//		if (sumaMetrosPorCliente >= 300) {
-		//			detalle.setPrecioProducto(producto.getPrecio_300Mas());
-		//			detalle.setPrecioPagar(producto.getPrecio_300Mas());
-		//			detalle.setGananciaDetalle(producto.getPrecio_300Mas()-producto.getCosto());
-		//		}
 	}
 
 	//Se calculan las compras de los ultimos 30 días 
@@ -308,7 +271,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		for (int i = 0; i < items.size(); i++) {
 			total = total + (items.get(i).getMedidaDetalle());
 		}
-		transaccion.getlMetrosPedido().setText(String.valueOf(total));
+		ventana.getlMetrosPedido().setText(String.valueOf(total));
 		return total;
 	}
 
@@ -347,7 +310,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		int suma = 0;
 		int diferencia = 0;
 		List<Integer> numeros = new ArrayList<>();
-		double descuento = transaccion.gettDescuentoPedido().getValue();
+		double descuento = ventana.gettDescuentoPedido().getValue();
 		for (int i = 0; i < items.size(); i++) {
 			suma += items.get(i).getPrecioDetalle();
 		}
@@ -360,8 +323,8 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		numeros.add(suma);
 		numeros.add(diferencia);
 
-		transaccion.getlSumatoria().setText(EventosUtil.separadorMiles((double) suma)+" Gs.");
-		transaccion.getlTotalPagar().setText(EventosUtil.separadorMiles((double) diferencia)+ " Gs.");
+		ventana.getlSumatoria().setText(EventosUtil.separadorMiles((double) suma)+" Gs.");
+		ventana.getlTotalPagar().setText(EventosUtil.separadorMiles((double) diferencia)+ " Gs.");
 
 		return numeros;
 	}
@@ -415,15 +378,11 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	
 	private boolean validarFormulario() {
 		if (cliente == null) {
-			JOptionPane.showMessageDialog(transaccion, "Indique el cliente");
-			return false;
-		}
-		if (colaborador == null) {
-			JOptionPane.showMessageDialog(transaccion, "Inicie sesión");
+			JOptionPane.showMessageDialog(ventana, "Indique el cliente");
 			return false;
 		}
 		if (items.size() <= 0) {
-			JOptionPane.showMessageDialog(transaccion, "Cargue productos al pedido");
+			JOptionPane.showMessageDialog(ventana, "Cargue productos al pedido");
 			return false;
 		}
 		
@@ -450,18 +409,18 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		
 		if (accion.equals("NUEVO")) {
 			pedido = new Pedido();
-			pedido.setColaborador(colaborador);
-			pedido.setMetrosFechaEmision(Double.parseDouble(transaccion.getlMetrosFechaEmision().getText()));
+			pedido.setColaborador(Sesion.getInstance().getColaborador());
+			pedido.setMetrosFechaEmision(Double.parseDouble(ventana.getlMetrosFechaEmision().getText()));
 			pedido.setPedidoCarteleria(true);
 		}
 
 		pedido.setCliente(cliente);
-		pedido.setConsiderarMetraje(transaccion.getRbConsiderarMetraje().isSelected());
-		pedido.setDescuentoTotal(Integer.parseInt(transaccion.gettDescuentoPedido().getText()));
-		pedido.setEsPresupuesto(transaccion.getRbGenerarPresupuesto().isSelected());
+		pedido.setConsiderarMetraje(ventana.getRbConsiderarMetraje().isSelected());
+		pedido.setDescuentoTotal(Integer.parseInt(ventana.gettDescuentoPedido().getText()));
+		pedido.setEsPresupuesto(ventana.getRbGenerarPresupuesto().isSelected());
 		pedido.setCostoTotal(sumarCosto());
 		pedido.setMetrosTotal(sumarMedidaDetalle());
-		pedido.setTipoPagoPedido(transaccion.getLstTipoPago().getSelectedValue().toString());
+		pedido.setTipoPagoPedido(ventana.getLstTipoPago().getSelectedValue().toString());
 
 
 		pedido.setSumatoriaPrecio(valorarPedido().get(0));
@@ -481,7 +440,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 				dao.modificar(pedido);
 			}
 			dao.commit();			
-			transaccion.dispose();
+			Impresiones.getInstance().imprimirPedidoCarteleriaIndividual(pedido, ventana);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);
@@ -495,7 +454,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getSource() == transaccion.gettDescuentoPedido()
+		if (e.getSource() == ventana.gettDescuentoPedido()
 				&& e.getKeyCode() == KeyEvent.VK_ENTER) {
 			realizarCalculos();
 			System.out.println("keyPressed");
@@ -510,15 +469,15 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == transaccion.getTable()) {
-			transaccion.getTable().isCellEditable(transaccion.getTable().getSelectedRow(), transaccion.getTable().getSelectedColumn());
+		if (e.getSource() == ventana.getTable()) {
+			ventana.getTable().isCellEditable(ventana.getTable().getSelectedRow(), ventana.getTable().getSelectedColumn());
 
 		}
-		if (e.getSource() == transaccion.getRbConsiderarMetraje()) {
+		if (e.getSource() == ventana.getRbConsiderarMetraje()) {
 			considerarMetraje();
 		}
 
-		if (e.getSource() == transaccion.getRbGenerarPresupuesto()) {
+		if (e.getSource() == ventana.getRbGenerarPresupuesto()) {
 			generarPresupuesto();
 		}
 	}
@@ -548,14 +507,14 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 
 	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getSource() == transaccion.getTable()) {
+		if (e.getSource() == ventana.getTable()) {
 			realizarCalculos();
 		}
 
-		if (e.getSource() == transaccion.getRbConsiderarMetraje()) {
+		if (e.getSource() == ventana.getRbConsiderarMetraje()) {
 			considerarMetraje();
 		}
-		if (e.getSource() == transaccion.getRbGenerarPresupuesto()) {
+		if (e.getSource() == ventana.getRbGenerarPresupuesto()) {
 			generarPresupuesto();
 		}
 	}
@@ -595,20 +554,17 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 
 	private void gestionarProducto() {
-		transaccion.getlProducto().setText(producto.getDescripcion());
+		ventana.getlProducto().setText(producto.getDescripcion());
 		agregarItem();
-		EventosUtil.estadosBotones(transaccion.getBtnAgregar(), true);
-		EventosUtil.estadosBotones(transaccion.getBtnGuardar(), true);
+		EventosUtil.estadosBotones(ventana.getBtnAgregar(), true);
+		EventosUtil.estadosBotones(ventana.getBtnGuardar(), true);
 	}
 
 	private void abrirBuscadorProducto() {
 		BuscadorProducto buscador = new BuscadorProducto();
 		buscador.setUpControlador(false);
 		buscador.getControlador().setInterfaz(this);
-		buscador.getControlador().setColaborador(colaborador);
 		buscador.setVisible(true);
-		
-		System.out.println(colaborador.getNombreCompleto());
 	}
 
 	@Override
@@ -621,17 +577,16 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		if (cliente == null) {
 			return;
 		}
-		transaccion.getlCliente().setText(cliente.getNombreCompleto());
-		transaccion.getlIdentificacion().setText(cliente.getIdentificacion());
-		transaccion.getlContacto().setText(cliente.getContacto());
-		transaccion.getlMetrosFechaEmision().setText(String.valueOf(calcularHistoricoMetros(cliente.getId()+"", fechaHoy(), restarFechas())));
+		ventana.getlCliente().setText(cliente.getNombreCompleto());
+		ventana.getlIdentificacion().setText(cliente.getIdentificacion());
+		ventana.getlContacto().setText(cliente.getContacto());
+		ventana.getlMetrosFechaEmision().setText(String.valueOf(calcularHistoricoMetros(cliente.getId()+"", fechaHoy(), restarFechas())));
 	}
 
 	private void abrirBuscadorCliente() {
 		BuscadorCliente buscador = new BuscadorCliente();
-		if (EventosUtil.liberarAcceso(colaborador, buscador.modulo, "BUSCAR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), buscador.modulo, "BUSCAR")) {
 			buscador.setUpControlador();
-			buscador.getControlador().setColaborador(colaborador);
 			buscador.getControlador().setInterfaz(this);
 			buscador.setVisible(true);
 		}
@@ -651,31 +606,31 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		}
 
 		//No se puede modificar el cliente de un pedido generado
-		EventosUtil.estadosBotones(transaccion.getBtnBuscarCliente(), false);
-		EventosUtil.estadosBotones(transaccion.getBtnAgregar(), true);
-		EventosUtil.estadosBotones(transaccion.getBtnAnular(), true);
-		EventosUtil.estadosBotones(transaccion.getBtnBuscarProducto(), true);
-		EventosUtil.estadosBotones(transaccion.getBtnGuardar(), true);
+		EventosUtil.estadosBotones(ventana.getBtnBuscarCliente(), false);
+		EventosUtil.estadosBotones(ventana.getBtnAgregar(), true);
+		EventosUtil.estadosBotones(ventana.getBtnAnular(), true);
+		EventosUtil.estadosBotones(ventana.getBtnBuscarProducto(), true);
+		EventosUtil.estadosBotones(ventana.getBtnGuardar(), true);
 
 
 		//Datos del cliente
 		cliente = pedido.getCliente();
-		transaccion.getlCliente().setText(cliente.getNombreCompleto());
-		transaccion.getlContacto().setText(cliente.getContacto());
-		transaccion.getlIdentificacion().setText(cliente.getIdentificacion());
-		transaccion.getlMetrosFechaEmision().setText(EventosUtil.separadorDecimales(pedido.getMetrosFechaEmision()));
+		ventana.getlCliente().setText(cliente.getNombreCompleto());
+		ventana.getlContacto().setText(cliente.getContacto());
+		ventana.getlIdentificacion().setText(cliente.getIdentificacion());
+		ventana.getlMetrosFechaEmision().setText(EventosUtil.separadorDecimales(pedido.getMetrosFechaEmision()));
 
 		//Datos del pedido
-		transaccion.getlEstadoPedido().setText(EventosUtil.verificarEstado(pedido.isEstado()));
-		transaccion.getlGanancia().setText(EventosUtil.separadorMiles((double) pedido.getGananciaTotal()));
-		transaccion.getlMetrosPedido().setText(EventosUtil.separadorDecimales(pedido.getMetrosTotal()));
-		transaccion.getlNroPedido().setText((EventosUtil.separadorMiles((double) pedido.getId())));
-		transaccion.getlSumatoria().setText((EventosUtil.separadorMiles((double) pedido.getSumatoriaPrecio())));
-		transaccion.getLstTipoPago().setSelectedValue(pedido.getTipoPagoPedido(), true);
-		transaccion.getlTotalPagar().setText((EventosUtil.separadorMiles((double) pedido.getPrecioPagar())));
-		transaccion.gettDescuentoPedido().setValue((double) pedido.getDescuentoTotal());
-		transaccion.getRbConsiderarMetraje().setSelected(pedido.isConsiderarMetraje());
-		transaccion.getRbGenerarPresupuesto().setSelected(pedido.isEsPresupuesto());
+		ventana.getlEstadoPedido().setText(EventosUtil.verificarEstado(pedido.isEstado()));
+		ventana.getlGanancia().setText(EventosUtil.separadorMiles((double) pedido.getGananciaTotal()));
+		ventana.getlMetrosPedido().setText(EventosUtil.separadorDecimales(pedido.getMetrosTotal()));
+		ventana.getlNroPedido().setText((EventosUtil.separadorMiles((double) pedido.getId())));
+		ventana.getlSumatoria().setText((EventosUtil.separadorMiles((double) pedido.getSumatoriaPrecio())));
+		ventana.getLstTipoPago().setSelectedValue(pedido.getTipoPagoPedido(), true);
+		ventana.getlTotalPagar().setText((EventosUtil.separadorMiles((double) pedido.getPrecioPagar())));
+		ventana.gettDescuentoPedido().setValue((double) pedido.getDescuentoTotal());
+		ventana.getRbConsiderarMetraje().setSelected(pedido.isConsiderarMetraje());
+		ventana.getRbGenerarPresupuesto().setSelected(pedido.isEsPresupuesto());
 
 		//Detalles del pedido
 		items = pedido.getPedidoDetalles(); 
@@ -683,19 +638,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		mtPedidoDetalle.fireTableDataChanged();
 
 		accion = "MODIFICAR";
-	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-	
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
 	}
 }
 

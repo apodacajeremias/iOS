@@ -30,7 +30,7 @@ public class RolOperacion {
 	
 	@ManyToOne
 	@JoinColumn(nullable = true)
-	private Colaborador colaborador;	
+	private Colaborador colaborador;
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;

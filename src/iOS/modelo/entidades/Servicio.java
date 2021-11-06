@@ -29,8 +29,8 @@ public class Servicio {
 	private boolean estado = true;
 	
 	@ManyToOne
-	@JoinColumn(nullable = true)
-	private Colaborador colaborador;	
+	@JoinColumn(nullable = false)
+	private Colaborador colaborador;
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;

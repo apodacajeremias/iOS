@@ -2,15 +2,14 @@ package iOS.vista.ventanas;
 
 
 
-import javax.swing.JDialog;
+import java.awt.Font;
 
 import iOS.controlador.ventanas.VentanaConfiguracionControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
-import iOS.vista.componentes.MiBoton;
-import iOS.vista.componentes.TextPrompt;
+import iOS.vista.componentes.VentanaGenerica;
 
-public class VentanaConfiguracion extends JDialog {
+public class VentanaConfiguracion extends VentanaGenerica {
 	/**
 	 * 
 	 */
@@ -22,8 +21,6 @@ public class VentanaConfiguracion extends JDialog {
 	private CampoTextoPersonalizado tContribuyente;
 	private CampoTextoPersonalizado tRegistroP;
 	private CampoTextoPersonalizado tTitular;
-	private MiBoton btGuardar;
-	private MiBoton btCancelar;
 	private LabelPersonalizado lblAccion;
 	private CampoTextoPersonalizado tCedula;
 	private CampoTextoPersonalizado tUbicacion;
@@ -40,105 +37,88 @@ public class VentanaConfiguracion extends JDialog {
 	 * Create the dialog.
 	 */
 	public VentanaConfiguracion() {
-		setAlwaysOnTop(true);
 		setTitle("Configuraci\u00F3n");
-		setBounds(100, 100, 300, 500);
-		getContentPane().setLayout(null);
 		
 		lblAccion = new LabelPersonalizado(10);
 		lblAccion.setBounds(200, 305, 74, 15);
 		getContentPane().add(lblAccion);
-		
-		btGuardar = new MiBoton("Guardar");
-		btGuardar.setBounds(10, 425, 100, 30);
-		getContentPane().add(btGuardar);
-		
-		btCancelar = new MiBoton("Cancelar");
-		btCancelar.setBounds(140, 418, 100, 30);
-		getContentPane().add(btCancelar);
-		
-		LabelPersonalizado lblNombreEmpresa = new LabelPersonalizado(16);
-		lblNombreEmpresa.setText("Nombre de la empresa");
-		lblNombreEmpresa.setBounds(10, 5, 195, 20);
-		getContentPane().add(lblNombreEmpresa);
-		tNombreEmpresa = new CampoTextoPersonalizado();
-		tNombreEmpresa.setBounds(10, 30, 264, 30);
-		tNombreEmpresa.mayusculas();
-		getContentPane().add(tNombreEmpresa);
-		
-		LabelPersonalizado lblContacto = new LabelPersonalizado(16);
-		lblContacto.setText("Telefono de contacto");
-		lblContacto.setBounds(10, 65, 180, 20);
-		getContentPane().add(lblContacto);
-		tContacto = new CampoTextoPersonalizado();
-		tContacto.setBounds(10, 90, 180, 30);
-		getContentPane().add(tContacto);
-		
-		LabelPersonalizado lblContribuyente = new LabelPersonalizado(16);
-		lblContribuyente.setText("Registro Unico Contribuyente");
-		lblContribuyente.setBounds(10, 125, 245, 20);
-		getContentPane().add(lblContribuyente);
-		tContribuyente = new CampoTextoPersonalizado();
-		tContribuyente.setBounds(10, 150, 180, 30);
-		getContentPane().add(tContribuyente);
 		setLocationRelativeTo(this);
 		
+		LabelPersonalizado lblNombreEmpresa = new LabelPersonalizado(16);
+		lblNombreEmpresa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNombreEmpresa.setBounds(5, 6, 195, 20);
+		getPanelFormulario().add(lblNombreEmpresa);
+		lblNombreEmpresa.setText("Nombre de la empresa");
+		tNombreEmpresa = new CampoTextoPersonalizado();
+		tNombreEmpresa.setBounds(5, 32, 264, 20);
+		getPanelFormulario().add(tNombreEmpresa);
+		
+		LabelPersonalizado lblContacto = new LabelPersonalizado(16);
+		lblContacto.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblContacto.setBounds(5, 58, 180, 20);
+		getPanelFormulario().add(lblContacto);
+		lblContacto.setText("Telefono de contacto");
+		tContacto = new CampoTextoPersonalizado();
+		tContacto.setBounds(5, 84, 180, 20);
+		getPanelFormulario().add(tContacto);
+		
+		LabelPersonalizado lblContribuyente = new LabelPersonalizado(16);
+		lblContribuyente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblContribuyente.setBounds(5, 110, 245, 20);
+		getPanelFormulario().add(lblContribuyente);
+		lblContribuyente.setText("Registro Unico Contribuyente");
+		tContribuyente = new CampoTextoPersonalizado();
+		tContribuyente.setBounds(5, 136, 180, 20);
+		getPanelFormulario().add(tContribuyente);
+		
 		LabelPersonalizado lblTitular = new LabelPersonalizado(16);
+		lblTitular.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblTitular.setBounds(5, 162, 175, 20);
+		getPanelFormulario().add(lblTitular);
 		lblTitular.setText("Titular de la empresa");
-		lblTitular.setBounds(10, 185, 175, 20);
-		getContentPane().add(lblTitular);
 		tTitular = new CampoTextoPersonalizado();
-		tTitular.soloLetras();
-		tTitular.setBounds(10, 210, 264, 30);
-		getContentPane().add(tTitular);
+		tTitular.setBounds(5, 188, 264, 20);
+		getPanelFormulario().add(tTitular);
 		
 		LabelPersonalizado lblRegistro = new LabelPersonalizado(16);
+		lblRegistro.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblRegistro.setBounds(5, 214, 166, 20);
+		getPanelFormulario().add(lblRegistro);
 		lblRegistro.setText("Registro Profesional");
-		lblRegistro.setBounds(10, 245, 166, 20);
-		getContentPane().add(lblRegistro);
 		tRegistroP = new CampoTextoPersonalizado();
-		tRegistroP.setBounds(10, 270, 180, 30);
-		getContentPane().add(tRegistroP);
+		tRegistroP.setBounds(5, 240, 180, 20);
+		getPanelFormulario().add(tRegistroP);
 		
 		LabelPersonalizado lblCedula = new LabelPersonalizado( 16);
+		lblCedula.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCedula.setBounds(5, 266, 149, 20);
+		getPanelFormulario().add(lblCedula);
 		lblCedula.setText("C\u00E9dula del titular");
-		lblCedula.setBounds(10, 305, 149, 20);
-		getContentPane().add(lblCedula);
 		tCedula = new CampoTextoPersonalizado();
-		tCedula.setBounds(10, 330, 180, 30);
-		tCedula.soloNumerosEnteros();
-		getContentPane().add(tCedula);
+		tCedula.setBounds(5, 292, 180, 20);
+		getPanelFormulario().add(tCedula);
 		
 		LabelPersonalizado lblUbicacion = new LabelPersonalizado(16);
+		lblUbicacion.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblUbicacion.setBounds(5, 318, 180, 20);
+		getPanelFormulario().add(lblUbicacion);
 		lblUbicacion.setText("Ubicaci\u00F3n de empresa");
-		lblUbicacion.setBounds(10, 365, 180, 20);
-		getContentPane().add(lblUbicacion);
 		
 		tUbicacion = new CampoTextoPersonalizado();
-		tUbicacion.setBounds(10, 390, 180, 30);
-		getContentPane().add(tUbicacion);
-
-		@SuppressWarnings("unused")
-		TextPrompt tempresa = new TextPrompt("Nombre de la empresa", tNombreEmpresa);
-		@SuppressWarnings("unused")
-		TextPrompt ttelefono = new TextPrompt("Contacto de la empresa", tContacto);
-		@SuppressWarnings("unused")
-		TextPrompt tContriyente = new TextPrompt("RUC de la empresa", tContribuyente);
-		@SuppressWarnings("unused")
-		TextPrompt ttitular = new TextPrompt("Titular de la empresa", tTitular);
-		@SuppressWarnings("unused")
-		TextPrompt treg = new TextPrompt("Registro Profesional", tRegistroP);
-		@SuppressWarnings("unused")
-		TextPrompt tcedula = new TextPrompt("Cédula de titular", tCedula);
-		@SuppressWarnings("unused")
-		TextPrompt tubicacion = new TextPrompt("Ciudad", tUbicacion);
-		
-		
+		tUbicacion.setBounds(5, 344, 180, 20);
+		getPanelFormulario().add(tUbicacion);
+		tCedula.soloNumerosEnteros();
+		tTitular.soloLetras();
+		tNombreEmpresa.mayusculas();
 	
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getModulo() {
+		return modulo;
 	}
 
 	public VentanaConfiguracionControlador getControlador() {
@@ -165,14 +145,6 @@ public class VentanaConfiguracion extends JDialog {
 		return tTitular;
 	}
 
-	public MiBoton getBtGuardar() {
-		return btGuardar;
-	}
-
-	public MiBoton getBtCancelar() {
-		return btCancelar;
-	}
-
 	public LabelPersonalizado getLblAccion() {
 		return lblAccion;
 	}
@@ -183,8 +155,8 @@ public class VentanaConfiguracion extends JDialog {
 
 	public CampoTextoPersonalizado gettUbicacion() {
 		return tUbicacion;
-	}
-
+	}	
+	
 	
 }
 

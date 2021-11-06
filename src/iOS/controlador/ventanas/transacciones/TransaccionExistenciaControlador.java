@@ -14,15 +14,14 @@ import java.util.List;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CompraDetalleDao;
 import iOS.modelo.dao.DepositoExistenciaDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.CompraDetalle;
 import iOS.modelo.entidades.Existencia;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCompraDetalleEnExistencia;
 import iOS.vista.modelotabla.ModeloTablaExistencia;
 import iOS.vista.ventanas.transacciones.TransaccionExistencia;
 
-public class TransaccionExistenciaControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, ColaboradorInterface {
+public class TransaccionExistenciaControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener {
 	private TransaccionExistencia transaccion;
 	private ModeloTablaCompraDetalleEnExistencia mtCompraDetalle;
 	private ModeloTablaExistencia mtExistencia;
@@ -37,8 +36,6 @@ public class TransaccionExistenciaControlador implements ActionListener, MouseLi
 	private Existencia existencia;
 	
 	private String accion;
-	private Colaborador colaborador;
-
 
 	public TransaccionExistenciaControlador( TransaccionExistencia transaccion) {
 		this.transaccion = transaccion;
@@ -135,7 +132,7 @@ public class TransaccionExistenciaControlador implements ActionListener, MouseLi
 	public void guardar() {
 		if (accion.equals("NUEVO")) {
 			compraDetalle = new CompraDetalle();
-			compraDetalle.setColaborador(colaborador);
+			compraDetalle.setColaborador(Sesion.getInstance().getColaborador());
 		}
 		compraDetalle.setExistenciaDisponible(true);
 		compraDetalle.setExistencia(existencias);
@@ -233,19 +230,4 @@ public class TransaccionExistenciaControlador implements ActionListener, MouseLi
 			break;
 		}
 	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
-
 }

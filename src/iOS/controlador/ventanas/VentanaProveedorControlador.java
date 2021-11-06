@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ProveedorDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.EntidadBancaria;
 import iOS.modelo.entidades.InformacionPago;
 import iOS.modelo.entidades.Proveedor;
@@ -28,15 +27,15 @@ import iOS.modelo.entidades.ProveedorContactos;
 import iOS.modelo.entidades.ProveedorCorreos;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.BancoInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.ProveedorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaProveedorContacto;
 import iOS.vista.modelotabla.ModeloTablaProveedorCorreo;
 import iOS.vista.modelotabla.ModeloTablaProveedorCuenta;
 import iOS.vista.ventanas.VentanaProveedor;
 import iOS.vista.ventanas.buscadores.BuscadorBanco;
 
-public class VentanaProveedorControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ProveedorInterface, BancoInterface, ColaboradorInterface{
+public class VentanaProveedorControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ProveedorInterface, BancoInterface{
 	private VentanaProveedor ventana;
 	private ProveedorDao dao;
 	private Proveedor proveedor;
@@ -56,8 +55,6 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	private ModeloTablaProveedorCorreo mtCorreo;
 	private ModeloTablaProveedorCuenta mtInformacionPago;
 	private EntidadBancaria banco;
-	private Colaborador colaborador;
-
 
 	public VentanaProveedorControlador(VentanaProveedor ventana) {
 		this.ventana = ventana;
@@ -171,40 +168,13 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	}
 
 	private boolean validarIdentificacion() {
-		if (ventana.gettIdentificacion().getText().equals(" ") | 
-				ventana.gettIdentificacion().getText().equals("0")){
+		if (ventana.gettIdentificacion().getText().equals("\\s")){
 			return false;
 		}
-		if (ventana.gettIdentificacion().getText().equals("  ") | 
-				ventana.gettIdentificacion().getText().equals("00")){
-			return false;
-		}
-		if (ventana.gettIdentificacion().getText().equals("   ") | 
-				ventana.gettIdentificacion().getText().equals("00")){
-			return false;
-		}
-		if (ventana.gettIdentificacion().getText().equals("   ") | 
-				ventana.gettIdentificacion().getText().equals("000")){
-			return false;
-		}
-		if (ventana.gettIdentificacion().getText().equals("    ") | 
-				ventana.gettIdentificacion().getText().equals("0000")){
-			return false;
-		}
-		if (ventana.gettIdentificacion().getText().equals("     ") | 
-				ventana.gettIdentificacion().getText().equals("00000")){
-			return false;
-		}
-		if (ventana.gettIdentificacion().getText().equals("      ") | 
-				ventana.gettIdentificacion().getText().equals("000000")){
-			return false;
-		}
-		if (ventana.gettIdentificacion().getText().equals("      ") | 
-				ventana.gettIdentificacion().getText().equals("0000000")){
+		if (ventana.gettIdentificacion().getText().equals("0+")) {
 			return false;
 		}
 		return true;
-
 	}
 
 	private boolean validarInformacionBancaria() {
@@ -256,7 +226,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	}
 	private void agregarContacto(String telefono) {
 		contacto = new ProveedorContactos();
-		contacto.setColaborador(colaborador);
+		contacto.setColaborador(Sesion.getInstance().getColaborador());
 		contacto.setNumeroTelefono(telefono);
 		contactos.add(contacto);
 		mtContacto.setContacto(contactos);
@@ -298,7 +268,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	}
 	private void agregarCorreo(String email) {		
 		correo = new ProveedorCorreos();
-		correo.setColaborador(colaborador);
+		correo.setColaborador(Sesion.getInstance().getColaborador());
 		correo.setCorreoElectronico(email);
 		correos.add(correo);
 		mtCorreo.setCorreo(correos);
@@ -478,7 +448,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 
 		if (accion.equals("NUEVO")) {
 			proveedor = new Proveedor();
-			proveedor.setColaborador(colaborador);
+			proveedor.setColaborador(Sesion.getInstance().getColaborador());
 		}
 
 		proveedor.setNombreCompleto(ventana.gettNombreCompleto().getText());
@@ -550,18 +520,4 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 		buscador.setVisible(true);
 
 	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 }

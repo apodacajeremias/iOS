@@ -69,6 +69,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 			try {
 				row.setArchivo((String) aValue.toString().toUpperCase());
 			} catch (Exception e) {
+				e.printStackTrace();
 				return;
 			}
 		}

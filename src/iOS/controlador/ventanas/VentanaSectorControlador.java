@@ -10,22 +10,20 @@ import javax.swing.BorderFactory;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.SectorDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Sector;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaDeposito;
 import iOS.vista.ventanas.VentanaSector;
 
-public class VentanaSectorControlador implements AccionesABM, MouseListener, ColaboradorInterface {
+public class VentanaSectorControlador implements AccionesABM, MouseListener {
 	private VentanaSector ventana;
 	private SectorDao dao;	
 	private List<Sector> depositos = new ArrayList<Sector>();
 	private ModeloTablaDeposito mtDeposito;
 	private String accion;
 	private Sector sector;
-	private Colaborador colaborador;
-
+	
 	public VentanaSectorControlador(VentanaSector ventana) {
 		this.ventana = ventana;
 		this.ventana.getMiToolBar().setAcciones(this);
@@ -101,7 +99,7 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Col
 		}
 		if (accion.equals("NUEVO")) {
 			sector = new Sector();
-			sector.setColaborador(colaborador);
+			sector.setColaborador(Sesion.getInstance().getColaborador());
 		}
 		sector.setDescripcion(ventana.gettNombreSector().getText());		
 		ventana.getlMensaje().setForeground(Color.yellow);
@@ -154,18 +152,4 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Col
 		// TODO Auto-generated method stub
 
 	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 }

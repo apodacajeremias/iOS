@@ -33,7 +33,7 @@ public class Caja {
 	private boolean estado = true;
 	
 	@ManyToOne
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable = false)
 	private Colaborador colaborador;	
 
 	public Date getFechaRegistro() {

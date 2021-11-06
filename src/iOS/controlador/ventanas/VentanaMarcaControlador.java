@@ -10,20 +10,18 @@ import java.awt.event.MouseListener;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.MarcaDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Marca;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.MarcaInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaMarca;
 
-public class VentanaMarcaControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, MarcaInterface, ColaboradorInterface {
+public class VentanaMarcaControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, MarcaInterface {
 	private VentanaMarca ventanaMarca;
 	private Marca marca;
 	private MarcaDao dao;
 
 	private String accion;
-	private Colaborador colaborador;
 
 	public VentanaMarcaControlador(VentanaMarca ventanaMarca) {
 		this.ventanaMarca = ventanaMarca;
@@ -139,7 +137,7 @@ public class VentanaMarcaControlador implements AccionesABM, ActionListener, Mou
 
 		if (accion.equals("NUEVO")) {
 			marca = new Marca();
-			marca.setColaborador(colaborador);
+			marca.setColaborador(Sesion.getInstance().getColaborador());
 		}
 		marca.setDescripcion(ventanaMarca.gettNombreMarca().getText());
 		
@@ -175,19 +173,5 @@ public class VentanaMarcaControlador implements AccionesABM, ActionListener, Mou
 
 	private void gestionarMarca() {
 		ventanaMarca.gettNombreMarca().setText(marca.getDescripcion());
-	}
-	
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-	
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
 	}
 }

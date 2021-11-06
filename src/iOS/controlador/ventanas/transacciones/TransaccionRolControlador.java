@@ -12,19 +12,18 @@ import java.util.List;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.RolDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Operacion;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.RolOperacion;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.OperacionInterface;
 import iOS.modelo.interfaces.RolInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaRolOperacion;
 import iOS.vista.ventanas.buscadores.BuscadorOperacion;
 import iOS.vista.ventanas.transacciones.TransaccionRol;
 
-public class TransaccionRolControlador implements KeyListener, MouseListener, AccionesABM, OperacionInterface, RolInterface, ColaboradorInterface {
+public class TransaccionRolControlador implements KeyListener, MouseListener, AccionesABM, OperacionInterface, RolInterface {
 	private TransaccionRol transaccion;
 	private ModeloTablaRolOperacion modeloTabla;
 	private RolDao dao;
@@ -34,7 +33,7 @@ public class TransaccionRolControlador implements KeyListener, MouseListener, Ac
 	private String accion;
 	private List<RolOperacion> rolesOperaciones = new ArrayList<>();
 	private Operacion operacion;
-	private Colaborador colaborador;
+	
 	public TransaccionRolControlador(TransaccionRol transaccion) {
 		this.transaccion = transaccion;
 		this.transaccion.getMiToolBar().setAcciones(this);
@@ -62,7 +61,6 @@ public class TransaccionRolControlador implements KeyListener, MouseListener, Ac
 
 	private boolean validarFormulario(){
 		if (transaccion.gettNombreCompleto().getText().isEmpty()) {
-			transaccion.gettNombreCompleto().error();
 			transaccion.gettNombreCompleto().requestFocus();
 			return false;
 		}
@@ -99,7 +97,7 @@ public class TransaccionRolControlador implements KeyListener, MouseListener, Ac
 
 		if (accion.equals("NUEVO")) {
 			rol = new Rol();	
-			rol.setColaborador(colaborador);
+			rol.setColaborador(Sesion.getInstance().getColaborador());
 		}
 
 		rol.setNombreRol(transaccion.gettNombreCompleto().getText());
@@ -208,20 +206,6 @@ public class TransaccionRolControlador implements KeyListener, MouseListener, Ac
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
 		buscador.setVisible(true);
-	}
-
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
 	}
 
 	@Override

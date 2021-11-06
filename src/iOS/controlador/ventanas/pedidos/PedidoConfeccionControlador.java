@@ -18,16 +18,16 @@ import javax.swing.JOptionPane;
 
 import iOS.controlador.util.ConexionReporte;
 import iOS.controlador.util.EventosUtil;
+import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.entidades.PedidoDetalleConfeccion;
 import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.ClienteInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.interfaces.ProductoInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedidoConfeccionDetalle;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorProducto;
@@ -35,7 +35,7 @@ import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import net.sf.jasperreports.engine.JRException;
 
 
-public class PedidoConfeccionControlador implements ActionListener, MouseListener, KeyListener, ColaboradorInterface, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
+public class PedidoConfeccionControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
 	private PedidoConfeccion ventana;
 	
 	private ModeloTablaPedidoConfeccionDetalle modeloTabla;
@@ -47,7 +47,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	private Producto producto;
 	private PedidoDetalleConfeccion detalle;
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
-	private Colaborador colaborador;
 	
 	public PedidoConfeccionControlador(PedidoConfeccion ventana) {
 		this.ventana = ventana;
@@ -142,10 +141,10 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			return;
 		}
 		detalle = new PedidoDetalleConfeccion();
-		detalle.setColaborador(colaborador);
-		detalle.setArchivo(null);
-		detalle.setTamano(null);
-		detalle.setMolde(null);
+		detalle.setColaborador(Sesion.getInstance().getColaborador());
+		detalle.setArchivo("Sin observación");
+		detalle.setTamano("Sin tamaño");
+		detalle.setMolde("Sin molde");
 
 		//Cantidad
 		detalle.setCantidadDetalle(1);
@@ -268,10 +267,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			JOptionPane.showMessageDialog(ventana, "Indique el cliente");
 			return false;
 		}
-		if (colaborador == null) {
-			JOptionPane.showMessageDialog(ventana, "Inicie sesión");
-			return false;
-		}
 		if (items.size() <= 0) {
 			JOptionPane.showMessageDialog(ventana, "Cargue productos al pedido");
 			return false;
@@ -330,7 +325,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		
 		if (accion.equals("NUEVO")) {
 			pedido = new Pedido();
-			pedido.setColaborador(colaborador);
+			pedido.setColaborador(Sesion.getInstance().getColaborador());
 			pedido.setPedidoCostura(true);
 		}
 
@@ -355,15 +350,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 				dao.modificar(pedido);
 			}
 			dao.commit();			
-			int opcion = JOptionPane.showConfirmDialog(null,"¿Desea imprimir?",
-					"Impresion", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.INFORMATION_MESSAGE);
-			if (opcion == JOptionPane.OK_OPTION) {
-				imprimir(pedido);
-			} else {
-				ventana.dispose();
-				return;
-			}		
+			Impresiones.getInstance().imprimirPedidoConfeccionIndividual(pedido, ventana);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);
@@ -490,10 +477,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		BuscadorProducto buscador = new BuscadorProducto();
 		buscador.setUpControlador(false);
 		buscador.getControlador().setInterfaz(this);
-		buscador.getControlador().setColaborador(colaborador);
 		buscador.setVisible(true);
-		
-		System.out.println(colaborador.getNombreCompleto());
 	}
 
 	@Override
@@ -513,9 +497,8 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 
 	private void abrirBuscadorCliente() {
 		BuscadorCliente buscador = new BuscadorCliente();
-		if (EventosUtil.liberarAcceso(colaborador, buscador.modulo, "BUSCAR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), buscador.modulo, "BUSCAR")) {
 			buscador.setUpControlador();
-			buscador.getControlador().setColaborador(colaborador);
 			buscador.getControlador().setInterfaz(this);
 			buscador.setVisible(true);
 		}
@@ -567,19 +550,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		modeloTabla.fireTableDataChanged();
 
 		accion = "MODIFICAR";
-	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-	
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
 	}
 }
 

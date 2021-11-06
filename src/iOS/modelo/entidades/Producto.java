@@ -33,7 +33,7 @@ public class Producto {
 	private boolean estado = true;
 	
 	@ManyToOne
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 	
 
@@ -52,7 +52,7 @@ public class Producto {
 	@Column(nullable = false)
 	private double precioMaximo;
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String tipoCobro;
 	
 	@Column(nullable = false)

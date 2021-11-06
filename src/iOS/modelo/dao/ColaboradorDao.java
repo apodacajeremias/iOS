@@ -3,8 +3,6 @@ package iOS.modelo.dao;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.hibernate.query.Query;
 
 import iOS.modelo.entidades.Colaborador;
@@ -13,7 +11,6 @@ public class ColaboradorDao extends GenericDao<Colaborador>{
 
 	public ColaboradorDao() {
 		super(Colaborador.class);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public List<Colaborador> recuperarTodoOrdenadoPorNombre() {
@@ -53,28 +50,27 @@ public class ColaboradorDao extends GenericDao<Colaborador>{
 		return lista;
 	}
 	
+	
 	public Colaborador verificarAcceso(String usuario, String password) {
 		getSession().beginTransaction();
-
+		Colaborador colaborador = new Colaborador();
 		String sql = "from Colaborador "
 				+ "where upper(usuario) like :usuario "
 				+ "and password like :password";
-
-		@SuppressWarnings("unchecked")
-		Query<Colaborador> query = getSession().createQuery(sql);
-		query.setParameter("usuario", usuario);
-		query.setParameter("password", password);
-
-		Colaborador resultado;
+		
 		try {
-			resultado = query.getSingleResult();
+			@SuppressWarnings("unchecked")
+			Query<Colaborador> query = getSession().createQuery(sql);
+			query.setParameter("usuario", usuario);
+			query.setParameter("password", password);
+			colaborador =  query.getSingleResult();
 			commit();
-			return resultado;
+			return colaborador;
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Credenciales inválidas.");
+			e.printStackTrace();
 			rollBack();
-			return null;
 		}
+		return null;
 	}
 
 }

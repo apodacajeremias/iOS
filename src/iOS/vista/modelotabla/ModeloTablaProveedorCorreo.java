@@ -52,30 +52,23 @@ public class ModeloTablaProveedorCorreo extends AbstractTableModel{
 	
 	@Override
 	public void setValueAt(Object aValue, int r, int c) {
-		ProveedorCorreos row = correos.get(r);
-		String email = (String) aValue;
-		
-		Pattern pattern = Pattern.compile("([a-z0-9]+(\\.?[a-z0-9])*)+@(([a-z]+)\\.([a-z]+))+");
-
-		// El email a validar
-
-		Matcher mather = pattern.matcher(email);
-
-		if (mather.find() == true) {
-			System.out.println("El email ingresado es válido.");
-		} else {
-			System.out.println("El email ingresado es inválido.");
-			return;
-		}
-		
-		if (email.isEmpty() | email.equals("")) {
-			return;
-		}
-		
+		ProveedorCorreos row = correos.get(r);	
 		if (0 == c) {
+			String email = (String) aValue;
+			Pattern pattern = Pattern.compile("([a-z0-9]+(\\.?[a-z0-9])*)+@(([a-z]+)\\.([a-z]+))+");
+			Matcher mather = pattern.matcher(email);
+			if (mather.find() == true) {
+				try {
+					row.setCorreoElectronico((String) aValue);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return;
+				}
+			} else {
+				return;
+			}	
 			
 			
-			row.setCorreoElectronico((String) aValue);
 		}
 		super.setValueAt(aValue, r, c);
 	}

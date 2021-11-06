@@ -7,16 +7,14 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import iOS.modelo.dao.ProductoDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.ProductoInterface;
 import iOS.vista.modelotabla.ModeloTablaProducto;
 import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorProducto;
 
-public class BuscadorProductoControlador implements KeyListener, MouseListener, AccionesABM, ProductoInterface, ColaboradorInterface {
+public class BuscadorProductoControlador implements KeyListener, MouseListener, AccionesABM, ProductoInterface {
 
 	// ATRIBUTOS
 	private BuscadorProducto bProducto;
@@ -28,7 +26,6 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 	
 	@SuppressWarnings("unused")
 	private boolean esServicio;
-	private Colaborador colaborador;
 
 	public void setInterfaz(ProductoInterface interfaz) {
 		this.interfaz = interfaz;
@@ -124,7 +121,6 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 	public void nuevo() {
 		VentanaProducto ventana = new VentanaProducto();
 		ventana.setUpControlador();
-		ventana.getControlador().setColaborador(colaborador);
 		ventana.setVisible(true);
 	}
 
@@ -132,8 +128,8 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 	public void modificar() {
 		VentanaProducto ventana = new VentanaProducto();
 		ventana.setUpControlador();
-		ventana.getControlador().setProducto(producto);
-		ventana.getControlador().setColaborador(colaborador);		
+		ventana.getControlador().setProducto(producto);	
+		ventana.getControlador().modificar();
 		ventana.setVisible(true);
 	}
 
@@ -159,17 +155,5 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 		
-	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		gestionarColaborador();
-	}
-	
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
-	}
+	}	
 }

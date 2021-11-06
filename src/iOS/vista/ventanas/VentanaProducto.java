@@ -1,18 +1,13 @@
 package iOS.vista.ventanas;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.AbstractListModel;
-import javax.swing.JDialog;
-import javax.swing.JList;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.VentanaProductoControlador;
@@ -22,7 +17,7 @@ import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.VentanaGenerica;
 
 public class VentanaProducto extends VentanaGenerica {
-	
+
 	/**
 	 * 
 	 */
@@ -31,31 +26,16 @@ public class VentanaProducto extends VentanaGenerica {
 	private CampoTextoPersonalizado tNombreProducto;
 	private CampoTextoPersonalizado tCodigoReferencia;
 	private VentanaProductoControlador controlador;
-	private JList<?> lstTipoProducto;
 	private CampoNumeroPersonalizado tMedidaAlto;
 	private CampoNumeroPersonalizado tPrecioProducto;
 	private CampoNumeroPersonalizado tMedidaAncho;
 	private JRadioButton rdMedidasFijas;
+	private JRadioButton rdEsProducto;
 	private JRadioButton rdEsServicio;
+	private JRadioButton rdMetroCuadrado;
+	private JRadioButton rdMetroLineal;
+	private JRadioButton rdUnidad;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaProducto dialog = new VentanaProducto();
-					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
 	public void setUpControlador() {
 		controlador = new VentanaProductoControlador(this);
 	}
@@ -63,65 +43,91 @@ public class VentanaProducto extends VentanaGenerica {
 	/**
 	 * Create the dialog.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	public VentanaProducto() {
 		getPanelFormulario().setBorder(new TitledBorder(null, "Informaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		getPanelFormulario().setBounds(10, 10, 474, 130);
+		getPanelFormulario().setBounds(10, 121, 474, 130);
 		setTitle("Formulario de Producto");
 		tNombreProducto = new CampoTextoPersonalizado();
-		tNombreProducto.setBounds(10, 36, 450, 25);
+		tNombreProducto.setBounds(10, 36, 250, 25);
 		tNombreProducto.mayusculas();
 		tNombreProducto.limite(50);
 		getPanelFormulario().add(tNombreProducto);
-		
+
 		tCodigoReferencia = new CampoTextoPersonalizado();
 		tCodigoReferencia.setBounds(10, 93, 100, 25);
 		tCodigoReferencia.mayusculas();
 		tCodigoReferencia.limite(4);
 		tCodigoReferencia.soloLetras();
 		getPanelFormulario().add(tCodigoReferencia);
-		
+
 		LabelPersonalizado lblprsnlzdNombreCompleto = new LabelPersonalizado(0);
 		lblprsnlzdNombreCompleto.setText("Descripci\u00F3n del producto");
 		lblprsnlzdNombreCompleto.setBounds(10, 20, 152, 15);
 		getPanelFormulario().add(lblprsnlzdNombreCompleto);
-		
+
 		LabelPersonalizado lblprsnlzdIdentificacion_1 = new LabelPersonalizado(0);
+		lblprsnlzdIdentificacion_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblprsnlzdIdentificacion_1.setText("Código Referencia");
 		lblprsnlzdIdentificacion_1.setBounds(10, 77, 116, 15);
 		getPanelFormulario().add(lblprsnlzdIdentificacion_1);
-		
-		rdEsServicio = new JRadioButton("Es servicio");
+
+		ButtonGroup grupoUno = new ButtonGroup();
+		ButtonGroup grupoDos = new ButtonGroup();
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		panel_1.setBorder(new TitledBorder(null, "Precio Sugerido", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBounds(10, 262, 474, 53);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+
+		LabelPersonalizado lblprsnlzdIdentificacion_1_1_1 = new LabelPersonalizado(0);
+		lblprsnlzdIdentificacion_1_1_1.setText("Valor");
+		lblprsnlzdIdentificacion_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblprsnlzdIdentificacion_1_1_1.setBounds(10, 24, 33, 15);
+		panel_1.add(lblprsnlzdIdentificacion_1_1_1);
+
+		tPrecioProducto = new CampoNumeroPersonalizado();
+		tPrecioProducto.setBounds(40, 18, 100, 25);
+		panel_1.add(tPrecioProducto);
+
+		rdEsProducto = new JRadioButton("Registro de producto");
+		rdEsProducto.setBounds(14, 20, 152, 23);
+		getContentPane().add(rdEsProducto);
+		rdEsProducto.setSelected(true);
+		rdEsProducto.setBackground(Color.WHITE);
+		rdEsProducto.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		grupoUno.add(rdEsProducto);
+
+		rdEsServicio = new JRadioButton("Registro de servicio");
+		rdEsServicio.setBounds(14, 46, 152, 23);
+		getContentPane().add(rdEsServicio);
+		rdEsServicio.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		rdEsServicio.setBackground(Color.WHITE);
-		rdEsServicio.setFont(new Font("Tahoma", Font.BOLD, 12));
-		rdEsServicio.setBounds(141, 96, 152, 23);
-		getPanelFormulario().add(rdEsServicio);
-		
-		lstTipoProducto = new JList();
-		lstTipoProducto.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lstTipoProducto.setBounds(10, 226, 474, 100);
-		getContentPane().add(lstTipoProducto);
-		lstTipoProducto.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		lstTipoProducto.setModel(new AbstractListModel() {
-			String[] values = new String[] {"METRO CUADRADO", "METRO LINEAL", "UNIDAD"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		lstTipoProducto.setSelectedIndex(0);
-		lstTipoProducto.setBorder(new TitledBorder(null, "Tipo de Venta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Informaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 151, 474, 64);
-		getContentPane().add(panel);
-		panel.setLayout(null);
-		
+		grupoUno.add(rdEsServicio);
+
+		rdMetroCuadrado = new JRadioButton("METRO CUADRADO");
+		rdMetroCuadrado.setBackground(Color.WHITE);
+		rdMetroCuadrado.setSelected(true);
+		rdMetroCuadrado.setBounds(180, 20, 150, 23);
+		getContentPane().add(rdMetroCuadrado);
+		grupoDos.add(rdMetroCuadrado);
+
+		rdMetroLineal = new JRadioButton("METRO LINEAL");
+		rdMetroLineal.setBackground(Color.WHITE);
+		rdMetroLineal.setBounds(180, 46, 150, 23);
+		getContentPane().add(rdMetroLineal);
+		grupoDos.add(rdMetroLineal);
+
+		rdUnidad = new JRadioButton("UNIDAD");
+		rdUnidad.setBackground(Color.WHITE);
+		rdUnidad.setBounds(180, 72, 150, 23);
+		getContentPane().add(rdUnidad);
+		grupoDos.add(rdUnidad);
+
 		rdMedidasFijas = new JRadioButton("Medidas fijas");
+		rdMedidasFijas.setBounds(344, 20, 133, 23);
+		getContentPane().add(rdMedidasFijas);
 		rdMedidasFijas.setBackground(Color.WHITE);
 		rdMedidasFijas.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -135,56 +141,41 @@ public class VentanaProducto extends VentanaGenerica {
 				}
 			}
 		});
-		rdMedidasFijas.setFont(new Font("Tahoma", Font.BOLD, 12));
-		rdMedidasFijas.setBounds(17, 22, 133, 23);
-		panel.add(rdMedidasFijas);
-		
-		LabelPersonalizado lblprsnlzdIdentificacion_1_1 = new LabelPersonalizado(0);
-		lblprsnlzdIdentificacion_1_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblprsnlzdIdentificacion_1_1.setBounds(156, 26, 26, 15);
-		lblprsnlzdIdentificacion_1_1.setText("Alto");
-		panel.add(lblprsnlzdIdentificacion_1_1);
-		
-		tMedidaAlto = new CampoNumeroPersonalizado();
-		tMedidaAlto.setBounds(182, 19, 100, 25);
-		panel.add(tMedidaAlto);
-		
+		rdMedidasFijas.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
-		
-		LabelPersonalizado lblprsnlzdIdentificacion_1_2 = new LabelPersonalizado(0);
-		lblprsnlzdIdentificacion_1_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblprsnlzdIdentificacion_1_2.setBounds(299, 26, 39, 15);
-		lblprsnlzdIdentificacion_1_2.setText("Ancho");
-		panel.add(lblprsnlzdIdentificacion_1_2);
-		
-		tMedidaAncho = new CampoNumeroPersonalizado();
-		tMedidaAncho.setBounds(336, 20, 100, 25);
-		panel.add(tMedidaAncho);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBorder(new TitledBorder(null, "Precio Sugerido", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 337, 474, 53);
-		getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-		
-		LabelPersonalizado lblprsnlzdIdentificacion_1_1_1 = new LabelPersonalizado(0);
-		lblprsnlzdIdentificacion_1_1_1.setText("Valor");
-		lblprsnlzdIdentificacion_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblprsnlzdIdentificacion_1_1_1.setBounds(10, 24, 33, 15);
-		panel_1.add(lblprsnlzdIdentificacion_1_1_1);
-		
-		tPrecioProducto = new CampoNumeroPersonalizado();
-		tPrecioProducto.setBounds(40, 18, 100, 25);
-		panel_1.add(tPrecioProducto);
-		
+		tMedidaAlto = new CampoNumeroPersonalizado();
+		tMedidaAlto.setBounds(387, 47, 90, 23);
+		getContentPane().add(tMedidaAlto);
+
 		tMedidaAlto.setEnabled(false);
+
+		tMedidaAncho = new CampoNumeroPersonalizado();
+		tMedidaAncho.setBounds(387, 72, 90, 23);
+		getContentPane().add(tMedidaAncho);
 		tMedidaAncho.setEnabled(false);
+
+		LabelPersonalizado lblprsnlzdIdentificacion_1_1 = new LabelPersonalizado(0);
+		lblprsnlzdIdentificacion_1_1.setBounds(350, 50, 26, 15);
+		getContentPane().add(lblprsnlzdIdentificacion_1_1);
+		lblprsnlzdIdentificacion_1_1.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lblprsnlzdIdentificacion_1_1.setText("Alto");
+
+
+
+		LabelPersonalizado lblprsnlzdIdentificacion_1_2 = new LabelPersonalizado(0);
+		lblprsnlzdIdentificacion_1_2.setBounds(350, 76, 30, 15);
+		getContentPane().add(lblprsnlzdIdentificacion_1_2);
+		lblprsnlzdIdentificacion_1_2.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lblprsnlzdIdentificacion_1_2.setText("Ancho");
 
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getModulo() {
+		return modulo;
 	}
 
 	public CampoTextoPersonalizado gettNombreProducto() {
@@ -197,10 +188,6 @@ public class VentanaProducto extends VentanaGenerica {
 
 	public VentanaProductoControlador getControlador() {
 		return controlador;
-	}
-
-	public JList<?> getLstTipoProducto() {
-		return lstTipoProducto;
 	}
 
 	public CampoNumeroPersonalizado gettMedidaAlto() {
@@ -219,8 +206,25 @@ public class VentanaProducto extends VentanaGenerica {
 		return rdMedidasFijas;
 	}
 
+	public JRadioButton getRdEsProducto() {
+		return rdEsProducto;
+	}
+
 	public JRadioButton getRdEsServicio() {
 		return rdEsServicio;
 	}
-	
+
+	public JRadioButton getRdMetroCuadrado() {
+		return rdMetroCuadrado;
+	}
+
+	public JRadioButton getRdMetroLineal() {
+		return rdMetroLineal;
+	}
+
+	public JRadioButton getRdUnidad() {
+		return rdUnidad;
+	}
+
+
 }

@@ -8,16 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iOS.modelo.dao.RolDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.RolInterface;
 import iOS.vista.modelotabla.ModeloTablaRol;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.transacciones.TransaccionRol;
 
-public class BuscadorRolControlador implements KeyListener, MouseListener, AccionesABM, RolInterface, ColaboradorInterface {
+public class BuscadorRolControlador implements KeyListener, MouseListener, AccionesABM, RolInterface {
 	private BuscadorRol buscador;
 	private ModeloTablaRol modeloTabla;
 	private RolDao dao;
@@ -25,7 +23,6 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 
 	private List<Rol> lista = new ArrayList<Rol>();
 	private Rol rol;
-	private Colaborador colaborador;
 
 
 	public BuscadorRolControlador(BuscadorRol buscador) {
@@ -166,24 +163,9 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 
 	}
 	
-	 
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 	@Override
 	public void setRol(Rol rol) {
-		this.rol = rol;
-		
+		this.rol = rol;	
 	}
 
 

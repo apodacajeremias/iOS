@@ -11,18 +11,16 @@ import javax.swing.JOptionPane;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.OperacionDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Modulo;
 import iOS.modelo.entidades.Operacion;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.ModuloInterface;
 import iOS.modelo.interfaces.OperacionInterface;
 import iOS.vista.modelotabla.ModeloTablaOperacion;
 import iOS.vista.ventanas.buscadores.BuscadorModulo;
 import iOS.vista.ventanas.buscadores.BuscadorOperacion;
 
-public class BuscadorOperacionControlador implements KeyListener, MouseListener, AccionesABM, OperacionInterface, ModuloInterface, ColaboradorInterface {
+public class BuscadorOperacionControlador implements KeyListener, MouseListener, AccionesABM, OperacionInterface, ModuloInterface {
 	private BuscadorOperacion buscador;
 	private ModeloTablaOperacion modeloTabla;
 	private OperacionDao dao;
@@ -31,8 +29,6 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 	private List<Operacion> lista = new ArrayList<Operacion>();
 	private Operacion operacion;
 	private Modulo modulo;
-	private Colaborador colaborador;
-
 
 	public BuscadorOperacionControlador(BuscadorOperacion buscador) {
 		this.buscador = buscador;
@@ -232,21 +228,5 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 		buscador.setVisible(true);
 
 	}
-	
-	 
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 
 }

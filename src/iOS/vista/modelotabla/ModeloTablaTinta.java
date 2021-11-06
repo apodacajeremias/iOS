@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import iOS.controlador.util.FechaUtil;
+import iOS.controlador.util.EventosUtil;
 import iOS.modelo.entidades.Tinta;
 
 public class ModeloTablaTinta extends AbstractTableModel {
@@ -55,9 +55,9 @@ public class ModeloTablaTinta extends AbstractTableModel {
 		case 2:
 			return lista.get(rowIndex).getCodigoReferencia();
 		case 3:
-			return FechaUtil.convertirDateAString(lista.get(rowIndex).getFechaColocacion());
+			return EventosUtil.formatoFecha(lista.get(rowIndex).getFechaColocacion());
 		case 4:
-			return FechaUtil.convertirDateAString(lista.get(rowIndex).getFechaRetirada());
+			return EventosUtil.formatoFecha(lista.get(rowIndex).getFechaRetirada());
 		default:
 			break;
 		}

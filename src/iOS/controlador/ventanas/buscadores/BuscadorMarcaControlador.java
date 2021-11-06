@@ -7,16 +7,14 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import iOS.modelo.dao.MarcaDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Marca;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.MarcaInterface;
 import iOS.vista.modelotabla.ModeloTablaMarca;
 import iOS.vista.ventanas.VentanaMarca;
 import iOS.vista.ventanas.buscadores.BuscadorMarca;
 
-public class BuscadorMarcaControlador implements KeyListener, MouseListener, AccionesABM, MarcaInterface, ColaboradorInterface {
+public class BuscadorMarcaControlador implements KeyListener, MouseListener, AccionesABM, MarcaInterface {
 
 	// ATRIBUTOS
 	private BuscadorMarca bMarca;
@@ -25,7 +23,6 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 	private List<Marca> lista;
 	private MarcaInterface interfaz;
 	private Marca marca;
-	private Colaborador colaborador;
 
 	// CONSTRUCTOR
 	public BuscadorMarcaControlador(BuscadorMarca bMarca) {
@@ -159,17 +156,5 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 		this.marca = marca;
 
 	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
 
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
 }

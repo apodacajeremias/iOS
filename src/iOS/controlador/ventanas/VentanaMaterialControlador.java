@@ -10,20 +10,18 @@ import java.awt.event.MouseListener;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.MaterialDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Material;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.MaterialInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaMaterial;
 
-public class VentanaMaterialControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, MaterialInterface, ColaboradorInterface{
+public class VentanaMaterialControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, MaterialInterface{
 	private VentanaMaterial ventana;
 	private MaterialDao dao;
 	private Material material;
 
 	private String accion;
-	private Colaborador colaborador;
 
 	public VentanaMaterialControlador(VentanaMaterial ventana) {
 		this.ventana = ventana;
@@ -257,7 +255,7 @@ public class VentanaMaterialControlador implements AccionesABM, ActionListener, 
 
 		if (accion.equals("NUEVO")) {
 			material = new Material();
-			material.setColaborador(colaborador);
+			material.setColaborador(Sesion.getInstance().getColaborador());
 		}
 
 		material.setDescripcion(ventana.gettNombreMaterial().getText());
@@ -306,19 +304,6 @@ public class VentanaMaterialControlador implements AccionesABM, ActionListener, 
 		
 		//Al hacer el set siempre se modificar, no se carga nuevo
 		accion = "MODIFICAR";
-	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
 	}
 }
 

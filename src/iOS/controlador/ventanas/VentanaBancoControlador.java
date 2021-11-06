@@ -12,16 +12,15 @@ import java.util.List;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.BancoDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.EntidadBancaria;
 import iOS.modelo.entidades.InformacionPago;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.BancoInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaProveedorCuenta;
 import iOS.vista.ventanas.VentanaBanco;
 
-public class VentanaBancoControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, BancoInterface, ColaboradorInterface {
+public class VentanaBancoControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, BancoInterface{
 	private VentanaBanco ventanaBanco;
 	private BancoDao dao;
 	private EntidadBancaria banco;
@@ -30,11 +29,13 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 
 	private List<InformacionPago> items = new ArrayList<InformacionPago>();
 	private ModeloTablaProveedorCuenta mtProveedorCuenta;
-	private Colaborador colaborador;
 
 	public VentanaBancoControlador(VentanaBanco ventanaBanco) {
 		this.ventanaBanco = ventanaBanco;
 		this.ventanaBanco.getMiToolBar().setAcciones(this);
+		
+		mtProveedorCuenta = new ModeloTablaProveedorCuenta();
+		this.ventanaBanco.gettProveedorCuenta().setModel(mtProveedorCuenta);
 
 		dao = new BancoDao();
 		nuevo();
@@ -167,7 +168,7 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 		}
 		if (accion.equals("NUEVO")) {
 			banco = new EntidadBancaria();
-			banco.setColaborador(colaborador);
+			banco.setColaborador(Sesion.getInstance().getColaborador());
 		}
 		
 		banco.setNombreBanco(ventanaBanco.gettNombreBanco().getText());
@@ -217,18 +218,4 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 		mtProveedorCuenta.fireTableDataChanged();
 
 	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 }

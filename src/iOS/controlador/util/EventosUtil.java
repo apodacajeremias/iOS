@@ -205,5 +205,4 @@ public class EventosUtil {
 			return "ANULADO";
 		}
 	}
-
 }

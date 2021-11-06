@@ -7,16 +7,14 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import iOS.modelo.dao.BancoDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.EntidadBancaria;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.BancoInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.modelotabla.ModeloTablaBanco;
 import iOS.vista.ventanas.VentanaBanco;
 import iOS.vista.ventanas.buscadores.BuscadorBanco;
 
-public class BuscadorBancoControlador implements KeyListener, MouseListener, AccionesABM, BancoInterface, ColaboradorInterface {
+public class BuscadorBancoControlador implements KeyListener, MouseListener, AccionesABM, BancoInterface {
 
 	// ATRIBUTOS
 	private BuscadorBanco buscador;
@@ -25,7 +23,6 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 	private List<EntidadBancaria> lista;
 	private BancoInterface interfaz;
 	private EntidadBancaria banco;
-	private Colaborador colaborador;
 
 	// CONSTRUCTOR
 	public BuscadorBancoControlador(BuscadorBanco buscador) {
@@ -166,18 +163,5 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 			return;
 		}
 
-	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
 	}
 }

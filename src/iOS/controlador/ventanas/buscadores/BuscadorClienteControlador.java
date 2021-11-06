@@ -9,17 +9,15 @@ import java.util.List;
 
 import iOS.modelo.dao.ClienteDao;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.ClienteInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.modelotabla.ModeloTablaCliente;
 import iOS.vista.ventanas.VentanaCliente;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 
 
 
-public class BuscadorClienteControlador implements KeyListener, MouseListener, AccionesABM, ColaboradorInterface {
+public class BuscadorClienteControlador implements KeyListener, MouseListener, AccionesABM {
 
 	// ATRIBUTOS
 	private BuscadorCliente buscador;
@@ -27,7 +25,6 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	private ClienteDao dao;
 	private List<Cliente> lista;
 	private ClienteInterface interfaz;
-	private Colaborador colaborador;
 	private Cliente cliente;
 
 	public void setInterfaz(ClienteInterface interfaz) {
@@ -122,7 +119,6 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	public void nuevo() {
 		VentanaCliente ventana = new VentanaCliente();
 		ventana.setUpControlador();
-		ventana.getControlador().setColaborador(colaborador);
 		ventana.getControlador().nuevo();
 		ventana.setVisible(true);
 	}
@@ -133,7 +129,6 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setCliente(cliente);
-		ventana.getControlador().setColaborador(colaborador);
 		ventana.setVisible(true);
 	}
 
@@ -153,17 +148,5 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	public void cancelar() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		gestionarColaborador();
-	}
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
-
 	}
 }

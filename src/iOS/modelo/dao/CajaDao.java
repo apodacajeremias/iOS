@@ -1,11 +1,10 @@
 package iOS.modelo.dao;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.query.Query;
 
-import iOS.controlador.util.EventosUtil;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 
@@ -15,45 +14,100 @@ public class CajaDao extends GenericDao<Caja> {
 		super(Caja.class);
 	}
 
-	public Caja encontrarCajaHoy(java.util.Date hoy, int id) {		
+	public Caja encontrarCajaHoy(int id) {
 		getSession().beginTransaction();
+		
+		Date hoy = new Date();
+		
 		String sql = "from Caja "
 				+ "where colaborador.id = :id "
 				+ "and DATE(fechaRegistro) = :hoy "
-				+ "and cajaCerrada = false "
-				+ "order by id ASC";
+				+ "and cajaCerrada = false";
 
 		@SuppressWarnings("unchecked")
 		Query<Caja> query = getSession().createQuery(sql);
 		query.setParameter("hoy", hoy);
 		query.setParameter("id", id);
 		try {
-			Caja caja = null;
-			List<Caja> resultados = query.getResultList();
-			for (int i = 0; i < resultados.size(); i++) {
-				caja = resultados.get(i);
-			}
+			Caja caja = query.getSingleResult();
 			commit();
 			return caja;
 		} catch (Exception e) {
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 			rollBack();
 			return null;
 		}
 	}
-
-	public List<Caja> recuperarCajasPorFecha(Date fecha) {
+	
+	public List<CajaMovimiento> ordenarMovimientosPorID(int cajaID) {
 		getSession().beginTransaction();
-		String sql = "from Caja "
-				+ "where DATE(fechaRegistro) = :fecha "
-				+ "order by id";
+		String sql = "from CajaMovimiento where caja.id = :cajaID order by id";
 		@SuppressWarnings("unchecked")
-		Query<Caja> query = getSession().createQuery(sql);
-		query.setParameter("fecha", fecha);
+		Query<CajaMovimiento> query = getSession().createQuery(sql);
+		query.setParameter("cajaID", cajaID);
 		try {
-			List<Caja> lista = query.getResultList();
+			List<CajaMovimiento> lista = query.getResultList();
 			commit();
 			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<CajaMovimiento> recuperarMovimientoNoAnulados(int cajaID) {
+		getSession().beginTransaction();
+		String sql = "from CajaMovimiento "
+				+ "WHERE caja.id = :cajaID "
+				+ "AND esAnulado = false "
+				+ "order by id";
+		@SuppressWarnings("unchecked")
+		Query<CajaMovimiento> query = getSession().createQuery(sql);
+		query.setParameter("cajaID", cajaID);
+		try {
+			List<CajaMovimiento> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<CajaMovimiento> recuperarEntregaPedido(int pedido) {
+		getSession().beginTransaction();
+		String sql = "from CajaMovimiento "
+				+ "where pedido.id = :pedido "
+				+ "and esAnulado = false "
+				+ "order by id ASC";
+		@SuppressWarnings("unchecked")
+		Query<CajaMovimiento> query = getSession().createQuery(sql);
+		query.setParameter("pedido", pedido);
+		try {
+			List<CajaMovimiento> resultados = query.getResultList();
+			commit();
+			return resultados;
+		} catch (Exception e) {
+			rollBack();
+			return null;
+		}
+	}
+	
+	public Double sumarIngresosGS(int caja) {
+		getSession().beginTransaction();
+		String sql = "SELECT SUM(valorGS) "
+				+ "FROM CajaMovimiento "
+				+ "where esRetiro = false "
+				+ "and esanulado = false "
+				+ "and caja.id = :caja";
+		@SuppressWarnings("unchecked")
+		Query<Double> query = getSession().createQuery(sql);
+		query.setParameter("caja", caja);
+		try {
+			Double resultado = query.getSingleResult();
+			commit();
+			System.out.println(resultado);
+			return resultado;
 		} catch (Exception e) {
 			rollBack();
 			return null;
@@ -76,40 +130,6 @@ public class CajaDao extends GenericDao<Caja> {
 		}
 	}
 	
-	public List<CajaMovimiento> ordenarMovimientosPorID(int cajaID) {
-		String sql = "from CajaMovimiento where caja.id = :cajaID order by id";
-		@SuppressWarnings("unchecked")
-		Query<CajaMovimiento> query = getSession().createQuery(sql);
-		query.setParameter("cajaID", cajaID);
-		try {
-			List<CajaMovimiento> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-	
-	public List<CajaMovimiento> recuperarPagoValido(int pedido) {
-		getSession().beginTransaction();
-		String sql = "from CajaMovimiento "
-				+ "where pedido.id = :pedido "
-				+ "and esAnulado = false "
-				+ "order by id ASC";
-		@SuppressWarnings("unchecked")
-		Query<CajaMovimiento> query = getSession().createQuery(sql);
-		query.setParameter("pedido", pedido);
-		try {
-			List<CajaMovimiento> resultados = query.getResultList();
-			commit();
-			return resultados;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-	
 	public List<CajaMovimiento> recuperarPorCliente(int cliente) {
 		getSession().beginTransaction();
 		String sql = "from CajaMovimiento "
@@ -121,6 +141,25 @@ public class CajaDao extends GenericDao<Caja> {
 		@SuppressWarnings("unchecked")
 		Query<CajaMovimiento> query = getSession().createQuery(sql);
 		query.setParameter("cliente", cliente);
+		try {
+			List<CajaMovimiento> resultados = query.getResultList();
+			commit();
+			return resultados;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<CajaMovimiento> recuperarCandidatosVales(String observacion) {
+		getSession().beginTransaction();
+		String sql = "from CajaMovimiento "
+				+ "where observacion LIKE :observacion "
+				+ "order by id ASC";
+		@SuppressWarnings("unchecked")
+		Query<CajaMovimiento> query = getSession().createQuery(sql);
+		query.setParameter("observacion", "%"+observacion+"%");
 		try {
 			List<CajaMovimiento> resultados = query.getResultList();
 			commit();

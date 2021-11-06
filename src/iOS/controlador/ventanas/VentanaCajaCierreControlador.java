@@ -15,19 +15,14 @@ import javax.swing.JOptionPane;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.entidades.Caja;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.interfaces.CajaInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.ventanas.VentanaCajaCierre;
 
-public class VentanaCajaCierreControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface, ColaboradorInterface{
+public class VentanaCajaCierreControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface{
 	private VentanaCajaCierre ventana;
 
 	private Caja caja;
 	private CajaDao dao;
-
-	private Colaborador colaborador;
-
 	private ArrayList<Double> ingresos = new ArrayList<>();
 	private ArrayList<Double> retiros = new ArrayList<>();
 	private ArrayList<Double> saldoInicial = new ArrayList<>();
@@ -104,7 +99,7 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		double gs = (ingreso.get(0)-retiro.get(0)+saldoInicial.get(0));
 		double rs = (ingreso.get(1)-retiro.get(1)+saldoInicial.get(1));
 		double us = (ingreso.get(2)-retiro.get(2)+saldoInicial.get(2));
-		
+
 		saldoFinal.add(gs);
 		saldoFinal.add(rs);
 		saldoFinal.add(us);
@@ -117,7 +112,7 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		if (caja == null) {
 			return;
 		}
-		if (arqueo(ingresos(),retiros(),saldoInicial()) == null) {
+		if (arqueo(ingresos(), retiros(), saldoInicial()) == null) {
 			return;
 		}
 
@@ -135,11 +130,11 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		caja.setSaldoFinalGS(saldoFinal.get(0));
 		caja.setSaldoFinalRS(saldoFinal.get(1));
 		caja.setSaldoFinalUS(saldoFinal.get(2));
-		
+
 		caja.setSaldoEntregadoGS(ventana.gettValorEntregadoGS().getValue());
 		caja.setSaldoEntregadoRS(ventana.gettValorEntregadoRS().getValue());
 		caja.setSaldoEntregadoUS(ventana.gettValorEntregadoUS().getValue());
-		
+
 		caja.setSaldoDeclaradoGS(ventana.gettSaldoDeclaradoGS().getValue());
 		caja.setSaldoDeclaradoRS(ventana.gettSaldoDeclaradoRS().getValue());
 		caja.setSaldoDeclaradoUS(ventana.gettSaldoDeclaradoUS().getValue());
@@ -230,19 +225,6 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		case "CerrarCaja":
 			guardar();
 			break;
-		}
-	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
 		}
 	}
 

@@ -71,6 +71,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 			try {
 				row.setArchivo(aValue.toString().toUpperCase());
 			} catch (Exception e) {
+				e.printStackTrace();
 				return;
 			}
 		}
@@ -85,6 +86,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 			try {
 				row.setTamano(aValue.toString().toUpperCase());
 			} catch (Exception e) {
+				e.printStackTrace();
 				return;
 			}
 		}
@@ -92,6 +94,8 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 			try {
 				row.setMolde(aValue.toString().toUpperCase());
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 				return;
 			}
 		}

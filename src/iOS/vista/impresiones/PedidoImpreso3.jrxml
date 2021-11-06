@@ -847,6 +847,108 @@
 						<text><![CDATA[PRODUCCION]]></text>
 					</staticText>
 				</frame>
+				<frame>
+					<reportElement x="280" y="0" width="175" height="40" uuid="376b118f-d568-4c93-9100-883199d2b75d"/>
+					<staticText>
+						<reportElement x="0" y="0" width="54" height="10" uuid="96d4c1d0-6749-4646-86f7-ff1a510a89a2">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ ESTAMPA]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="0" y="10" width="54" height="10" uuid="f71f53b0-3ee8-463f-8561-69334cd54b3c">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ BORDADO]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="0" y="20" width="54" height="10" uuid="e6c6ef21-db00-4185-b88b-af9846e7e9c1">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8" isBold="false"/>
+						</textElement>
+						<text><![CDATA[□ TRANSFER]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="0" width="54" height="10" uuid="9712132e-94b7-44a7-a1bf-a74660a84bef">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ P.V.]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="10" width="54" height="10" uuid="28bd51ec-13a8-4aa3-a314-307a20966b39">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ PIQUE]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="20" width="54" height="10" uuid="8fd31dd1-1866-4839-9580-ddf885666fd5">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8" isBold="false"/>
+						</textElement>
+						<text><![CDATA[□ DRYFIT]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="30" width="54" height="10" uuid="700231a9-fbf2-4a5f-b522-125b24e1e11c">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ POLIESTER]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="0" width="54" height="10" uuid="1dd56c6a-de48-46a3-8bab-0ae028e8c7c9">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ REDONDA]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="10" width="54" height="10" uuid="21cb77ab-f0bd-4d39-86bb-b169b8cf857e">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ V]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="20" width="54" height="10" uuid="405945d0-060c-47c5-abe1-dbeafe438c4c">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8" isBold="false"/>
+						</textElement>
+						<text><![CDATA[□ POLO]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="30" width="54" height="10" uuid="408630e2-ebf4-4233-b04f-547f7f6afec2">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ POLO V]]></text>
+					</staticText>
+				</frame>
 			</frame>
 			<line>
 				<reportElement x="0" y="602" width="555" height="1" uuid="c75a6fc3-5632-4b4a-b893-29a2eb31233d">
@@ -1022,6 +1124,108 @@
 							<font size="14" isBold="true"/>
 						</textElement>
 						<text><![CDATA[PRODUCCION]]></text>
+					</staticText>
+				</frame>
+				<frame>
+					<reportElement x="280" y="0" width="175" height="40" uuid="71ab0fa5-b14a-4f2b-bdce-fd10cd348948"/>
+					<staticText>
+						<reportElement x="0" y="0" width="54" height="10" uuid="11676950-829b-40d1-8f05-00adc9eccdfe">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ ESTAMPA]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="0" y="10" width="54" height="10" uuid="c151fe3c-6155-4257-b646-7847d54c9fd8">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ BORDADO]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="0" y="20" width="54" height="10" uuid="28f8c9e3-b098-4603-9267-ad3868a2c5b5">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8" isBold="false"/>
+						</textElement>
+						<text><![CDATA[□ TRANSFER]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="0" width="54" height="10" uuid="ff8246e7-0465-42c7-9ca5-547b39b58735">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ P.V.]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="10" width="54" height="10" uuid="c8964163-080d-4ad4-b12e-bed4b75871dd">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ PIQUE]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="20" width="54" height="10" uuid="a6234ac4-12b1-44ca-8415-f0796e24407e">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8" isBold="false"/>
+						</textElement>
+						<text><![CDATA[□ DRYFIT]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="60" y="30" width="54" height="10" uuid="9e449015-db09-4c90-85f6-6b15639ad876">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ POLIESTER]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="0" width="54" height="10" uuid="4959e56a-8deb-4060-a0f0-efc157ef79aa">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ REDONDA]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="10" width="54" height="10" uuid="8a365bae-666f-4914-a0ef-f6369af67ba5">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ V]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="20" width="54" height="10" uuid="e28931eb-907e-4243-948c-3552a62ae12e">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8" isBold="false"/>
+						</textElement>
+						<text><![CDATA[□ POLO]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="121" y="30" width="54" height="10" uuid="dcd0e234-663e-4e9d-9e19-4b6149572887">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Tahoma" size="8"/>
+						</textElement>
+						<text><![CDATA[□ POLO V]]></text>
 					</staticText>
 				</frame>
 			</frame>

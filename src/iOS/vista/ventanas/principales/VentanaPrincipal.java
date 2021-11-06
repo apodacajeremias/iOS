@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -24,18 +23,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import iOS.controlador.util.EventosUtil;
-import iOS.modelo.dao.CajaDao;
 import iOS.modelo.dao.ConfiguracionDao;
-import iOS.modelo.entidades.Caja;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Configuracion;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.MiBoton;
 import iOS.vista.componentes.PanelFondo;
 import iOS.vista.ventanas.VentanaBanco;
-import iOS.vista.ventanas.VentanaCajaApertura;
 import iOS.vista.ventanas.VentanaCliente;
 import iOS.vista.ventanas.VentanaColaborador;
 import iOS.vista.ventanas.VentanaConfiguracion;
@@ -47,58 +42,17 @@ import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 import iOS.vista.ventanas.reportes.ReportePedido;
-import iOS.vista.ventanas.transacciones.TransaccionCaja;
+import iOS.vista.ventanas.reportes.ReporteVales;
+import iOS.vista.ventanas.transacciones.TransaccionCaja2;
 
-public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
+public class VentanaPrincipal extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4166190286945252641L;
 	private JPanel contentPane;
-	private Colaborador colaborador;
 	private LabelPersonalizado lblPODAC;
-
-	private CajaDao dao = new CajaDao();
-	private Caja caja;
-	private JMenu mnRegistros;
-	private JMenuItem mnItemCliente;
-	private JMenuItem mnItemProducto;
-	private JMenuItem mnItemBanco;
-	private JMenuItem mnItemMaterial;
-	private JMenuItem mnItemSector;
-	private JMenuItem mnItemColaborador;
-	private JMenuItem mnItemConfiguracion;
-	private JMenuItem mnItemMarca;
-	private JMenuItem mnItemProveedor;
-	private JMenu mnMovimientos;
-	private JMenuItem mnItemCaja;
-	private JMenuItem mnItemCompra;
-	private JMenuItem mnItemDeposito;
-	private JMenuItem mnItemExistencia;
-	private JMenuItem mnItemPedido;
-	private JMenuItem mnItemRol;
-	private JMenu mnBuscadores;
-	private JMenuItem mnItemBuscadorBanco;
-	private JMenuItem mnItemBuscadorCliente;
-	private JMenuItem mnItemBuscadorColaborador;
-	private JMenuItem mnItemBuscadorMarca;
-	private JMenuItem mnItemBuscadorMaterial;
-
-	private MiBoton mbtnCaja;
-	private MiBoton mbtnPedidoCarteleria;
-	private JMenuItem mnItemBuscadorModulo;
-	private JMenuItem mnItemBuscadorOperacion;
-	private JMenuItem mnItemBuscadorPedido;
-	private JMenuItem mnItemBuscadorProducto;
-	private JMenuItem mnItemBuscadorProveedor;
-	private JMenuItem mnItemBuscadorRol;
-	private JMenu mnReportes;
-	private JMenuItem mnItemReporteCaja;
-	private JMenuItem mnItemReportePedido;
-	private JMenuItem mntmPedidoCostura;
-	private MiBoton mbtnPedidoConfeccion;
-	private JMenuItem mntmNewMenuItem;
 
 
 	/**
@@ -111,7 +65,6 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		setLocationRelativeTo(this);
 		// maximizamos la ventana
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-
 		setIconImage(new ImageIcon(getClass().getResource("/img/LOGO PODAC.png")).getImage());
 
 		contentPane = new JPanel();
@@ -122,11 +75,11 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		mnRegistros = new JMenu("REGISTROS");
+		JMenu mnRegistros = new JMenu("REGISTROS");
 		mnRegistros.setFont(new Font("Tahoma", Font.BOLD, 14));
 		menuBar.add(mnRegistros);
 
-		mnItemBanco = new JMenuItem("Bancos");
+		JMenuItem mnItemBanco = new JMenuItem("Bancos");
 		mnItemBanco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaBanco();
@@ -135,7 +88,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBanco.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemBanco);
 
-		mnItemCliente = new JMenuItem("Clientes");
+		JMenuItem mnItemCliente = new JMenuItem("Clientes");
 		mnItemCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaCliente();
@@ -144,7 +97,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemCliente);
 
-		mnItemColaborador = new JMenuItem("Colaboradores");
+		JMenuItem mnItemColaborador = new JMenuItem("Colaboradores");
 		mnItemColaborador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaColaborador();
@@ -153,7 +106,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemColaborador.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemColaborador);
 
-		mnItemConfiguracion = new JMenuItem("Configuraciones");
+		JMenuItem mnItemConfiguracion = new JMenuItem("Configuraciones");
 		mnItemConfiguracion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaConfiguracion();
@@ -162,7 +115,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemConfiguracion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemConfiguracion);
 
-		mnItemMarca = new JMenuItem("Marcas");
+		JMenuItem mnItemMarca = new JMenuItem("Marcas");
 		mnItemMarca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaMarca();
@@ -171,7 +124,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemMarca.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemMarca);
 
-		mnItemMaterial = new JMenuItem("Materiales");
+		JMenuItem mnItemMaterial = new JMenuItem("Materiales");
 		mnItemMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaMaterial();
@@ -180,7 +133,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemMaterial.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemMaterial);
 
-		mnItemProducto = new JMenuItem("Productos");
+		JMenuItem mnItemProducto = new JMenuItem("Productos");
 		mnItemProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaProducto();
@@ -189,7 +142,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemProducto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemProducto);
 
-		mnItemProveedor = new JMenuItem("Proveedores");
+		JMenuItem mnItemProveedor = new JMenuItem("Proveedores");
 		mnItemProveedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaProducto();
@@ -198,7 +151,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemProveedor.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemProveedor);
 
-		mnItemSector = new JMenuItem("Sectores");
+		JMenuItem mnItemSector = new JMenuItem("Sectores");
 		mnItemSector.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaSector();
@@ -207,11 +160,11 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemSector.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemSector);
 
-		mnBuscadores = new JMenu("BUSCADORES");
+		JMenu mnBuscadores = new JMenu("BUSCADORES");
 		mnBuscadores.setFont(new Font("Tahoma", Font.BOLD, 14));
 		menuBar.add(mnBuscadores);
 
-		mnItemBuscadorBanco = new JMenuItem("Buscar bancos");
+		JMenuItem mnItemBuscadorBanco = new JMenuItem("Buscar bancos");
 		mnItemBuscadorBanco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorBanco();
@@ -220,7 +173,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorBanco.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorBanco);
 
-		mnItemBuscadorCliente = new JMenuItem("Buscar clientes");
+		JMenuItem mnItemBuscadorCliente = new JMenuItem("Buscar clientes");
 		mnItemBuscadorCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorCliente();
@@ -229,7 +182,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorCliente);
 
-		mnItemBuscadorColaborador = new JMenuItem("Buscar colaboradores");
+		JMenuItem mnItemBuscadorColaborador = new JMenuItem("Buscar getColaborador()es");
 		mnItemBuscadorColaborador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorColaborador();
@@ -238,7 +191,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorColaborador.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorColaborador);
 
-		mnItemBuscadorMarca = new JMenuItem("Buscar marcas");
+		JMenuItem mnItemBuscadorMarca = new JMenuItem("Buscar marcas");
 		mnItemBuscadorMarca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorMarca();
@@ -247,7 +200,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorMarca.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorMarca);
 
-		mnItemBuscadorMaterial = new JMenuItem("Buscar materiales");
+		JMenuItem mnItemBuscadorMaterial = new JMenuItem("Buscar materiales");
 		mnItemBuscadorMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorMaterial();
@@ -256,7 +209,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorMaterial.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorMaterial);
 
-		mnItemBuscadorModulo = new JMenuItem("Buscar modulos");
+		JMenuItem mnItemBuscadorModulo = new JMenuItem("Buscar modulos");
 		mnItemBuscadorModulo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorModulo();
@@ -265,7 +218,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorModulo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorModulo);
 
-		mnItemBuscadorOperacion = new JMenuItem("Buscar operaciones");
+		JMenuItem mnItemBuscadorOperacion = new JMenuItem("Buscar operaciones");
 		mnItemBuscadorOperacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorOperacion();
@@ -274,7 +227,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorOperacion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorOperacion);
 
-		mnItemBuscadorPedido = new JMenuItem("Buscar pedidos");
+		JMenuItem mnItemBuscadorPedido = new JMenuItem("Buscar pedidos");
 		mnItemBuscadorPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorPedido();
@@ -283,7 +236,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorPedido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorPedido);
 
-		mnItemBuscadorProducto = new JMenuItem("Buscar productos");
+		JMenuItem mnItemBuscadorProducto = new JMenuItem("Buscar productos");
 		mnItemBuscadorProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorProducto();
@@ -292,7 +245,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorProducto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorProducto);
 
-		mnItemBuscadorProveedor = new JMenuItem("Buscar proveedores");
+		JMenuItem mnItemBuscadorProveedor = new JMenuItem("Buscar proveedores");
 		mnItemBuscadorProveedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorProveedor();
@@ -301,7 +254,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorProveedor.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorProveedor);
 
-		mnItemBuscadorRol = new JMenuItem("Buscar roles");
+		JMenuItem mnItemBuscadorRol = new JMenuItem("Buscar roles");
 		mnItemBuscadorRol.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorRol();
@@ -310,25 +263,20 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemBuscadorRol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorRol);
 
-		mnMovimientos = new JMenu("MOVIMIENTOS");
+		JMenu mnMovimientos = new JMenu("MOVIMIENTOS");
 		mnMovimientos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		menuBar.add(mnMovimientos);
 
-		mnItemCaja = new JMenuItem("Caja");
+		JMenuItem mnItemCaja = new JMenuItem("Caja");
 		mnItemCaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (cajaAbierta()) {
-					abrirTransaccionCaja();
-				}
-				if (!cajaAbierta()) {
-					abrirVentanaCajaApertura();
-				}
+				abrirTransaccionCaja();
 			}
 		});
 		mnItemCaja.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemCaja);
 
-		mnItemCompra = new JMenuItem("Compra");
+		JMenuItem mnItemCompra = new JMenuItem("Compra");
 		mnItemCompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionCompra();
@@ -337,7 +285,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemCompra.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemCompra);
 
-		mnItemDeposito = new JMenuItem("Deposito");
+		JMenuItem mnItemDeposito = new JMenuItem("Deposito");
 		mnItemDeposito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionDeposito();
@@ -346,7 +294,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemDeposito.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemDeposito);
 
-		mnItemExistencia = new JMenuItem("Existencia");
+		JMenuItem mnItemExistencia = new JMenuItem("Existencia");
 		mnItemExistencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionExistencia();
@@ -355,7 +303,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemExistencia.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemExistencia);
 
-		mnItemPedido = new JMenuItem("Pedido Impresion");
+		JMenuItem mnItemPedido = new JMenuItem("Pedido Impresion");
 		mnItemPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionPedidoCarteleria();
@@ -365,14 +313,14 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnMovimientos.add(mnItemPedido);
 
 
-		mnItemRol = new JMenuItem("Rol");
+		JMenuItem mnItemRol = new JMenuItem("Rol");
 		mnItemRol.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionRol();
 			}
 		});
 		
-		mntmPedidoCostura = new JMenuItem("Pedido Costura");
+		JMenuItem mntmPedidoCostura = new JMenuItem("Pedido Costura");
 		mntmPedidoCostura.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionPedidoConfeccion();
@@ -382,11 +330,11 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemRol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemRol);
 		
-		mnReportes = new JMenu("REPORTES");
+		JMenuItem mnReportes = new JMenu("REPORTES");
 		mnReportes.setFont(new Font("Tahoma", Font.BOLD, 14));
 		menuBar.add(mnReportes);
 		
-		mnItemReporteCaja = new JMenuItem("Reporte de caja");
+		JMenuItem mnItemReporteCaja = new JMenuItem("Reporte de caja");
 		mnItemReporteCaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirReporteCaja();
@@ -395,23 +343,32 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mnItemReporteCaja.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReporteCaja);
 		
-		mnItemReportePedido = new JMenuItem("Reporte de pedidos impresiones");
+		JMenuItem mnItemReportePedido = new JMenuItem("Reporte de pedidos impresiones");
 		mnItemReportePedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirReportePedidoCarteleria();
 			}
 		});
 		
-		mntmNewMenuItem = new JMenuItem("Reporte deudas y pagos");
+		JMenuItem mntmNewMenuItem = new JMenuItem("Reporte deudas y pagos");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ReporteDeudasPagos reporte = new ReporteDeudasPagos();
 				reporte.setUpControlador();
-				reporte.getControlador().setColaborador(colaborador);
 				reporte.setVisible(true);
 			}
 		});
 		mnReportes.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Reporte vales de getColaborador()es");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ReporteVales ventana = new ReporteVales();
+				ventana.setUpControlador();
+				ventana.setVisible(true);
+			}
+		});
+		mnReportes.add(mntmNewMenuItem_1);
 		mnItemReportePedido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReportePedido);
 		
@@ -432,21 +389,16 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		contentPane.add(toolBar, BorderLayout.NORTH);
 
 		// boton para mostrar ventana paciente paciente
-		mbtnCaja = new MiBoton("Caja");
+		MiBoton mbtnCaja = new MiBoton("Caja");
 		mbtnCaja.setFont(new Font("Tahoma", Font.BOLD, 15));
 		mbtnCaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (cajaAbierta()) {
-					abrirTransaccionCaja();
-				}
-				if (!cajaAbierta()) {
-					abrirVentanaCajaApertura();
-				}
+				abrirTransaccionCaja();
 			}
 		});
 		toolBar.add(mbtnCaja);
 
-		mbtnPedidoCarteleria = new MiBoton("Impresion");
+		MiBoton mbtnPedidoCarteleria = new MiBoton("Impresion");
 		mbtnPedidoCarteleria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				abrirTransaccionPedidoCarteleria();
@@ -455,7 +407,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mbtnPedidoCarteleria.setFont(new Font("Tahoma", Font.BOLD, 15));
 		toolBar.add(mbtnPedidoCarteleria);
 		
-		mbtnPedidoConfeccion = new MiBoton("Confeccion");
+		MiBoton mbtnPedidoConfeccion = new MiBoton("Confeccion");
 		mbtnPedidoConfeccion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				abrirTransaccionPedidoConfeccion();
@@ -464,7 +416,6 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		mbtnPedidoConfeccion.setFont(new Font("Tahoma", Font.BOLD, 15));
 		toolBar.add(mbtnPedidoConfeccion);
 		
-
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(240, 240, 255));
 		toolBar.add(panel_1);
@@ -495,9 +446,8 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 
 	protected void abrirReporteCaja() {
 		ReporteCaja ventana = new ReporteCaja();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 
@@ -505,45 +455,39 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 	
 	private void abrirReportePedidoCarteleria() {
 		ReportePedido ventana = new ReportePedido();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControladorCarteleria();
-			ventana.getControladorCarteleria().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 	
 	private void abrirReportePedidoConfeccion() {
 		ReportePedido ventana = new ReportePedido();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControladorConfeccion();
-			ventana.getControladoConfeccion().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 
 	private void abrirTransaccionCaja() {
-		TransaccionCaja ventana = new TransaccionCaja();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "MODIFICAR")) {
+		TransaccionCaja2 ventana = new TransaccionCaja2();
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "MODIFICAR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setCaja(caja);
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 
 	private void abrirTransaccionPedidoCarteleria() {
 		PedidoCarteleria ventana = new PedidoCarteleria();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 	private void abrirTransaccionPedidoConfeccion() {
 		PedidoConfeccion ventana = new PedidoConfeccion();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
@@ -571,9 +515,8 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 
 	protected void abrirBuscadorRol() {
 		BuscadorRol ventana = new BuscadorRol();
-		if (EventosUtil.liberarAccesoSegunRol(colaborador, "ADMINISTRADOR")){
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")){
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
@@ -640,64 +583,48 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 
 	protected void abrirVentanaColaborador() {
 		VentanaColaborador ventana = new VentanaColaborador();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 
 	private void abrirVentanaBanco() {
 		VentanaBanco ventana = new VentanaBanco();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 
 	private void abrirVentanaCliente() {
 		VentanaCliente ventana = new VentanaCliente();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 
 	private void abrirVentanaProducto() {
 		VentanaProducto ventana = new VentanaProducto();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
-			ventana.setVisible(true);
-		}
-	}
-
-	private void abrirVentanaCajaApertura() {
-		VentanaCajaApertura ventana = new VentanaCajaApertura();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.getControlador().setCaja(caja);
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 
 	private void abrirVentanaConfiguracion() {
 		VentanaConfiguracion ventana = new VentanaConfiguracion();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
 	
 	private void abrirVentanaMarca() {
 		VentanaMarca ventana = new VentanaMarca();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
-			ventana.getControlador().setColaborador(colaborador);
 			ventana.setVisible(true);
 		}
 	}
@@ -710,32 +637,6 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		}
 	}
 
-	public boolean cajaAbierta() {
-		Date date = new Date();
-		long d = date.getTime();
-		java.sql.Date fecha = new java.sql.Date(d);
-
-		caja = dao.encontrarCajaHoy(fecha, colaborador.getId());
-		if (caja == null) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		gestionarColaborador();
-	}
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-		if (colaborador != null) {
-			lblPODAC.setText(colaborador.toString());
-		}
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -744,7 +645,7 @@ public class VentanaPrincipal extends JFrame implements ColaboradorInterface {
 		return contentPane;
 	}
 
-	public Colaborador getColaborador() {
-		return colaborador;
+	public LabelPersonalizado getLblPODAC() {
+		return lblPODAC;
 	}
 }

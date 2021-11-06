@@ -2,22 +2,17 @@ package iOS.controlador.ventanas.principales;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
-import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.entidades.Colaborador;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.principales.VentanaAcceso;
 import iOS.vista.ventanas.principales.VentanaPrincipal;
 
-public class VentanaAccesoControlador implements ColaboradorInterface, ActionListener {
+public class VentanaAccesoControlador implements ActionListener {
 	private VentanaAcceso ventana;
 	private ColaboradorDao dao;
-	private List<Colaborador> colaboradors = new ArrayList<Colaborador>();
 	private Colaborador colaborador;
-	private ColaboradorInterface interfaz;
 
 	public VentanaAccesoControlador(VentanaAcceso ventana) {
 		this.ventana = ventana;
@@ -27,55 +22,54 @@ public class VentanaAccesoControlador implements ColaboradorInterface, ActionLis
 
 	private void setUpEvents() {
 		ventana.getBtnIngresar().addActionListener(this);
-
 	}
-
-	public void setInterfaz(ColaboradorInterface interfaz) {
-		this.interfaz = interfaz;
-	}
-
-	private boolean verificarAcceso(String u,String c){
-		try {
-			colaborador = dao.verificarAcceso(u,c);
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		if (colaborador == null) {
-			return false;
-		}
-		return true;
-	}
-
-	public void acceder(){
-		String colaborador = ventana.gettUsuario().getText();
+	
+	public void comprobarAcceso() {
+		String usuario = ventana.gettUsuario().getText();
 		String password = String.valueOf(ventana.gettContra().getPassword());
-		if (colaborador.isEmpty() || password.length() <= 0) {
+		
+		colaborador = dao.verificarAcceso(usuario, password);
+		
+		if (colaborador == null) {
+			ventana.getlMensaje().setText("Verifique sus credenciales.");
+			ventana.gettContra().setText(null);
 			ventana.gettUsuario().requestFocus();
-			return;
+		} else {
+			abrirVentanaPrincipal();
 		}
-
-		try {
-			if (verificarAcceso(colaborador, password)) {
-				ventana.dispose();
-				abrirVentanaPrincipal();
-			} else {
-			}
-		} catch (Exception e) {
-			ventana.getlMensaje().setText("Error en conexion");
-			EventosUtil.formatException(e);
-			dao.rollBack();
 		}
-	}
+	
+//	public void acceder(){
+//		String usuario = ventana.gettUsuario().getText();
+//		String password = String.valueOf(ventana.gettContra().getPassword());
+//		if (usuario.isEmpty() || password.length() <= 0) {
+//			ventana.gettUsuario().requestFocus();
+//			return;
+//		}
+//		
+//		colaborador = dao.verificarAcceso(usuario, password);
+//		
+//		if (colaborador != null) {
+//			Sesion.getInstance().setColaborador(colaborador);
+//			this.ventana.dispose();
+//			abrirVentanaPrincipal();
+//		}
+//		
+//		if (colaborador == null) {
+//			this.ventana.getlMensaje().setText("ACCESO INCORRECTO");
+//		}
+//		
+//	}
 
 	private void abrirVentanaPrincipal() {
 		try {
-			VentanaPrincipal ventana = new VentanaPrincipal();
-			ventana.setColaborador(colaborador);
-			ventana.setVisible(true);
+			Sesion.getInstance().setColaborador(colaborador);
+			VentanaPrincipal principal = new VentanaPrincipal();
+			principal.getLblPODAC().setText(Sesion.getInstance().getColaborador().toString());
+			ventana.dispose();
+			principal.setVisible(true);
 		} catch (Exception e) {
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 		}
 
 	}
@@ -87,42 +81,16 @@ public class VentanaAccesoControlador implements ColaboradorInterface, ActionLis
 	public ColaboradorDao getDao() {
 		return dao;
 	}
-
-	public List<Colaborador> getColaboradors() {
-		return colaboradors;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-	public ColaboradorInterface getInterfaz() {
-		return interfaz;
-	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Acceder":
-			acceder();
+			comprobarAcceso();
 			break;
 		default:
 			break;
 		}
 
 	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
-
 }

@@ -9,29 +9,25 @@ import javax.swing.JOptionPane;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ConfiguracionDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Configuracion;
-import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.interfaces.AccionesABM;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaConfiguracion;
 
-public class VentanaConfiguracionControlador implements ActionListener, ColaboradorInterface {
+public class VentanaConfiguracionControlador implements ActionListener, AccionesABM {
 	private VentanaConfiguracion vConfiguracion;
 	private String accion;
 	public static String modulo = "CONFIGURACION";
 	
 	private ConfiguracionDao dao;
 	private Configuracion configuracion;
-	private Colaborador colaborador;
 
 	public VentanaConfiguracionControlador(VentanaConfiguracion vConfiguracion) {
 		this.vConfiguracion = vConfiguracion;
+		vConfiguracion.getMiToolBar().setAcciones(this);
 		dao = new ConfiguracionDao();
 		recuperarConfiguracion();
-		vConfiguracion.getBtGuardar().addActionListener(this);
-		vConfiguracion.getBtCancelar().addActionListener(this);
 		estadoInicial(true);
-		setUpEvents();
-
 	}
 
 	private void recuperarConfiguracion() {
@@ -48,13 +44,6 @@ public class VentanaConfiguracionControlador implements ActionListener, Colabora
 			vConfiguracion.gettCedula().setText(configuracion.getCedulaTitular());
 			vConfiguracion.gettUbicacion().setText(configuracion.getUbicacion());
 		}
-	}
-
-	// METODO QUE LEVANTA LOS EVENTOS
-	private void setUpEvents() {
-		vConfiguracion.getBtCancelar().addActionListener(this);
-		vConfiguracion.getBtGuardar().addActionListener(this);
-
 	}
 
 	private boolean validarFormulario() {
@@ -135,14 +124,15 @@ public class VentanaConfiguracionControlador implements ActionListener, Colabora
 			break;
 		}
 	}
-
-	private void guardar() {
+	
+	@Override
+	public void guardar() {
 		if (!validarFormulario()) {
 			return;
 		}
 		if (accion.equals("NUEVO")) {
 			configuracion = new Configuracion();
-			configuracion.setColaborador(colaborador);
+			configuracion.setColaborador(Sesion.getInstance().getColaborador());
 			
 		}
 		configuracion.setTitular(vConfiguracion.gettTitular().getText());
@@ -174,21 +164,28 @@ public class VentanaConfiguracionControlador implements ActionListener, Colabora
 		
 	}
 
-	private void cancelar() {
+	@Override
+	public void cancelar() {
 		vaciarFormulario();
 		vConfiguracion.dispose();
 	}
-	
+
 	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		gestionarColaborador();
+	public void nuevo() {
+		// TODO Auto-generated method stub
+		
 	}
-	
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
+
+	@Override
+	public void modificar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void eliminar() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

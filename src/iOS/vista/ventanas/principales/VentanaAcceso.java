@@ -1,9 +1,8 @@
 package iOS.vista.ventanas.principales;
 
-
-
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -28,14 +27,10 @@ import iOS.vista.componentes.MiBoton;
 
 public class VentanaAcceso extends JDialog {
 
-	private static final long serialVersionUID = 5266841984275796870L;
-	private JPasswordField tContra;
-	private CampoTextoPersonalizado tUsuario;
-	private MiBoton btnCancelar;
-	private MiBoton btnIngresar;
-	private JLabel lblGif;	
-	private VentanaAccesoControlador controlador;
-	private LabelPersonalizado lMensaje;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1641801496110656126L;
 
 	public static void main(String[] args) {
 		try {
@@ -50,7 +45,6 @@ public class VentanaAcceso extends JDialog {
 				try {
 					VentanaAcceso dialog = new VentanaAcceso();
 					dialog.setUpControlador();
-					Thread.sleep(10);
 					dialog.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -60,16 +54,30 @@ public class VentanaAcceso extends JDialog {
 
 		});
 	}
+
+	private VentanaAccesoControlador controlador;
 	
-	private void setUpControlador() {
+	public void setUpControlador() {
 		controlador = new VentanaAccesoControlador(this);
+
 	}
-	
+
+	private JLabel lblGif;
+	private CampoTextoPersonalizado tUsuario;
+	private JPasswordField tContra;
+	private MiBoton btnCancelar;
+	private MiBoton btnIngresar;
+	private LabelPersonalizado lMensaje;
+
+	/**
+	 * Create the dialog.
+	 */
 	public VentanaAcceso() {
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("INGRESAR");
+		setAlwaysOnTop(true);
 		setResizable(false);
-		setBounds(100, 100, 400, 300);
+		setBounds(100, 100, 400, 260);
 		setLocationRelativeTo(this);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -78,7 +86,7 @@ public class VentanaAcceso extends JDialog {
 		lblGif.setIcon(new ImageIcon(VentanaAcceso.class.getResource("/img/LOGO_IOS.png")));
 		lblGif.setForeground(Color.DARK_GRAY);
 		lblGif.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGif.setBounds(180, 52, 200, 160);
+		lblGif.setBounds(178, 11, 200, 133);
 		getContentPane().add(lblGif);
 
 		tUsuario = new CampoTextoPersonalizado();
@@ -97,7 +105,7 @@ public class VentanaAcceso extends JDialog {
 			}
 		});
 		tUsuario.mayusculas();
-		tUsuario.setBounds(20, 83, 150, 30);
+		tUsuario.setBounds(14, 42, 150, 30);
 		getContentPane().add(tUsuario);
 		tUsuario.setColumns(10);
 
@@ -106,7 +114,7 @@ public class VentanaAcceso extends JDialog {
 			@Override
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					controlador.acceder();
+					controlador.comprobarAcceso();
 				}
 				if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
 					System.exit(0);
@@ -119,7 +127,7 @@ public class VentanaAcceso extends JDialog {
 				tContra.selectAll();				
 			}
 		});
-		tContra.setBounds(20, 155, 150, 30);
+		tContra.setBounds(10, 114, 150, 30);
 		getContentPane().add(tContra);
 
 		btnCancelar = new MiBoton("Cancelar");
@@ -130,86 +138,63 @@ public class VentanaAcceso extends JDialog {
 		});
 		btnCancelar.setText("Cancelar");
 		btnCancelar.setActionCommand("Cancelar");
-		btnCancelar.setBounds(20, 227, 100, 30);
+		btnCancelar.setBounds(31, 181, 150, 30);
 		getContentPane().add(btnCancelar);
 
 		btnIngresar = new MiBoton("Acceder");
 		btnIngresar.setActionCommand("Acceder");
-		btnIngresar.setBounds(130, 227, 100, 30);
+		btnIngresar.setBounds(212, 181, 150, 30);
 		getContentPane().add(btnIngresar);
 
 		LabelPersonalizado lblprsnlzdUsuario = new LabelPersonalizado(12);
+		lblprsnlzdUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdUsuario.setText("Usuario");
 		
-		lblprsnlzdUsuario.setBounds(20, 52, 100, 20);
+		lblprsnlzdUsuario.setBounds(10, 11, 100, 20);
 		getContentPane().add(lblprsnlzdUsuario);
 
 		LabelPersonalizado labelPersonalizado_1 = new LabelPersonalizado(12);
+		labelPersonalizado_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		labelPersonalizado_1.setText("Contraseña");
-		labelPersonalizado_1.setBounds(20, 124, 100, 20);
+		labelPersonalizado_1.setBounds(10, 83, 100, 20);
 		getContentPane().add(labelPersonalizado_1);
 		
 		lMensaje = new LabelPersonalizado(0);
-		lMensaje.setBounds(10, 193, 374, 15);
+		lMensaje.setBounds(10, 155, 374, 15);
 		getContentPane().add(lMensaje);
-	}
-	
-	
-
-	public JPasswordField gettContra() {
-		return tContra;
-	}
-
-	public void settContra(JPasswordField tContra) {
-		this.tContra = tContra;
-	}
-
-	public CampoTextoPersonalizado gettUsuario() {
-		return tUsuario;
-	}
-
-	public void settUsuario(CampoTextoPersonalizado tUsuario) {
-		this.tUsuario = tUsuario;
-	}
-
-	public MiBoton getBtnCancelar() {
-		return btnCancelar;
-	}
-
-	public void setBtnCancelar(MiBoton btnCancelar) {
-		this.btnCancelar = btnCancelar;
-	}
-
-	public MiBoton getBtnIngresar() {
-		return btnIngresar;
-	}
-
-	public void setBtnIngresar(MiBoton btnIngresar) {
-		this.btnIngresar = btnIngresar;
-	}
-
-	public JLabel getLblGif() {
-		return lblGif;
-	}
-
-	public void setLblGif(JLabel lblGif) {
-		this.lblGif = lblGif;
-	}
-
-	public VentanaAccesoControlador getControlador() {
-		return controlador;
-	}
-
-	public void setControlador(VentanaAccesoControlador controlador) {
-		this.controlador = controlador;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+	public VentanaAccesoControlador getControlador() {
+		return controlador;
+	}
+
+	public JLabel getLblGif() {
+		return lblGif;
+	}
+
+	public CampoTextoPersonalizado gettUsuario() {
+		return tUsuario;
+	}
+
+	public JPasswordField gettContra() {
+		return tContra;
+	}
+
+	public MiBoton getBtnCancelar() {
+		return btnCancelar;
+	}
+
+	public MiBoton getBtnIngresar() {
+		return btnIngresar;
+	}
+
 	public LabelPersonalizado getlMensaje() {
 		return lMensaje;
 	}
 	
+
 }

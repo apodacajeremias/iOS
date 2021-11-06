@@ -7,13 +7,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.JMenuItem;
@@ -23,28 +20,23 @@ import javax.swing.JTable;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CajaDao;
-import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
-import iOS.modelo.entidades.Colaborador;
-import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.CajaInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
-import iOS.vista.ventanas.VentanaCajaCierre;
-import iOS.vista.ventanas.VentanaCajaMovimiento;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 
-public class TransaccionCajaControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface, ColaboradorInterface{
+public class TransaccionCajaControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface{
 	private TransaccionCaja transaccion;
 	private ModeloTablaCajaMovimiento mtCajaMovimiento;
 	private CajaDao dao;
 	private List<CajaMovimiento> movimientos = new ArrayList<CajaMovimiento>();
 	private CajaMovimiento cajaMovimiento;
 	private Caja caja;
-	private Colaborador colaborador;
+	
 	private ArrayList<Double> ingresos = new ArrayList<>();
 	private ArrayList<Double> retiros = new ArrayList<>();
+	@SuppressWarnings("unused")
 	private CajaDao cajaDao; 
 
 	public TransaccionCajaControlador(TransaccionCaja transaccion) {
@@ -109,13 +101,13 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	}
 
 
-	private void visualizarDetalles(int posicion) {
-		if (posicion < 0) {
-			return;
-		}
-
-		cajaMovimiento = movimientos.get(posicion);
-	}
+//	private void visualizarDetalles(int posicion) {
+//		if (posicion < 0) {
+//			return;
+//		}
+//
+//		cajaMovimiento = movimientos.get(posicion);
+//	}
 
 	public ArrayList<Double> ingresos() {
 		double gs = 0;
@@ -190,68 +182,53 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		}
 	}
 	
-	public Caja cajaAbierta() {
-		Date date = new Date();
-		cajaDao = new CajaDao();
-		Caja caja = cajaDao.encontrarCajaHoy(date, colaborador.getId());
-		return caja;
-	}
+//	public Caja cajaAbierta() {
+//		Date date = new Date();
+//		cajaDao = new CajaDao();
+//		Caja caja = cajaDao.encontrarCajaHoy(date, colaborador.getId());
+//		return caja;
+//	}
 	
-	private void entrega() {
-		if (cajaAbierta() == null) {
-			JOptionPane.showMessageDialog(transaccion, "Debe abrir el caja para realizar el pago de la entrega");
-			return;
-		}
-		
-		if (!(cajaAbierta() == null)) {
-			
-			String pedidoID = JOptionPane.showInputDialog("Introduzca la referencia del pedido");
-			
-			PedidoDao pedidoDao = new PedidoDao();
-			
-			Pedido pedido = pedidoDao.recuperarPorId(Integer.parseInt(pedidoID));
-			if (pedido == null) {
-				JOptionPane.showMessageDialog(transaccion, "No se ha encontrado el pedido indicado.");
-				return;
-			}
-			
-			if (verificarValidezPago(pedido) <= 0) {
-				abrirVentanaCajaMovimiento(true, cajaAbierta(), pedido);
-			}else {
-				String mensaje = "El cliente ya ha realizado una entrega de "+EventosUtil.separadorMiles(verificarValidezPago(pedido));
-				JOptionPane.showMessageDialog(transaccion, mensaje);
-			}
-			
-		}
-
-	}
+//	private void entrega() {
+//		if (cajaAbierta() == null) {
+//			JOptionPane.showMessageDialog(transaccion, "Debe abrir el caja para realizar el pago de la entrega");
+//			return;
+//		}
+//		
+//		if (!(cajaAbierta() == null)) {
+//			
+//			String pedidoID = JOptionPane.showInputDialog("Introduzca la referencia del pedido");
+//			
+//			PedidoDao pedidoDao = new PedidoDao();
+//			
+//			Pedido pedido = pedidoDao.recuperarPorId(Integer.parseInt(pedidoID));
+//			if (pedido == null) {
+//				JOptionPane.showMessageDialog(transaccion, "No se ha encontrado el pedido indicado.");
+//				return;
+//			}
+//			
+//			if (verificarValidezPago(pedido) <= 0) {
+//				abrirVentanaCajaMovimiento(true, cajaAbierta(), pedido);
+//			}else {
+//				String mensaje = "El cliente ya ha realizado una entrega de "+EventosUtil.separadorMiles(verificarValidezPago(pedido));
+//				JOptionPane.showMessageDialog(transaccion, mensaje);
+//			}
+//			
+//		}
+//
+//	}
 	
-	private double verificarValidezPago(Pedido pedido) {
-		List<CajaMovimiento> pagos = cajaDao.recuperarPagoValido(pedido.getId());
-		for (int i = 0; i < pagos.size(); i++) {
-			if (!pagos.get(i).isEsAnulado()) {
-				return pagos.get(i).getValorGS();
-			}
-		}
-		return 0;
-	}
+//	private double verificarValidezPago(Pedido pedido) {
+//		List<CajaMovimiento> pagos = cajaDao.recuperarEntregaPedido(pedido.getId());
+//		for (int i = 0; i < pagos.size(); i++) {
+//			if (!pagos.get(i).isEsAnulado()) {
+//				return pagos.get(i).getValorGS();
+//			}
+//		}
+//		return 0;
+//	}
 	
-	private void abrirVentanaCajaMovimiento(boolean esIngreso, Caja c, Pedido p) {
-		VentanaCajaMovimiento ventana = new VentanaCajaMovimiento();
-		if (esIngreso == true) {
-			if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "INGRESAR")) {
-				ventana.setUpControlador(esIngreso);
-				ventana.getControlador().setCaja(c);
-				ventana.getControlador().setColaborador(colaborador);
-				ventana.getControlador().setCliente(p.getCliente());
-				ventana.getControlador().setPedido(p);
-				ventana.getTxtObservacion().setText("ENTREGA PEDIDO "+p.getId());
-				ventana.getControlador().setInterfaz(this);
-				ventana.setVisible(true);
-				return;
-			}
-		}
-	}
+	
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -277,16 +254,16 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == transaccion.getTableMovimientos() && e.getClickCount() == 1) {
-			visualizarDetalles(transaccion.getTableMovimientos().getSelectedRow());
-		}
-		if (e.getSource() == transaccion.getTableMovimientos() && e.getClickCount() == 2) {
-			if (cajaMovimiento.getTipoValor().equalsIgnoreCase("INGRESO")) {
-				abrirVentanaCajaMovimiento(true);
-			} else {
-				abrirVentanaCajaMovimiento(false);
-			}
-		}
+//		if (e.getSource() == transaccion.getTableMovimientos() && e.getClickCount() == 1) {
+//			visualizarDetalles(transaccion.getTableMovimientos().getSelectedRow());
+//		}
+//		if (e.getSource() == transaccion.getTableMovimientos() && e.getClickCount() == 2) {
+//			if (cajaMovimiento.getTipoValor().equalsIgnoreCase("INGRESO")) {
+//				abrirVentanaCajaMovimiento(true);
+//			} else {
+//				abrirVentanaCajaMovimiento(false);
+//			}
+//		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -311,35 +288,20 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
-		case "IngresarValor":
-			abrirVentanaCajaMovimiento(true);
-			break;
-		case "RetirarValor":
-			abrirVentanaCajaMovimiento(false);
-			break;
-		case "CerrarCaja":
-			abrirVentanaCajaCierre();
-			break;
-		case "Entrega":
-			entrega();
-			break;
+//		case "IngresarValor":
+//			abrirVentanaCajaMovimiento(true);
+//			break;
+//		case "RetirarValor":
+//			abrirVentanaCajaMovimiento(false);
+//			break;
+//		case "CerrarCaja":
+//			abrirVentanaCajaCierre();
+//			break;
+//		case "Entrega":
+//			entrega();
+//			break;
 		default:
 			break;
-		}
-
-	}
-
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if (colaborador == null) {
-			EventosUtil.estadosCampoPersonalizado(transaccion.getContentPane(), false);
-			return;
 		}
 
 	}
@@ -370,47 +332,64 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		mtCajaMovimiento.setMovimiento(movimientos);
 		mtCajaMovimiento.fireTableDataChanged();
 	}
+	
+//	private void abrirVentanaCajaMovimiento(boolean esIngreso, Caja c, Pedido p) {
+//		VentanaCajaMovimiento ventana = new VentanaCajaMovimiento();
+//		if (esIngreso == true) {
+//			if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "INGRESAR")) {
+//				ventana.setUpControlador(esIngreso);
+//				ventana.getControlador().setCaja(c);
+//				ventana.getControlador().setColaboradorQueRegistra(colaborador);
+//				ventana.getControlador().setCliente(p.getCliente());
+//				ventana.getControlador().setPedido(p);
+//				ventana.getTxtObservacion().setText("ENTREGA PEDIDO "+p.getId());
+//				ventana.getControlador().setInterfaz(this);
+//				ventana.setVisible(true);
+//				return;
+//			}
+//		}
+//	}
 
-	private void abrirVentanaCajaMovimiento(boolean esIngreso) {
-		VentanaCajaMovimiento ventana = new VentanaCajaMovimiento();
-		if (esIngreso == false) {
-			if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "RETIRAR")) {
-				ventana.setUpControlador(esIngreso);
-				ventana.getControlador().setInterfaz(this);
-				ventana.getControlador().setCaja(caja);
-				ventana.getControlador().setColaborador(colaborador);
-				ventana.setVisible(true);
-				return;
-			}
-		}
-		
-		if (esIngreso == true) {
-			if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "INGRESAR")) {
-				ventana.setUpControlador(esIngreso);
-				ventana.getControlador().setInterfaz(this);
-				ventana.getControlador().setCaja(caja);
-				ventana.getControlador().setColaborador(colaborador);
-				ventana.setVisible(true);
-				return;
-			}
-		}
-
-		ventana.addWindowListener(new WindowAdapter() {
-			public void windowClosed(WindowEvent e) {
-				ingresos();
-				retiros();
-				mtCajaMovimiento.fireTableDataChanged();
-			}
-		});
-
-	}
-
-	private void abrirVentanaCajaCierre() {
-		VentanaCajaCierre ventana = new VentanaCajaCierre();
-		ventana.setUpControlador();
-		ventana.getControlador().setCaja(caja);
-		transaccion.dispose();
-		ventana.setVisible(true);
-	}
+//	private void abrirVentanaCajaMovimiento(boolean esIngreso) {
+//		VentanaCajaMovimiento ventana = new VentanaCajaMovimiento();
+//		if (esIngreso == false) {
+//			if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "RETIRAR")) {
+//				ventana.setUpControlador(esIngreso);
+//				ventana.getControlador().setInterfaz(this);
+//				ventana.getControlador().setCaja(caja);
+//				ventana.getControlador().setColaboradorQueRegistra(colaborador);
+//				ventana.setVisible(true);
+//				return;
+//			}
+//		}
+//		
+//		if (esIngreso == true) {
+//			if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "INGRESAR")) {
+//				ventana.setUpControlador(esIngreso);
+//				ventana.getControlador().setInterfaz(this);
+//				ventana.getControlador().setCaja(caja);
+//				ventana.getControlador().setColaboradorQueRegistra(colaborador);
+//				ventana.setVisible(true);
+//				return;
+//			}
+//		}
+//
+//		ventana.addWindowListener(new WindowAdapter() {
+//			public void windowClosed(WindowEvent e) {
+//				ingresos();
+//				retiros();
+//				mtCajaMovimiento.fireTableDataChanged();
+//			}
+//		});
+//
+//	}
+//
+//	private void abrirVentanaCajaCierre() {
+//		VentanaCajaCierre ventana = new VentanaCajaCierre();
+//		ventana.setUpControlador();
+//		ventana.getControlador().setCaja(caja);
+//		transaccion.dispose();
+//		ventana.setVisible(true);
+//	}
 }
 

@@ -7,16 +7,14 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import iOS.modelo.dao.MaterialDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Material;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.MaterialInterface;
 import iOS.vista.modelotabla.ModeloTablaMaterial;
 import iOS.vista.ventanas.VentanaMaterial;
 import iOS.vista.ventanas.buscadores.BuscadorMaterial;
 
-public class BuscadorMaterialControlador implements KeyListener, MouseListener, AccionesABM, MaterialInterface, ColaboradorInterface {
+public class BuscadorMaterialControlador implements KeyListener, MouseListener, AccionesABM, MaterialInterface {
 
 	// ATRIBUTOS
 	private BuscadorMaterial bMaterial;
@@ -25,7 +23,6 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 	private List<Material> lista;
 	private MaterialInterface interfaz;
 	private Material material;
-	private Colaborador colaborador;
 
 	public void setInterfaz(MaterialInterface interfaz) {
 		this.interfaz = interfaz;
@@ -156,17 +153,5 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 		this.material = material;
 		
 	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
 
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
-	}
 }

@@ -21,6 +21,7 @@ import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.Sector;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.ColaboradorInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaColaborador;
 
 public class VentanaColaboradorControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ColaboradorInterface{
@@ -35,7 +36,6 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 
 
 	private Colaborador colaborador;
-	private Colaborador colaboradorQueRegistra;
 
 	private ColaboradorDao dao;
 	private SectorDao daoSector;
@@ -269,7 +269,7 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 
 		if (accion.equals("NUEVO")) {
 			colaborador = new Colaborador();
-			colaborador.setColaboradorQueRegistra(colaboradorQueRegistra);
+			colaborador.setColaboradorQueRegistra(Sesion.getInstance().getColaborador());
 		}		
 
 		//Informacion personal
@@ -324,14 +324,14 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 
 	@Override
 	public void setColaborador(Colaborador colaborador) {
-		this.colaboradorQueRegistra = colaborador;
+		this.colaborador = colaborador;
 
 		gestionarColaborador();
 	}
 
 	@Override
 	public void gestionarColaborador() {
-		if (colaboradorQueRegistra == null) {
+		if (colaborador == null) {
 			return;
 		}
 

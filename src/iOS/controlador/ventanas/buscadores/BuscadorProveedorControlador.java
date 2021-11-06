@@ -7,16 +7,14 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import iOS.modelo.dao.ProveedorDao;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Proveedor;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.ProveedorInterface;
 import iOS.vista.modelotabla.ModeloTablaProveedor;
 import iOS.vista.ventanas.VentanaProveedor;
 import iOS.vista.ventanas.buscadores.BuscadorProveedor;
 
-public class BuscadorProveedorControlador implements KeyListener, MouseListener, AccionesABM, ProveedorInterface, ColaboradorInterface {
+public class BuscadorProveedorControlador implements KeyListener, MouseListener, AccionesABM, ProveedorInterface {
 
 	// ATRIBUTOS
 	private BuscadorProveedor bProveedor;
@@ -25,7 +23,6 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 	private List<Proveedor> lista;
 	private ProveedorInterface interfaz;
 	private Proveedor proveedor;
-	private Colaborador colaborador;
 
 	// CONSTRUCTOR
 	public BuscadorProveedorControlador(BuscadorProveedor bProveedor) {
@@ -157,18 +154,5 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 
-	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-
-	public void gestionarColaborador() {
-		if(colaborador == null) {
-			return;
-		}
 	}
 }

@@ -1,9 +1,9 @@
 package iOS.vista.componentes;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -41,23 +41,8 @@ public class ReporteGenerico extends JDialog {
 	private JScrollPane scrollPane_1;
 	private JLabel lblNewLabel;
 	private JPanel panel;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ReporteGenerico dialog = new ReporteGenerico();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JRadioButton rb3;
+	private JRadioButton rb4;
 
 	/**
 	 * Create the dialog.
@@ -130,31 +115,50 @@ public class ReporteGenerico extends JDialog {
 		
 		cbColaborador = new JComboBox();
 		cbColaborador.setFont(new Font("Tahoma", Font.BOLD, 12));
-		cbColaborador.setBounds(10, 61, 250, 25);
+		cbColaborador.setBounds(9, 61, 250, 25);
 		panel.add(cbColaborador);
 		
 		dcMeses = new JMonthChooser();
-		dcMeses.setBounds(299, 61, 99, 25);
+		dcMeses.setBounds(268, 61, 99, 25);
 		panel.add(dcMeses);
 		
 		dcAnos = new JYearChooser();
-		dcAnos.setBounds(408, 61, 47, 25);
+		dcAnos.setBounds(376, 61, 47, 25);
 		panel.add(dcAnos);
 		
 		lblPorPeriodos = new JLabel("Por periodos");
 		lblPorPeriodos.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblPorPeriodos.setBounds(299, 36, 77, 14);
+		lblPorPeriodos.setBounds(268, 36, 77, 14);
 		panel.add(lblPorPeriodos);
 		
 		rb1 = new JRadioButton("Incluir");
 		rb1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		rb1.setBounds(490, 25, 150, 25);
+		rb1.setBounds(432, 25, 150, 25);
 		panel.add(rb1);
 		
 		rb2 = new JRadioButton("Incluir");
 		rb2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		rb2.setBounds(490, 61, 150, 25);
+		rb2.setBounds(432, 61, 150, 25);
 		panel.add(rb2);
+		
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(rb1);
+		bg.add(rb2);
+		
+		rb3 = new JRadioButton("Reporte Diario");
+		rb3.setSelected(true);
+		rb3.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		rb3.setBounds(591, 25, 150, 25);
+		panel.add(rb3);
+		
+		rb4 = new JRadioButton("Reporte Mensual");
+		rb4.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		rb4.setBounds(591, 61, 150, 25);
+		panel.add(rb4);
+		
+		ButtonGroup bg2 = new ButtonGroup();
+		bg2.add(rb3);
+		bg2.add(rb4);
 
 	}
 
@@ -229,6 +233,14 @@ public class ReporteGenerico extends JDialog {
 
 	public JPanel getPanel() {
 		return panel;
+	}
+
+	public JRadioButton getRb3() {
+		return rb3;
+	}
+
+	public JRadioButton getRb4() {
+		return rb4;
 	}
 	
 	
