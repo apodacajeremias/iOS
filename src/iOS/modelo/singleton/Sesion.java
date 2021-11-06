@@ -4,15 +4,15 @@ import javax.swing.JOptionPane;
 
 import iOS.modelo.entidades.Colaborador;
 
-public class Sesion {	
+public class Sesion {
 	private static Sesion sesion;
-	
+
 	private Colaborador colaborador;
-	
-	private Sesion() {	
+
+	private Sesion() {
 	}
-	
-	//synchronized por si dos o mas hilos llaman al metodo al mismo tiempo
+
+	// synchronized por si dos o mas hilos llaman al metodo al mismo tiempo
 	// entonces el primero ejecuta y el segundo aguarda
 	public synchronized static Sesion getInstance() {
 		if (sesion == null) {
@@ -31,7 +31,5 @@ public class Sesion {
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
-	
-	
 
 }

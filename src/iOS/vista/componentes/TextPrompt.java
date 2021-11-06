@@ -6,6 +6,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -57,7 +58,7 @@ public class TextPrompt extends JLabel implements FocusListener, DocumentListene
 		//		setForeground(component.getForeground());
 		setForeground(Color.gray);
 		//		setBorder(new EmptyBorder(component.getInsets()));
-		setHorizontalAlignment(JLabel.LEADING);
+		setHorizontalAlignment(SwingConstants.LEADING);
 
 		component.addFocusListener(this);
 		document.addDocumentListener(this);
@@ -192,10 +193,12 @@ public class TextPrompt extends JLabel implements FocusListener, DocumentListene
 
 	// Implement FocusListener
 
+	@Override
 	public void focusGained(FocusEvent e) {
 		checkForPrompt();
 	}
 
+	@Override
 	public void focusLost(FocusEvent e) {
 		focusLost++;
 		checkForPrompt();
@@ -203,14 +206,17 @@ public class TextPrompt extends JLabel implements FocusListener, DocumentListene
 
 	// Implement DocumentListener
 
+	@Override
 	public void insertUpdate(DocumentEvent e) {
 		checkForPrompt();
 	}
 
+	@Override
 	public void removeUpdate(DocumentEvent e) {
 		checkForPrompt();
 	}
 
+	@Override
 	public void changedUpdate(DocumentEvent e) {
 	}
 }

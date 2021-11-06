@@ -24,16 +24,14 @@ import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaColaborador;
 
-public class VentanaColaboradorControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ColaboradorInterface{
+public class VentanaColaboradorControlador
+		implements AccionesABM, ActionListener, MouseListener, KeyListener, ColaboradorInterface {
 	private VentanaColaborador ventana;
-
 
 	SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd yyyy");
 	DecimalFormat formatter = new DecimalFormat("#,###.##");
 
-
 	private String accion;
-
 
 	private Colaborador colaborador;
 
@@ -44,16 +42,13 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 	private List<Sector> sectores = new ArrayList<>();
 	private List<Rol> roles = new ArrayList<>();
 
-
 	public VentanaColaboradorControlador(VentanaColaborador ventana) {
 		this.ventana = ventana;
 		ventana.getMiToolBar().setAcciones(this);
 
-
 		dao = new ColaboradorDao();
 		daoSector = new SectorDao();
 		daoRol = new RolDao();
-
 
 		estadoInicial(true);
 		setUpEvents();
@@ -61,7 +56,7 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 	}
 
 	private void setUpEvents() {
-		//MOUSE CLICK
+		// MOUSE CLICK
 		this.ventana.getRdActivarAcceso().addMouseListener(this);
 	}
 
@@ -105,7 +100,7 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 
 	}
 
-	@SuppressWarnings({ "unchecked"  })
+	@SuppressWarnings({ "unchecked" })
 	private void recuperarSectores() {
 		sectores = daoSector.recuperarTodoOrdenadoPorNombre();
 
@@ -117,7 +112,7 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 		}
 	}
 
-	private boolean validarFormulario(){
+	private boolean validarFormulario() {
 		if (ventana.gettIdentificacion().getText().isEmpty()) {
 			ventana.gettIdentificacion().requestFocus();
 			ventana.gettIdentificacion().avisar();
@@ -169,7 +164,7 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 		EventosUtil.estadosCampoPersonalizado(ventana.getpAcceso(), true);
 		String nombre = ventana.gettNombreCompleto().getText();
 
-		String[]split = nombre.split("\\s");
+		String[] split = nombre.split("\\s");
 
 		ArrayList<String> pal = new ArrayList<>();
 
@@ -177,7 +172,7 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 
 		for (int i = 0; i < split.length; i++) {
 			pal.add(split[i]);
-			colaborador = colaborador+ pal.get(i).charAt(0);
+			colaborador = colaborador + pal.get(i).charAt(0);
 		}
 		ventana.gettPassword().setText("12345");
 		ventana.gettUsuario().setText(colaborador);
@@ -270,34 +265,33 @@ public class VentanaColaboradorControlador implements AccionesABM, ActionListene
 		if (accion.equals("NUEVO")) {
 			colaborador = new Colaborador();
 			colaborador.setColaboradorQueRegistra(Sesion.getInstance().getColaborador());
-		}		
+		}
 
-		//Informacion personal
+		// Informacion personal
 		colaborador.setContacto(ventana.gettContacto().getText());
 		colaborador.setIdentificacion(ventana.gettIdentificacion().getText());
 		colaborador.setNombreCompleto(ventana.gettNombreCompleto().getText());
 		colaborador.setFueDesvinculado(false);
 
-		//Informacion de acceso
+		// Informacion de acceso
 		colaborador.setEsActivo(true);
 		colaborador.setPassword(String.valueOf(ventana.gettPassword().getPassword()));
 		colaborador.setUsuario(ventana.gettUsuario().getText());
 		colaborador.setRol((Rol) ventana.getCbRol().getSelectedItem());
 
-		//Informacion en empresa
+		// Informacion en empresa
 		colaborador.setEsOperador(!ventana.getRdEsEncargado().isSelected());
 		colaborador.setFechaIngresoColaborador(new Date());
 		colaborador.setSector((Sector) ventana.getCbSector().getSelectedItem());
 
-		//Maneja desvinculacion
+		// Maneja desvinculacion
 		if (ventana.getRdDesvinculado().isSelected() == true) {
 			colaborador.setEsActivo(false);
 			colaborador.setFueDesvinculado(true);
 			colaborador.setFechaDesvinculacionColaborador(new Date());
 		}
 
-
-		//Informacion salarial
+		// Informacion salarial
 		colaborador.setSalario(ventana.gettValorSalario().getValue());
 		colaborador.setTipoSalario(ventana.getCbTipoSalario().getSelectedItem().toString());
 

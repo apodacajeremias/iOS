@@ -1,13 +1,11 @@
 package iOS.vista.ventanas.reportes;
 
-import java.awt.Font;
-
 import iOS.controlador.ventanas.reportes.ReporteValesControlador;
 import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.MiBoton;
 import iOS.vista.componentes.ReporteGenerico;
 
-public class ReporteVales extends ReporteGenerico {	
+public class ReporteVales extends ReporteGenerico {
 
 	/**
 	 * 
@@ -16,7 +14,7 @@ public class ReporteVales extends ReporteGenerico {
 	private LabelPersonalizado lCliente;
 	private MiBoton btnBuscarCliente;
 	private ReporteValesControlador controlador;
-	
+
 	public void setUpControlador() {
 		controlador = new ReporteValesControlador(this);
 	}
@@ -30,18 +28,17 @@ public class ReporteVales extends ReporteGenerico {
 		getLblNewLabel().setLocation(10, 36);
 		getLblPorPeriodos().setLocation(299, 36);
 		getRb1().setLocation(490, 25);
-		getDcAnos().setVisible(false);
 
 		getLblNewLabel().setText("Cliente");
-		getL3().setFont(new Font("Tahoma", Font.BOLD, 20));
-		getL3().setSize(420, 25);
+//		getL3().setFont(new Font("Tahoma", Font.BOLD, 20));
+//		getL3().setSize(420, 25);
 		getScrollPane().setLocation(10, 148);
-		getScrollPane_1().setLocation(454, 148);
-		getL3().setLocation(454, 122);
-		getL3().setText("Pagos");
+//		getScrollPane_1().setLocation(454, 148);
+//		getL3().setLocation(454, 122);
+//		getL3().setText("Pagos");
 		getL2().setVisible(false);
 		getL1().setText("Deudas");
-		getScrollPane_1().setSize(420, 402);
+//		getScrollPane_1().setSize(420, 402);
 		getScrollPane().setSize(420, 402);
 		getRb2().setVisible(false);
 		getRb1().setText("Incluir anulados");
@@ -55,7 +52,6 @@ public class ReporteVales extends ReporteGenerico {
 		lCliente = new LabelPersonalizado(0);
 		lCliente.setBounds(10, 61, 250, 20);
 		getPanel().add(lCliente);
-
 
 	}
 
@@ -74,6 +70,5 @@ public class ReporteVales extends ReporteGenerico {
 	public ReporteValesControlador getControlador() {
 		return controlador;
 	}
-
 
 }

@@ -33,6 +33,7 @@ public class ModeloTablaPedido extends AbstractTableModel {
 		return columnas.length;
 	}
 
+	@Override
 	public String getColumnName(int column){
 		return columnas[column];
 	}

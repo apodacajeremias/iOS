@@ -1,6 +1,5 @@
 package iOS.controlador.ventanas.buscadores;
 
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -14,8 +13,6 @@ import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.modelotabla.ModeloTablaColaborador;
 import iOS.vista.ventanas.VentanaColaborador;
 import iOS.vista.ventanas.buscadores.BuscadorColaborador;
-
-
 
 public class BuscadorColaboradorControlador implements KeyListener, MouseListener, AccionesABM {
 
@@ -123,24 +120,24 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 	@Override
 	public void modificar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void eliminar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void guardar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void cancelar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

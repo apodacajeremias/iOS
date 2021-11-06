@@ -29,7 +29,8 @@ import iOS.vista.ventanas.VentanaCajaCierre;
 import iOS.vista.ventanas.VentanaCajaMovimiento;
 import iOS.vista.ventanas.transacciones.TransaccionCaja2;
 
-public class TransaccionCajaControlador2 implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface {
+public class TransaccionCajaControlador2
+		implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface {
 	private TransaccionCaja2 transaccion;
 	private ModeloTablaCajaMovimiento mtCajaMovimiento;
 	private CajaDao dao;
@@ -73,7 +74,7 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 			return true;
 		}
 	}
-	
+
 	private void estadoInicial(boolean b) {
 		EventosUtil.estadosBotones(transaccion.getBtnIngresarEntrega(), b);
 		EventosUtil.estadosBotones(transaccion.getBtnIngresarPago(), b);
@@ -126,7 +127,7 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 	}
 
 	private JPopupMenu tablePopup(final JTable table, final int row) {
-		JPopupMenu popup = new JPopupMenu("Popup");		
+		JPopupMenu popup = new JPopupMenu("Popup");
 		JMenuItem imprimirItem = new JMenuItem("Anular");
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
@@ -138,7 +139,6 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 		popup.add(imprimirItem);
 		return popup;
 	}
-
 
 	private void visualizarDetalles(int posicion) {
 		if (posicion < 0) {
@@ -157,9 +157,9 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 		try {
 			for (int i = 0; i < movimientos.size(); i++) {
 				if (!movimientos.get(i).isEsRetiro() && !movimientos.get(i).isEsAnulado()) {
-					gs =+ gs + movimientos.get(i).getValorGS();
-					rs =+ rs + movimientos.get(i).getValorRS();
-					us =+ us + movimientos.get(i).getValorUS();
+					gs = +gs + movimientos.get(i).getValorGS();
+					rs = +rs + movimientos.get(i).getValorRS();
+					us = +us + movimientos.get(i).getValorUS();
 				}
 			}
 		} catch (Exception e) {
@@ -169,9 +169,9 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 		ingresos.add(rs);
 		ingresos.add(us);
 
-		transaccion.getlSaldoIngresoGS().setText(EventosUtil.separadorMiles(gs)+" Gs.");
-		transaccion.getlSaldoIngresoRS().setText(EventosUtil.separadorDecimales(rs)+" Rs.");
-		transaccion.getlSaldoIngresoUS().setText(EventosUtil.separadorDecimales(us)+" Us.");
+		transaccion.getlSaldoIngresoGS().setText(EventosUtil.separadorMiles(gs) + " Gs.");
+		transaccion.getlSaldoIngresoRS().setText(EventosUtil.separadorDecimales(rs) + " Rs.");
+		transaccion.getlSaldoIngresoUS().setText(EventosUtil.separadorDecimales(us) + " Us.");
 
 		return ingresos;
 	}
@@ -184,22 +184,22 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 		try {
 			for (int i = 0; i < movimientos.size(); i++) {
 				if (movimientos.get(i).isEsRetiro() && !movimientos.get(i).isEsAnulado()) {
-					gs =+ gs + movimientos.get(i).getValorGS();
-					rs =+ rs + movimientos.get(i).getValorRS();
-					us =+ us + movimientos.get(i).getValorUS();
+					gs = +gs + movimientos.get(i).getValorGS();
+					rs = +rs + movimientos.get(i).getValorRS();
+					us = +us + movimientos.get(i).getValorUS();
 				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 		retiros.add(gs);
 		retiros.add(rs);
 		retiros.add(us);
 
-		transaccion.getlSaldoRetiroGS().setText(EventosUtil.separadorMiles(gs)+" Gs.");
-		transaccion.getlSaldoRetiroRS().setText(EventosUtil.separadorDecimales(rs)+" Rs.");
-		transaccion.getlSaldoRetiroUS().setText(EventosUtil.separadorDecimales(us)+" Us.");
+		transaccion.getlSaldoRetiroGS().setText(EventosUtil.separadorMiles(gs) + " Gs.");
+		transaccion.getlSaldoRetiroRS().setText(EventosUtil.separadorDecimales(rs) + " Rs.");
+		transaccion.getlSaldoRetiroUS().setText(EventosUtil.separadorDecimales(us) + " Us.");
 
 		return retiros;
 
@@ -209,10 +209,8 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 		if (row < 0) {
 			return;
 		}
-		int respuesta = JOptionPane
-				.showConfirmDialog(null,
-						"¿Desea anular este pago?",
-						"ATENCION", JOptionPane.YES_NO_OPTION);
+		int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea anular este pago?", "ATENCION",
+				JOptionPane.YES_NO_OPTION);
 
 		if (respuesta == JOptionPane.YES_OPTION) {
 			cajaMovimiento = movimientos.get(row);
@@ -231,55 +229,63 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 		}
 	}
 
-
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == transaccion.getTableMovimientos()) {
-			//			ingresos();
-			//			retiros();
+			// ingresos();
+			// retiros();
 		}
 	}
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == transaccion.getTableMovimientos() && e.getClickCount() == 1) {
 			visualizarDetalles(transaccion.getTableMovimientos().getSelectedRow());
 		}
 	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
@@ -313,10 +319,10 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 	private void gestionarCaja() {
 		if (caja == null) {
 			return;
-		}	
-		transaccion.getlSaldoInicialGS().setText(EventosUtil.separadorMiles(caja.getSaldoInicialGS())+" Gs.");
-		transaccion.getlSaldoInicialRS().setText(EventosUtil.separadorDecimales(caja.getSaldoInicialRS())+" Rs.");
-		transaccion.getlSaldoInicialUS().setText(EventosUtil.separadorDecimales(caja.getSaldoInicialUS())+" Us.");
+		}
+		transaccion.getlSaldoInicialGS().setText(EventosUtil.separadorMiles(caja.getSaldoInicialGS()) + " Gs.");
+		transaccion.getlSaldoInicialRS().setText(EventosUtil.separadorDecimales(caja.getSaldoInicialRS()) + " Rs.");
+		transaccion.getlSaldoInicialUS().setText(EventosUtil.separadorDecimales(caja.getSaldoInicialUS()) + " Us.");
 
 		try {
 			movimientos = dao.ordenarMovimientosPorID(caja.getId());
@@ -328,7 +334,6 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 			e.printStackTrace();
 		}
 	}
-
 
 	private void abrirVentanaCajaApertura() {
 		VentanaCajaApertura ventana = new VentanaCajaApertura();
@@ -376,6 +381,4 @@ public class TransaccionCajaControlador2 implements ActionListener, MouseListene
 		ventana.setVisible(true);
 	}
 
-
 }
-

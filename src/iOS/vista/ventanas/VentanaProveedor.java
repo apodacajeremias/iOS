@@ -4,10 +4,10 @@ import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.VentanaProveedorControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
@@ -28,7 +28,7 @@ public class VentanaProveedor extends VentanaGenerica {
 		try {
 			VentanaProveedor dialog = new VentanaProveedor();
 			dialog.setUpControlador();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();

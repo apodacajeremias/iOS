@@ -18,6 +18,7 @@ public class LoadingPanel extends JPanel {
 	URL url = getClass().getResource("/img/logo.png");
 	Image image = new ImageIcon(url).getImage();
 
+	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 		setOpaque(false);

@@ -31,6 +31,7 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 		return columnas[c];
 	}
 
+	@Override
 	public int getColumnCount() {
 
 		return columnas.length;
@@ -112,37 +113,37 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 			//			marca = marcas.get(0);
 			row.setMarca((Marca) aValue);
 		}else if(3 == c) {
-			if (Double.parseDouble((String) nv) <= 0) {
+			if (Double.parseDouble(nv) <= 0) {
 				return;
 			}
-			row.setMedidaAncho(Double.parseDouble((String) nv));
+			row.setMedidaAncho(Double.parseDouble(nv));
 		}
 		else if(4 == c) {
-			if (Double.parseDouble((String) nv) <= 0) {
+			if (Double.parseDouble(nv) <= 0) {
 				return;
 			}
-			row.setMedidaAlto(Double.parseDouble((String) nv));
+			row.setMedidaAlto(Double.parseDouble(nv));
 		}
 		else if(5 == c) {
-			if (Double.parseDouble((String) nv) <= 0) {
+			if (Double.parseDouble(nv) <= 0) {
 				return;
 			}
-			row.setMedidaDetalle(Double.parseDouble((String) nv));
+			row.setMedidaDetalle(Double.parseDouble(nv));
 		}
 		else if(6 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			row.setCantidadDetalle(Integer.parseInt((String) nv));
+			row.setCantidadDetalle(Integer.parseInt(nv));
 		}
 
 		//Al insertar costo del material
 		else if(7 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			row.setCostoMaterial(Integer.parseInt((String) nv));
-			costo = Integer.parseInt((String) nv);
+			row.setCostoMaterial(Integer.parseInt(nv));
+			costo = Integer.parseInt(nv);
 			row.setPrecioMinorista((int) ((1+(porcentajeMinorista/100d))*costo));	
 
 			int nume = 7;
@@ -169,17 +170,17 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 
 		//Al insertar precio minorista
 		else if(8 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			precioMinorista = Integer.parseInt((String) nv);	
+			precioMinorista = Integer.parseInt(nv);	
 			if (costo >= precioMinorista) {
 				return;
 			}
-			row.setPrecioMinorista(Integer.parseInt((String) nv));
+			row.setPrecioMinorista(Integer.parseInt(nv));
 			row.setPorcentajeMinorista(((precioMinorista-costo)/costo)*100d);
 
-			System.out.println(Integer.parseInt((String) nv));
+			System.out.println(Integer.parseInt(nv));
 			System.out.println("1: "+Double.parseDouble(df.format(((precioMinorista-costo)/costo)*100d)));
 			System.out.println("2: "+df.format(((precioMinorista-costo)/costo)*100d));
 			System.out.println("3: "+((precioMinorista-costo)/costo)*100d);
@@ -192,52 +193,52 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 
 		//Al insertar porcentaje minorista
 		else if(9 == c) {
-			if (Double.parseDouble((String) nv) <= 0) {
+			if (Double.parseDouble(nv) <= 0) {
 				return;
 			}
-			row.setPorcentajeMinorista(Double.parseDouble((String) nv));
-			porcentajeMinorista = Double.parseDouble((String) nv);
+			row.setPorcentajeMinorista(Double.parseDouble(nv));
+			porcentajeMinorista = Double.parseDouble(nv);
 			row.setPrecioMinorista((int) ((1+(porcentajeMinorista/100d))*costo));
 		}
 		else if(10 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			row.setPrecioMayorista5(Integer.parseInt((String) nv));
+			row.setPrecioMayorista5(Integer.parseInt(nv));
 		}
 		else if(11 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			row.setPrecioMayorista10(Integer.parseInt((String) nv));
+			row.setPrecioMayorista10(Integer.parseInt(nv));
 		}
 		else if(12 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			row.setPrecioMayorista50(Integer.parseInt((String) nv));
+			row.setPrecioMayorista50(Integer.parseInt(nv));
 		}
 		else if(13 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			row.setPrecioMayorista100(Integer.parseInt((String) nv));
+			row.setPrecioMayorista100(Integer.parseInt(nv));
 		}
 		else if(14 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}
-			row.setPrecioMayorista200(Integer.parseInt((String) nv));
+			row.setPrecioMayorista200(Integer.parseInt(nv));
 		}
 		else if(15 == c) {
-			if (Integer.parseInt((String) nv) <= 0) {
+			if (Integer.parseInt(nv) <= 0) {
 				return;
 			}			
-			precioMayorista = Integer.parseInt((String) nv);	
+			precioMayorista = Integer.parseInt(nv);	
 			if (costo >= precioMayorista) {
 				return;
 			}
-			row.setPrecioMayorista300(Integer.parseInt((String) nv));
+			row.setPrecioMayorista300(Integer.parseInt(nv));
 			row.setPorcentajeMayorista(((precioMayorista-costo)/costo)*100d);
 			porcentajeMayorista = ((precioMayorista-costo)/costo)*100d;
 
@@ -271,11 +272,11 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 //			row.setPrecioMayorista300((int) precioMa);
 		}
 		else if(16 == c) {
-			if (Double.parseDouble((String) nv) <= 0) {
+			if (Double.parseDouble(nv) <= 0) {
 				return;
 			}
-			row.setPorcentajeMayorista(Double.parseDouble((String) nv));
-			porcentajeMayorista = Double.parseDouble((String) nv);
+			row.setPorcentajeMayorista(Double.parseDouble(nv));
+			porcentajeMayorista = Double.parseDouble(nv);
 
 			int nume = 7;
 			int[] list = new int[nume];

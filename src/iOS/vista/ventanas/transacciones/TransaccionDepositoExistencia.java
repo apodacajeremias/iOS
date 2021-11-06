@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.transacciones.TransaccionDepositoExistenciaControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
@@ -30,11 +31,12 @@ public class TransaccionDepositoExistencia extends JDialog {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TransaccionDepositoExistencia dialog = new TransaccionDepositoExistencia();
 					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

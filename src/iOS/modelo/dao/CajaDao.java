@@ -170,5 +170,53 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
+	
+	public List<Caja> reporteDiarioCaja(int colaborador, boolean estado, boolean cajaCerrada, Date fecha) {
+		getSession().beginTransaction();
+		String sql = "FROM Caja " 
+				+ "WHERE colaborador.id = :colaborador "
+				+ "AND estado = :estado "
+				+ "AND cajaCerrada = :cajaCerrada " 
+				+ "AND DATE(fechaRegistro) = :fecha " 
+				+ "ORDER BY id DESC";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<Caja> query = getSession().createQuery(sql);
+			query.setParameter("colaborador", colaborador);
+			query.setParameter("estado", estado);
+			query.setParameter("cajaCerrada", cajaCerrada);
+			query.setParameter("fecha", fecha);
+			List<Caja> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<Caja> consultaTest(){
+		getSession().beginTransaction();
+		String sql = "SELECT * " + 
+				"	FROM caja AS ca " + 
+				"	JOIN cajamovimiento AS cm " + 
+				"	ON ca.id = cm.caja.id " + 
+				"	WHERE ca.cajacerrada = true " + 
+				"	AND ca.estado = true " + 
+				"	AND cm.esanulado = false " + 
+				"	order by ca.id";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<Caja> query = getSession().createNativeQuery(sql);
+			List<Caja> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
 
 }

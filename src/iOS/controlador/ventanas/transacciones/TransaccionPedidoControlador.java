@@ -333,7 +333,7 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 			case "METRO LINEAL":
 			break;
 			case "UNIDAD":
-				total = (int) ((precio * cantidad));
+				total = ((precio * cantidad));
 				items.get(i).setPrecioDetalle(total);
 				mtPedidoDetalle.setDetalle(items);
 				mtPedidoDetalle.fireTableDataChanged();
@@ -582,6 +582,7 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getSource() == transaccionPedido.getTable()) {
 			realizarCalculos();
@@ -595,6 +596,7 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "BuscarCliente":

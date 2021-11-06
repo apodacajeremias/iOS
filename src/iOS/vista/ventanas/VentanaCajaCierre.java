@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.VentanaCajaCierreControlador;
@@ -33,7 +34,7 @@ public class VentanaCajaCierre extends JDialog {
 	public static void main(String[] args) {
 		try {
 			VentanaCajaCierre dialog = new VentanaCajaCierre();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			dialog.setUpControlador();
 			dialog.setVisible(true);
 		} catch (Exception e) {

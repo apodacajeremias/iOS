@@ -201,6 +201,7 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 		return true;
 	}
 
+	@Override
 	public void guardar() {
 		if (!validarFormulario()) {
 			return;
@@ -382,6 +383,7 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 		gestionarColaborador();
 	}
 
+	@Override
 	public void gestionarColaborador() {
 		if (colaborador == null) {
 			return;

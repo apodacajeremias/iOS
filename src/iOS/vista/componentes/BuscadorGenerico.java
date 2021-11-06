@@ -54,6 +54,7 @@ public class BuscadorGenerico extends JDialog {
 		
 		toolbar = new ToolbarBuscador();
 		toolbar.getbtSalir().addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}

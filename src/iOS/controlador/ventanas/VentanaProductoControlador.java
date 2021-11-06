@@ -225,6 +225,7 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 	}
 
 
+	@Override
 	public void guardar() {
 		if (!validarFormulario()) {
 			return;

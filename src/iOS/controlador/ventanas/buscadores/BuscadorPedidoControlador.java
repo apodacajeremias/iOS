@@ -30,7 +30,6 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 	private ModeloTablaPedidoDetalle mtPedidoDetalle;
 	private PedidoDao dao;
 	private BuscadorPedido bPedido;
-	private String clienteP;
 	@SuppressWarnings("unused")
 	private PedidoInterface interfaz;
 	private Configuracion configuracion;
@@ -133,11 +132,10 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 	
 	private void filtrar() {
 		if (bPedido.gettCliente().getText().length() == 0) {
-			pedidos = dao.recuperarTodos();
+			pedidos = dao.recuperarTodo();
 		} else {
-			clienteP = cliente.getId()+"";
-			pedidos = dao.recuperarPorCliente(clienteP);			
-			mtPedido.setLista(pedidos);
+			pedidos = dao.recuperarPorCliente(cliente.getId());			
+			mtPedido.setPedidos(pedidos);
 			mtPedido.fireTableDataChanged();
 		}
 
@@ -147,9 +145,9 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 	
 	private void limpiar() {
 		estadoInicial(true);
-		pedidos = dao.recuperarTodos();
+		pedidos = dao.recuperarTodo();
 		
-		mtPedido.setLista(pedidos);
+		mtPedido.setPedidos(pedidos);
 		bPedido.getLblTotalRegistro().setText("Se han encontrado "+pedidos.size()+" registros");
 	}
 	
@@ -189,8 +187,8 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 		EventosUtil.estadosBotones(bPedido.getBtnCancelar(), true);
 	}
 	private void recuperarTodo() {
-		pedidos = dao.recuperarTodos();
-		mtPedido.setLista(pedidos);
+		pedidos = dao.recuperarTodo();
+		mtPedido.setPedidos(pedidos);
 		mtPedido.fireTableDataChanged();
 	}
 

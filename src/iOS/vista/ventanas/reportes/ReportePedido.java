@@ -27,9 +27,6 @@ public class ReportePedido extends ReporteGenerico {
 	}
 
 	public ReportePedido() {
-		getRb1().setSelected(true);
-		getRb1().setText("Solo pedidos");
-		getRb2().setText("Solo presupuestos");
 	}
 
 	public static long getSerialversionuid() {

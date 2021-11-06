@@ -6,11 +6,11 @@ import java.awt.Font;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.VentanaColaboradorControlador;
@@ -43,7 +43,7 @@ public class VentanaColaborador extends VentanaGenerica {
 	private JComboBox cbTipoSalario;
 	private CampoNumeroPersonalizado tValorSalario;
 
-	private VentanaColaboradorControlador controlador; 
+	private VentanaColaboradorControlador controlador;
 	private JPanel pAcceso;
 	private JPanel pLaboral;
 	private JPanel pSalario;
@@ -53,11 +53,12 @@ public class VentanaColaborador extends VentanaGenerica {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					VentanaColaborador dialog = new VentanaColaborador();
 					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -75,7 +76,8 @@ public class VentanaColaborador extends VentanaGenerica {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public VentanaColaborador() {
-		getPanelFormulario().setBorder(new TitledBorder(null, "Datos Personales", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		getPanelFormulario().setBorder(
+				new TitledBorder(null, "Datos Personales", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getPanelFormulario().setBounds(18, 10, 320, 230);
 
 		LabelPersonalizado lblprsnlzdNombreCompleto = new LabelPersonalizado(0);
@@ -153,7 +155,8 @@ public class VentanaColaborador extends VentanaGenerica {
 		pAcceso.add(rdActivarAcceso);
 
 		pLaboral = new JPanel();
-		pLaboral.setBorder(new TitledBorder(null, "Informaci\u00F3n Laboral", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pLaboral.setBorder(
+				new TitledBorder(null, "Informaci\u00F3n Laboral", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pLaboral.setBackground(Color.WHITE);
 		pLaboral.setBounds(356, 10, 320, 230);
 		getContentPane().add(pLaboral);
@@ -190,7 +193,8 @@ public class VentanaColaborador extends VentanaGenerica {
 
 		pSalario = new JPanel();
 		pSalario.setLayout(null);
-		pSalario.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Salario", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pSalario.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Salario", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pSalario.setBackground(Color.WHITE);
 		pSalario.setBounds(356, 251, 320, 230);
 		getContentPane().add(pSalario);
@@ -201,7 +205,7 @@ public class VentanaColaborador extends VentanaGenerica {
 		pSalario.add(lblprsnlzdTipo);
 
 		cbTipoSalario = new JComboBox();
-		cbTipoSalario.setModel(new DefaultComboBoxModel(new String[] {"MINIMO", "COMISION", "DIFERENCIAL"}));
+		cbTipoSalario.setModel(new DefaultComboBoxModel(new String[] { "MINIMO", "COMISION", "DIFERENCIAL" }));
 		cbTipoSalario.setBounds(10, 36, 300, 25);
 		pSalario.add(cbTipoSalario);
 
@@ -218,6 +222,7 @@ public class VentanaColaborador extends VentanaGenerica {
 	public JPasswordField gettPassword() {
 		return tPassword;
 	}
+
 	@SuppressWarnings("rawtypes")
 	public JComboBox getCbRol() {
 		return cbRol;
@@ -242,6 +247,7 @@ public class VentanaColaborador extends VentanaGenerica {
 	public CampoTextoPersonalizado gettUsuario() {
 		return tUsuario;
 	}
+
 	@SuppressWarnings("rawtypes")
 	public JComboBox getCbSector() {
 		return cbSector;

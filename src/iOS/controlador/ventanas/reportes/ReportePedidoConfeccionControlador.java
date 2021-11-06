@@ -6,15 +6,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
-import iOS.controlador.util.ConexionReporte;
 import iOS.controlador.util.EventosUtil;
 import iOS.controlador.util.Impresiones;
 import iOS.controlador.util.MetodosPedido;
@@ -22,34 +21,26 @@ import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
-import iOS.modelo.entidades.PedidoDetalleConfeccion;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedido;
-import iOS.vista.modelotabla.ModeloTablaPedidoConfeccionDetalle;
 import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import iOS.vista.ventanas.reportes.ReportePedido;
-import net.sf.jasperreports.engine.JRException;
 
 public class ReportePedidoConfeccionControlador implements ActionListener, MouseListener {
 	private ReportePedido reporte;
 	private ModeloTablaPedido modeloTabla;
-	private ModeloTablaPedidoConfeccionDetalle modeloTablaDetalle;
 
 	private PedidoDao dao;
 
 	private Pedido pedido;
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
-	
-	private List<PedidoDetalleConfeccion> pedidoDetalles = new ArrayList<PedidoDetalleConfeccion>();
 
 	public ReportePedidoConfeccionControlador(ReportePedido reporte) {
 		this.reporte = reporte;
 		reporte.setTitle("REPORTE DE CONFECCION");
 		modeloTabla = new ModeloTablaPedido();
-		modeloTablaDetalle = new ModeloTablaPedidoConfeccionDetalle();
 		reporte.getTable().setModel(modeloTabla);
 		tableMenu(reporte.getTable());
-		reporte.getTableDetalle().setModel(modeloTablaDetalle);
 		dao = new PedidoDao();
 
 		estadoInicial(true);
@@ -74,12 +65,43 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		modeloTabla.setPedidos(pedidos);
 		modeloTabla.fireTableDataChanged();
 	}
-	
+
+	private void filtroPorColaborador(String claseReporte) {
+		vaciarTabla();
+		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
+		boolean pedidoCarteleria = false;
+		boolean pedidoCostura = true;
+		boolean estado = reporte.getRb3().isSelected();
+		boolean esPresupuesto = reporte.getRb2().isSelected();
+		Date fecha = reporte.getDateChooser().getDate();
+		Integer mes = reporte.getDateChooser().getCalendar().get(Calendar.MONTH) + 1;
+		Integer anho = reporte.getDateChooser().getCalendar().get(Calendar.YEAR);
+
+		System.err.println("*****************************************************");
+		System.err.println("Fecha: " + fecha + " Mes: " + mes + " Año:" + anho);
+		System.err.println("*****************************************************");
+
+		switch (claseReporte) {
+		case "Diario":
+			pedidos = dao.reporteDiarioPedido(c.getId(), pedidoCarteleria, pedidoCostura, estado, esPresupuesto, fecha);
+			modeloTabla.setPedidos(pedidos);
+			modeloTabla.fireTableDataChanged();
+			break;
+		case "Mensual":
+			pedidos = dao.reporteMensualPedido(c.getId(), pedidoCarteleria, pedidoCostura, estado, esPresupuesto, mes,
+					anho);
+			modeloTabla.setPedidos(pedidos);
+			modeloTabla.fireTableDataChanged();
+			break;
+		}
+
+	}
+
 	@SuppressWarnings("unchecked")
 	private void cargarColaboradores() {
 		List<Colaborador> cs = null;
 		ColaboradorDao cDao = new ColaboradorDao();
-		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")){
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
 			cs = cDao.recuperarTodoOrdenadoPorNombre();
 			try {
 				for (int i = 0; i < cs.size(); i++) {
@@ -92,7 +114,7 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		}
 		reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
 	}
-	
+
 	private void tableMenu(final JTable table) {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -117,7 +139,7 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 	}
 
 	private JPopupMenu tablePopup(final JTable table, final int row) {
-		JPopupMenu popup = new JPopupMenu("Popup");		
+		JPopupMenu popup = new JPopupMenu("Popup");
 		JMenuItem imprimirItem = new JMenuItem("Imprimir");
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
@@ -138,70 +160,13 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		return popup;
 	}
 
-	private void filtroDiarioPorColaborador() {
-		vaciarTabla();
-		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
-		pedidos = dao.recuperarPedidosDiarioCosturaPorFiltros(c.getId());
-		modeloTabla.setPedidos(pedidos);
-		modeloTabla.fireTableDataChanged();
-	}
-	
-	private void filtroMensualPorColaborador() {
-		vaciarTabla();
-		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
-		pedidos = dao.recuperarPedidosMensualCosturaPorFiltros(c.getId(), reporte.getDcMeses().getMonth()+1, reporte.getDcAnos().getYear());
-		modeloTabla.setPedidos(pedidos);
-		modeloTabla.fireTableDataChanged();
-	}
-
 	private void seleccionarRegistro(int posicion) {
 		if (posicion < 0) {
 			return;
 		}
 		pedido = pedidos.get(posicion);
-		EventosUtil.estadosBotones(reporte.getBtnImprimir(), true);
-		modeloTablaDetalle.setDetalle(pedidos.get(posicion).getPedidosConfecciones());
-		modeloTablaDetalle.fireTableDataChanged();
-	}	
-
-	private void imprimirReporteMensual() {
-		JOptionPane.showMessageDialog(null, "imprimirReporteMensual");
-		Integer mes = reporte.getDcMeses().getMonth()+1;
-		Integer anho = reporte.getDcAnos().getYear();
-		pedidoDetalles = dao.reporteVentasMensualCostura(Sesion.getInstance().getColaborador().getId(), mes, anho);		
-		HashMap<String, Object> parametros = new HashMap<>();
-		parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
-
-
-		// Creando reportes
-		ConexionReporte<PedidoDetalleConfeccion> conexionReporte = new ConexionReporte<PedidoDetalleConfeccion>();
-		try {
-			conexionReporte.generarReporte(pedidoDetalles, parametros, "ReporteMensualPedido");
-			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
-			conexionReporte.ventanaReporte.setVisible(true);
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
 	}
-	
-	private void imprimirReporteDiario() {
-		pedidoDetalles = dao.reporteVentasDiarioCostura(Sesion.getInstance().getColaborador().getId());		
-		HashMap<String, Object> parametros = new HashMap<>();
-		parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
 
-
-		// Creando reportes
-		ConexionReporte<PedidoDetalleConfeccion> conexionReporte = new ConexionReporte<PedidoDetalleConfeccion>();
-		try {
-			conexionReporte.generarReporte(pedidoDetalles, parametros, "ReportePedido2");
-			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
-			conexionReporte.ventanaReporte.setVisible(true);
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == reporte.getTable() && e.getClickCount() == 1) {
@@ -236,6 +201,7 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		// TODO Auto-generated method stub
 
 	}
+
 	private void abrirTransaccionPedido() {
 		if (pedido == null) {
 			return;
@@ -254,26 +220,27 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Filtrar":
-			if (reporte.getRb3().isSelected()) {
-				filtroDiarioPorColaborador();
-				break;
+			if (reporte.getRb5().isSelected()) {
+				filtroPorColaborador("Diario");
 			}
-			if (reporte.getRb4().isSelected()) {
-				filtroMensualPorColaborador();
-				break;
+			if (reporte.getRb6().isSelected()) {
+				filtroPorColaborador("Mensual");
 			}
-			
 			break;
 		case "Imprimir":
-			if (reporte.getRb3().isSelected()) {
-				imprimirReporteDiario();
-				break;
+			if (reporte.getRb5().isSelected()) {
+				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb5().getText().toUpperCase(),
+						reporte.getTitle().toUpperCase(), reporte);
 			}
-			if (reporte.getRb4().isSelected()) {
-				imprimirReporteMensual();
-				break;
+			if (reporte.getRb6().isSelected()) {
+				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb6().getText().toUpperCase(),
+						reporte.getTitle().toUpperCase(), reporte);
 			}
 
+			break;
+		case "Limpiar":
+			vaciarTabla();
+			break;
 		default:
 			break;
 		}

@@ -97,6 +97,7 @@ public class MiToolbar extends JToolBar implements ActionListener {
 
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Nuevo":

@@ -180,7 +180,7 @@ public class EventosUtil {
 	public static String separadorMiles(Double valor) {
 		try {
 			DecimalFormat formato = new DecimalFormat("#,###.###;#,###.###");
-			Double valorDouble = ((Double) valor);
+			Double valorDouble = (valor);
 			return formato.format(valorDouble);
 		} catch (Exception e) {
 			return null;
@@ -191,7 +191,7 @@ public class EventosUtil {
 	public static String separadorDecimales(Double valor) {
 		try {
 			DecimalFormat formato = new DecimalFormat("#,##0.0##;#,##0.0##");
-			Double valorDouble = ((Double) valor);
+			Double valorDouble = (valor);
 			return formato.format(valorDouble);
 		} catch (Exception e) {
 			return null;

@@ -15,7 +15,6 @@ import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCaja;
-import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 import net.sf.jasperreports.engine.JRException;
@@ -23,7 +22,6 @@ import net.sf.jasperreports.engine.JRException;
 public class ReporteCajaControlador implements ActionListener, MouseListener {
 	private ReporteCaja reporte;
 	private ModeloTablaCaja modeloTabla;
-	private ModeloTablaCajaMovimiento modeloTablaMovimiento;
 	private CajaDao dao;
 	private Caja caja;
 	private List<Caja> cajas = new ArrayList<Caja>();
@@ -31,9 +29,7 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 	public ReporteCajaControlador(ReporteCaja reporte) {
 		this.reporte = reporte;
 		modeloTabla = new ModeloTablaCaja();
-		modeloTablaMovimiento = new ModeloTablaCajaMovimiento();
 		reporte.getTable().setModel(modeloTabla);
-		reporte.getTableDetalle().setModel(modeloTablaMovimiento);
 		dao = new CajaDao();
 
 		estadoInicial(true);
@@ -43,53 +39,15 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 	private void setUpEvents() {
 		reporte.getBtnFiltrar().addActionListener(this);
 		reporte.getBtnImprimir().addActionListener(this);
+		reporte.getBtnLimpiar().addActionListener(this);
 		reporte.getTable().addMouseListener(this);
 	}
 
 	private void estadoInicial(boolean b) {
-		EventosUtil.estadosBotones(reporte.getBtnFiltrar(), b);
-		EventosUtil.estadosBotones(reporte.getBtnImprimir(), !b);
 	}
 
 	private void vaciarTabla() {
 		cajas = new ArrayList<Caja>();
-		modeloTabla.setCajas(cajas);
-		modeloTabla.fireTableDataChanged();
-	}
-
-	private void filtro() {
-		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")){
-			filtrarTodo();
-			return;
-		}
-		
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), reporte.modulo, "ABRIR")) {
-			filtrarPorColaborador();
-			return;
-		}
-		
-//		for (int i = 0; i < colaborador.getRol().getRolesOperaciones().size(); i++) {
-//			if (colaborador.getRol().getRolesOperaciones().get(i).getOperacion().getModulo().getNombreModulo().equalsIgnoreCase(reporte.modulo)) {
-//				switch (colaborador.getRol().getRolesOperaciones().get(i).getOperacion().getNombreOperacion()) {
-//				case "ABRIR":
-//					filtrarPorColaborador();
-//					break;
-//				}
-//			}
-//		}
-	}
-
-	private void filtrarTodo() {
-		vaciarTabla();
-		cajas = dao.recuperarTodo();
-		modeloTabla.setCajas(cajas);
-		modeloTabla.fireTableDataChanged();
-	}
-
-
-	private void filtrarPorColaborador() {
-		vaciarTabla();
-		cajas = dao.recuperarTodoPorColaborador((Sesion.getInstance().getColaborador().getId()));
 		modeloTabla.setCajas(cajas);
 		modeloTabla.fireTableDataChanged();
 	}
@@ -99,9 +57,6 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 			return;
 		}
 		caja = cajas.get(posicion);
-		EventosUtil.estadosBotones(reporte.getBtnImprimir(), true);
-		modeloTablaMovimiento.setMovimiento(cajas.get(posicion).getCajaMovimientos());
-		modeloTablaMovimiento.fireTableDataChanged();
 	}
 
 	private String cajaCerrada(Caja c) {
@@ -132,7 +87,6 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		ConexionReporte<CajaMovimiento> conexionReporte = new ConexionReporte<CajaMovimiento>();
 		try {
 			conexionReporte.generarReporte(dao.recuperarMovimientoNoAnulados(c.getId()), parametros, "ReporteCaja2");
-			filtro();
 			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
 			conexionReporte.ventanaReporte.setVisible(true);
 		} catch (JRException e) {
@@ -202,6 +156,12 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		default:
 			break;
 		}
+	}
+	
+	private void filtro() {
+		cajas = dao.consultaTest();
+		modeloTabla.setCajas(cajas);
+		modeloTabla.fireTableDataChanged();
 
 	}
 

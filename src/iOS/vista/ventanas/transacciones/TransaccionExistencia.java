@@ -7,6 +7,7 @@ import java.awt.Font;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.transacciones.TransaccionExistenciaControlador;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -30,10 +31,11 @@ public class TransaccionExistencia extends JDialog {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TransaccionExistencia dialog = new TransaccionExistencia();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setUpControlador();
 					dialog.setVisible(true);
 				} catch (Exception e) {

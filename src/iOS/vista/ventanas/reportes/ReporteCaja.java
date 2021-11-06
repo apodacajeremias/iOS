@@ -22,8 +22,8 @@ public class ReporteCaja extends ReporteGenerico{
 	 * Create the dialog.
 	 */
 	public ReporteCaja() {
-		getRb2().setText("Incluir abiertos");
-		getRb1().setText("Incluir anulados");
+		getRb1().setText("Cajas cerradas");
+		getRb2().setText("Cajas abiertas");
 		setTitle("Reporte de Caja");
 
 	}

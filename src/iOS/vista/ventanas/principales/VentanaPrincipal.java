@@ -81,6 +81,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBanco = new JMenuItem("Bancos");
 		mnItemBanco.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaBanco();
 			}
@@ -90,6 +91,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemCliente = new JMenuItem("Clientes");
 		mnItemCliente.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaCliente();
 			}
@@ -99,6 +101,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemColaborador = new JMenuItem("Colaboradores");
 		mnItemColaborador.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaColaborador();
 			}
@@ -108,6 +111,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemConfiguracion = new JMenuItem("Configuraciones");
 		mnItemConfiguracion.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaConfiguracion();
 			}
@@ -117,6 +121,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemMarca = new JMenuItem("Marcas");
 		mnItemMarca.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaMarca();
 			}
@@ -126,6 +131,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemMaterial = new JMenuItem("Materiales");
 		mnItemMaterial.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaMaterial();
 			}
@@ -135,6 +141,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemProducto = new JMenuItem("Productos");
 		mnItemProducto.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaProducto();
 			}
@@ -144,6 +151,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemProveedor = new JMenuItem("Proveedores");
 		mnItemProveedor.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaProducto();
 			}
@@ -153,6 +161,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemSector = new JMenuItem("Sectores");
 		mnItemSector.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaSector();
 			}
@@ -166,6 +175,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorBanco = new JMenuItem("Buscar bancos");
 		mnItemBuscadorBanco.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorBanco();
 			}
@@ -175,6 +185,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorCliente = new JMenuItem("Buscar clientes");
 		mnItemBuscadorCliente.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorCliente();
 			}
@@ -184,6 +195,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorColaborador = new JMenuItem("Buscar getColaborador()es");
 		mnItemBuscadorColaborador.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorColaborador();
 			}
@@ -193,6 +205,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorMarca = new JMenuItem("Buscar marcas");
 		mnItemBuscadorMarca.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorMarca();
 			}
@@ -202,6 +215,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorMaterial = new JMenuItem("Buscar materiales");
 		mnItemBuscadorMaterial.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorMaterial();
 			}
@@ -211,6 +225,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorModulo = new JMenuItem("Buscar modulos");
 		mnItemBuscadorModulo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorModulo();
 			}
@@ -220,6 +235,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorOperacion = new JMenuItem("Buscar operaciones");
 		mnItemBuscadorOperacion.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorOperacion();
 			}
@@ -229,6 +245,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorPedido = new JMenuItem("Buscar pedidos");
 		mnItemBuscadorPedido.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorPedido();
 			}
@@ -238,6 +255,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorProducto = new JMenuItem("Buscar productos");
 		mnItemBuscadorProducto.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorProducto();
 			}
@@ -247,6 +265,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorProveedor = new JMenuItem("Buscar proveedores");
 		mnItemBuscadorProveedor.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorProveedor();
 			}
@@ -256,6 +275,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemBuscadorRol = new JMenuItem("Buscar roles");
 		mnItemBuscadorRol.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirBuscadorRol();
 			}
@@ -269,6 +289,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemCaja = new JMenuItem("Caja");
 		mnItemCaja.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionCaja();
 			}
@@ -278,6 +299,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemCompra = new JMenuItem("Compra");
 		mnItemCompra.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionCompra();
 			}
@@ -287,6 +309,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemDeposito = new JMenuItem("Deposito");
 		mnItemDeposito.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionDeposito();
 			}
@@ -296,6 +319,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemExistencia = new JMenuItem("Existencia");
 		mnItemExistencia.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionExistencia();
 			}
@@ -305,6 +329,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemPedido = new JMenuItem("Pedido Impresion");
 		mnItemPedido.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionPedidoCarteleria();
 			}
@@ -315,6 +340,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JMenuItem mnItemRol = new JMenuItem("Rol");
 		mnItemRol.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionRol();
 			}
@@ -322,6 +348,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JMenuItem mntmPedidoCostura = new JMenuItem("Pedido Costura");
 		mntmPedidoCostura.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionPedidoConfeccion();
 			}
@@ -336,6 +363,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JMenuItem mnItemReporteCaja = new JMenuItem("Reporte de caja");
 		mnItemReporteCaja.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirReporteCaja();
 			}
@@ -345,6 +373,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JMenuItem mnItemReportePedido = new JMenuItem("Reporte de pedidos impresiones");
 		mnItemReportePedido.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirReportePedidoCarteleria();
 			}
@@ -352,6 +381,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Reporte deudas y pagos");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ReporteDeudasPagos reporte = new ReporteDeudasPagos();
 				reporte.setUpControlador();
@@ -362,6 +392,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Reporte vales de getColaborador()es");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ReporteVales ventana = new ReporteVales();
 				ventana.setUpControlador();
@@ -374,6 +405,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		mnItemReportePedido = new JMenuItem("Reporte de pedidos confeccion");
 		mnItemReportePedido.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirReportePedidoConfeccion();
 			}
@@ -392,6 +424,7 @@ public class VentanaPrincipal extends JFrame {
 		MiBoton mbtnCaja = new MiBoton("Caja");
 		mbtnCaja.setFont(new Font("Tahoma", Font.BOLD, 15));
 		mbtnCaja.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTransaccionCaja();
 			}
@@ -400,6 +433,7 @@ public class VentanaPrincipal extends JFrame {
 
 		MiBoton mbtnPedidoCarteleria = new MiBoton("Impresion");
 		mbtnPedidoCarteleria.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				abrirTransaccionPedidoCarteleria();
 			}
@@ -409,6 +443,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		MiBoton mbtnPedidoConfeccion = new MiBoton("Confeccion");
 		mbtnPedidoConfeccion.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				abrirTransaccionPedidoConfeccion();
 			}
@@ -641,6 +676,7 @@ public class VentanaPrincipal extends JFrame {
 		return serialVersionUID;
 	}
 
+	@Override
 	public JPanel getContentPane() {
 		return contentPane;
 	}

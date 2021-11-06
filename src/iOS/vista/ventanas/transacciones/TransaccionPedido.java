@@ -12,6 +12,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.transacciones.TransaccionPedidoControlador;
@@ -53,10 +54,11 @@ public class TransaccionPedido extends JDialog {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TransaccionPedido dialog = new TransaccionPedido();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setUpControlador();
 					dialog.setVisible(true);
 				} catch (Exception e) {
@@ -184,10 +186,12 @@ public class TransaccionPedido extends JDialog {
 		lstTipoPago.setModel(new AbstractListModel() {
 			String[] values = new String[] { "CONTADO", "CREDITO" };
 
+			@Override
 			public int getSize() {
 				return values.length;
 			}
 
+			@Override
 			public Object getElementAt(int index) {
 				return values[index];
 			}

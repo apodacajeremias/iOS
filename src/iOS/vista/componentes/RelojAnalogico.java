@@ -178,17 +178,17 @@ public class RelojAnalogico extends JFrame {
 			int second = time.get(Calendar.SECOND);
 			int secondOfDay = second + minute * 60 + hour * 60 * 60;
 
-			double hourAngle = Math.PI / 2.0 - (double) secondOfDay
+			double hourAngle = Math.PI / 2.0 - secondOfDay
 					/ (24.0 * 60.0 * 60.0) * Math.PI * 4.0;
 
 			secondOfDay -= hour * 60 * 60;
 
-			double minuteAngle = Math.PI / 2.0 - (double) secondOfDay
+			double minuteAngle = Math.PI / 2.0 - secondOfDay
 					/ (60.0 * 60.0) * Math.PI * 2.0;
 
 			secondOfDay -= minute * 60;
 
-			double secondAngle = Math.PI / 2.0 - (double) secondOfDay / 60.0
+			double secondAngle = Math.PI / 2.0 - secondOfDay / 60.0
 					* Math.PI * 2.0;
 
 			double[] geometry = new double[hourHandleGeometry_.length];
@@ -219,6 +219,7 @@ public class RelojAnalogico extends JFrame {
 			secondHandle_.setGeometryXy(geometry);
 		}
 
+		@Override
 		public void draw() {
 			background_.setGeometryXy(Geometry.createCircle(x0_, y0_,
 					radius_ * 1.2));
@@ -260,6 +261,7 @@ public class RelojAnalogico extends JFrame {
 			clock_ = clock;
 		}
 
+		@Override
 		public void run() {
 			clock_.update();
 			clock_.refresh();

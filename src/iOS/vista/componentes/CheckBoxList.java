@@ -26,6 +26,7 @@ public class CheckBoxList extends JList
 
 		addMouseListener(new MouseAdapter()
 		{
+			@Override
 			public void mousePressed(MouseEvent e)
 			{
 				int index = locationToIndex(e.getPoint());
@@ -46,6 +47,7 @@ public class CheckBoxList extends JList
 
 	protected class CellRenderer implements ListCellRenderer
 	{
+		@Override
 		public Component getListCellRendererComponent(
 				JList list, Object value, int index,
 				boolean isSelected, boolean cellHasFocus)

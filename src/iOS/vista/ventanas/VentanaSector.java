@@ -8,9 +8,9 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.VentanaSectorControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
@@ -33,11 +33,12 @@ public class VentanaSector extends VentanaGenerica {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					VentanaSector dialog = new VentanaSector();
 					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

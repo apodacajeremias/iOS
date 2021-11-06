@@ -15,6 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
@@ -41,6 +42,7 @@ public class VentanaAcceso extends JDialog {
 			e1.printStackTrace();
 		}
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					VentanaAcceso dialog = new VentanaAcceso();
@@ -80,7 +82,7 @@ public class VentanaAcceso extends JDialog {
 		setBounds(100, 100, 400, 260);
 		setLocationRelativeTo(this);
 		getContentPane().setLayout(null);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 		lblGif = new JLabel("");
 		lblGif.setIcon(new ImageIcon(VentanaAcceso.class.getResource("/img/LOGO_IOS.png")));
@@ -132,6 +134,7 @@ public class VentanaAcceso extends JDialog {
 
 		btnCancelar = new MiBoton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}

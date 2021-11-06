@@ -33,6 +33,7 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 		setHorizontalAlignment(SwingConstants.LEFT);
 	}
 
+	@Override
 	public void setText(String str) {
 
 		int selstart = super.getSelectionStart();
@@ -63,6 +64,7 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 		this.setBorder(BorderFactory.createLineBorder(Color.RED));
 		new Timer().schedule(new TimerTask() {
 			 
+			@Override
 			public void run() {
 				CampoNumeroPersonalizado.this.setBorder(border);
 			}
@@ -70,12 +72,14 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 	}
 
 	 
+	@Override
 	public String getText() {
 		String str = super.getText().replace(groupingSeparator, "");
 		str = str.replace(decimalSeparator, ".");
 		return str;
 	}
 
+	@Override
 	public void keyTyped(KeyEvent keyEvent) {
 		char c = keyEvent.getKeyChar();
 		if ((!(Character.isDigit(c)) && c != ',') || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
@@ -86,6 +90,7 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 	}
 
 	 
+	@Override
 	public void keyReleased(KeyEvent keyEvent) {
 		char c = keyEvent.getKeyChar();
 		if (Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_LEFT
@@ -95,11 +100,13 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 	}
 
 	 
+	@Override
 	public void keyPressed(KeyEvent e) {
 	}
 
 	public void limite(final int lim) {
 		addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent evt) {
 				if (getText().length() == lim) {
 					evt.consume();

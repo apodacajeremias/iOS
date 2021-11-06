@@ -35,13 +35,14 @@ public class VentanaGenerica extends JDialog {
 		
 		panelFormulario = new JPanel();
 		panelFormulario.setBackground(new Color(255, 255, 255));
-		panelFormulario.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(240, 248, 255)));
+		panelFormulario.setBorder(new MatteBorder(2, 2, 2, 2, new Color(240, 248, 255)));
 		panelFormulario.setBounds(10, 10, 474, 370);
 		getContentPane().add(panelFormulario);
 		panelFormulario.setLayout(null);
 				
 		miToolBar = new MiToolbar();
 		miToolBar.getbtSalir().addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}

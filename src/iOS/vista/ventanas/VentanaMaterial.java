@@ -3,9 +3,9 @@ package iOS.vista.ventanas;
 import java.awt.EventQueue;
 
 import javax.swing.AbstractListModel;
-import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.VentanaMaterialControlador;
@@ -29,11 +29,12 @@ public class VentanaMaterial extends VentanaGenerica {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					VentanaMaterial dialog = new VentanaMaterial();
 					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -81,9 +82,11 @@ public class VentanaMaterial extends VentanaGenerica {
 		getPanelFormulario().add(lstTipoMaterial);
 		lstTipoMaterial.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Metro Cuadrado", "Metro Lineal", "Unidad"};
+			@Override
 			public int getSize() {
 				return values.length;
 			}
+			@Override
 			public Object getElementAt(int index) {
 				return values[index];
 			}

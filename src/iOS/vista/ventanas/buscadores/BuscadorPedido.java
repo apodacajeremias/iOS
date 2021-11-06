@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.buscadores.BuscadorPedidoControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
@@ -43,10 +44,11 @@ public class BuscadorPedido extends JDialog {
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					BuscadorPedido dialog = new BuscadorPedido();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setUpControlador();
 					dialog.setVisible(true);
 				} catch (Exception e) {

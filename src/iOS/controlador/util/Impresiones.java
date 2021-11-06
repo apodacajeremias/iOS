@@ -14,25 +14,24 @@ import iOS.modelo.singleton.Sesion;
 import net.sf.jasperreports.engine.JRException;
 
 public class Impresiones {
-	
+
 	private static Impresiones impresion;
-	
+
 	private Impresiones() {
 	}
-	
+
 	public synchronized static Impresiones getInstance() {
 		if (impresion == null) {
 			impresion = new Impresiones();
 		}
 		return impresion;
 	}
-	
+
 	public void imprimirPedidoConfeccionIndividual(Pedido pedido, JDialog ventana) {
 		if (pedido == null) {
 			return;
-		}		
-		int opcion = JOptionPane.showConfirmDialog(null,"¿Desea imprimir?",
-				"Impresion", JOptionPane.OK_CANCEL_OPTION,
+		}
+		int opcion = JOptionPane.showConfirmDialog(null, "¿Desea imprimir?", "Impresion", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
 			HashMap<String, Object> parametros = new HashMap<>();
@@ -47,22 +46,19 @@ public class Impresiones {
 			try {
 				conexionReporte.generarReporte(pedidos, parametros, "PedidoImpreso3");
 				conexionReporte.ventanaReporte.setLocationRelativeTo(ventana);
-				ventana.dispose();
 				conexionReporte.ventanaReporte.setVisible(true);
 			} catch (JRException e) {
 				e.printStackTrace();
-			}	
-		} else {
-			return;
-		}	
+			}
+		} 
+		ventana.dispose();
 	}
-	
+
 	public void imprimirPedidoCarteleriaIndividual(Pedido pedido, JDialog ventana) {
 		if (pedido == null) {
 			return;
-		}		
-		int opcion = JOptionPane.showConfirmDialog(null,"¿Desea imprimir?",
-				"Impresion", JOptionPane.OK_CANCEL_OPTION,
+		}
+		int opcion = JOptionPane.showConfirmDialog(null, "¿Desea imprimir?", "Impresion", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
 			HashMap<String, Object> parametros = new HashMap<>();
@@ -77,20 +73,26 @@ public class Impresiones {
 			try {
 				conexionReporte.generarReporte(pedidos, parametros, "PedidoImpreso4");
 				conexionReporte.ventanaReporte.setLocationRelativeTo(ventana);
-				ventana.dispose();
 				conexionReporte.ventanaReporte.setVisible(true);
 			} catch (JRException e) {
 				e.printStackTrace();
-			}	
-		} else {
-			return;
-		}	
+			}
+		}
+		ventana.dispose();
 	}
-	
-	public void imprimirReportePedido(List<Pedido> lista, String tipoReporte, String claseReporte, JDialog reporte) {		
+
+	public void imprimirReportePedido(List<Pedido> lista, String tipoReporte, String claseReporte, JDialog reporte) {	
+		if (lista.size() <= 0) {
+			JOptionPane.showMessageDialog(reporte, "No hay registros para realizar la impresión.");
+			return;
+		}
 		HashMap<String, Object> parametros = new HashMap<>();
 		parametros.put("solicitante", Sesion.getInstance().getColaborador().toString());
+		
+		//Diario Mensual
 		parametros.put("tipoReporte", tipoReporte);
+		
+		//Carteleria, costura o ambos
 		parametros.put("claseReporte", claseReporte);
 
 
@@ -105,15 +107,15 @@ public class Impresiones {
 			e.printStackTrace();
 		}	
 	}
-	
+
 	private String esPresupuesto(Pedido pedido) {
 		if (pedido.isEsPresupuesto()) {
 			return "PRESUPUESTO";
 		} else {
 			return "PEDIDO";
 		}
-	}	
-	
+	}
+
 	private double verificarValidezPago(Pedido pedido) {
 		List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
 		CajaDao cajaDao = new CajaDao();
@@ -125,7 +127,5 @@ public class Impresiones {
 		}
 		return 0;
 	}
-	
-	
 
 }

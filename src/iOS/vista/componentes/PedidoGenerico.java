@@ -164,10 +164,12 @@ public class PedidoGenerico extends JDialog {
 		lstTipoPago.setModel(new AbstractListModel() {
 			String[] values = new String[] { "CONTADO", "CREDITO" };
 
+			@Override
 			public int getSize() {
 				return values.length;
 			}
 
+			@Override
 			public Object getElementAt(int index) {
 				return values[index];
 			}

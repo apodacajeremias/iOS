@@ -130,6 +130,7 @@ public class VentanaProducto extends VentanaGenerica {
 		getContentPane().add(rdMedidasFijas);
 		rdMedidasFijas.setBackground(Color.WHITE);
 		rdMedidasFijas.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (rdMedidasFijas.isSelected() == false) {
 					tMedidaAlto.setEnabled(false);

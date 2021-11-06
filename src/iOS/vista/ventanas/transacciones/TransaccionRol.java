@@ -5,9 +5,9 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.transacciones.TransaccionRolControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
@@ -26,10 +26,11 @@ public class TransaccionRol extends VentanaGenerica {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TransaccionRol dialog = new TransaccionRol();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setUpControlador();
 					dialog.setVisible(true);
 				} catch (Exception e) {

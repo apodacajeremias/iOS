@@ -416,6 +416,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getSource() == ventana.getTable()) {
 			realizarCalculos();
@@ -429,6 +430,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "BuscarCliente":

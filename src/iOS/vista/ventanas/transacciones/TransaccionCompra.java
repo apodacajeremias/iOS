@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -58,11 +59,12 @@ public class TransaccionCompra extends JDialog {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TransaccionCompra dialog = new TransaccionCompra();
 					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -29,23 +29,22 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 	private ModeloTablaCajaMovimiento modeloTablaCaja;
 
 	private Cliente cliente;
-	
+
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 	private List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
 
 	public ReporteDeudasPagosControlador(ReporteDeudasPagos reporte) {
 		this.reporte = reporte;
-		
+
 		modeloTablaCaja = new ModeloTablaCajaMovimiento();
 		modeloTablaPedido = new ModeloTablaPedido();
-		
+
 		reporte.getTable().setModel(modeloTablaPedido);
-		reporte.getTableDetalle().setModel(modeloTablaCaja);
+//		reporte.getTableDetalle().setModel(modeloTablaCaja);
 
 		pedidoDao = new PedidoDao();
 		cajaDao = new CajaDao();
-		
-		
+
 		setUpEvents();
 	}
 
@@ -55,7 +54,7 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 		reporte.getBtnImprimir().addActionListener(this);
 
 	}
-	
+
 	private void buscarPorCliente(Cliente c) {
 		Double sumaPedidos = 0d;
 		Double sumaPagos = 0d;
@@ -63,18 +62,18 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 			pedidos = pedidoDao.recuperarPorCliente(c.getId());
 			for (int i = 0; i < pedidos.size(); i++) {
 				sumaPedidos += pedidos.get(i).getPrecioPagar();
-			}		
+			}
 			modeloTablaPedido.setPedidos(pedidos);
 			modeloTablaPedido.fireTableDataChanged();
-			reporte.getL1().setText("Deudas: "+EventosUtil.separadorMiles(sumaPedidos));
-			
+			reporte.getL1().setText("Deudas: " + EventosUtil.separadorMiles(sumaPedidos));
+
 			pagos = cajaDao.recuperarPorCliente(c.getId());
 			for (int i = 0; i < pagos.size(); i++) {
 				sumaPagos += pagos.get(i).getValorGS();
 			}
 			modeloTablaCaja.setMovimiento(pagos);
 			modeloTablaCaja.fireTableDataChanged();
-			reporte.getL3().setText("Pagos: "+EventosUtil.separadorMiles(sumaPagos));
+//			reporte.getL3().setText("Pagos: "+EventosUtil.separadorMiles(sumaPagos));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(reporte, "ERROR AL BUSCAR POR CLIENTE");
 			return;
@@ -106,7 +105,7 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 		this.cliente = cliente;
 		gestionarCliente();
 	}
-	
+
 	private void gestionarCliente() {
 		if (cliente == null) {
 			return;
@@ -114,13 +113,12 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 		reporte.getlCliente().setText(cliente.getNombreCompleto());
 
 	}
-	
+
 	private void abrirBuscadorCliente() {
 		BuscadorCliente ventana = new BuscadorCliente();
 		ventana.setUpControlador();
 		ventana.getControlador().setInterfaz(this);
 		ventana.setVisible(true);
 	}
-
 
 }

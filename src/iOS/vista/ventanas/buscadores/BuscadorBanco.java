@@ -2,7 +2,7 @@ package iOS.vista.ventanas.buscadores;
 
 import java.awt.EventQueue;
 
-import javax.swing.JDialog;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.buscadores.BuscadorBancoControlador;
 import iOS.vista.componentes.BuscadorGenerico;
@@ -25,10 +25,11 @@ public class BuscadorBanco extends BuscadorGenerico {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					BuscadorBanco dialog = new BuscadorBanco();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

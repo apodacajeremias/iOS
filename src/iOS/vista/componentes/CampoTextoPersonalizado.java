@@ -28,6 +28,7 @@ public class CampoTextoPersonalizado extends JTextField {
 
 	public void soloNumerosEnteros() {
 		addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent e) {
 				if (!Character.isDigit(e.getKeyChar()))
 					e.consume();
@@ -38,6 +39,7 @@ public class CampoTextoPersonalizado extends JTextField {
 
 	public void soloLetras() {
 		addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent e) {
 				if (Character.isDigit(e.getKeyChar()))
 					e.consume();
@@ -48,6 +50,7 @@ public class CampoTextoPersonalizado extends JTextField {
 
 	public void mayusculas() {
 		addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent evt) {
 				Character c = evt.getKeyChar();
 				if (Character.isLetter(c)) {
@@ -59,6 +62,7 @@ public class CampoTextoPersonalizado extends JTextField {
 
 	public void limite(final int lim) {
 		addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent evt) {
 				if (getText().length() == lim) {
 					evt.consume();

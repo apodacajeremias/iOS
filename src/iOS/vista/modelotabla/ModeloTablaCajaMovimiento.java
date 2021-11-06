@@ -29,6 +29,7 @@ public class ModeloTablaCajaMovimiento extends AbstractTableModel {
 		return columnas[c];
 	}
 
+	@Override
 	public int getColumnCount() {
 
 		return columnas.length;

@@ -2,7 +2,7 @@ package iOS.vista.ventanas;
 
 import java.awt.EventQueue;
 
-import javax.swing.JDialog;
+import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.VentanaClienteControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
@@ -29,10 +29,11 @@ public class VentanaCliente extends VentanaGenerica {
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					VentanaCliente dialog = new VentanaCliente();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					dialog.setUpControlador();
 					dialog.setVisible(true);
 				} catch (Exception e) {

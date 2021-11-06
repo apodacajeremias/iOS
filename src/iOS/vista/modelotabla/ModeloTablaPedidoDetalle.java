@@ -29,6 +29,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		return columnas[c];
 	}
 
+	@Override
 	public int getColumnCount() {
 
 		return columnas.length;
@@ -67,7 +68,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		PedidoDetalles row = detalle.get(r);		
 		if(1 == c) {
 			try {
-				row.setArchivo((String) aValue.toString().toUpperCase());
+				row.setArchivo(aValue.toString().toUpperCase());
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
@@ -76,7 +77,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		else if(2 == c) {
 			try {
 				String nv = aValue.toString().replace(",", "").replace(".", "").replace("cm", "").replace("m", "").replace("\\scm","").replace("\\sm","").replace("\\s","");
-				row.setMedidaAlto(Double.parseDouble((String) nv));
+				row.setMedidaAlto(Double.parseDouble(nv));
 			} catch (NumberFormatException e) {
 				return;
 			}
@@ -85,7 +86,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 
 			try {
 				String nv = aValue.toString().replace(",", "").replace(".", "").replace("cm", "").replace("m", "").replace("\\scm","").replace("\\sm","").replace("\\s","");
-				row.setMedidaAncho(Double.parseDouble((String) nv));
+				row.setMedidaAncho(Double.parseDouble(nv));
 			} catch (NumberFormatException e) {
 				return;
 			}
@@ -93,7 +94,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		else if(4 == c) {
 			try {
 				String nv = aValue.toString().replace(",", ".").replace("cm", "").replace("m", "").replace("\\scm","").replace("\\sm","").replace("\\s","");
-				row.setMedidaDetalle(Double.parseDouble((String) nv));
+				row.setMedidaDetalle(Double.parseDouble(nv));
 			} catch (NumberFormatException e) {
 				return;
 			}
@@ -101,7 +102,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		else if(5 == c) {
 			try {
 				String nv = aValue.toString().replace(".", "").replace(",", "").replace("\\s","");
-				row.setCantidadDetalle(Integer.parseInt((String) nv));
+				row.setCantidadDetalle(Integer.parseInt(nv));
 			} catch (NumberFormatException e) {
 				return;
 			}
@@ -109,7 +110,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		else if(6 == c) {
 			try {
 				String nv = aValue.toString().replace(".", "").replace("\\s","");
-				row.setPrecioProducto(Integer.parseInt((String) nv));
+				row.setPrecioProducto(Integer.parseInt(nv));
 			} catch (NumberFormatException e) {
 				return;
 			}
@@ -117,7 +118,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		else if(7 == c) {
 			try {
 				String nv = aValue.toString().replace(".", "").replace("\\s","");
-				row.setPrecioDetalle(Integer.parseInt((String) nv));
+				row.setPrecioDetalle(Integer.parseInt(nv));
 			} catch (NumberFormatException e) {
 				return;
 			}
