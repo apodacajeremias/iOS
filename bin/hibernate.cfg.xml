@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration>
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="hibernate.jdbc.log.warnings">false</property>
+		<property name="hibernate.connection.driver_class">	org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost/iOSDB</property>
+		<property name="hibernate.connection.username">postgres</property>
+		<property name="hibernate.connection.password">126845</property>
+		
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="connection_pool_size">10</property>
+		<property name="hibernate.enable_lazy_load_no_trans">true</property>
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="use_sql_comments">true</property>
+		<property name="hbm2ddl.auto">update</property>
+
+
+		<mapping class="iOS.modelo.entidades.Caja"></mapping>
+		<mapping class="iOS.modelo.entidades.CajaMovimiento"></mapping>
+		<mapping class="iOS.modelo.entidades.Cliente"></mapping>
+		<mapping class="iOS.modelo.entidades.Colaborador"></mapping>
+		<mapping class="iOS.modelo.entidades.Compra"></mapping>
+		<mapping class="iOS.modelo.entidades.CompraDetalle"></mapping>
+		<mapping class="iOS.modelo.entidades.Configuracion"></mapping>
+		<mapping class="iOS.modelo.entidades.DepositoExistencia"></mapping>
+		<mapping class="iOS.modelo.entidades.EntidadBancaria"></mapping>
+		<mapping class="iOS.modelo.entidades.Existencia"></mapping>
+		<mapping class="iOS.modelo.entidades.InformacionPago"></mapping>
+		<mapping class="iOS.modelo.entidades.Maquina"></mapping>
+		<mapping class="iOS.modelo.entidades.Marca"></mapping>
+		<mapping class="iOS.modelo.entidades.Material"></mapping>
+		<mapping class="iOS.modelo.entidades.Modulo"></mapping>
+		<mapping class="iOS.modelo.entidades.Operacion"></mapping>
+		<mapping class="iOS.modelo.entidades.Pago"></mapping>
+		<mapping class="iOS.modelo.entidades.Pedido"></mapping>
+		<mapping class="iOS.modelo.entidades.PedidoDetalles"></mapping>
+		<mapping class="iOS.modelo.entidades.PedidoDetalleConfeccion"></mapping>
+		<mapping class="iOS.modelo.entidades.Produccion"></mapping>
+		<mapping class="iOS.modelo.entidades.ProduccionDetalles"></mapping>
+		<mapping class="iOS.modelo.entidades.Producto"></mapping>
+		<mapping class="iOS.modelo.entidades.Proveedor"></mapping>
+		<mapping class="iOS.modelo.entidades.ProveedorContactos"></mapping>
+		<mapping class="iOS.modelo.entidades.ProveedorCorreos"></mapping>
+		<mapping class="iOS.modelo.entidades.Rol"></mapping>
+		<mapping class="iOS.modelo.entidades.RolOperacion"></mapping>
+		<mapping class="iOS.modelo.entidades.Sector"></mapping>
+		<mapping class="iOS.modelo.entidades.Servicio"></mapping>
+		<mapping class="iOS.modelo.entidades.Tinta"></mapping>
+
+	</session-factory>
+</hibernate-configuration>

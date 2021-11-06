@@ -24,14 +24,13 @@ import iOS.controlador.util.ConexionReporte;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.ClienteInterface;
-import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.interfaces.ProductoInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorProducto;
@@ -39,7 +38,7 @@ import iOS.vista.ventanas.transacciones.TransaccionPedido;
 import net.sf.jasperreports.engine.JRException;
 
 
-public class TransaccionPedidoControlador implements ActionListener, MouseListener, KeyListener, ColaboradorInterface, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
+public class TransaccionPedidoControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
 	private TransaccionPedido transaccionPedido;
 	
 	private ModeloTablaPedidoDetalle mtPedidoDetalle;
@@ -55,7 +54,6 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 	private double sumaMetrosPorCliente;
-	private Colaborador colaborador;
 	
 	public TransaccionPedidoControlador(TransaccionPedido transaccionPedido) {
 		this.transaccionPedido = transaccionPedido;
@@ -160,7 +158,7 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 		
 		
 		//El estado inicial TRUE porque está disponible, si es false entonces el detalle está cancelado y no debe ir a produccion
-		detalle.setEstadoDetalle(true);
+		
 
 		//Calcula el descuento del producto si la opcion está activa o si el cliente aplica
 		calcularDescuentoProducto(considerarMetraje());
@@ -421,10 +419,6 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 			JOptionPane.showMessageDialog(transaccionPedido, "Indique el cliente");
 			return false;
 		}
-		if (colaborador == null) {
-			JOptionPane.showMessageDialog(transaccionPedido, "Inicie sesión");
-			return false;
-		}
 		if (items.size() <= 0) {
 			JOptionPane.showMessageDialog(transaccionPedido, "Cargue productos al pedido");
 			return false;
@@ -481,7 +475,7 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 		}
 
 		pedido.setCliente(cliente);
-		pedido.setColaborador(colaborador);
+		pedido.setColaborador(Sesion.getInstance().getColaborador());
 		pedido.setConsiderarMetraje(transaccionPedido.getRbConsiderarMetraje().isSelected());
 		pedido.setDescuentoTotal(Integer.parseInt(transaccionPedido.gettDescuentoPedido().getText()));
 
@@ -491,8 +485,6 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 			pedido.setEsPresupuesto(true); //es presupuesto entonces la variable pasa con true
 		}
 		pedido.setCostoTotal(sumarCosto());
-		pedido.setEstadoPedido(true); //el pedido inicialmente esta vigente, si es false esta cancelado y todos los detalles deben ser false
-		pedido.setFechaRegistro(new Date());
 		pedido.setMetrosFechaEmision(Double.parseDouble(transaccionPedido.getlMetrosFechaEmision().getText()));
 		pedido.setMetrosTotal(sumarMedidaDetalle());
 		pedido.setTipoPagoPedido(transaccionPedido.getLstTipoPago().getSelectedValue().toString());
@@ -647,10 +639,7 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 		BuscadorProducto buscador = new BuscadorProducto();
 		buscador.setUpControlador(false);
 		buscador.getControlador().setInterfaz(this);
-		buscador.getControlador().setColaborador(colaborador);
 		buscador.setVisible(true);
-		
-		System.out.println(colaborador.getNombreCompleto());
 	}
 
 	@Override
@@ -672,9 +661,8 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 
 	private void abrirBuscadorCliente() {
 		BuscadorCliente buscador = new BuscadorCliente();
-		if (EventosUtil.liberarAcceso(colaborador, buscador.modulo, "BUSCAR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), buscador.modulo, "BUSCAR")) {
 			buscador.setUpControlador();
-			buscador.getControlador().setColaborador(colaborador);
 			buscador.getControlador().setInterfaz(this);
 			buscador.setVisible(true);
 		}
@@ -721,21 +709,6 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 		mtPedidoDetalle.fireTableDataChanged();
 
 		accion = "MODIFICAR";
-	}
-	
-	@Override
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-		
-		gestionarColaborador();
-	}
-	
-	private void gestionarColaborador() {
-		if (colaborador == null) {
-			return;
-		}
-		
-		System.out.println(colaborador.getNombreCompleto());
 	}
 	
 	public static String formatException (Throwable thr) {

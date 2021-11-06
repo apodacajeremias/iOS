@@ -15,7 +15,6 @@ import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.transacciones.TransaccionCajaControlador2;
 import iOS.vista.componentes.CeldaRenderer;
-import iOS.vista.componentes.ClockLabel;
 import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.MiBoton;
 

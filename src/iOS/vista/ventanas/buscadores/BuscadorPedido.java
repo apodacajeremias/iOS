@@ -1,10 +1,5 @@
 package iOS.vista.ventanas.buscadores;
 
-import iOS.controlador.ventanas.buscadores.BuscadorPedidoControlador;
-import iOS.vista.componentes.CampoTextoPersonalizado;
-import iOS.vista.componentes.LabelPersonalizado;
-import iOS.vista.componentes.MiBoton;
-
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -14,6 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+
+import iOS.controlador.ventanas.buscadores.BuscadorPedidoControlador;
+import iOS.vista.componentes.CampoTextoPersonalizado;
+import iOS.vista.componentes.LabelPersonalizado;
+import iOS.vista.componentes.MiBoton;
 
 public class BuscadorPedido extends JDialog {
 	/**

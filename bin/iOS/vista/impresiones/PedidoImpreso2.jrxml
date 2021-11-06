@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PedidoImpreso" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c19b946b-199d-4099-8a2f-86c53bc054ed">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="Dataset1" uuid="62f81632-5b7d-4b20-a0d6-32a1c1098ac6">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="producto.descripcion" class="java.lang.String"/>
+		<field name="cantidadDetalle" class="java.lang.Integer"/>
+		<field name="precioDetalle" class="java.lang.Integer"/>
+		<field name="precioProducto" class="java.lang.Integer"/>
+		<field name="medidaAlto" class="java.lang.Double"/>
+		<field name="medidaAncho" class="java.lang.Double"/>
+		<field name="archivo" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="titularEmpresa" class="java.lang.String"/>
+	<parameter name="nombreEmpresa" class="java.lang.String"/>
+	<parameter name="registroProfesional" class="java.lang.String"/>
+	<parameter name="registroUnico" class="java.lang.String"/>
+	<parameter name="cedulaTitular" class="java.lang.String"/>
+	<parameter name="contactoEmpresa" class="java.lang.String"/>
+	<parameter name="ubicacion" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image"/>
+	<parameter name="esPresupuesto" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="pedidoDetalles" class="java.util.List"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="fechaRegistro" class="java.util.Date"/>
+	<field name="cliente.nombreCompleto" class="java.lang.String"/>
+	<field name="precioPagar" class="java.lang.Integer"/>
+	<field name="cliente.contacto" class="java.lang.String"/>
+	<field name="sumatoriaPrecio" class="java.lang.Integer"/>
+	<field name="descuentoTotal" class="java.lang.Integer"/>
+	<detail>
+		<band height="141" splitType="Stretch">
+			<frame>
+				<reportElement x="300" y="0" width="255" height="56" uuid="608e7e33-ecb2-4e7b-b6ff-757d60b30008"/>
+				<rectangle radius="5">
+					<reportElement key="" x="0" y="0" width="255" height="56" uuid="b4921ded-87d8-48d4-9867-12f02e0829a4"/>
+					<graphicElement>
+						<pen lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+					<reportElement x="130" y="7" width="113" height="42" uuid="3a5c2c26-1fd5-4b92-91c1-0067ad8e484c"/>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="10" y="7" width="110" height="17" uuid="b4235e4c-edee-43ab-9ba3-94d868a0d627">
+						<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+				</textField>
+				<textField pattern="d MMM, yyyy">
+					<reportElement x="10" y="31" width="100" height="17" uuid="af561253-099a-4b8e-9653-7ce3215fffaf"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="300" y="56" width="255" height="38" uuid="2d744a19-6f55-421c-af95-705b873511c9"/>
+				<textField>
+					<reportElement x="0" y="0" width="255" height="17" uuid="6449fefc-679f-44e1-b57d-99da76c8bb55">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Cliente "+$F{cliente.nombreCompleto}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="21" width="255" height="17" uuid="e3477e29-2586-479d-bf34-1455df3ba48e">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Contacto "+$F{cliente.contacto}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement x="277" y="0" width="1" height="130" uuid="65b26365-c051-47ae-84fd-ebd53e939582">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<frame>
+				<reportElement x="300" y="94" width="255" height="17" uuid="d38fcf92-3dab-4dfe-94c3-d4b9a4af4c62"/>
+				<staticText>
+					<reportElement x="-1" y="0" width="30" height="17" uuid="998ee92a-f645-4522-868c-4b0a9469907e"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Cant.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="30" y="0" width="50" height="17" uuid="0097d7d6-1ba3-4006-a075-7b61449aceeb"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Producto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="190" y="0" width="40" height="17" uuid="73f377bf-d561-491c-b4d0-ccb38451fd32"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Medidas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="209" y="0" width="45" height="17" uuid="678605b2-bc67-444b-a7fc-3e83745a95c5"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[					]]></text>
+				</staticText>
+			</frame>
+			<componentElement>
+				<reportElement x="300" y="111" width="255" height="24" uuid="2f37a03f-4000-4273-99cf-c25a3167b9da"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Dataset1" uuid="babefa32-dddc-42dd-bb81-d6126d3b71e3">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{pedidoDetalles})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="24" width="255">
+						<textField>
+							<reportElement x="32" y="0" width="148" height="11" uuid="19f340c3-4be1-4550-a2df-fabad4fe9cee">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{producto.descripcion}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="26" height="11" uuid="4282f1db-fe06-4079-864c-c02cbcb31a51">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="190" y="0" width="18" height="10" uuid="a6586629-49a6-4fe8-91ef-9cc01f3e2060"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8" isItalic="true"/>
+							</textElement>
+							<text><![CDATA[Alto]]></text>
+						</staticText>
+						<textField pattern="#,###.###;#,###.###-">
+							<reportElement x="208" y="0" width="47" height="10" uuid="be7c42de-116b-4498-ad3a-ba3358e457af">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{medidaAlto}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###.###;#,###.###-">
+							<reportElement x="208" y="10" width="47" height="10" uuid="a1ffcaa6-c8e2-41bc-aa4c-2f0809f02da3">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{medidaAncho}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="0" y="23" width="255" height="1" forecolor="#808080" uuid="3d028803-79e8-4b4d-ab16-530c62057af2">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+						</line>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="11" width="180" height="12" uuid="2f2bc49a-cfe5-48c8-aa0d-8fd248a8fc66">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{archivo}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="190" y="10" width="18" height="10" uuid="7ee627e8-d745-44a3-8633-f5ad3a446014"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="6" isItalic="true"/>
+							</textElement>
+							<text><![CDATA[Ancho]]></text>
+						</staticText>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<frame>
+				<reportElement x="0" y="0" width="255" height="56" uuid="c6e954c7-57a2-4082-a039-f3a4dce7bcc6"/>
+				<rectangle radius="5">
+					<reportElement key="" x="0" y="0" width="255" height="56" uuid="6a35d911-4128-46dc-96ea-cdb191cb7fc5"/>
+					<graphicElement>
+						<pen lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+					<reportElement x="130" y="7" width="113" height="42" uuid="bd94d2d1-ac93-47b9-8533-78611d8f5284"/>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="10" y="7" width="110" height="17" uuid="288faf4a-e4bb-4a29-8232-fd6359cbc093">
+						<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+				</textField>
+				<textField pattern="d MMM, yyyy">
+					<reportElement x="10" y="31" width="100" height="17" uuid="916e2b4c-a669-4dd2-b3c6-0a9c5955833d"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="56" width="255" height="38" uuid="91997e9d-97ca-43aa-900d-fcd9aa333ed2"/>
+				<textField>
+					<reportElement x="0" y="0" width="255" height="17" uuid="bcb9de26-aae0-4094-b371-101979e7b794">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Cliente "+$F{cliente.nombreCompleto}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="21" width="255" height="17" uuid="2aa63d65-f50a-444e-a1ce-38403fcf2f88">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Contacto "+$F{cliente.contacto}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="94" width="255" height="17" uuid="91817282-97b9-4580-a2f2-1c21f45f0953"/>
+				<staticText>
+					<reportElement x="-1" y="0" width="30" height="17" uuid="f35c63c1-85ba-4fab-8fc8-1f261646ce91"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Cant.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="30" y="0" width="50" height="17" uuid="672ef5db-e5df-49ef-919c-01d7f69aace2"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Producto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="190" y="0" width="40" height="17" uuid="50904cd4-b45a-4826-8ccd-a509523187d7"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Medidas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="209" y="0" width="45" height="17" uuid="3b707341-9706-4a7f-80e7-49ad4d61e1e6"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[					]]></text>
+				</staticText>
+			</frame>
+			<componentElement>
+				<reportElement x="0" y="111" width="255" height="24" uuid="8d3287dd-c045-4c6b-92d8-e9417c8ce3af"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Dataset1" uuid="060d2c6c-f93d-477d-9613-94b65a168aa1">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{pedidoDetalles})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="24" width="255">
+						<textField>
+							<reportElement x="32" y="0" width="148" height="11" uuid="426569eb-cada-43b3-8034-27ada5046657">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{producto.descripcion}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="26" height="11" uuid="8ecf5b27-c2eb-4656-a445-c685e95d24c2">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="190" y="0" width="18" height="10" uuid="9731b84d-259c-495e-9f02-c955b946dfc4"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8" isItalic="true"/>
+							</textElement>
+							<text><![CDATA[Alto]]></text>
+						</staticText>
+						<textField pattern="#,###.###;#,###.###-">
+							<reportElement x="208" y="0" width="47" height="10" uuid="16651875-9e85-4d47-954c-2ba1a1707cee">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{medidaAlto}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###.###;#,###.###-">
+							<reportElement x="208" y="10" width="47" height="10" uuid="4f3995ea-667c-4ea4-b991-195936cbc95c">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{medidaAncho}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="0" y="23" width="255" height="1" forecolor="#808080" uuid="fb761fdc-5fba-40c3-b85c-cf31b14b2681">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+						</line>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="11" width="180" height="12" uuid="6ec675f9-abdd-4479-bd44-a7df64d2533c">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{archivo}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="190" y="10" width="18" height="10" uuid="3ce8a77b-01f4-4585-a128-1dfe86b999a5"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Tahoma" size="6" isItalic="true"/>
+							</textElement>
+							<text><![CDATA[Ancho]]></text>
+						</staticText>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+		<band height="150">
+			<line>
+				<reportElement x="277" y="0" width="1" height="133" uuid="960cc399-ad19-42f5-89eb-319416e9c5f0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<frame>
+				<reportElement x="0" y="10" width="255" height="133" uuid="dc8bc4d4-2e46-4ee7-a6b4-c389843210b9"/>
+				<componentElement>
+					<reportElement x="0" y="111" width="255" height="22" uuid="b9e53034-51e2-47d1-b7ab-122de12e0554"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Dataset1" uuid="14201830-c900-4365-8018-83aea3ad3d12">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{pedidoDetalles})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="22" width="255">
+							<textField>
+								<reportElement x="32" y="0" width="140" height="11" uuid="cd707834-f80f-449d-b95c-288ee6955ced">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{producto.descripcion}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="0" width="26" height="11" uuid="9b621588-d7a9-4b4b-951c-c1ecc04aacba">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="178" y="0" width="35" height="11" uuid="d1913424-c22b-491c-baf5-f1577c5c3390">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{precioProducto}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="220" y="0" width="35" height="11" uuid="fc0657f7-626f-4159-9b64-987cdf3bd60c">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{precioDetalle}]]></textFieldExpression>
+							</textField>
+							<staticText>
+								<reportElement x="32" y="11" width="21" height="10" uuid="6414f225-01d1-4c68-8223-d38778c84c72"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8" isItalic="true"/>
+								</textElement>
+								<text><![CDATA[CM]]></text>
+							</staticText>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="53" y="11" width="47" height="10" uuid="988262a5-5eb9-45bc-b012-a06f10824e2d">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{medidaAlto}]]></textFieldExpression>
+							</textField>
+							<staticText>
+								<reportElement x="100" y="11" width="25" height="10" uuid="218da0c7-b4ef-4596-877e-4fcd4322c887">
+									<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8" isItalic="true"/>
+								</textElement>
+								<text><![CDATA[x]]></text>
+							</staticText>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="125" y="11" width="47" height="10" uuid="c8bb0482-4241-4ac3-8a1f-02e5a1b503bd">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{medidaAncho}]]></textFieldExpression>
+							</textField>
+							<line>
+								<reportElement x="0" y="21" width="255" height="1" forecolor="#808080" uuid="d550f8bb-b54f-4bc6-a5be-fb4e0704326b">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+							</line>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<frame>
+					<reportElement x="0" y="94" width="255" height="17" uuid="7ab5c9cc-78cc-4542-9269-6a482cefd29d"/>
+					<staticText>
+						<reportElement x="0" y="0" width="30" height="17" uuid="3f28bc91-dc00-4967-afe6-353b8f2d2213"/>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Cant.]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="50" height="17" uuid="afc0311e-3ba5-46d8-b532-8600db834093"/>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Producto]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="170" y="0" width="40" height="17" uuid="e82ba369-3931-4974-adb3-48649285631f"/>
+						<textElement textAlignment="Right" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Precio]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="210" y="0" width="45" height="17" uuid="ec64b79d-5711-4ab4-bca9-d938e36ad24a"/>
+						<textElement textAlignment="Right" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Subtotal]]></text>
+					</staticText>
+				</frame>
+				<frame>
+					<reportElement x="0" y="0" width="255" height="56" uuid="f8936fef-863b-47d8-a807-b1b6f3568d99"/>
+					<rectangle radius="5">
+						<reportElement key="" x="0" y="0" width="255" height="56" uuid="cf142764-08e5-4b44-82f6-01d5defead18"/>
+						<graphicElement>
+							<pen lineStyle="Solid"/>
+						</graphicElement>
+					</rectangle>
+					<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+						<reportElement x="130" y="7" width="113" height="42" uuid="1e91d03a-31a8-4a93-9770-7bb06be91108"/>
+						<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+					</image>
+					<textField>
+						<reportElement x="10" y="7" width="110" height="17" uuid="09965aec-4bfa-42e6-bad8-d6aff2d5625d">
+							<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma" size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+					</textField>
+					<textField pattern="d MMM, yyyy">
+						<reportElement x="10" y="31" width="100" height="17" uuid="9db399c0-3270-4b55-90cf-1338beb74eea"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="0" y="56" width="255" height="38" uuid="62396ec8-4a4d-4494-bb80-005c3da99e4d"/>
+					<textField>
+						<reportElement x="0" y="0" width="255" height="17" uuid="bc603feb-8eb3-48ad-b9d1-b9d0fcf22d72">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Cliente "+$F{cliente.nombreCompleto}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="0" y="21" width="255" height="17" uuid="00212774-5cf0-45d2-a653-183e4da77434">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Contacto "+$F{cliente.contacto}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+			<frame>
+				<reportElement x="300" y="10" width="255" height="133" uuid="4ac1071b-912d-4f48-89ba-e132ce988848"/>
+				<componentElement>
+					<reportElement x="0" y="111" width="255" height="22" uuid="45557b27-8e7f-48ab-8b85-e051605be114"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Dataset1" uuid="4006ac26-8304-430b-94ca-c8534e2504d4">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{pedidoDetalles})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="22" width="255">
+							<textField>
+								<reportElement x="32" y="0" width="140" height="11" uuid="975b1866-a654-496a-ad64-435c3f04e94d">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{producto.descripcion}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="0" width="26" height="11" uuid="eafc88cf-1287-4a63-ab2c-e8ec3b67d015">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{cantidadDetalle}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="178" y="0" width="35" height="11" uuid="92ce8754-e0aa-40eb-9281-49a6fefb622e">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{precioProducto}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="220" y="0" width="35" height="11" uuid="14aae8dd-b2d8-404a-857e-b2881975f612">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{precioDetalle}]]></textFieldExpression>
+							</textField>
+							<staticText>
+								<reportElement x="32" y="11" width="21" height="10" uuid="36442ceb-366a-4080-8bda-84645652c5bf"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8" isItalic="true"/>
+								</textElement>
+								<text><![CDATA[CM]]></text>
+							</staticText>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="53" y="11" width="47" height="10" uuid="32e2b2c9-4817-4059-8953-00c1abff615f">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{medidaAlto}]]></textFieldExpression>
+							</textField>
+							<staticText>
+								<reportElement x="100" y="11" width="25" height="10" uuid="26951470-5f7a-4a87-9d3d-2e78055d3b9a">
+									<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8" isItalic="true"/>
+								</textElement>
+								<text><![CDATA[x]]></text>
+							</staticText>
+							<textField pattern="#,###.###;#,###.###-">
+								<reportElement x="125" y="11" width="47" height="10" uuid="38823d29-d98b-473b-a2f7-6d1209a48d16">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{medidaAncho}]]></textFieldExpression>
+							</textField>
+							<line>
+								<reportElement x="0" y="21" width="255" height="1" forecolor="#808080" uuid="8d5375f2-0e34-403b-84af-8a59e5d504d1">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+							</line>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<frame>
+					<reportElement x="0" y="94" width="255" height="17" uuid="04d2b77a-8a9b-407d-8961-42e6f7da1dcb"/>
+					<staticText>
+						<reportElement x="0" y="0" width="30" height="17" uuid="f071a2be-56b6-47b0-bcb1-95a2724585be"/>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Cant.]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="50" height="17" uuid="b368ed2e-9423-4aeb-af52-cc1a2bfdcbd0"/>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Producto]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="170" y="0" width="40" height="17" uuid="3a55f139-b2d8-4208-8698-86cc4c2917bb"/>
+						<textElement textAlignment="Right" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Precio]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="210" y="0" width="45" height="17" uuid="ba5c6670-941d-4e5a-9c6e-fdb1e8d263ed"/>
+						<textElement textAlignment="Right" verticalAlignment="Bottom">
+							<font fontName="Tahoma" isBold="false" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Subtotal]]></text>
+					</staticText>
+				</frame>
+				<frame>
+					<reportElement x="0" y="0" width="255" height="56" uuid="1966cef2-d040-4530-b1fc-613d6306777d"/>
+					<rectangle radius="5">
+						<reportElement key="" x="0" y="0" width="255" height="56" uuid="a8ab03e7-5320-40b3-b28d-2eb843f7e9e1"/>
+						<graphicElement>
+							<pen lineStyle="Solid"/>
+						</graphicElement>
+					</rectangle>
+					<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+						<reportElement x="130" y="7" width="113" height="42" uuid="5de4a16f-ab6a-4970-8fc3-90ab50bd5879"/>
+						<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+					</image>
+					<textField>
+						<reportElement x="10" y="7" width="110" height="17" uuid="3e45de15-6bc3-413c-bc17-455e18283e88">
+							<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma" size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+					</textField>
+					<textField pattern="d MMM, yyyy">
+						<reportElement x="10" y="31" width="100" height="17" uuid="8443d1c4-d143-4b62-a9cf-26278d67a119"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="0" y="56" width="255" height="38" uuid="670c83ec-ef76-4a6c-a5f1-4f4904bd05e8"/>
+					<textField>
+						<reportElement x="0" y="0" width="255" height="17" uuid="9412bb40-6203-4f5d-8b45-09a803360b9e">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Cliente "+$F{cliente.nombreCompleto}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="0" y="21" width="255" height="17" uuid="b1f6ac2f-88f9-43e7-a5de-9d75c213f269">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Tahoma"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Contacto "+$F{cliente.contacto}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="9836df4a-17db-49f6-b812-30f657a90926">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="84">
+			<frame>
+				<reportElement x="0" y="0" width="255" height="78" uuid="77410ff6-3b82-4809-b35a-7a2e974769c9">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<rectangle radius="5">
+					<reportElement key="" mode="Opaque" x="0" y="0" width="255" height="75" uuid="bff176e7-0b59-4bb6-bc92-956b02fca7c3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="26" y="4" width="54" height="15" uuid="e7c9e5b8-ea7c-4f39-8cf3-10a519f297d0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10"/>
+					</textElement>
+					<text><![CDATA[Sumatoria]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="20" y="19" width="60" height="15" uuid="3bcf2a00-165f-4967-af20-1afd25bf6f7e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10"/>
+					</textElement>
+					<text><![CDATA[Descuento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="34" width="80" height="15" uuid="6684d4d8-c8db-43cc-8390-b7d3f348b8b0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor a Pagar]]></text>
+				</staticText>
+				<textField pattern="#,###.##¤;#,###.##- ¤">
+					<reportElement x="90" y="3" width="100" height="15" uuid="2286dd7d-fe9a-429c-9e71-b08e766c4362">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sumatoriaPrecio}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,###.##¤;#,###.##- ¤">
+					<reportElement x="90" y="18" width="100" height="15" uuid="0caa6307-304e-4f30-89fa-f4f7046e3369">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descuentoTotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,###.##¤;#,###.##- ¤">
+					<reportElement x="90" y="34" width="100" height="15" uuid="7fa0c5c9-01ef-4c59-99c9-65ab2c3be2cf">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{precioPagar}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="23" y="56" width="54" height="15" uuid="15612f14-c388-451a-82c1-c7615bf16e23">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10"/>
+					</textElement>
+					<text><![CDATA[Entrega]]></text>
+				</staticText>
+				<rectangle radius="5">
+					<reportElement x="89" y="51" width="101" height="20" forecolor="#595959" uuid="6e49f2e8-fccb-47b8-afdc-15772adfc040"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineStyle="Dotted"/>
+					</graphicElement>
+				</rectangle>
+			</frame>
+			<frame>
+				<reportElement x="300" y="0" width="255" height="79" uuid="7818c36e-852f-4a82-83d8-6f65e7a1e36b">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<rectangle radius="5">
+					<reportElement key="" mode="Opaque" x="0" y="0" width="255" height="75" uuid="ec212aad-2e1f-462e-b113-03e790dc9b14">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="26" y="4" width="54" height="15" uuid="8d95ea40-c509-4674-be7a-4c65b9e359ee">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10"/>
+					</textElement>
+					<text><![CDATA[Sumatoria]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="20" y="19" width="60" height="15" uuid="0d123169-745b-4613-bebc-2af87f7b7676">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10"/>
+					</textElement>
+					<text><![CDATA[Descuento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="34" width="80" height="15" uuid="9e524d35-2b0a-49a0-9a83-f49f4d27d93d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor a Pagar]]></text>
+				</staticText>
+				<textField pattern="#,###.##¤;#,###.##- ¤">
+					<reportElement x="90" y="3" width="100" height="15" uuid="00a7aa35-97a6-4f61-b931-ab6345e2d68e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sumatoriaPrecio}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,###.##¤;#,###.##- ¤">
+					<reportElement x="90" y="18" width="100" height="15" uuid="e14fb6be-7a2a-4389-96c0-1cf6b0b7a747">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descuentoTotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,###.##¤;#,###.##- ¤">
+					<reportElement x="90" y="34" width="100" height="15" uuid="2d28dd9d-7858-4482-a1ee-60a14c2e0fcb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{precioPagar}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="23" y="56" width="54" height="15" uuid="1e7f9b59-1d3e-477e-b44c-b4b359ceddb0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="10"/>
+					</textElement>
+					<text><![CDATA[Entrega]]></text>
+				</staticText>
+				<rectangle radius="5">
+					<reportElement x="89" y="51" width="101" height="20" forecolor="#595959" uuid="730da2ce-b215-4600-af06-6bc68d53d384"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineStyle="Dotted"/>
+					</graphicElement>
+				</rectangle>
+			</frame>
+			<line>
+				<reportElement x="277" y="5" width="1" height="70" uuid="0e5b1ea8-16ab-418f-a848-2707182d86be">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>
