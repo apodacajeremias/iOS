@@ -17,7 +17,6 @@ import javax.swing.JTable;
 import iOS.controlador.util.EventosUtil;
 import iOS.controlador.util.Impresiones;
 import iOS.controlador.util.MetodosPedido;
-import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
@@ -46,6 +45,17 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		estadoInicial(true);
 		setUpEvents();
 		cargarColaboradores();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void cargarColaboradores() {
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			for (int i = 0; i < Sesion.getInstance().recuperarColaboradores().size(); i++) {
+				reporte.getCbColaborador().addItem( Sesion.getInstance().recuperarColaboradores().get(i));
+			}
+		} else {
+			reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
+		}
 	}
 
 	private void setUpEvents() {
@@ -95,24 +105,6 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 			break;
 		}
 
-	}
-
-	@SuppressWarnings("unchecked")
-	private void cargarColaboradores() {
-		List<Colaborador> cs = null;
-		ColaboradorDao cDao = new ColaboradorDao();
-		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
-			cs = cDao.recuperarTodoOrdenadoPorNombre();
-			try {
-				for (int i = 0; i < cs.size(); i++) {
-					reporte.getCbColaborador().addItem(cs.get(i));
-				}
-			} catch (Exception e) {
-				reporte.getCbColaborador().addItem(null);
-			}
-			return;
-		}
-		reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
 	}
 
 	private void tableMenu(final JTable table) {

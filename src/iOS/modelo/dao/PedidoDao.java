@@ -6,8 +6,6 @@ import java.util.List;
 import org.hibernate.query.Query;
 
 import iOS.modelo.entidades.Pedido;
-import iOS.modelo.entidades.PedidoDetalleConfeccion;
-import iOS.modelo.entidades.PedidoDetalles;
 
 public class PedidoDao extends GenericDao<Pedido> {
 
@@ -38,7 +36,7 @@ public class PedidoDao extends GenericDao<Pedido> {
 	public List<Pedido> recuperarHistoricoCliente(String id, Date hoy, Date hace) {
 		getSession().beginTransaction();
 
-		// Se filtran los ultimos 30 días para buscar sus movimiento y generar valores
+		// Se filtran los ultimos 30 dï¿½as para buscar sus movimiento y generar valores
 		// de mts2 en ese periodo
 		String sql = "FROM Pedido " + "WHERE cliente.id = :id " + "AND fechaRegistro " + "BETWEEN :hace and :hoy "
 				+ "ORDER BY id DESC";

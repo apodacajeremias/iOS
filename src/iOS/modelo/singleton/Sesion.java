@@ -1,7 +1,10 @@
 package iOS.modelo.singleton;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
+import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.entidades.Colaborador;
 
 public class Sesion {
@@ -30,6 +33,14 @@ public class Sesion {
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
+	}
+	
+	public List<Colaborador> recuperarColaboradores() {
+		List<Colaborador> cs = null;
+		ColaboradorDao cDao = new ColaboradorDao();
+		cs = cDao.recuperarTodoOrdenadoPorNombre();
+		
+		return cs;
 	}
 
 }

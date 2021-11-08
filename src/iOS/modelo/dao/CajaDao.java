@@ -16,12 +16,10 @@ public class CajaDao extends GenericDao<Caja> {
 
 	public Caja encontrarCajaHoy(int id) {
 		getSession().beginTransaction();
-		
+
 		Date hoy = new Date();
-		
-		String sql = "from Caja "
-				+ "where colaborador.id = :id "
-				+ "and DATE(fechaRegistro) = :hoy "
+
+		String sql = "from Caja " + "where colaborador.id = :id " + "and DATE(fechaRegistro) = :hoy "
 				+ "and cajaCerrada = false";
 
 		@SuppressWarnings("unchecked")
@@ -38,7 +36,7 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<CajaMovimiento> ordenarMovimientosPorID(int cajaID) {
 		getSession().beginTransaction();
 		String sql = "from CajaMovimiento where caja.id = :cajaID order by id";
@@ -54,13 +52,10 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<CajaMovimiento> recuperarMovimientoNoAnulados(int cajaID) {
 		getSession().beginTransaction();
-		String sql = "from CajaMovimiento "
-				+ "WHERE caja.id = :cajaID "
-				+ "AND esAnulado = false "
-				+ "order by id";
+		String sql = "from CajaMovimiento " + "WHERE caja.id = :cajaID " + "AND esAnulado = false " + "order by id";
 		@SuppressWarnings("unchecked")
 		Query<CajaMovimiento> query = getSession().createQuery(sql);
 		query.setParameter("cajaID", cajaID);
@@ -73,12 +68,10 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<CajaMovimiento> recuperarEntregaPedido(int pedido) {
 		getSession().beginTransaction();
-		String sql = "from CajaMovimiento "
-				+ "where pedido.id = :pedido "
-				+ "and esAnulado = false "
+		String sql = "from CajaMovimiento " + "where pedido.id = :pedido " + "and esAnulado = false "
 				+ "order by id ASC";
 		@SuppressWarnings("unchecked")
 		Query<CajaMovimiento> query = getSession().createQuery(sql);
@@ -92,14 +85,11 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public Double sumarIngresosGS(int caja) {
 		getSession().beginTransaction();
-		String sql = "SELECT SUM(valorGS) "
-				+ "FROM CajaMovimiento "
-				+ "where esRetiro = false "
-				+ "and esanulado = false "
-				+ "and caja.id = :caja";
+		String sql = "SELECT SUM(valorGS) " + "FROM CajaMovimiento " + "where esRetiro = false "
+				+ "and esanulado = false " + "and caja.id = :caja";
 		@SuppressWarnings("unchecked")
 		Query<Double> query = getSession().createQuery(sql);
 		query.setParameter("caja", caja);
@@ -113,7 +103,7 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<Caja> recuperarTodoPorColaborador(int colaborador) {
 		getSession().beginTransaction();
 		String sql = "from Caja where colaborador.id = :colaborador order by id DESC";
@@ -129,15 +119,11 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<CajaMovimiento> recuperarPorCliente(int cliente) {
 		getSession().beginTransaction();
-		String sql = "from CajaMovimiento "
-				+ "where cliente.id = :cliente "
-				+ "and esAnulado = false "
-				+ "and esRetiro = false "
-				+ "and estado = true "
-				+ "order by id ASC";
+		String sql = "from CajaMovimiento " + "where cliente.id = :cliente " + "and esAnulado = false "
+				+ "and esRetiro = false " + "and estado = true " + "order by id ASC";
 		@SuppressWarnings("unchecked")
 		Query<CajaMovimiento> query = getSession().createQuery(sql);
 		query.setParameter("cliente", cliente);
@@ -151,15 +137,13 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<CajaMovimiento> recuperarCandidatosVales(String observacion) {
 		getSession().beginTransaction();
-		String sql = "from CajaMovimiento "
-				+ "where observacion LIKE :observacion "
-				+ "order by id ASC";
+		String sql = "from CajaMovimiento " + "where observacion LIKE :observacion " + "order by id ASC";
 		@SuppressWarnings("unchecked")
 		Query<CajaMovimiento> query = getSession().createQuery(sql);
-		query.setParameter("observacion", "%"+observacion+"%");
+		query.setParameter("observacion", "%" + observacion + "%");
 		try {
 			List<CajaMovimiento> resultados = query.getResultList();
 			commit();
@@ -170,11 +154,11 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<Caja> reporteDiarioCaja(int colaborador, boolean estado, boolean cajaCerrada, Date fecha) {
 		getSession().beginTransaction();
 		String sql = "FROM Caja " 
-				+ "WHERE colaborador.id = :colaborador "
+		+ "WHERE colaborador.id = :colaborador " 
 				+ "AND estado = :estado "
 				+ "AND cajaCerrada = :cajaCerrada " 
 				+ "AND DATE(fechaRegistro) = :fecha " 
@@ -196,19 +180,23 @@ public class CajaDao extends GenericDao<Caja> {
 		}
 	}
 	
-	public List<Caja> consultaTest(){
+	public List<Caja> reporteMensualCaja(int colaborador, boolean estado, boolean cajaCerrada, Integer mes, Integer anho) {
 		getSession().beginTransaction();
-		String sql = "SELECT * " + 
-				"	FROM caja AS ca " + 
-				"	JOIN cajamovimiento AS cm " + 
-				"	ON ca.id = cm.caja.id " + 
-				"	WHERE ca.cajacerrada = true " + 
-				"	AND ca.estado = true " + 
-				"	AND cm.esanulado = false " + 
-				"	order by ca.id";
+		String sql = "FROM Caja " 
+		+ "WHERE colaborador.id = :colaborador " 
+				+ "AND estado = :estado "
+				+ "AND cajaCerrada = :cajaCerrada " 
+				+ "AND MONTH(fechaRegistro) = :mes "
+				+ "AND YEAR(fechaRegistro) = :anho " 
+				+ "ORDER BY id DESC";
 		try {
 			@SuppressWarnings("unchecked")
-			Query<Caja> query = getSession().createNativeQuery(sql);
+			Query<Caja> query = getSession().createQuery(sql);
+			query.setParameter("colaborador", colaborador);
+			query.setParameter("estado", estado);
+			query.setParameter("cajaCerrada", cajaCerrada);
+			query.setParameter("mes", mes);
+			query.setParameter("anho", anho);
 			List<Caja> lista = query.getResultList();
 			commit();
 			return lista;
@@ -218,5 +206,4 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-
 }

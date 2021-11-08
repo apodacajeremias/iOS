@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import iOS.modelo.dao.CajaDao;
+import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.singleton.Sesion;
@@ -38,6 +39,7 @@ public class Impresiones {
 			parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
 			parametros.put("esPresupuesto", esPresupuesto(pedido));
 			parametros.put("entrega", verificarValidezPago(pedido));
+			parametros.put("valorPendiente", valorPendiente(pedido));
 
 			List<Pedido> pedidos = new ArrayList<Pedido>();
 			pedidos.add(pedido);
@@ -50,7 +52,7 @@ public class Impresiones {
 			} catch (JRException e) {
 				e.printStackTrace();
 			}
-		} 
+		}
 		ventana.dispose();
 	}
 
@@ -65,6 +67,7 @@ public class Impresiones {
 			parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
 			parametros.put("esPresupuesto", esPresupuesto(pedido));
 			parametros.put("entrega", verificarValidezPago(pedido));
+			parametros.put("valorPendiente", valorPendiente(pedido));
 
 			List<Pedido> pedidos = new ArrayList<Pedido>();
 			pedidos.add(pedido);
@@ -81,20 +84,19 @@ public class Impresiones {
 		ventana.dispose();
 	}
 
-	public void imprimirReportePedido(List<Pedido> lista, String tipoReporte, String claseReporte, JDialog reporte) {	
+	public void imprimirReportePedido(List<Pedido> lista, String tipoReporte, String claseReporte, JDialog reporte) {
 		if (lista.size() <= 0) {
 			JOptionPane.showMessageDialog(reporte, "No hay registros para realizar la impresión.");
 			return;
 		}
 		HashMap<String, Object> parametros = new HashMap<>();
 		parametros.put("solicitante", Sesion.getInstance().getColaborador().toString());
-		
-		//Diario Mensual
-		parametros.put("tipoReporte", tipoReporte);
-		
-		//Carteleria, costura o ambos
-		parametros.put("claseReporte", claseReporte);
 
+		// Diario Mensual
+		parametros.put("tipoReporte", tipoReporte);
+
+		// Carteleria, costura o ambos
+		parametros.put("claseReporte", claseReporte);
 
 		// Creando reportes
 		ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
@@ -105,7 +107,33 @@ public class Impresiones {
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
+	}
+	
+	public void imprimirReporteCaja(List<Caja> lista, String tipoReporte, String claseReporte, JDialog reporte) {
+		if (lista.size() <= 0) {
+			JOptionPane.showMessageDialog(reporte, "No hay registros para realizar la impresión.");
+			return;
+		}
+		HashMap<String, Object> parametros = new HashMap<>();
+		parametros.put("solicitante", Sesion.getInstance().getColaborador().toString());
+
+		// Diario Mensual
+		parametros.put("tipoReporte", tipoReporte);
+
+		// Carteleria, costura o ambos
+		parametros.put("claseReporte", claseReporte);
+
+		// Creando reportes
+		ConexionReporte<Caja> conexionReporte = new ConexionReporte<Caja>();
+		try {
+			conexionReporte.generarReporte(lista, parametros, "ReporteCaja3");
+			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
+			conexionReporte.ventanaReporte.setVisible(true);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private String esPresupuesto(Pedido pedido) {
@@ -128,4 +156,9 @@ public class Impresiones {
 		return 0;
 	}
 
+	private double valorPendiente(Pedido pedido) {
+		Double valorPendiente = (pedido.getSumatoriaPrecio() - pedido.getDescuentoTotal())
+				- verificarValidezPago(pedido);
+		return valorPendiente;
+	}
 }

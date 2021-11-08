@@ -34,10 +34,10 @@ import iOS.vista.ventanas.buscadores.BuscadorProducto;
 import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import net.sf.jasperreports.engine.JRException;
 
-
-public class PedidoConfeccionControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface, ClienteInterface, ProductoInterface, PropertyChangeListener {
+public class PedidoConfeccionControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface,
+		ClienteInterface, ProductoInterface, PropertyChangeListener {
 	private PedidoConfeccion ventana;
-	
+
 	private ModeloTablaPedidoConfeccionDetalle modeloTabla;
 	private PedidoDao dao;
 	private String accion;
@@ -47,7 +47,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	private Producto producto;
 	private PedidoDetalleConfeccion detalle;
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
-	
+
 	public PedidoConfeccionControlador(PedidoConfeccion ventana) {
 		this.ventana = ventana;
 		modeloTabla = new ModeloTablaPedidoConfeccionDetalle();
@@ -67,13 +67,12 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		this.ventana.getBtnBuscarCliente().addActionListener(this);
 		this.ventana.getBtnBuscarProducto().addActionListener(this);
 		this.ventana.getBtnSalir().addActionListener(this);
-		
+
 		this.ventana.getBtnGuardar().addActionListener(this);
-		
 
 		this.ventana.getTable().addMouseListener(this);
 		this.ventana.getTable().addPropertyChangeListener(this);
-				this.ventana.getRbConsiderarMetraje().addPropertyChangeListener(this);
+		this.ventana.getRbConsiderarMetraje().addPropertyChangeListener(this);
 		this.ventana.getRbGenerarPresupuesto().addPropertyChangeListener(this);
 		this.ventana.getRbConsiderarMetraje().addMouseListener(this);
 		this.ventana.getRbGenerarPresupuesto().addMouseListener(this);
@@ -101,21 +100,21 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		ventana.getlMetrosFechaEmision().setForeground(Color.RED);
 		ventana.getRbGenerarPresupuesto().setSelected(false);
 
-		//Botones que se mantienen disponibles si o si
+		// Botones que se mantienen disponibles si o si
 		EventosUtil.estadosBotones(ventana.getBtnBuscarCliente(), true);
 		EventosUtil.estadosBotones(ventana.getBtnSalir(), true);
 
-		//Cuando setCliente, se activa
+		// Cuando setCliente, se activa
 		EventosUtil.estadosBotones(ventana.getBtnBuscarProducto(), !b);
 
-		//Cuando setProducto, se activa
+		// Cuando setProducto, se activa
 		EventosUtil.estadosBotones(ventana.getBtnAgregar(), false);
 
-		//Si se selecciona un detalle
+		// Si se selecciona un detalle
 		EventosUtil.estadosBotones(ventana.getBtnAnular(), !b);
 
 		EventosUtil.estadosBotones(ventana.getBtnGuardar(), false);
-		
+
 		vaciarTabla();
 
 	}
@@ -125,7 +124,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		ventana.getTable().getColumnModel().getColumn(1).setPreferredWidth(100);
 
 	}
-	
+
 	private void vaciarTabla() {
 		items = new ArrayList<PedidoDetalleConfeccion>();
 		modeloTabla.setDetalle(items);
@@ -136,7 +135,11 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	private void agregarItem() {
 		if (producto == null) {
 			return;
-		}		
+		}
+		if (producto.getTipoCobro().equalsIgnoreCase("METRO CUADRADO")) {
+			JOptionPane.showMessageDialog(ventana, "Este producto es por METRO CUADRADO, no se agregará el producto.");
+			return;
+		}
 		if (!limitarItems(items)) {
 			return;
 		}
@@ -146,26 +149,24 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		detalle.setTamano("Sin tamaño");
 		detalle.setMolde("Sin molde");
 
-		//Cantidad
+		// Cantidad
 		detalle.setCantidadDetalle(1);
 
-		//Herencias
+		// Herencias
 		detalle.setProducto(producto);
 		detalle.setPrecioProducto(producto.getPrecioMaximo());
 		detalle.setPrecioDetalle(producto.getPrecioMaximo());
-		
 
-
-		//Para la tabla que se muestra
+		// Para la tabla que se muestra
 		items.add(detalle);
 		modeloTabla.setDetalle(items);
 		modeloTabla.fireTableDataChanged();
 		ventana.getBtnBuscarProducto().requestFocus();
 
-		//Metodos referentes
+		// Metodos referentes
 		realizarCalculos();
 	}
-	
+
 	private boolean limitarItems(List<PedidoDetalleConfeccion> lista) {
 		if (lista.size() < 10) {
 			return true;
@@ -173,14 +174,13 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		return false;
 
 	}
-	
+
 	private void quitarItem() {
 		if (ventana.getTable().getSelectedRow() < 0) {
 			return;
 		}
-		
-		int opcion = JOptionPane.showConfirmDialog(null,"¿Retirar item?",
-				"Confirmar", JOptionPane.OK_CANCEL_OPTION,
+
+		int opcion = JOptionPane.showConfirmDialog(null, "¿Retirar item?", "Confirmar", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
 			items.remove(ventana.getTable().getSelectedRow());
@@ -199,7 +199,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		} else {
 			ventana.getlMetrosFechaEmision().setForeground(Color.RED);
 		}
-		System.out.println(considerarMetraje+ " considerarMetraje");
+		System.out.println(considerarMetraje + " considerarMetraje");
 		return considerarMetraje;
 
 	}
@@ -210,11 +210,11 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 
 	}
 
-	private void calcularSubtotalDetalle(){
+	private void calcularSubtotalDetalle() {
 		double precio = 0;
 		double cantidad = 0;
 		double total = 0;
-		
+
 		for (int i = 0; i < items.size(); i++) {
 			precio = items.get(i).getPrecioProducto();
 			cantidad = items.get(i).getCantidadDetalle();
@@ -224,7 +224,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 				items.get(i).setPrecioDetalle(total);
 				modeloTabla.setDetalle(items);
 				modeloTabla.fireTableDataChanged();
-			break;
+				break;
 			default:
 				break;
 			}
@@ -248,20 +248,18 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		numeros.add(suma);
 		numeros.add(diferencia);
 
-		ventana.getlSumatoria().setText(EventosUtil.separadorMiles((double) suma)+" Gs.");
-		ventana.getlTotalPagar().setText(EventosUtil.separadorMiles((double) diferencia)+ " Gs.");
+		ventana.getlSumatoria().setText(EventosUtil.separadorMiles((double) suma) + " Gs.");
+		ventana.getlTotalPagar().setText(EventosUtil.separadorMiles((double) diferencia) + " Gs.");
 
 		return numeros;
 	}
 
-	private void realizarCalculos() { //Si mi items está vacio entonces no ejecuta
+	private void realizarCalculos() { // Si mi items está vacio entonces no ejecuta
 		calcularSubtotalDetalle();
 		valorarPedido();
 
 	}
 
-
-	
 	private boolean validarFormulario() {
 		if (cliente == null) {
 			JOptionPane.showMessageDialog(ventana, "Indique el cliente");
@@ -271,17 +269,18 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			JOptionPane.showMessageDialog(ventana, "Cargue productos al pedido");
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	private String esPresupuesto(Pedido p) {
 		if (p.isEsPresupuesto()) {
 			return "PRESUPUESTO";
 		} else {
 			return "PEDIDO";
 		}
-	}	
+	}
+
 	private void imprimir(Pedido p) {
 		if (p == null) {
 			return;
@@ -289,9 +288,9 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		HashMap<String, Object> parametros = new HashMap<>();
 		parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
 		parametros.put("esPresupuesto", esPresupuesto(p));
-		
+
 		pedidos.clear();
-		
+
 		pedidos.add((p));
 
 		// Creando reportes
@@ -304,7 +303,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 	}
 
 	public void nuevo() {
@@ -322,7 +321,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		if (!validarFormulario()) {
 			return;
 		}
-		
+
 		if (accion.equals("NUEVO")) {
 			pedido = new Pedido();
 			pedido.setColaborador(Sesion.getInstance().getColaborador());
@@ -336,7 +335,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		pedido.setSumatoriaPrecio(valorarPedido().get(0));
 		pedido.setPrecioPagar(valorarPedido().get(1));
 
-
 		pedido.setPedidosConfecciones(items);
 
 		for (int i = 0; i < items.size(); i++) {
@@ -349,7 +347,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			} else {
 				dao.modificar(pedido);
 			}
-			dao.commit();			
+			dao.commit();
 			Impresiones.getInstance().imprimirPedidoConfeccionIndividual(pedido, ventana);
 		} catch (Exception e) {
 			dao.rollBack();
@@ -364,8 +362,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getSource() == ventana.gettDescuentoPedido()
-				&& e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if (e.getSource() == ventana.gettDescuentoPedido() && e.getKeyCode() == KeyEvent.VK_ENTER) {
 			realizarCalculos();
 			System.out.println("keyPressed");
 		}
@@ -380,7 +377,8 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == ventana.getTable()) {
-			ventana.getTable().isCellEditable(ventana.getTable().getSelectedRow(), ventana.getTable().getSelectedColumn());
+			ventana.getTable().isCellEditable(ventana.getTable().getSelectedRow(),
+					ventana.getTable().getSelectedColumn());
 
 		}
 		if (e.getSource() == ventana.getRbConsiderarMetraje()) {
@@ -507,7 +505,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	}
 
 	@Override
-	public void setPedido(Pedido pedido){
+	public void setPedido(Pedido pedido) {
 		estadoInicial(false);
 		this.pedido = pedido;
 		gestionarPedido();
@@ -519,22 +517,21 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			return;
 		}
 
-		//No se puede modificar el cliente de un pedido generado
+		// No se puede modificar el cliente de un pedido generado
 		EventosUtil.estadosBotones(ventana.getBtnBuscarCliente(), false);
 		EventosUtil.estadosBotones(ventana.getBtnAgregar(), true);
 		EventosUtil.estadosBotones(ventana.getBtnAnular(), true);
 		EventosUtil.estadosBotones(ventana.getBtnBuscarProducto(), true);
 		EventosUtil.estadosBotones(ventana.getBtnGuardar(), true);
 
-
-		//Datos del cliente
+		// Datos del cliente
 		cliente = pedido.getCliente();
 		ventana.getlCliente().setText(cliente.getNombreCompleto());
 		ventana.getlContacto().setText(cliente.getContacto());
 		ventana.getlIdentificacion().setText(cliente.getIdentificacion());
 		ventana.getlMetrosFechaEmision().setText(EventosUtil.separadorDecimales(pedido.getMetrosFechaEmision()));
 
-		//Datos del pedido
+		// Datos del pedido
 		ventana.getlEstadoPedido().setText(EventosUtil.verificarEstado(pedido.isEstado()));
 		ventana.getlGanancia().setText(EventosUtil.separadorMiles((double) pedido.getGananciaTotal()));
 		ventana.getlMetrosPedido().setText(EventosUtil.separadorDecimales(pedido.getMetrosTotal()));
@@ -546,13 +543,11 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		ventana.getRbConsiderarMetraje().setSelected(pedido.isConsiderarMetraje());
 		ventana.getRbGenerarPresupuesto().setSelected(pedido.isEsPresupuesto());
 
-		//Detalles del pedido
-		items = pedido.getPedidosConfecciones(); 
+		// Detalles del pedido
+		items = pedido.getPedidosConfecciones();
 		modeloTabla.setDetalle(items);
 		modeloTabla.fireTableDataChanged();
 
 		accion = "MODIFICAR";
 	}
 }
-
-

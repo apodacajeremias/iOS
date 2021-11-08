@@ -17,7 +17,6 @@ import javax.swing.JTable;
 import iOS.controlador.util.EventosUtil;
 import iOS.controlador.util.Impresiones;
 import iOS.controlador.util.MetodosPedido;
-import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
@@ -44,7 +43,7 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 		dao = new PedidoDao();
 		estadoInicial(true);
 		setUpEvents();
-		cargarColaboradores(Sesion.getInstance().getColaborador());
+		cargarColaboradores();
 	}
 
 	private void setUpEvents() {
@@ -55,27 +54,20 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 
 	}
 
+	@SuppressWarnings("unchecked")
+	private void cargarColaboradores() {
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			for (int i = 0; i < Sesion.getInstance().recuperarColaboradores().size(); i++) {
+				reporte.getCbColaborador().addItem(Sesion.getInstance().recuperarColaboradores().get(i));
+			}
+		} else {
+			reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
+		}
+	}
+
 	private void estadoInicial(boolean b) {
 		EventosUtil.estadosBotones(reporte.getBtnFiltrar(), b);
 		EventosUtil.estadosBotones(reporte.getBtnImprimir(), b);
-	}
-
-	@SuppressWarnings("unchecked")
-	private void cargarColaboradores(Colaborador c) {
-		List<Colaborador> cs = null;
-		ColaboradorDao cDao = new ColaboradorDao();
-		if (EventosUtil.liberarAccesoSegunRol(c, "ADMINISTRADOR")) {
-			cs = cDao.recuperarTodoOrdenadoPorNombre();
-			try {
-				for (int i = 0; i < cs.size(); i++) {
-					reporte.getCbColaborador().addItem(cs.get(i));
-				}
-			} catch (Exception e) {
-				reporte.getCbColaborador().addItem(null);
-			}
-			return;
-		}
-		reporte.getCbColaborador().addItem(c);
 	}
 
 	private void vaciarTabla() {
@@ -96,7 +88,7 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 		Integer anho = reporte.getDateChooser().getCalendar().get(Calendar.YEAR);
 
 		System.err.println("*****************************************************");
-		System.err.println("Fecha: "+fecha+" Mes: "+mes+" Año:"+anho);
+		System.err.println("Fecha: " + fecha + " Mes: " + mes + " Año:" + anho);
 		System.err.println("*****************************************************");
 		switch (claseReporte) {
 		case "Diario":
@@ -105,7 +97,8 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 			modeloTabla.fireTableDataChanged();
 			break;
 		case "Mensual":
-			pedidos = dao.reporteMensualPedido(c.getId(), pedidoCarteleria, pedidoCostura, estado, esPresupuesto, mes, anho);
+			pedidos = dao.reporteMensualPedido(c.getId(), pedidoCarteleria, pedidoCostura, estado, esPresupuesto, mes,
+					anho);
 			modeloTabla.setPedidos(pedidos);
 			modeloTabla.fireTableDataChanged();
 			break;
@@ -182,12 +175,14 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 			break;
 		case "Imprimir":
 			if (reporte.getRb5().isSelected()) {
-				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb5().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
+				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb5().getText().toUpperCase(),
+						reporte.getTitle().toUpperCase(), reporte);
 			}
 			if (reporte.getRb6().isSelected()) {
-				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb6().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
+				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb6().getText().toUpperCase(),
+						reporte.getTitle().toUpperCase(), reporte);
 			}
-			
+
 			break;
 		case "Limpiar":
 			vaciarTabla();
@@ -238,56 +233,8 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 				MetodosPedido.getInstance().anularPedido(pedidos.get(row), dao);
 			}
 		});
-		JMenuItem reporteMensual = new JMenuItem("Reporte Diario");
-		reporteMensual.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Impresiones.getInstance().imprimirReportePedido(pedidos, "Mensual", "Completo", reporte);
-			}
-		});
 		popup.add(imprimirItem);
 		popup.add(anularPedido);
-		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "OPERADOR")) {
-			popup.add(reporteMensual);
-		}
 		return popup;
 	}
-
-	// private void imprimirReporteMensual() {
-	// pedidoDetalles = dao.reporteVentasMensualCarteleria(colaborador.getId(),
-	// reporte.getDcMeses().getMonth()+1, reporte.getDcAnos().getYear());
-	// HashMap<String, Object> parametros = new HashMap<>();
-	// parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
-	// // Creando reportes
-	// ConexionReporte<PedidoDetalles> conexionReporte = new
-	// ConexionReporte<PedidoDetalles>();
-	// try {
-	// conexionReporte.generarReporte(pedidoDetalles, parametros, "ReportePedido");
-	// conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
-	// conexionReporte.ventanaReporte.setVisible(true);
-	// } catch (JRException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// private void imprimirReporteDiario() {
-	// pedidoDetalles = dao.reporteVentasDiarioCarteleria(colaborador.getId());
-	// HashMap<String, Object> parametros = new HashMap<>();
-	// parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
-	//
-	//
-	// // Creando reportes
-	// ConexionReporte<PedidoDetalles> conexionReporte = new
-	// ConexionReporte<PedidoDetalles>();
-	// try {
-	// conexionReporte.generarReporte(pedidoDetalles, parametros, "ReportePedido");
-	// conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
-	// conexionReporte.ventanaReporte.setVisible(true);
-	// } catch (JRException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-
 }

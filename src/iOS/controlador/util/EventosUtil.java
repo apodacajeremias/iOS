@@ -157,7 +157,7 @@ public class EventosUtil {
 			}
 		}
 		Toolkit.getDefaultToolkit().beep();
-		JOptionPane.showConfirmDialog(null, "PERFIL REQUERIDO: "+accion+" "+modulo);
+		JOptionPane.showMessageDialog(null, "PERFIL REQUERIDO: "+accion+" "+modulo);
 		return false;
 
 	}

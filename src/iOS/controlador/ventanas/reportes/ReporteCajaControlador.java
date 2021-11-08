@@ -5,19 +5,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-import iOS.controlador.util.ConexionReporte;
 import iOS.controlador.util.EventosUtil;
+import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.entidades.Caja;
-import iOS.modelo.entidades.CajaMovimiento;
+import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCaja;
 import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
-import net.sf.jasperreports.engine.JRException;
 
 public class ReporteCajaControlador implements ActionListener, MouseListener {
 	private ReporteCaja reporte;
@@ -34,6 +34,7 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 
 		estadoInicial(true);
 		setUpEvents();
+		cargarColaboradores();
 	}
 
 	private void setUpEvents() {
@@ -41,6 +42,17 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		reporte.getBtnImprimir().addActionListener(this);
 		reporte.getBtnLimpiar().addActionListener(this);
 		reporte.getTable().addMouseListener(this);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void cargarColaboradores() {
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			for (int i = 0; i < Sesion.getInstance().recuperarColaboradores().size(); i++) {
+				reporte.getCbColaborador().addItem( Sesion.getInstance().recuperarColaboradores().get(i));
+			}
+		} else {
+			reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
+		}
 	}
 
 	private void estadoInicial(boolean b) {
@@ -52,6 +64,33 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		modeloTabla.fireTableDataChanged();
 	}
 
+	private void filtroPorColaborador(String claseReporte) {
+		vaciarTabla();
+		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
+		boolean estado = reporte.getRb3().isSelected();
+		boolean cajaCerrada = reporte.getRb1().isSelected();
+		Date fecha = reporte.getDateChooser().getDate();
+		Integer mes = reporte.getDateChooser().getCalendar().get(Calendar.MONTH) + 1;
+		Integer anho = reporte.getDateChooser().getCalendar().get(Calendar.YEAR);
+
+		System.err.println("*****************************************************");
+		System.err.println("Fecha: " + fecha + " Mes: " + mes + " Año:" + anho);
+		System.err.println("*****************************************************");
+		switch (claseReporte) {
+		case "Diario":
+			cajas = dao.reporteDiarioCaja(c.getId(), estado, cajaCerrada, fecha);
+			modeloTabla.setCajas(cajas);
+			modeloTabla.fireTableDataChanged();
+			break;
+		case "Mensual":
+			cajas = dao.reporteMensualCaja(c.getId(), estado, cajaCerrada, mes, anho);
+			modeloTabla.setCajas(cajas);
+			modeloTabla.fireTableDataChanged();
+			break;
+		}
+
+	}
+	
 	private void seleccionarRegistro(int posicion) {
 		if (posicion < 0) {
 			return;
@@ -59,41 +98,6 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		caja = cajas.get(posicion);
 	}
 
-	private String cajaCerrada(Caja c) {
-		if (c.isCajaCerrada()) {
-			return "CERRADA";
-		} else {
-			return "ABIERTA";
-		}
-	}
-
-	private String estadoCaja(Caja c) {
-		if (c.isEstado()) {
-			return "VIGENTE";
-		} else {
-			return "ANULADO";
-		}
-	}
-	private void imprimir(Caja c) {
-		if (c == null) {
-			return;
-		}
-		HashMap<String, Object> parametros = new HashMap<>();
-		parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
-		parametros.put("cajaCerrada", cajaCerrada(c));
-		parametros.put("estado", estadoCaja(c));
-
-		// Creando reportes
-		ConexionReporte<CajaMovimiento> conexionReporte = new ConexionReporte<CajaMovimiento>();
-		try {
-			conexionReporte.generarReporte(dao.recuperarMovimientoNoAnulados(c.getId()), parametros, "ReporteCaja2");
-			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
-			conexionReporte.ventanaReporte.setVisible(true);
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == reporte.getTable() && e.getClickCount() == 1) {
@@ -147,22 +151,27 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Filtrar":
-			filtro();
+			if (reporte.getRb5().isSelected()) {
+				filtroPorColaborador("Diario");
+			}
+			if (reporte.getRb6().isSelected()) {
+				filtroPorColaborador("Mensual");
+			}
 			break;
 		case "Imprimir":
-			imprimir(caja);
+			if (reporte.getRb5().isSelected()) {
+				Impresiones.getInstance().imprimirReporteCaja(cajas, reporte.getRb5().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
+			}
+			if (reporte.getRb6().isSelected()) {
+				Impresiones.getInstance().imprimirReporteCaja(cajas, reporte.getRb6().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
+			}
+			break;
+		case "Limpiar":
+			vaciarTabla();
 			break;
 
 		default:
 			break;
 		}
 	}
-	
-	private void filtro() {
-		cajas = dao.consultaTest();
-		modeloTabla.setCajas(cajas);
-		modeloTabla.fireTableDataChanged();
-
-	}
-
 }

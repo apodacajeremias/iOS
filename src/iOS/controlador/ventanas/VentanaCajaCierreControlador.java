@@ -18,15 +18,12 @@ import iOS.modelo.entidades.Caja;
 import iOS.modelo.interfaces.CajaInterface;
 import iOS.vista.ventanas.VentanaCajaCierre;
 
-public class VentanaCajaCierreControlador implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface{
+public class VentanaCajaCierreControlador
+		implements ActionListener, MouseListener, KeyListener, PropertyChangeListener, CajaInterface {
 	private VentanaCajaCierre ventana;
 
 	private Caja caja;
 	private CajaDao dao;
-	private ArrayList<Double> ingresos = new ArrayList<>();
-	private ArrayList<Double> retiros = new ArrayList<>();
-	private ArrayList<Double> saldoInicial = new ArrayList<>();
-	private ArrayList<Double> saldoFinal = new ArrayList<>();
 
 	public VentanaCajaCierreControlador(VentanaCajaCierre ventana) {
 		this.ventana = ventana;
@@ -34,6 +31,7 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		estadoInicial();
 		setUpEvents();
 	}
+
 	private void setUpEvents() {
 		ventana.getBtnCerrarCaja().addActionListener(this);
 	}
@@ -48,17 +46,23 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettSaldoDeclaradoUS());
 
 	}
+
 	private ArrayList<Double> ingresos() {
+		ArrayList<Double> ingresos = new ArrayList<>();
 		double gs = 0;
 		double rs = 0;
 		double us = 0;
-		for (int i = 0; i < caja.getCajaMovimientos().size(); i++) {
-			if (!caja.getCajaMovimientos().get(i).isEsRetiro() && !caja.getCajaMovimientos().get(i).isEsAnulado()) {
-				gs =+ gs + caja.getCajaMovimientos().get(i).getValorGS();
-				rs =+ rs + caja.getCajaMovimientos().get(i).getValorRS();
-				us =+ us + caja.getCajaMovimientos().get(i).getValorUS();
+		try {
+			for (int i = 0; i < caja.getCajaMovimientos().size(); i++) {
+				if (!caja.getCajaMovimientos().get(i).isEsRetiro() && !caja.getCajaMovimientos().get(i).isEsAnulado()) {
+					gs = +gs + caja.getCajaMovimientos().get(i).getValorGS();
+					rs = +rs + caja.getCajaMovimientos().get(i).getValorRS();
+					us = +us + caja.getCajaMovimientos().get(i).getValorUS();
+				}
 			}
-
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		ingresos.add(gs);
 		ingresos.add(rs);
@@ -69,15 +73,21 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 	}
 
 	private ArrayList<Double> retiros() {
+		ArrayList<Double> retiros = new ArrayList<>();
 		double gs = 0;
 		double rs = 0;
 		double us = 0;
-		for (int i = 0; i < caja.getCajaMovimientos().size(); i++) {
-			if (caja.getCajaMovimientos().get(i).isEsRetiro() && !caja.getCajaMovimientos().get(i).isEsAnulado()) {
-				gs =+ gs + caja.getCajaMovimientos().get(i).getValorGS();
-				rs =+ rs + caja.getCajaMovimientos().get(i).getValorRS();
-				us =+ us + caja.getCajaMovimientos().get(i).getValorUS();
+		try {
+			for (int i = 0; i < caja.getCajaMovimientos().size(); i++) {
+				if (caja.getCajaMovimientos().get(i).isEsRetiro() && !caja.getCajaMovimientos().get(i).isEsAnulado()) {
+					gs = +gs + caja.getCajaMovimientos().get(i).getValorGS();
+					rs = +rs + caja.getCajaMovimientos().get(i).getValorRS();
+					us = +us + caja.getCajaMovimientos().get(i).getValorUS();
+				}
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		retiros.add(gs);
 		retiros.add(rs);
@@ -86,7 +96,9 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		return retiros;
 
 	}
+
 	private ArrayList<Double> saldoInicial() {
+		ArrayList<Double> saldoInicial = new ArrayList<>();
 		saldoInicial.add(caja.getSaldoInicialGS());
 		saldoInicial.add(caja.getSaldoInicialRS());
 		saldoInicial.add(caja.getSaldoInicialUS());
@@ -95,17 +107,37 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 
 	}
 
-	private ArrayList<Double> arqueo( ArrayList<Double> ingreso, ArrayList<Double> retiro,  ArrayList<Double> saldoInicial) {
-		double gs = (ingreso.get(0)-retiro.get(0)+saldoInicial.get(0));
-		double rs = (ingreso.get(1)-retiro.get(1)+saldoInicial.get(1));
-		double us = (ingreso.get(2)-retiro.get(2)+saldoInicial.get(2));
+	private ArrayList<Double> arqueo(ArrayList<Double> ingreso, ArrayList<Double> retiro,
+			ArrayList<Double> saldoInicial) {
+		ArrayList<Double> saldoFinal = new ArrayList<>();
+		double gs = ((ingreso.get(0) - retiro.get(0)) + saldoInicial.get(0));
+		double rs = ((ingreso.get(1) - retiro.get(1)) + saldoInicial.get(1));
+		double us = ((ingreso.get(2) - retiro.get(2)) + saldoInicial.get(2));
 
 		saldoFinal.add(gs);
 		saldoFinal.add(rs);
 		saldoFinal.add(us);
-
 		return saldoFinal;
+	}
 
+	private boolean validarValorDeclaradoVSArqueo() {
+		double gs = ventana.gettSaldoDeclaradoGS().getValue() - arqueo(ingresos(), retiros(), saldoInicial()).get(0);
+		double rs = ventana.gettSaldoDeclaradoRS().getValue() - arqueo(ingresos(), retiros(), saldoInicial()).get(1);
+		double us = ventana.gettSaldoDeclaradoUS().getValue() - arqueo(ingresos(), retiros(), saldoInicial()).get(2);
+		if ((gs == 0) && (rs == 0) && (us == 0)) {
+			return true;
+		}
+		if ((gs > 0) || (rs > 0) || (us > 0)) {
+			JOptionPane.showMessageDialog(ventana,
+					"Se ha detectado valores SOBRANTE en caja. Verifique nuevamente el monto que posee en caja");
+			return false;
+		}
+		if ((gs < 0) || (rs < 0) || (us < 0)) {
+			JOptionPane.showMessageDialog(ventana,
+					"Se ha detectado valores FALTANTE en caja. Verifique nuevamente el monto que posee en caja");
+			return false;
+		}
+		return false;
 	}
 
 	private void guardar() {
@@ -115,7 +147,13 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		if (arqueo(ingresos(), retiros(), saldoInicial()) == null) {
 			return;
 		}
-
+		if (!validarValorDeclaradoVSArqueo()) {
+			int opcion = JOptionPane.showConfirmDialog(null, "¿Desea cerrar el caja de  todas formas?", "Error en arqueo de caja", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.INFORMATION_MESSAGE);
+			if (opcion == JOptionPane.CANCEL_OPTION) {
+				return;
+			}
+		}
 
 		caja.setCajaCerrada(true);
 
@@ -127,9 +165,9 @@ public class VentanaCajaCierreControlador implements ActionListener, MouseListen
 		caja.setSaldoRetiradoRS(retiros().get(1));
 		caja.setSaldoRetiradoUS(retiros().get(2));
 
-		caja.setSaldoFinalGS(saldoFinal.get(0));
-		caja.setSaldoFinalRS(saldoFinal.get(1));
-		caja.setSaldoFinalUS(saldoFinal.get(2));
+		caja.setSaldoFinalGS(arqueo(ingresos(), retiros(), saldoInicial()).get(0));
+		caja.setSaldoFinalRS(arqueo(ingresos(), retiros(), saldoInicial()).get(1));
+		caja.setSaldoFinalUS(arqueo(ingresos(), retiros(), saldoInicial()).get(2));
 
 		caja.setSaldoEntregadoGS(ventana.gettValorEntregadoGS().getValue());
 		caja.setSaldoEntregadoRS(ventana.gettValorEntregadoRS().getValue());
