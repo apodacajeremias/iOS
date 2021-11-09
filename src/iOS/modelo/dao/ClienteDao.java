@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.hibernate.query.Query;
 
+import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
+import iOS.modelo.entidades.Pedido;
 
 public class ClienteDao extends GenericDao<Cliente> {
 
@@ -47,6 +49,44 @@ public class ClienteDao extends GenericDao<Cliente> {
 		List<Cliente> lista = query.getResultList();
 		commit();
 		return lista;
+	}
+	
+	public List<CajaMovimiento> recuperarPagos(int cliente) {
+		getSession().beginTransaction();
+		String sql = "from CajaMovimiento " + "where cliente.id = :cliente " + "and esAnulado = false "
+				+ "and esRetiro = false " + "order by id ASC";
+		@SuppressWarnings("unchecked")
+		Query<CajaMovimiento> query = getSession().createQuery(sql);
+		query.setParameter("cliente", cliente);
+		try {
+			List<CajaMovimiento> resultados = query.getResultList();
+			commit();
+			return resultados;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<Pedido> recuperarPedidos(int cliente) {
+		getSession().beginTransaction();
+
+		String sql = "from Pedido where cliente.id = :cliente " + "and estado = true " + "and esPresupuesto = false "
+				+ "order by id desc";
+
+		@SuppressWarnings("unchecked")
+		Query<Pedido> query = getSession().createQuery(sql);
+		query.setParameter("cliente", cliente);
+		try {
+			List<Pedido> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
 	}
 
 	public long verificarClienteEnUso(Cliente paciente) {

@@ -34,7 +34,6 @@
 		<mapping class="iOS.modelo.entidades.Material"></mapping>
 		<mapping class="iOS.modelo.entidades.Modulo"></mapping>
 		<mapping class="iOS.modelo.entidades.Operacion"></mapping>
-		<mapping class="iOS.modelo.entidades.Pago"></mapping>
 		<mapping class="iOS.modelo.entidades.Pedido"></mapping>
 		<mapping class="iOS.modelo.entidades.PedidoDetalles"></mapping>
 		<mapping class="iOS.modelo.entidades.PedidoDetalleConfeccion"></mapping>
@@ -47,6 +46,7 @@
 		<mapping class="iOS.modelo.entidades.Rol"></mapping>
 		<mapping class="iOS.modelo.entidades.RolOperacion"></mapping>
 		<mapping class="iOS.modelo.entidades.Sector"></mapping>
+		<mapping class="iOS.modelo.entidades.SectorProceso"></mapping>
 		<mapping class="iOS.modelo.entidades.Servicio"></mapping>
 		<mapping class="iOS.modelo.entidades.Tinta"></mapping>
 

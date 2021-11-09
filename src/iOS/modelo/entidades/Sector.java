@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,71 +24,86 @@ public class Sector {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
+	@Column(nullable = false)
+	private String descripcion;
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
-	private Colaborador colaborador;	
+	private Colaborador colaborador;
+
+	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<SectorProceso> procesos;
+
+	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<Colaborador> colaboradoresDelSector;
+
+	public int getId() {
+		return id;
+	}
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
-	}
-	
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
-
-	@Column(nullable = false)
-	private String descripcion;
-	
-	@OneToMany(mappedBy = "sector", cascade=CascadeType.ALL, orphanRemoval=false)
-	private List<Colaborador> colaboradores;
-
-	public int getId() {
-		return id;
 	}
 
 	public String getDescripcion() {
 		return descripcion;
 	}
 
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public List<SectorProceso> getProcesos() {
+		return procesos;
+	}
+
+	public List<Colaborador> getColaboradoresDelSector() {
+		return colaboradoresDelSector;
+	}
+
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public void setProcesos(List<SectorProceso> procesos) {
+		this.procesos = procesos;
+	}
+
+	public void setColaboradoresDelSector(List<Colaborador> colaboradoresDelSector) {
+		this.colaboradoresDelSector = colaboradoresDelSector;
+	}
+
 	@Override
 	public String toString() {
 		return descripcion;
 	}
-
-	public List<Colaborador> getColaboradores() {
-		return colaboradores;
-	}
-
-	public void setColaboradores(List<Colaborador> colaboradores) {
-		this.colaboradores = colaboradores;
-	}
-	
-	
 
 }

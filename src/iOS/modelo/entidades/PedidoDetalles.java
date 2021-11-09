@@ -20,78 +20,70 @@ public class PedidoDetalles {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
 	}
-	
-	
-	
+
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
-
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 
-
-
 	@Column(nullable = true)
 	private double medidaAncho;
-	
+
 	@Column(nullable = true)
 	private double medidaAlto;
-	
+
 	@Column(nullable = true)
 	private double medidaDetalle;
-	
+
 	@Column(nullable = true)
 	private int cantidadDetalle;
-	
+
 	@Column(nullable = true)
 	private int precioProducto;
-	
+
 	@Column(nullable = true)
 	private int precioDetalle;
-	
+
 	@Column(nullable = true)
 	private int gananciaDetalle;
-	
+
 	@Column(nullable = true)
 	private String archivo;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Pedido pedido;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Producto producto;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Produccion produccion;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificado;
 
@@ -190,26 +182,18 @@ public class PedidoDetalles {
 	public void setProduccion(Produccion produccion) {
 		this.produccion = produccion;
 	}
-	
-	
-
 
 	public Date getFechaModificado() {
 		return fechaModificado;
 	}
 
-
 	public void setFechaModificado(Date fechaModificado) {
 		this.fechaModificado = fechaModificado;
 	}
-
 
 	@Override
 	public String toString() {
 		return id + " - " + fechaRegistro;
 	}
-	
-	
-	
 
 }

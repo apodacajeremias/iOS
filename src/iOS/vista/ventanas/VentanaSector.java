@@ -1,20 +1,15 @@
 package iOS.vista.ventanas;
 
-import java.awt.Cursor;
-import java.awt.EventQueue;
+import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.WindowConstants;
 
 import iOS.controlador.ventanas.VentanaSectorControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
+import iOS.vista.componentes.MiBoton;
 import iOS.vista.componentes.VentanaGenerica;
 
 public class VentanaSector extends VentanaGenerica {
@@ -23,121 +18,165 @@ public class VentanaSector extends VentanaGenerica {
 	 * 
 	 */
 	private static final long serialVersionUID = 1196814908659540277L;
-	private CampoTextoPersonalizado tNombreSector;
-	private JTable tableDeposito;
 	private VentanaSectorControlador controlador;
-	private LabelPersonalizado lblDeposito;
+	private JTable tableColaboradores;
+	private JTable tableProcesos;
+	private MiBoton btnAgregar;
+	private CampoTextoPersonalizado tDescripcion;
+	private LabelPersonalizado lColaborador;
+	private LabelPersonalizado lID;
+	private LabelPersonalizado lFechaRegistro;
+	private LabelPersonalizado lEstado;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					VentanaSector dialog = new VentanaSector();
-					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
 	public void setUpControlador() {
 		controlador = new VentanaSectorControlador(this);
-
 	}
 
 	/**
 	 * Create the dialog.
 	 */
 	public VentanaSector() {
-		
-		LabelPersonalizado lblprsnlzdNombreDelSector = new LabelPersonalizado(0);
-		lblprsnlzdNombreDelSector.setText("Nombre del Sector");
-		lblprsnlzdNombreDelSector.setBounds(12, 11, 113, 15);
-		getPanelFormulario().add(lblprsnlzdNombreDelSector);
-		
-		tNombreSector = new CampoTextoPersonalizado();
-		tNombreSector.mayusculas();
-		tNombreSector.avisar();
-		tNombreSector.setBounds(12, 27, 450, 30);
-		getPanelFormulario().add(tNombreSector);
-		
+		getlMensaje().setBounds(20, 532, 402, 20);
+		getMiToolBar().setBounds(10, 560, 412, 40);
+		getPanelFormulario().setBounds(10, 10, 412, 511);
+
+		LabelPersonalizado lblprsnlzdSectorNombre = new LabelPersonalizado(0);
+		lblprsnlzdSectorNombre.setText("Sector: Nombre");
+		lblprsnlzdSectorNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdSectorNombre.setBounds(10, 11, 390, 20);
+		getPanelFormulario().add(lblprsnlzdSectorNombre);
+
+		tDescripcion = new CampoTextoPersonalizado();
+		tDescripcion.setFont(new Font("Tahoma", Font.BOLD, 18));
+		tDescripcion.setBounds(10, 33, 390, 25);
+		getPanelFormulario().add(tDescripcion);
+
+		LabelPersonalizado lblprsnlzdColaboradorQueRegistro = new LabelPersonalizado(0);
+		lblprsnlzdColaboradorQueRegistro.setText("Colaborador que registro");
+		lblprsnlzdColaboradorQueRegistro.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdColaboradorQueRegistro.setBounds(10, 64, 390, 20);
+		getPanelFormulario().add(lblprsnlzdColaboradorQueRegistro);
+
+		lColaborador = new LabelPersonalizado(0);
+		lColaborador.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lColaborador.setBounds(10, 87, 390, 20);
+		getPanelFormulario().add(lColaborador);
+
+		LabelPersonalizado lblprsnlzdCodigoDeSector = new LabelPersonalizado(0);
+		lblprsnlzdCodigoDeSector.setText("Codigo de sector");
+		lblprsnlzdCodigoDeSector.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdCodigoDeSector.setBounds(10, 118, 390, 20);
+		getPanelFormulario().add(lblprsnlzdCodigoDeSector);
+
+		lID = new LabelPersonalizado(0);
+		lID.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lID.setBounds(10, 140, 390, 20);
+		getPanelFormulario().add(lID);
+
+		LabelPersonalizado lblprsnlzdFechaRegistro = new LabelPersonalizado(0);
+		lblprsnlzdFechaRegistro.setText("Fecha de registro");
+		lblprsnlzdFechaRegistro.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdFechaRegistro.setBounds(10, 171, 390, 20);
+		getPanelFormulario().add(lblprsnlzdFechaRegistro);
+
+		lFechaRegistro = new LabelPersonalizado(0);
+		lFechaRegistro.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lFechaRegistro.setBounds(10, 195, 390, 20);
+		getPanelFormulario().add(lFechaRegistro);
+
+		LabelPersonalizado lblprsnlzdEstadoDeRegistro = new LabelPersonalizado(0);
+		lblprsnlzdEstadoDeRegistro.setText("Estado de registro");
+		lblprsnlzdEstadoDeRegistro.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdEstadoDeRegistro.setBounds(10, 226, 390, 20);
+		getPanelFormulario().add(lblprsnlzdEstadoDeRegistro);
+
+		lEstado = new LabelPersonalizado(0);
+		lEstado.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lEstado.setBounds(10, 251, 390, 20);
+		getPanelFormulario().add(lEstado);
+		getContentPane().setEnabled(false);
+		getContentPane().setBackground(new Color(255, 255, 255));
+		setFont(new Font("Tahoma", Font.BOLD, 12));
+		setBackground(new Color(51, 51, 51));
+		setBounds(100, 100, 1280, 640);
+		setLocationRelativeTo(this);
+		setResizable(false);
+		setModal(true);
+		setTitle("Registro de Pedidos");
+		getContentPane().setLayout(null);
+
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setVisible(false);
-		scrollPane.setBounds(12, 83, 450, 275);
-		getPanelFormulario().add(scrollPane);
-		
-		tableDeposito = new JTable();
-		tableDeposito.setEnabled(false);
-		scrollPane.setViewportView(tableDeposito);
-		
-		lblDeposito = new LabelPersonalizado(0);
-		lblDeposito.setVisible(false);
-		lblDeposito.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				Font font = lblDeposito.getFont();
-				HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
-				attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-				lblDeposito.setFont(font.deriveFont(attributes));
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				Font font = lblDeposito.getFont();
-				HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
-				attributes.put(TextAttribute.UNDERLINE, -1);
-				lblDeposito.setFont(font.deriveFont(attributes));
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
-		});
-		lblDeposito.setText("Depositos");
-		lblDeposito.setBounds(13, 64, 66, 15);
-		getPanelFormulario().add(lblDeposito);
+		scrollPane.setBounds(432, 61, 410, 539);
+		getContentPane().add(scrollPane);
 
-	}
+		tableColaboradores = new JTable();
+		scrollPane.setViewportView(tableColaboradores);
 
-	public CampoTextoPersonalizado gettNombreSector() {
-		return tNombreSector;
-	}
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(854, 61, 410, 539);
+		getContentPane().add(scrollPane_1);
 
-	public void settNombreSector(CampoTextoPersonalizado tNombreSector) {
-		this.tNombreSector = tNombreSector;
-	}
+		tableProcesos = new JTable();
+		scrollPane_1.setViewportView(tableProcesos);
 
-	public JTable getTableDeposito() {
-		return tableDeposito;
-	}
+		LabelPersonalizado lblprsnlzdColaboradoresDelSector = new LabelPersonalizado(0);
+		lblprsnlzdColaboradoresDelSector.setText("Colaboradores del sector");
+		lblprsnlzdColaboradoresDelSector.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdColaboradoresDelSector.setBounds(432, 20, 390, 30);
+		getContentPane().add(lblprsnlzdColaboradoresDelSector);
 
-	public void setTableDeposito(JTable tableDeposito) {
-		this.tableDeposito = tableDeposito;
-	}
+		LabelPersonalizado lblprsnlzdEstadosDeLos = new LabelPersonalizado(0);
+		lblprsnlzdEstadosDeLos.setText("Estados de los procesos de produccion");
+		lblprsnlzdEstadosDeLos.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdEstadosDeLos.setBounds(854, 20, 306, 30);
+		getContentPane().add(lblprsnlzdEstadosDeLos);
 
-	public VentanaSectorControlador getControlador() {
-		return controlador;
-	}
+		btnAgregar = new MiBoton("Nuevo");
+		btnAgregar.setText("Agregar");
+		btnAgregar.setActionCommand("Agregar");
+		btnAgregar.setBounds(1164, 20, 100, 30);
+		getContentPane().add(btnAgregar);
 
-	public void setControlador(VentanaSectorControlador controlador) {
-		this.controlador = controlador;
-	}
-
-	public LabelPersonalizado getLblDeposito() {
-		return lblDeposito;
-	}
-
-	public void setLblDeposito(LabelPersonalizado lblDeposito) {
-		this.lblDeposito = lblDeposito;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	
+	public VentanaSectorControlador getControlador() {
+		return controlador;
+	}
+
+	public JTable getTableColaboradores() {
+		return tableColaboradores;
+	}
+
+	public JTable getTableProcesos() {
+		return tableProcesos;
+	}
+
+	public MiBoton getBtnAgregar() {
+		return btnAgregar;
+	}
+
+	public CampoTextoPersonalizado gettDescripcion() {
+		return tDescripcion;
+	}
+
+	public LabelPersonalizado getlColaborador() {
+		return lColaborador;
+	}
+
+	public LabelPersonalizado getlID() {
+		return lID;
+	}
+
+	public LabelPersonalizado getlFechaRegistro() {
+		return lFechaRegistro;
+	}
+
+	public LabelPersonalizado getlEstado() {
+		return lEstado;
+	}
+
 }

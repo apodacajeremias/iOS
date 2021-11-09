@@ -24,34 +24,34 @@ public class Produccion {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
 	}
-	
-	@OneToMany(mappedBy = "produccion", cascade=CascadeType.ALL, orphanRemoval=false, fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy = "produccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<ProduccionDetalles> produccionDetalles;
-	
-	@OneToMany(mappedBy = "produccion", cascade=CascadeType.ALL, orphanRemoval=false)
+
+	@OneToMany(mappedBy = "produccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<PedidoDetalles> pedidoDetalles;
+
+	@OneToMany(mappedBy = "produccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<PedidoDetalleConfeccion> pedidoDetalleConfeccion;
 
 	public int getId() {
 		return id;
@@ -76,9 +76,5 @@ public class Produccion {
 	public void setPedidoDetalles(List<PedidoDetalles> pedidoDetalles) {
 		this.pedidoDetalles = pedidoDetalles;
 	}
-	
-	
 
-
-	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -27,44 +28,38 @@ public class Colaborador {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
-	private Colaborador colaboradorQueRegistra;	
+	private Colaborador colaboradorQueRegistra;
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
-	}	
-	
+	}
+
 	public Colaborador getColaboradorQueRegistra() {
 		return colaboradorQueRegistra;
 	}
-
 
 	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
 		this.colaboradorQueRegistra = colaboradorQueRegistra;
 	}
 
-
-
-
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Sector sector;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Rol rol;
@@ -74,49 +69,46 @@ public class Colaborador {
 
 	@Column(nullable = false, unique = true)
 	private String identificacion;
-	
+
 	@Column(nullable = false)
 	private String contacto;
 
 	@Column(nullable = false)
 	private double salario;
 
-	//Salario o comision
+	// Salario o comision
 	@Column(nullable = false)
 	private String tipoSalario;
 
 	@Column(nullable = false)
 	private boolean esOperador;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaIngresoColaborador;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaDesvinculacionColaborador;
-	
+
 	@Column(nullable = false)
 	private boolean fueDesvinculado;
-	
-	
 
-	@OneToMany(mappedBy = "colaborador", cascade=CascadeType.ALL, orphanRemoval=false)
+	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Caja> caja;
 
-	@OneToMany(mappedBy = "colaborador", cascade=CascadeType.ALL, orphanRemoval=false)
+	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> cajaMovimientos;
-	
-	@OneToMany(mappedBy = "colaborador", cascade=CascadeType.ALL, orphanRemoval=false)
+
+	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Pedido> pedidos;
 
 	@Column(nullable = false, unique = true)
 	private String usuario;
-	
+
 	@Column(nullable = false)
 	private String password;
-	
+
 	@Column(nullable = false)
 	private boolean esActivo;
-
 
 	public int getId() {
 		return id;
@@ -186,8 +178,7 @@ public class Colaborador {
 		return fechaDesvinculacionColaborador;
 	}
 
-	public void setFechaDesvinculacionColaborador(
-			Date fechaDesvinculacionColaborador) {
+	public void setFechaDesvinculacionColaborador(Date fechaDesvinculacionColaborador) {
 		this.fechaDesvinculacionColaborador = fechaDesvinculacionColaborador;
 	}
 
@@ -259,6 +250,5 @@ public class Colaborador {
 	public String toString() {
 		return nombreCompleto;
 	}
-	
-	
+
 }

@@ -680,6 +680,9 @@ public class TransaccionPedidoControlador implements ActionListener, MouseListen
 	}
 
 	private void gestionarPedido() {
+		if (pedido == null) {
+			return;
+		}
 		estadoInicial(false);
 
 		//No se puede modificar el cliente de un pedido generado

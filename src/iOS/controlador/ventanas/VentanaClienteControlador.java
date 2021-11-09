@@ -26,7 +26,6 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 	private VentanaCliente ventanaCliente;
 	private ClienteDao dao;
 	private Cliente cliente;
-
 	private String accion;
 	
 

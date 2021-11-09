@@ -1,46 +1,47 @@
 package iOS.controlador.ventanas.buscadores;
 
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 
-import iOS.modelo.dao.ClienteDao;
-import iOS.modelo.entidades.Cliente;
+import iOS.modelo.dao.SectorDao;
+import iOS.modelo.entidades.Sector;
 import iOS.modelo.interfaces.AccionesABM;
-import iOS.modelo.interfaces.ClienteInterface;
-import iOS.vista.modelotabla.ModeloTablaCliente;
-import iOS.vista.ventanas.VentanaCliente;
-import iOS.vista.ventanas.VentanaCliente2;
-import iOS.vista.ventanas.buscadores.BuscadorCliente;
+import iOS.modelo.interfaces.SectorInterface;
+import iOS.vista.modelotabla.ModeloTablaSector;
+import iOS.vista.ventanas.VentanaSector;
+import iOS.vista.ventanas.buscadores.BuscadorSector;
 
-
-
-public class BuscadorClienteControlador implements KeyListener, MouseListener, AccionesABM {
+public class BuscadorSectorControlador implements KeyListener, MouseListener, AccionesABM {
 
 	// ATRIBUTOS
-	private BuscadorCliente buscador;
-	private ModeloTablaCliente mtCliente;
-	private ClienteDao dao;
-	private List<Cliente> lista;
-	private ClienteInterface interfaz;
-	private Cliente cliente;
+	private BuscadorSector buscador;
+	private ModeloTablaSector modeloTabla;
+	private SectorDao dao;
+	private SectorInterface interfaz;
 
-	public void setInterfaz(ClienteInterface interfaz) {
-		this.interfaz = interfaz;
-	}
+	private Sector sector;
+	private List<Sector> sectores = new ArrayList<Sector>();
 
 	// CONSTRUCTOR
-	public BuscadorClienteControlador(BuscadorCliente bCliente) {
-		this.buscador = bCliente;
-		mtCliente = new ModeloTablaCliente();
-		this.buscador.getTable().setModel(mtCliente);
+	public BuscadorSectorControlador(BuscadorSector buscador) {
+		this.buscador = buscador;
 		this.buscador.getToolbar().setAcciones(this);
-		dao = new ClienteDao();
+		modeloTabla = new ModeloTablaSector();
+		this.buscador.getTable().setModel(modeloTabla);
+
+		dao = new SectorDao();
+
+		// agregamos escuchadores de evento
 		setUpEvents();
 		recuperarTodo();
+	}
+
+	public void setInterfaz(SectorInterface interfaz) {
+		this.interfaz = interfaz;
 	}
 
 	// METODO QUE LEVANTA LOS EVENTOS
@@ -51,23 +52,20 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 
 	// METODO QUE RECUPERA DATOS POR FILTRO EN EL BUSCADOR
 	private void recuperarPorFiltro() {
-		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
-		mtCliente.setLista(lista);
-		mtCliente.fireTableDataChanged();
+		sectores = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
+		modeloTabla.setSectores(sectores);
+		modeloTabla.fireTableDataChanged();
 	}
 
 	private void recuperarTodo() {
-		lista = dao.recuperarTodoOrdenadoPorNombre();
-		mtCliente.setLista(lista);
-		mtCliente.fireTableDataChanged();
+		sectores = dao.recuperarTodoOrdenadoPorNombre();
+		modeloTabla.setSectores(sectores);
+		modeloTabla.fireTableDataChanged();
 
 	}
 
 	private void seleccionarRegistro(int posicion) {
-		if (posicion < 0) {
-			return;
-		}
-		cliente = lista.get(posicion);
+		sector = sectores.get(posicion);
 	}
 
 	@Override
@@ -93,19 +91,18 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
+
 		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
+			// Se pasa el valor seleccionado a la interfaz
 			try {
-				interfaz.setCliente(cliente);
+				interfaz.setSector(sector);
 				buscador.dispose();
-			} catch (Exception e2) { 
-				VentanaCliente2 ventana = new VentanaCliente2();
-				ventana.setUpControlador();
-				ventana.getControlador().setCliente(cliente);
-				ventana.setVisible(true);
-				buscador.dispose();
+			} catch (Exception e1) {
+				modificar();
 			}
 		}
+
 	}
 
 	@Override
@@ -126,36 +123,39 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 
 	@Override
 	public void nuevo() {
-		VentanaCliente ventana = new VentanaCliente();
+		VentanaSector ventana = new VentanaSector();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
 		ventana.setVisible(true);
+	
 	}
 
 	@Override
 	public void modificar() {
-		VentanaCliente ventana = new VentanaCliente();
+		VentanaSector ventana = new VentanaSector();
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
-		ventana.getControlador().setCliente(cliente);
+		ventana.getControlador().setSector(sector);
 		ventana.setVisible(true);
+		
+
 	}
 
 	@Override
 	public void eliminar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void guardar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void cancelar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

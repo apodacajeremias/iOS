@@ -15,88 +15,81 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Pago {
+public class SectorProceso {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = true)
 	private Colaborador colaborador;
-	
+
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Sector sector;
+
+	@Column(nullable = false)
+	private String nombreProceso;
+
+	public int getId() {
+		return id;
+	}
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
 	}
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaHoraPago;
-	
-	@Column(nullable = false)
-	private int valorPago;
-	
-	@Column(nullable = true)
-	private boolean estadoPago;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Cliente cliente;
 
-	public int getId() {
-		return id;
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public Sector getSector() {
+		return sector;
+	}
+
+	public String getNombreProceso() {
+		return nombreProceso;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	
-	public Date getFechaHoraPago() {
-		return fechaHoraPago;
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 
-	public void setFechaHoraPago(Date fechaHoraPago) {
-		this.fechaHoraPago = fechaHoraPago;
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
-	public int getValorPago() {
-		return valorPago;
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
-	public void setValorPago(int valorPago) {
-		this.valorPago = valorPago;
+	public void setSector(Sector sector) {
+		this.sector = sector;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public void setNombreProceso(String nombreProceso) {
+		this.nombreProceso = nombreProceso;
 	}
 
-	
-	public boolean isEstadoPago() {
-		return estadoPago;
+	@Override
+	public String toString() {
+		return nombreProceso;
 	}
-
-	public void setEstadoPago(boolean estadoPago) {
-		this.estadoPago = estadoPago;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	
-	
 
 }

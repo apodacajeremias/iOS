@@ -123,7 +123,7 @@ public class CajaDao extends GenericDao<Caja> {
 	public List<CajaMovimiento> recuperarPorCliente(int cliente) {
 		getSession().beginTransaction();
 		String sql = "from CajaMovimiento " + "where cliente.id = :cliente " + "and esAnulado = false "
-				+ "and esRetiro = false " + "and estado = true " + "order by id ASC";
+				+ "and esRetiro = false " + "order by id ASC";
 		@SuppressWarnings("unchecked")
 		Query<CajaMovimiento> query = getSession().createQuery(sql);
 		query.setParameter("cliente", cliente);

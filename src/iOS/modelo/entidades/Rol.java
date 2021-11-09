@@ -17,46 +17,43 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
-
 @Entity
 public class Rol {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
 	}
-	
+
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 
 	@Column(nullable = false, unique = true)
 	private String nombreRol;
-	
-	@OneToMany(mappedBy = "rol", cascade=CascadeType.ALL, orphanRemoval=false)
+
+	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<RolOperacion> rolesOperaciones;
-	
-	@OneToMany(mappedBy = "rol", cascade=CascadeType.ALL, orphanRemoval=false)
+
+	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<Colaborador> colaboradores;
 
 	public int getId() {
@@ -90,11 +87,10 @@ public class Rol {
 	public void setColaborador(List<Colaborador> colaboradores) {
 		this.colaboradores = colaboradores;
 	}
-	
+
 	@Override
 	public String toString() {
 		return nombreRol;
 	}
-
 
 }

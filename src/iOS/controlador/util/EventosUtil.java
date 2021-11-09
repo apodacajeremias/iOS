@@ -173,6 +173,10 @@ public class EventosUtil {
 
 	public static String formatoFecha(Date fecha) {
 		SimpleDateFormat objSDF = new SimpleDateFormat("d MMM, yyyy");
+		
+		if (fecha == null) {
+			return "Sin fecha.";
+		}
 
 		return objSDF.format(fecha);
 	}

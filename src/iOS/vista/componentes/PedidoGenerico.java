@@ -1,7 +1,5 @@
 package iOS.vista.componentes;
 
-
-
 import java.awt.Color;
 import java.awt.Font;
 
@@ -27,7 +25,6 @@ public class PedidoGenerico extends JDialog {
 	private MiBoton btnBuscarProducto;
 	private MiBoton btnSalir;
 
-
 	private MiBoton btnAgregar;
 	private LabelPersonalizado lFechaHora;
 	private LabelPersonalizado lNroPedido;
@@ -48,7 +45,6 @@ public class PedidoGenerico extends JDialog {
 	private LabelPersonalizado lMetrosPedido;
 	private JList<?> lstTipoPago;
 	private LabelPersonalizado lblprsnlzdMetrosDelPedido;
-
 
 	/**
 	 * Create the dialog.
@@ -307,124 +303,101 @@ public class PedidoGenerico extends JDialog {
 		btnAnular.setActionCommand("Quitar");
 	}
 
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 
 	public String getModulo() {
 		return modulo;
 	}
 
-
 	public JTable getTable() {
 		return table;
 	}
-
 
 	public MiBoton getBtnBuscarCliente() {
 		return btnBuscarCliente;
 	}
 
-
 	public MiBoton getBtnBuscarProducto() {
 		return btnBuscarProducto;
 	}
 
-
 	public MiBoton getBtnSalir() {
 		return btnSalir;
 	}
+
 	public MiBoton getBtnAgregar() {
 		return btnAgregar;
 	}
-
 
 	public LabelPersonalizado getlFechaHora() {
 		return lFechaHora;
 	}
 
-
 	public LabelPersonalizado getlNroPedido() {
 		return lNroPedido;
 	}
-
 
 	public JRadioButton getRbConsiderarMetraje() {
 		return rbConsiderarMetraje;
 	}
 
-
 	public JRadioButton getRbGenerarPresupuesto() {
 		return rbGenerarPresupuesto;
 	}
-
 
 	public LabelPersonalizado getlTotalPagar() {
 		return lTotalPagar;
 	}
 
-
 	public LabelPersonalizado getlGanancia() {
 		return lGanancia;
 	}
-
 
 	public LabelPersonalizado getlCliente() {
 		return lCliente;
 	}
 
-
 	public LabelPersonalizado getlIdentificacion() {
 		return lIdentificacion;
 	}
-
 
 	public LabelPersonalizado getlContacto() {
 		return lContacto;
 	}
 
-
 	public LabelPersonalizado getlMetrosFechaEmision() {
 		return lMetrosFechaEmision;
 	}
-
 
 	public LabelPersonalizado getlProducto() {
 		return lProducto;
 	}
 
-
 	public CampoNumeroPersonalizado gettDescuentoPedido() {
 		return tDescuentoPedido;
 	}
-
 
 	public LabelPersonalizado getlEstadoPedido() {
 		return lEstadoPedido;
 	}
 
-
 	public MiBoton getBtnGuardar() {
 		return btnGuardar;
 	}
-
 
 	public LabelPersonalizado getlSumatoria() {
 		return lSumatoria;
 	}
 
-
 	public MiBoton getBtnAnular() {
 		return btnAnular;
 	}
 
-
 	public LabelPersonalizado getlMetrosPedido() {
 		return lMetrosPedido;
 	}
-
 
 	public JList<?> getLstTipoPago() {
 		return lstTipoPago;
@@ -433,7 +406,5 @@ public class PedidoGenerico extends JDialog {
 	public LabelPersonalizado getLblprsnlzdMetrosDelPedido() {
 		return lblprsnlzdMetrosDelPedido;
 	}
-	
-	
-	
+
 }

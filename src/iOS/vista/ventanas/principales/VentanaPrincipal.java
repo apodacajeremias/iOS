@@ -36,7 +36,9 @@ import iOS.vista.ventanas.VentanaColaborador;
 import iOS.vista.ventanas.VentanaConfiguracion;
 import iOS.vista.ventanas.VentanaMarca;
 import iOS.vista.ventanas.VentanaProducto;
+import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
+import iOS.vista.ventanas.buscadores.BuscadorSector;
 import iOS.vista.ventanas.pedidos.PedidoCarteleria;
 import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import iOS.vista.ventanas.reportes.ReporteCaja;
@@ -203,15 +205,15 @@ public class VentanaPrincipal extends JFrame {
 		mnItemBuscadorColaborador.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorColaborador);
 
-		JMenuItem mnItemBuscadorMarca = new JMenuItem("Buscar marcas");
-		mnItemBuscadorMarca.addActionListener(new ActionListener() {
+		JMenuItem mnItemBuscadorSector = new JMenuItem("Buscar sectores");
+		mnItemBuscadorSector.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				abrirBuscadorMarca();
+				abrirBuscadorSector();
 			}
 		});
-		mnItemBuscadorMarca.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.SHIFT_MASK));
-		mnBuscadores.add(mnItemBuscadorMarca);
+		mnItemBuscadorSector.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.SHIFT_MASK));
+		mnBuscadores.add(mnItemBuscadorSector);
 
 		JMenuItem mnItemBuscadorMaterial = new JMenuItem("Buscar materiales");
 		mnItemBuscadorMaterial.addActionListener(new ActionListener() {
@@ -586,8 +588,10 @@ public class VentanaPrincipal extends JFrame {
 
 	}
 
-	protected void abrirBuscadorMarca() {
-		// TODO Auto-generated method stub
+	protected void abrirBuscadorSector() {
+		BuscadorSector ventana = new BuscadorSector();
+		ventana.setUpControlador();
+		ventana.setVisible(true); 
 
 	}
 
@@ -597,12 +601,14 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	protected void abrirBuscadorCliente() {
-		// TODO Auto-generated method stub
+		BuscadorCliente ventana = new BuscadorCliente();
+		ventana.setUpControlador();
+		ventana.setVisible(true);
 
 	}
 
 	protected void abrirBuscadorBanco() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generate ventana d method stub
 
 	}
 
