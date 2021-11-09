@@ -46,6 +46,7 @@ import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.reportes.ReporteVales;
 import iOS.vista.ventanas.transacciones.TransaccionCaja2;
+import iOS.vista.ventanas.transacciones.TransaccionProduccion;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -328,6 +329,16 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnItemExistencia.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemExistencia);
+		
+		JMenuItem mnItemProduccion = new JMenuItem("Produccion");
+		mnItemProduccion.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				abrirTransaccionProduccion();
+			}
+		});
+		mnItemProduccion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+		mnMovimientos.add(mnItemProduccion);
 
 		JMenuItem mnItemPedido = new JMenuItem("Pedido Impresion");
 		mnItemPedido.addActionListener(new ActionListener() {
@@ -479,6 +490,12 @@ public class VentanaPrincipal extends JFrame {
 		lblVersion.setForeground(new Color(0, 0, 0));
 		lblVersion.setBounds(10, 563, 200, 15);
 		panelFondo.add(lblVersion);
+	}
+
+	protected void abrirTransaccionProduccion() {
+		TransaccionProduccion ventana = new TransaccionProduccion();
+		ventana.setUpControlador();
+		ventana.setVisible(true);
 	}
 
 	protected void abrirReporteCaja() {

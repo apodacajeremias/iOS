@@ -84,13 +84,15 @@ public class Pedido {
 	@JoinColumn(nullable = false)
 	private Cliente cliente;
 	
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=false, fetch=FetchType.EAGER)
+	//orphanRemoval = true es para que elimine un item de la lista en BD
+	//fetch = lazy es para que no cargue si no hay la solicitud con el get
+	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private List<PedidoDetalles> pedidoDetalles;
 	
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=false)
+	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private List<PedidoDetalleConfeccion> pedidosConfecciones;
 	
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=false)
+	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=false, fetch=FetchType.LAZY)
 	private List<CajaMovimiento> pagosPedido;
 	
 	@Column(nullable = true)
@@ -99,7 +101,10 @@ public class Pedido {
 	@Column(nullable = true)
 	private Boolean pedidoCarteleria;
 	
-
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean generaDeuda;
+	
 	public int getId() {
 		return id;
 	}
@@ -267,6 +272,16 @@ public class Pedido {
 
 	public void setPagosPedido(List<CajaMovimiento> pagosPedido) {
 		this.pagosPedido = pagosPedido;
+	}
+
+
+	public boolean isGeneraDeuda() {
+		return generaDeuda;
+	}
+
+
+	public void setGeneraDeuda(boolean generaDeuda) {
+		this.generaDeuda = generaDeuda;
 	}
 	
 

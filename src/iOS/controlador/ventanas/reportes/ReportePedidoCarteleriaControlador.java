@@ -32,7 +32,6 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 
 	private Pedido pedido;
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
-	private Colaborador colaborador;
 
 	public ReportePedidoCarteleriaControlador(ReportePedido reporte) {
 		this.reporte = reporte;
@@ -153,7 +152,7 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 			return;
 		}
 		PedidoCarteleria ventana = new PedidoCarteleria();
-		if (EventosUtil.liberarAcceso(colaborador, ventana.modulo, "ABRIR")) {
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
 			ventana.getControlador().setPedido(pedido);
 			ventana.setVisible(true);

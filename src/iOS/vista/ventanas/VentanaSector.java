@@ -8,6 +8,7 @@ import javax.swing.JTable;
 
 import iOS.controlador.ventanas.VentanaSectorControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
+import iOS.vista.componentes.CeldaRenderer;
 import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.MiBoton;
 import iOS.vista.componentes.VentanaGenerica;
@@ -136,6 +137,8 @@ public class VentanaSector extends VentanaGenerica {
 		btnAgregar.setActionCommand("Agregar");
 		btnAgregar.setBounds(1164, 20, 100, 30);
 		getContentPane().add(btnAgregar);
+
+		tableProcesos.setDefaultRenderer(Object.class, new CeldaRenderer(1, "CheckBox"));
 
 	}
 

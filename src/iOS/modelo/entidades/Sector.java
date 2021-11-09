@@ -39,11 +39,19 @@ public class Sector {
 	@JoinColumn(nullable = true)
 	private Colaborador colaborador;
 
-	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<SectorProceso> procesos;
 
 	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Colaborador> colaboradoresDelSector;
+	
+	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<Produccion> producciones;
+
+	@Override
+	public String toString() {
+		return descripcion;
+	}
 
 	public int getId() {
 		return id;
@@ -71,6 +79,10 @@ public class Sector {
 
 	public List<Colaborador> getColaboradoresDelSector() {
 		return colaboradoresDelSector;
+	}
+
+	public List<Produccion> getProducciones() {
+		return producciones;
 	}
 
 	public void setId(int id) {
@@ -101,9 +113,10 @@ public class Sector {
 		this.colaboradoresDelSector = colaboradoresDelSector;
 	}
 
-	@Override
-	public String toString() {
-		return descripcion;
+	public void setProducciones(List<Produccion> producciones) {
+		this.producciones = producciones;
 	}
+	
+	
 
 }

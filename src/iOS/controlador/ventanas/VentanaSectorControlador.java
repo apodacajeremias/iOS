@@ -106,6 +106,7 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 			return;
 		}
 		proceso = new SectorProceso();
+		proceso.setEsRepetible(true);
 		proceso.setColaborador(Sesion.getInstance().getColaborador());
 		proceso.setSector(sector);
 		proceso.setNombreProceso(nombre);
@@ -147,7 +148,6 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 			modeloTablaProceso.setProcesos(procesos);
 			modeloTablaProceso.fireTableDataChanged();
 			guardar();
-
 		}
 
 	}
@@ -220,7 +220,6 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 		}
 		if (accion.equals("NUEVO")) {
 			sector = new Sector();
-//			Comentamos el setColaborador para probar si la instacion de arriba estira la sesion actual
 			sector.setColaborador(Sesion.getInstance().getColaborador());
 		}
 		sector.setDescripcion(ventana.gettDescripcion().getText());
@@ -312,5 +311,11 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 			break;
 		}
 
+	}
+
+	@Override
+	public void setProceso(SectorProceso proceso) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -60,16 +60,12 @@ public class PedidoDao extends GenericDao<Pedido> {
 		return lista;
 	}
 
-	public List<Pedido> reporteDiarioPedido(int colaborador, boolean pedidoCarteleria,
-			boolean pedidoCostura, boolean estado, boolean esPresupuesto, Date fecha) {
+	public List<Pedido> reporteDiarioPedido(int colaborador, boolean pedidoCarteleria, boolean pedidoCostura,
+			boolean estado, boolean esPresupuesto, Date fecha) {
 		getSession().beginTransaction();
-		String sql = "FROM Pedido " 
-				+ "WHERE colaborador.id = :colaborador "
-				+ "AND (pedidoCarteleria = :pedidoCarteleria "
-				+ "OR pedidoCostura = :pedidoCostura) " 
-				+ "AND estado = :estado "
-				+ "AND esPresupuesto = :esPresupuesto " 
-				+ "AND DATE(fechaRegistro) = :fecha " 
+		String sql = "FROM Pedido " + "WHERE colaborador.id = :colaborador "
+				+ "AND (pedidoCarteleria = :pedidoCarteleria " + "OR pedidoCostura = :pedidoCostura) "
+				+ "AND estado = :estado " + "AND esPresupuesto = :esPresupuesto " + "AND DATE(fechaRegistro) = :fecha "
 				+ "ORDER BY id DESC";
 		try {
 			@SuppressWarnings("unchecked")
@@ -89,19 +85,14 @@ public class PedidoDao extends GenericDao<Pedido> {
 			return null;
 		}
 	}
-	
-	public List<Pedido> reporteMensualPedido(int colaborador, boolean pedidoCarteleria,
-			boolean pedidoCostura, boolean estado, boolean esPresupuesto, Integer mes, Integer anho) {
+
+	public List<Pedido> reporteMensualPedido(int colaborador, boolean pedidoCarteleria, boolean pedidoCostura,
+			boolean estado, boolean esPresupuesto, Integer mes, Integer anho) {
 		getSession().beginTransaction();
-		String sql = "FROM Pedido " 
-				+ "WHERE colaborador.id = :colaborador "
-				+ "AND (pedidoCarteleria = :pedidoCarteleria "
-				+ "OR pedidoCostura = :pedidoCostura) " 
-				+ "AND estado = :estado "
-				+ "AND esPresupuesto = :esPresupuesto " 
-				+ "AND MONTH(fechaRegistro) = :mes "
-				+ "AND YEAR(fechaRegistro) = :anho "
-				+ "ORDER BY id DESC";
+		String sql = "FROM Pedido " + "WHERE colaborador.id = :colaborador "
+				+ "AND (pedidoCarteleria = :pedidoCarteleria " + "OR pedidoCostura = :pedidoCostura) "
+				+ "AND estado = :estado " + "AND esPresupuesto = :esPresupuesto " + "AND MONTH(fechaRegistro) = :mes "
+				+ "AND YEAR(fechaRegistro) = :anho " + "ORDER BY id DESC";
 		try {
 			@SuppressWarnings("unchecked")
 			Query<Pedido> query = getSession().createQuery(sql);
@@ -115,6 +106,25 @@ public class PedidoDao extends GenericDao<Pedido> {
 			List<Pedido> lista = query.getResultList();
 			commit();
 			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+
+	public Pedido encontrarPedido(Integer pedido) {
+		getSession().beginTransaction();
+
+		String sql = "from Pedido where id = :pedido and estado = true and esPresupuesto = false order by id desc";
+
+		try {
+			@SuppressWarnings("unchecked")
+			Query<Pedido> query = getSession().createQuery(sql);
+			query.setParameter("pedido", pedido);
+			Pedido resultado = query.getSingleResult();
+			commit();
+			return resultado;
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollBack();

@@ -1,7 +1,6 @@
 package iOS.vista.ventanas.transacciones;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.AbstractListModel;
@@ -12,7 +11,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.transacciones.TransaccionPedidoControlador;
@@ -51,22 +49,6 @@ public class TransaccionPedido extends JDialog {
 	private MiBoton btnAnular;
 	private LabelPersonalizado lMetrosPedido;
 	private JList<?> lstTipoPago;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					TransaccionPedido dialog = new TransaccionPedido();
-					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-					dialog.setUpControlador();
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public void setUpControlador() {
 		controlador = new TransaccionPedidoControlador(this);

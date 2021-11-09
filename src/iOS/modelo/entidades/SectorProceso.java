@@ -1,13 +1,17 @@
 package iOS.modelo.entidades;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -38,6 +42,17 @@ public class SectorProceso {
 
 	@Column(nullable = false)
 	private String nombreProceso;
+	
+	@Column(nullable = false)
+	private boolean esRepetible;
+
+	@OneToMany(mappedBy = "proceso", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<Produccion> producciones;
+
+	@Override
+	public String toString() {
+		return nombreProceso;
+	}
 
 	public int getId() {
 		return id;
@@ -61,6 +76,10 @@ public class SectorProceso {
 
 	public String getNombreProceso() {
 		return nombreProceso;
+	}
+
+	public List<Produccion> getProducciones() {
+		return producciones;
 	}
 
 	public void setId(int id) {
@@ -87,9 +106,18 @@ public class SectorProceso {
 		this.nombreProceso = nombreProceso;
 	}
 
-	@Override
-	public String toString() {
-		return nombreProceso;
+	public void setProducciones(List<Produccion> producciones) {
+		this.producciones = producciones;
 	}
+
+	public boolean isEsRepetible() {
+		return esRepetible;
+	}
+
+	public void setEsRepetible(boolean esRepetible) {
+		this.esRepetible = esRepetible;
+	}
+	
+	
 
 }

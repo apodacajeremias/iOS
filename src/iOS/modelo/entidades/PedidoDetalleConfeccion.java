@@ -1,13 +1,17 @@
 package iOS.modelo.entidades;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,22 +35,6 @@ public class PedidoDetalleConfeccion {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
 
 	@Column(nullable = true)
 	private String archivo;
@@ -74,15 +62,31 @@ public class PedidoDetalleConfeccion {
 	@JoinColumn(nullable = false)
 	private Producto producto;
 
-	@ManyToOne
-	@JoinColumn(nullable = true)
-	private Produccion produccion;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificado;
 
+	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<Produccion> producciones;
+
+	@Override
+	public String toString() {
+		return id + " - " + fechaRegistro;
+	}
+
 	public int getId() {
 		return id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
 	}
 
 	public String getArchivo() {
@@ -121,6 +125,10 @@ public class PedidoDetalleConfeccion {
 		return fechaModificado;
 	}
 
+	public List<Produccion> getProducciones() {
+		return producciones;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -131,6 +139,10 @@ public class PedidoDetalleConfeccion {
 
 	public void setEstado(boolean estado) {
 		this.estado = estado;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	public void setArchivo(String archivo) {
@@ -167,6 +179,10 @@ public class PedidoDetalleConfeccion {
 
 	public void setFechaModificado(Date fechaModificado) {
 		this.fechaModificado = fechaModificado;
+	}
+
+	public void setProducciones(List<Produccion> producciones) {
+		this.producciones = producciones;
 	}
 
 }
