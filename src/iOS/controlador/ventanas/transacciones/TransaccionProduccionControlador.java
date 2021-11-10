@@ -158,7 +158,7 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 		}
 
 		SectorProceso proceso = (SectorProceso) JOptionPane.showInputDialog(ventana,
-				"Complete the sentence:\n" + "\"Green eggs and...\"", "Customized Dialog", JOptionPane.PLAIN_MESSAGE,
+				"Seleccione el proceso:\n" + "\"Indique;\"", "Estado de seguimiento", JOptionPane.PLAIN_MESSAGE,
 				null, possibilities, "");
 
 		// If a string was returned, say so.

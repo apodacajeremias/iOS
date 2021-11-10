@@ -13,44 +13,44 @@ public class ClienteDao extends GenericDao<Cliente> {
 	public ClienteDao() {
 		super(Cliente.class);
 	}
-	
+
 	public List<Cliente> recuperarTodoOrdenadoPorNombre() {
 		getSession().beginTransaction();
-		
-		String sql = "from Cliente order by nombreCompleto";
-		
-		@SuppressWarnings("unchecked")
-		Query<Cliente> query = getSession().createQuery(sql);
-		List<Cliente> lista = query.getResultList();
-		commit();
-		return lista;
+		try {			
+			String sql = "from Cliente order by nombreCompleto";
+			@SuppressWarnings("unchecked")
+			Query<Cliente> query = getSession().createQuery(sql);
+			List<Cliente> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
 	}
 
 	public List<Cliente> recuperarPorFiltro(String filtro) {
 		getSession().beginTransaction();
 
-		String sql = "from Cliente "
-				+ "where upper(nombreCompleto) like :nombreCompleto "
-				+ "or identificacion like :nroci "
-				+ "order by nombreCompleto";
-
-		@SuppressWarnings("unchecked")
-		Query<Cliente> query = getSession().createQuery(sql);
-		query.setParameter("nombreCompleto", "%" + filtro.toUpperCase() + "%");
-
-		@SuppressWarnings("unused")
-		int id = 0;
 		try {
-			id = Integer.parseInt(filtro);
+			String sql = "from Cliente " + "where upper(nombreCompleto) like :nombreCompleto "
+					+ "or identificacion like :nroci " + "order by nombreCompleto";
+			@SuppressWarnings("unchecked")
+			Query<Cliente> query = getSession().createQuery(sql);
+			query.setParameter("nombreCompleto", "%" + filtro.toUpperCase() + "%");
+			query.setParameter("nroci", filtro);
+			List<Cliente> lista = query.getResultList();
+			commit();
+			return lista;
 		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
 		}
-		query.setParameter("nroci", filtro);
-
-		List<Cliente> lista = query.getResultList();
-		commit();
-		return lista;
 	}
-	
+
 	public List<CajaMovimiento> recuperarPagos(int cliente) {
 		getSession().beginTransaction();
 		String sql = "from CajaMovimiento " + "where cliente.id = :cliente " + "and esAnulado = false "
@@ -68,7 +68,7 @@ public class ClienteDao extends GenericDao<Cliente> {
 			return null;
 		}
 	}
-	
+
 	public List<Pedido> recuperarPedidos(int cliente) {
 		getSession().beginTransaction();
 
@@ -102,7 +102,4 @@ public class ClienteDao extends GenericDao<Cliente> {
 		return cant;
 	}
 
-	
-
 }
-

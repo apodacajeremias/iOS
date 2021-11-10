@@ -19,7 +19,6 @@ public class ConnectionHelper {
 		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().configure().build();
 		try {
 			sessionFactory = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			StandardServiceRegistryBuilder.destroy(serviceRegistry);
@@ -31,7 +30,7 @@ public class ConnectionHelper {
 			System.out.println(getSessionFactory());
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
-			
+
 		}
 	}
 

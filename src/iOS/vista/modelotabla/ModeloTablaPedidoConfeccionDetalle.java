@@ -63,35 +63,33 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int r, int c) {
-		PedidoDetalleConfeccion row = detalle.get(r);		
+		PedidoDetalleConfeccion row = detalle.get(r);
 		if (aValue == null || aValue.equals("")) {
 			return;
 		}
 
-		if(1 == c) {
+		if (1 == c) {
 			try {
 				row.setArchivo(aValue.toString().toUpperCase());
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
 			}
-		}
-		else if(2 == c) {
+		} else if (2 == c) {
 			try {
-				row.setCantidadDetalle(Double.parseDouble(aValue.toString().replace(".", "").replace(",", "").replace("\\s","")));
+				row.setCantidadDetalle(
+						Double.parseDouble(aValue.toString().replace(".", "").replace(",", "").replace("\\s", "")));
 			} catch (NumberFormatException e) {
 				return;
 			}
-		}
-		else if(3 == c) {
+		} else if (3 == c) {
 			try {
 				row.setTamano(aValue.toString().toUpperCase());
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
 			}
-		}
-		else if(4 == c) {
+		} else if (4 == c) {
 			try {
 				row.setMolde(aValue.toString().toUpperCase());
 			} catch (Exception e) {
@@ -99,8 +97,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 				e.printStackTrace();
 				return;
 			}
-		}
-		else if(5 == c) {
+		} else if (5 == c) {
 			try {
 				row.setPrecioProducto(Double.parseDouble(aValue.toString().replace(".", "").replace(",", "")));
 			} catch (NumberFormatException e) {

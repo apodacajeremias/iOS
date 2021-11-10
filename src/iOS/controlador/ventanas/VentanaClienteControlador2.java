@@ -9,11 +9,13 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ClienteDao;
+import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
@@ -21,8 +23,9 @@ import iOS.modelo.interfaces.ClienteInterface;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.modelotabla.ModeloTablaPedido;
 import iOS.vista.ventanas.VentanaCliente2;
+import iOS.vista.ventanas.pedidos.PedidoCarteleria;
+import iOS.vista.ventanas.pedidos.PedidoConfeccion;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
-import iOS.vista.ventanas.transacciones.TransaccionPedido;
 
 public class VentanaClienteControlador2 implements ActionListener, MouseListener, KeyListener, ClienteInterface {
 	private VentanaCliente2 ventanaCliente2;
@@ -32,7 +35,9 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	private ModeloTablaCajaMovimiento modeloTablaCajaMovimiento;
 	private ModeloTablaPedido modeloTablaPedido;
 
+	private Caja caja;
 	private List<CajaMovimiento> movimientos = new ArrayList<CajaMovimiento>();
+	private Pedido pedido;
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 
 	public VentanaClienteControlador2(VentanaCliente2 ventanaCliente2) {
@@ -135,20 +140,30 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		if (arg0.getSource() == ventanaCliente2.getTablePagos()) {
-			TransaccionCaja ventana = new TransaccionCaja();
-			ventana.setUpControlador();
-			ventana.getControlador()
-					.setCaja(movimientos.get(ventanaCliente2.getTablePagos().getSelectedRow()).getCaja());
-			ventana.setVisible(true);
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == ventanaCliente2.getTablePagos() && e.getClickCount() == 2) {
+			caja = movimientos.get(ventanaCliente2.getTablePagos().getSelectedRow()).getCaja();
+			abrirTransaccionCaja(caja);
 		}
 
-		if (arg0.getSource() == ventanaCliente2.getTablePedidos()) {
-			TransaccionPedido ventana = new TransaccionPedido();
-			ventana.setUpControlador();
-			ventana.getControlador().setPedido(pedidos.get(ventanaCliente2.getTablePedidos().getSelectedRow()));
-			ventana.setVisible(true);
+		if (e.getSource() == ventanaCliente2.getTablePedidos() && e.getClickCount() == 2) {
+			pedido = pedidos.get(ventanaCliente2.getTablePedidos().getSelectedRow());
+			if (pedido.getPedidoCarteleria() != (null)) {
+				if (pedido.getPedidoCarteleria()) {
+					abrirPedidoCarteleria(pedido);
+					return;
+				}
+			}
+
+			if (pedido.getPedidoCostura() != (null)) {
+				if (pedido.getPedidoCostura()) {
+					abrirPedidoCostura(pedido);
+					return;
+				}
+			}
+			if (pedido.getPedidoCarteleria() == null && pedido.getPedidoCostura() == null) {
+				JOptionPane.showMessageDialog(ventanaCliente2, "Error al consultar, comuníquese con el desarrollador.");
+			}
 		}
 
 	}
@@ -181,5 +196,26 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void abrirTransaccionCaja(Caja c) {
+		TransaccionCaja ventana = new TransaccionCaja();
+		ventana.setUpControlador();
+		ventana.getControlador().setCaja(c);
+		ventana.setVisible(true);
+	}
+
+	private void abrirPedidoCarteleria(Pedido p) {
+		PedidoCarteleria ventana = new PedidoCarteleria();
+		ventana.setUpControlador();
+		ventana.getControlador().setPedido(p);
+		ventana.setVisible(true);
+	}
+
+	private void abrirPedidoCostura(Pedido p) {
+		PedidoConfeccion ventana = new PedidoConfeccion();
+		ventana.setUpControlador();
+		ventana.getControlador().setPedido(p);
+		ventana.setVisible(true);
 	}
 }
