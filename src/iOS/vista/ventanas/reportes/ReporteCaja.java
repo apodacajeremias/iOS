@@ -3,7 +3,7 @@ package iOS.vista.ventanas.reportes;
 import iOS.controlador.ventanas.reportes.ReporteCajaControlador;
 import iOS.vista.componentes.ReporteGenerico;
 
-public class ReporteCaja extends ReporteGenerico{
+public class ReporteCaja extends ReporteGenerico {
 
 	/**
 	 * 
@@ -12,7 +12,7 @@ public class ReporteCaja extends ReporteGenerico{
 	public String modulo = "CAJA";
 
 	private ReporteCajaControlador controlador;
-	
+
 	public void setUpControlador() {
 		controlador = new ReporteCajaControlador(this);
 
@@ -35,7 +35,5 @@ public class ReporteCaja extends ReporteGenerico{
 	public ReporteCajaControlador getControlador() {
 		return controlador;
 	}
-	
-	
 
 }

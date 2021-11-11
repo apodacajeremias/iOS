@@ -33,7 +33,7 @@ public class Modulo {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaborador;
+	private Funcionario colaborador;
 	
 
 	public Date getFechaRegistro() {

@@ -13,7 +13,7 @@ import iOS.controlador.util.EventosUtil;
 import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.entidades.Caja;
-import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Funcionario;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCaja;
 import iOS.vista.ventanas.reportes.ReporteCaja;
@@ -66,7 +66,7 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 
 	private void filtroPorColaborador(String claseReporte) {
 		vaciarTabla();
-		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
+		Funcionario c = (Funcionario) reporte.getCbColaborador().getSelectedItem();
 		boolean estado = reporte.getRb3().isSelected();
 		boolean cajaCerrada = reporte.getRb1().isSelected();
 		Date fecha = reporte.getDateChooser().getDate();

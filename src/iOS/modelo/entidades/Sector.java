@@ -37,13 +37,13 @@ public class Sector {
 
 	@ManyToOne
 	@JoinColumn(nullable = true)
-	private Colaborador colaborador;
+	private Funcionario colaborador;
 
 	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<SectorProceso> procesos;
 
 	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<Colaborador> colaboradoresDelSector;
+	private List<Funcionario> colaboradoresDelSector;
 	
 	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
@@ -69,7 +69,7 @@ public class Sector {
 		return descripcion;
 	}
 
-	public Colaborador getColaborador() {
+	public Funcionario getColaborador() {
 		return colaborador;
 	}
 
@@ -77,7 +77,7 @@ public class Sector {
 		return procesos;
 	}
 
-	public List<Colaborador> getColaboradoresDelSector() {
+	public List<Funcionario> getColaboradoresDelSector() {
 		return colaboradoresDelSector;
 	}
 
@@ -101,7 +101,7 @@ public class Sector {
 		this.descripcion = descripcion;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
+	public void setColaborador(Funcionario colaborador) {
 		this.colaborador = colaborador;
 	}
 
@@ -109,7 +109,7 @@ public class Sector {
 		this.procesos = procesos;
 	}
 
-	public void setColaboradoresDelSector(List<Colaborador> colaboradoresDelSector) {
+	public void setColaboradoresDelSector(List<Funcionario> colaboradoresDelSector) {
 		this.colaboradoresDelSector = colaboradoresDelSector;
 	}
 

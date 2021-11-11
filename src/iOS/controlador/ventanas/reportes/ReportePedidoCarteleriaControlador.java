@@ -18,7 +18,7 @@ import iOS.controlador.util.EventosUtil;
 import iOS.controlador.util.Impresiones;
 import iOS.controlador.util.MetodosPedido;
 import iOS.modelo.dao.PedidoDao;
-import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Funcionario;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedido;
@@ -77,7 +77,7 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 
 	private void filtroPorColaborador(String claseReporte) {
 		vaciarTabla();
-		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
+		Funcionario c = (Funcionario) reporte.getCbColaborador().getSelectedItem();
 		boolean pedidoCarteleria = true;
 		boolean pedidoCostura = false;
 		boolean estado = reporte.getRb3().isSelected();

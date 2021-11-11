@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 
 import com.toedter.calendar.JDateChooser;
 
-import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Funcionario;
 import iOS.vista.componentes.CampoNumeroPersonalizado;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -149,7 +149,7 @@ public class EventosUtil {
 		return sw.toString();
 	}
 
-	public static boolean liberarAcceso(Colaborador colaborador, String modulo, String accion) {
+	public static boolean liberarAcceso(Funcionario colaborador, String modulo, String accion) {
 		for (int i = 0; i < colaborador.getRol().getRolesOperaciones().size(); i++) {
 			if (colaborador.getRol().getRolesOperaciones().get(i).getOperacion().getNombreOperacion().equalsIgnoreCase(accion)
 					&& colaborador.getRol().getRolesOperaciones().get(i).getOperacion().getModulo().getNombreModulo().equalsIgnoreCase(modulo)) {
@@ -162,7 +162,7 @@ public class EventosUtil {
 
 	}
 
-	public static boolean liberarAccesoSegunRol(Colaborador colaborador, String rol) {
+	public static boolean liberarAccesoSegunRol(Funcionario colaborador, String rol) {
 		if (colaborador.getRol().getNombreRol().equalsIgnoreCase(rol)) {
 			return true;
 		}

@@ -19,7 +19,7 @@ import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Funcionario;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.CajaInterface;
@@ -41,7 +41,7 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 	private Caja caja;
 	private CajaMovimiento cajaMovimiento;
 	private Cliente cliente;
-	private Colaborador colaborador;
+	private Funcionario colaborador;
 
 	private List<CajaMovimiento> movimientos = new ArrayList<CajaMovimiento>();
 	private String accion;
@@ -378,7 +378,7 @@ public class VentanaCajaMovimientoControlador implements ActionListener, MouseLi
 	}
 
 	@Override
-	public void setColaborador(Colaborador colaborador) {
+	public void setColaborador(Funcionario colaborador) {
 		this.colaborador = colaborador;
 		gestionarColaborador();
 	}

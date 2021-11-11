@@ -30,7 +30,7 @@ public class Tinta {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaborador;
+	private Funcionario colaborador;
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;

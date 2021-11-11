@@ -34,7 +34,7 @@ public class PedidoDetalles {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaborador;
+	private Funcionario colaborador;
 
 	@Column(nullable = true)
 	private double medidaAncho;
@@ -91,7 +91,7 @@ public class PedidoDetalles {
 		return estado;
 	}
 
-	public Colaborador getColaborador() {
+	public Funcionario getColaborador() {
 		return colaborador;
 	}
 
@@ -155,7 +155,7 @@ public class PedidoDetalles {
 		this.estado = estado;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
+	public void setColaborador(Funcionario colaborador) {
 		this.colaborador = colaborador;
 	}
 

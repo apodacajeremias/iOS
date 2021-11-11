@@ -30,7 +30,7 @@ public class Produccion {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaborador;
+	private Funcionario colaborador;
 
 	@ManyToOne
 	@JoinColumn(nullable = true)
@@ -80,7 +80,7 @@ public class Produccion {
 		return estado;
 	}
 
-	public Colaborador getColaborador() {
+	public Funcionario getColaborador() {
 		return colaborador;
 	}
 
@@ -136,7 +136,7 @@ public class Produccion {
 		this.estado = estado;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
+	public void setColaborador(Funcionario colaborador) {
 		this.colaborador = colaborador;
 	}
 

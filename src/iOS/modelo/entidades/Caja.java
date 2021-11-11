@@ -34,7 +34,7 @@ public class Caja {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaborador;
+	private Funcionario colaborador;
 
 	@Column(nullable = false)
 	private boolean cajaCerrada;
@@ -126,7 +126,7 @@ public class Caja {
 		return estado;
 	}
 
-	public Colaborador getColaborador() {
+	public Funcionario getColaborador() {
 		return colaborador;
 	}
 
@@ -222,7 +222,7 @@ public class Caja {
 		this.estado = estado;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
+	public void setColaborador(Funcionario colaborador) {
 		this.colaborador = colaborador;
 	}
 
