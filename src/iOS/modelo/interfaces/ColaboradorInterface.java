@@ -1,10 +1,10 @@
 package iOS.modelo.interfaces;
 
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 
 public interface ColaboradorInterface {
 
-	public void setColaborador(Funcionario colaborador);
+	public void setColaborador(Colaborador colaborador);
 
 	public void gestionarColaborador(); 
 }

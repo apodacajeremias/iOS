@@ -18,8 +18,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
-import iOS.controlador.util.EventosUtil;
-
 @Entity
 public class Pedido {
 	@Id
@@ -37,18 +35,7 @@ public class Pedido {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaborador;
-	
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-
+	private Colaborador colaborador;
 	
 	@Column(nullable = true)
 	private String tipoPagoPedido;
@@ -84,8 +71,6 @@ public class Pedido {
 	@JoinColumn(nullable = false)
 	private Cliente cliente;
 	
-	//orphanRemoval = true es para que elimine un item de la lista en BD
-	//fetch = lazy es para que no cargue si no hay la solicitud con el get
 	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private List<PedidoDetalles> pedidoDetalles;
 	
@@ -105,187 +90,185 @@ public class Pedido {
 	@Column(nullable = false)
 	private boolean generaDeuda;
 	
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean deudaPaga;
+
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
-
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
+	public boolean isEstado() {
+		return estado;
 	}
 
-	public Funcionario getColaborador() {
+	public Colaborador getColaborador() {
 		return colaborador;
-	}
-
-	public void setColaborador(Funcionario colaborador) {
-		this.colaborador = colaborador;
-	}
-
-	public void setEstado(boolean estado) {
-		this.estado = estado;
 	}
 
 	public String getTipoPagoPedido() {
 		return tipoPagoPedido;
 	}
 
-	public void setTipoPagoPedido(String tipoPagoPedido) {
-		this.tipoPagoPedido = tipoPagoPedido;
-	}
-
 	public int getDescuentoTotal() {
 		return descuentoTotal;
-	}
-
-	public void setDescuentoTotal(int descuentoTotal) {
-		this.descuentoTotal = descuentoTotal;
 	}
 
 	public int getCostoTotal() {
 		return costoTotal;
 	}
 
-	public void setCostoTotal(int costoTotal) {
-		this.costoTotal = costoTotal;
-	}
-
 	public int getGananciaTotal() {
 		return gananciaTotal;
-	}
-
-	public void setGananciaTotal(int gananciaTotal) {
-		this.gananciaTotal = gananciaTotal;
 	}
 
 	public int getSumatoriaPrecio() {
 		return sumatoriaPrecio;
 	}
 
-	public void setSumatoriaPrecio(int sumatoriaPrecio) {
-		this.sumatoriaPrecio = sumatoriaPrecio;
-	}
-
 	public int getPrecioPagar() {
 		return precioPagar;
-	}
-
-	public void setPrecioPagar(int precioPagar) {
-		this.precioPagar = precioPagar;
 	}
 
 	public double getMetrosTotal() {
 		return metrosTotal;
 	}
 
-	public void setMetrosTotal(double metrosTotal) {
-		this.metrosTotal = metrosTotal;
-	}
-
 	public double getMetrosFechaEmision() {
 		return metrosFechaEmision;
-	}
-
-	public void setMetrosFechaEmision(double metrosFechaEmision) {
-		this.metrosFechaEmision = metrosFechaEmision;
 	}
 
 	public boolean isEsPresupuesto() {
 		return esPresupuesto;
 	}
 
-	public void setEsPresupuesto(boolean esPresupuesto) {
-		this.esPresupuesto = esPresupuesto;
-	}
-
 	public boolean isConsiderarMetraje() {
 		return considerarMetraje;
-	}
-
-	public void setConsiderarMetraje(boolean considerarMetraje) {
-		this.considerarMetraje = considerarMetraje;
 	}
 
 	public Cliente getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
 	public List<PedidoDetalles> getPedidoDetalles() {
 		return pedidoDetalles;
 	}
-
-	public void setPedidoDetalles(List<PedidoDetalles> pedidoDetalles) {
-		this.pedidoDetalles = pedidoDetalles;
-	}
-	
-	
-
 
 	public List<PedidoDetalleConfeccion> getPedidosConfecciones() {
 		return pedidosConfecciones;
 	}
 
-
-	public void setPedidosConfecciones(List<PedidoDetalleConfeccion> pedidosConfecciones) {
-		this.pedidosConfecciones = pedidosConfecciones;
+	public List<CajaMovimiento> getPagosPedido() {
+		return pagosPedido;
 	}
-
-
-	@Override
-	public String toString() {
-		return id + " - " + EventosUtil.formatoFecha(fechaRegistro);
-	}
-
 
 	public Boolean getPedidoCostura() {
 		return pedidoCostura;
 	}
 
-
 	public Boolean getPedidoCarteleria() {
 		return pedidoCarteleria;
 	}
-
-
-	public void setPedidoCostura(Boolean pedidoCostura) {
-		this.pedidoCostura = pedidoCostura;
-	}
-
-
-	public void setPedidoCarteleria(Boolean pedidoCarteleria) {
-		this.pedidoCarteleria = pedidoCarteleria;
-	}
-
-
-	public List<CajaMovimiento> getPagosPedido() {
-		return pagosPedido;
-	}
-
-
-	public void setPagosPedido(List<CajaMovimiento> pagosPedido) {
-		this.pagosPedido = pagosPedido;
-	}
-
 
 	public boolean isGeneraDeuda() {
 		return generaDeuda;
 	}
 
+	public boolean isDeudaPaga() {
+		return deudaPaga;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public void setTipoPagoPedido(String tipoPagoPedido) {
+		this.tipoPagoPedido = tipoPagoPedido;
+	}
+
+	public void setDescuentoTotal(int descuentoTotal) {
+		this.descuentoTotal = descuentoTotal;
+	}
+
+	public void setCostoTotal(int costoTotal) {
+		this.costoTotal = costoTotal;
+	}
+
+	public void setGananciaTotal(int gananciaTotal) {
+		this.gananciaTotal = gananciaTotal;
+	}
+
+	public void setSumatoriaPrecio(int sumatoriaPrecio) {
+		this.sumatoriaPrecio = sumatoriaPrecio;
+	}
+
+	public void setPrecioPagar(int precioPagar) {
+		this.precioPagar = precioPagar;
+	}
+
+	public void setMetrosTotal(double metrosTotal) {
+		this.metrosTotal = metrosTotal;
+	}
+
+	public void setMetrosFechaEmision(double metrosFechaEmision) {
+		this.metrosFechaEmision = metrosFechaEmision;
+	}
+
+	public void setEsPresupuesto(boolean esPresupuesto) {
+		this.esPresupuesto = esPresupuesto;
+	}
+
+	public void setConsiderarMetraje(boolean considerarMetraje) {
+		this.considerarMetraje = considerarMetraje;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public void setPedidoDetalles(List<PedidoDetalles> pedidoDetalles) {
+		this.pedidoDetalles = pedidoDetalles;
+	}
+
+	public void setPedidosConfecciones(List<PedidoDetalleConfeccion> pedidosConfecciones) {
+		this.pedidosConfecciones = pedidosConfecciones;
+	}
+
+	public void setPagosPedido(List<CajaMovimiento> pagosPedido) {
+		this.pagosPedido = pagosPedido;
+	}
+
+	public void setPedidoCostura(Boolean pedidoCostura) {
+		this.pedidoCostura = pedidoCostura;
+	}
+
+	public void setPedidoCarteleria(Boolean pedidoCarteleria) {
+		this.pedidoCarteleria = pedidoCarteleria;
+	}
 
 	public void setGeneraDeuda(boolean generaDeuda) {
 		this.generaDeuda = generaDeuda;
 	}
+
+	public void setDeudaPaga(boolean deudaPaga) {
+		this.deudaPaga = deudaPaga;
+	}
 	
-
-
-
 	
 }

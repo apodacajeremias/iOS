@@ -31,7 +31,7 @@ public class CajaMovimiento {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaboradorQueRegistra;	
+	private Colaborador colaboradorQueRegistra;	
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
@@ -41,12 +41,12 @@ public class CajaMovimiento {
 	public boolean isEstado() {
 		return estado;
 	}
-	public Funcionario getColaboradorQueRegistra() {
+	public Colaborador getColaboradorQueRegistra() {
 		return colaboradorQueRegistra;
 	}
 
 
-	public void setColaboradorQueRegistra(Funcionario colaboradorQueRegistra) {
+	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
 		this.colaboradorQueRegistra = colaboradorQueRegistra;
 	}
 	@ManyToOne
@@ -59,7 +59,7 @@ public class CajaMovimiento {
 	
 	@ManyToOne
 	@JoinColumn(nullable = true)
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)
@@ -107,11 +107,11 @@ public class CajaMovimiento {
 		this.cliente = cliente;
 	}
 
-	public Funcionario getColaborador() {
+	public Colaborador getColaborador() {
 		return colaborador;
 	}
 
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 

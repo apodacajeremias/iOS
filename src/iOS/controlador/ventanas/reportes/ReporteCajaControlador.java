@@ -13,7 +13,7 @@ import iOS.controlador.util.EventosUtil;
 import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.entidades.Caja;
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCaja;
 import iOS.vista.ventanas.reportes.ReporteCaja;
@@ -47,8 +47,8 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 	@SuppressWarnings("unchecked")
 	private void cargarColaboradores() {
 		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
-			for (int i = 0; i < Sesion.getInstance().recuperarColaboradores().size(); i++) {
-				reporte.getCbColaborador().addItem( Sesion.getInstance().recuperarColaboradores().get(i));
+			for (int i = 0; i < Sesion.getInstance().getColaboradores().size(); i++) {
+				reporte.getCbColaborador().addItem( Sesion.getInstance().getColaboradores().get(i));
 			}
 		} else {
 			reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
@@ -66,7 +66,7 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 
 	private void filtroPorColaborador(String claseReporte) {
 		vaciarTabla();
-		Funcionario c = (Funcionario) reporte.getCbColaborador().getSelectedItem();
+		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
 		boolean estado = reporte.getRb3().isSelected();
 		boolean cajaCerrada = reporte.getRb1().isSelected();
 		Date fecha = reporte.getDateChooser().getDate();

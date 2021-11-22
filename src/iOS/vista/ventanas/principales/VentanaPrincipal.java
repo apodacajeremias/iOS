@@ -39,13 +39,12 @@ import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.buscadores.BuscadorSector;
-import iOS.vista.ventanas.pedidos.PedidoCarteleria;
-import iOS.vista.ventanas.pedidos.PedidoConfeccion;
+import iOS.vista.ventanas.pedidos.TransaccionPedido;
 import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.reportes.ReporteVales;
-import iOS.vista.ventanas.transacciones.TransaccionCaja2;
+import iOS.vista.ventanas.transacciones.TransaccionCaja;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
 
 public class VentanaPrincipal extends JFrame {
@@ -524,7 +523,7 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void abrirTransaccionCaja() {
-		TransaccionCaja2 ventana = new TransaccionCaja2();
+		TransaccionCaja ventana = new TransaccionCaja();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "MODIFICAR")) {
 			ventana.setUpControlador();
 			ventana.setVisible(true);
@@ -532,18 +531,14 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void abrirTransaccionPedidoCarteleria() {
-		PedidoCarteleria ventana = new PedidoCarteleria();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.setVisible(true);
-		}
+		TransaccionPedido ventana = new TransaccionPedido();
+		ventana.setUpCarteleriaControlador();
+		ventana.setVisible(true);
 	}
 	private void abrirTransaccionPedidoConfeccion() {
-		PedidoConfeccion ventana = new PedidoConfeccion();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.setVisible(true);
-		}
+		TransaccionPedido ventana = new TransaccionPedido();
+		ventana.setUpConfeccionControlador();
+		ventana.setVisible(true);
 	}
 
 

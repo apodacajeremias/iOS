@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 
 public class ModeloTablaColaborador extends AbstractTableModel {
 
@@ -15,9 +15,9 @@ public class ModeloTablaColaborador extends AbstractTableModel {
 	private static final long serialVersionUID = -7615729955805818086L;
 	
 	private String[] columnas = { "NOMBRE COMPLETO"};
-	private List<Funcionario> lista = new ArrayList<>();
+	private List<Colaborador> lista = new ArrayList<>();
 	
-	public void setLista(List<Funcionario> lista) {
+	public void setLista(List<Colaborador> lista) {
 		this.lista = lista;
 	}
 

@@ -23,8 +23,7 @@ import iOS.modelo.interfaces.ClienteInterface;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.modelotabla.ModeloTablaPedido;
 import iOS.vista.ventanas.VentanaCliente2;
-import iOS.vista.ventanas.pedidos.PedidoCarteleria;
-import iOS.vista.ventanas.pedidos.PedidoConfeccion;
+import iOS.vista.ventanas.pedidos.TransaccionPedido;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 
 public class VentanaClienteControlador2 implements ActionListener, MouseListener, KeyListener, ClienteInterface {
@@ -206,16 +205,16 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	}
 
 	private void abrirPedidoCarteleria(Pedido p) {
-		PedidoCarteleria ventana = new PedidoCarteleria();
-		ventana.setUpControlador();
-		ventana.getControlador().setPedido(p);
+		TransaccionPedido ventana = new TransaccionPedido();
+		ventana.setUpCarteleriaControlador();
+		ventana.getCarteleriaControlador().setPedido(p);
 		ventana.setVisible(true);
 	}
 
 	private void abrirPedidoCostura(Pedido p) {
-		PedidoConfeccion ventana = new PedidoConfeccion();
-		ventana.setUpControlador();
-		ventana.getControlador().setPedido(p);
+		TransaccionPedido ventana = new TransaccionPedido();
+		ventana.setUpConfeccionControlador();
+		ventana.getConfeccionControlador().setPedido(p);
 		ventana.setVisible(true);
 	}
 }

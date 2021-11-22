@@ -14,7 +14,7 @@ public class ModeloTablaPedido extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1864475015388508652L;
-	private String[] columnas = {"PEDIDO", "CLIENTE", "PRECIO","TIPO"};
+	private String[] columnas = {"PEDIDO", "CLIENTE", "PRECIO", "TIPO"};
 	private List<Pedido> lista = new ArrayList<>();
 
 	public void setPedidos(List<Pedido> lista){
@@ -42,27 +42,49 @@ public class ModeloTablaPedido extends AbstractTableModel {
 	public Object getValueAt(int r, int c) {
 		switch (c) {
 		case 0:
-			return lista.get(r);
+			return lista.get(r).getId()+" - "+EventosUtil.formatoFecha(lista.get(r).getFechaRegistro());
 		case 1:
 			return lista.get(r).getCliente().getNombreCompleto();
 		case 2:
 			return EventosUtil.separadorMiles((double) lista.get(r).getPrecioPagar());
 		case 3:
+			String pedido = "";
+			String estado = "";
+			String tipo = "";
+			
 			if (lista.get(r).isEsPresupuesto()) {
-				if (lista.get(r).isEstado()) {
-					return "PRESUPUESTO";
-				} else {
-					return "PRESUPUESTO ANULADO";
-				}
-				
-			}else {
-				if (lista.get(r).isEstado()) {
-					return "PEDIDO";
-				} else {
-					return "PEDIDO ANULADO";
-				}
-				
+				pedido = "PRESUPUESTO";
+			} else {
+				pedido = "PEDIDO";
 			}
+			if (lista.get(r).getPedidoCarteleria() != null && lista.get(r).getPedidoCarteleria() == true) {
+				tipo = "CARTELERIA";
+			}
+			if (lista.get(r).getPedidoCostura() != null && lista.get(r).getPedidoCostura() == true) {
+				tipo = "CONFECCION";
+			}
+			if (lista.get(r).isEstado()) {
+				estado = "VIGENTE";
+			}else {
+				estado = "ANULADO";
+			}
+			
+			return pedido+" "+tipo+" "+estado;
+			
+//			if (lista.get(r).isEsPresupuesto()) {
+//				if (lista.get(r).isEstado()) {
+//					return "PRESUPUESTO CARTELERIA";
+//				} else {
+//					return "PRESUPUESTO ANULADO";
+//				}
+//				
+//			}else {
+//				if (lista.get(r).isEstado()) {
+//					return "PEDIDO CARTELERIA";
+//				} else {
+//					return "PEDIDO ANULADO";
+//				}
+//			}
 		default:
 			break;
 		}

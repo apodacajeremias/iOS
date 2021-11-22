@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import iOS.modelo.dao.ColaboradorDao;
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.principales.VentanaAcceso;
 import iOS.vista.ventanas.principales.VentanaPrincipal;
@@ -12,7 +12,7 @@ import iOS.vista.ventanas.principales.VentanaPrincipal;
 public class VentanaAccesoControlador implements ActionListener {
 	private VentanaAcceso ventana;
 	private ColaboradorDao dao;
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	public VentanaAccesoControlador(VentanaAcceso ventana) {
 		this.ventana = ventana;

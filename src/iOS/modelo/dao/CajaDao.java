@@ -16,24 +16,23 @@ public class CajaDao extends GenericDao<Caja> {
 
 	public Caja encontrarCajaHoy(int id) {
 		getSession().beginTransaction();
-
+		Caja caja = null;
 		Date hoy = new Date();
 
-		String sql = "from Caja " + "where colaborador.id = :id " + "and DATE(fechaRegistro) = :hoy "
-				+ "and cajaCerrada = false";
+		String sql = "from Caja " + "where colaborador.id = :id " + "and DATE(fechaRegistro) = :hoy";
 
 		@SuppressWarnings("unchecked")
 		Query<Caja> query = getSession().createQuery(sql);
 		query.setParameter("hoy", hoy);
 		query.setParameter("id", id);
 		try {
-			Caja caja = query.getSingleResult();
+			caja = query.getSingleResult();
 			commit();
 			return caja;
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollBack();
-			return null;
+			return caja;
 		}
 	}
 

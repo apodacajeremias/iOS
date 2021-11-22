@@ -5,27 +5,27 @@ import java.util.List;
 
 import org.hibernate.query.Query;
 
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 
-public class ColaboradorDao extends GenericDao<Funcionario>{
+public class ColaboradorDao extends GenericDao<Colaborador>{
 
 	public ColaboradorDao() {
-		super(Funcionario.class);
+		super(Colaborador.class);
 	}
 	
-	public List<Funcionario> recuperarTodoOrdenadoPorNombre() {
+	public List<Colaborador> recuperarTodoOrdenadoPorNombre() {
 		getSession().beginTransaction();
 		
 		String sql = "from Colaborador order by nombreCompleto";
 		
 		@SuppressWarnings("unchecked")
-		Query<Funcionario> query = getSession().createQuery(sql);
-		List<Funcionario> lista = query.getResultList();
+		Query<Colaborador> query = getSession().createQuery(sql);
+		List<Colaborador> lista = query.getResultList();
 		commit();
 		return lista;
 	}
 
-	public List<Funcionario> recuperarPorFiltro(String filtro) {
+	public List<Colaborador> recuperarPorFiltro(String filtro) {
 		getSession().beginTransaction();
 
 		String sql = "from Colaborador "
@@ -34,7 +34,7 @@ public class ColaboradorDao extends GenericDao<Funcionario>{
 				+ "order by nombreCompleto";
 
 		@SuppressWarnings("unchecked")
-		Query<Funcionario> query = getSession().createQuery(sql);
+		Query<Colaborador> query = getSession().createQuery(sql);
 		query.setParameter("nombreCompleto", "%" + filtro.toUpperCase() + "%");
 
 		@SuppressWarnings("unused")
@@ -45,22 +45,22 @@ public class ColaboradorDao extends GenericDao<Funcionario>{
 		}
 		query.setParameter("nroci", filtro);
 
-		List<Funcionario> lista = query.getResultList();
+		List<Colaborador> lista = query.getResultList();
 		commit();
 		return lista;
 	}
 	
 	
-	public Funcionario verificarAcceso(String usuario, String password) {
+	public Colaborador verificarAcceso(String usuario, String password) {
 		getSession().beginTransaction();
-		Funcionario colaborador = new Funcionario();
+		Colaborador colaborador = new Colaborador();
 		String sql = "from Colaborador "
 				+ "where upper(usuario) like :usuario "
 				+ "and password like :password";
 		
 		try {
 			@SuppressWarnings("unchecked")
-			Query<Funcionario> query = getSession().createQuery(sql);
+			Query<Colaborador> query = getSession().createQuery(sql);
 			query.setParameter("usuario", usuario);
 			query.setParameter("password", password);
 			colaborador =  query.getSingleResult();

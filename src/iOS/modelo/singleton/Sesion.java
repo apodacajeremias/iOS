@@ -5,12 +5,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import iOS.modelo.dao.ColaboradorDao;
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 
 public class Sesion {
 	private static Sesion sesion;
 
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	private Sesion() {
 	}
@@ -24,19 +24,19 @@ public class Sesion {
 		return sesion;
 	}
 
-	public Funcionario getColaborador() {
+	public Colaborador getColaborador() {
 		if (colaborador == null) {
 			JOptionPane.showMessageDialog(null, "Inicie sesión");
 		}
 		return colaborador;
 	}
 
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 	
-	public List<Funcionario> recuperarColaboradores() {
-		List<Funcionario> cs = null;
+	public List<Colaborador> getColaboradores() {
+		List<Colaborador> cs = null;
 		ColaboradorDao cDao = new ColaboradorDao();
 		cs = cDao.recuperarTodoOrdenadoPorNombre();
 		

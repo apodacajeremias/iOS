@@ -23,7 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @Entity
-public class Funcionario {
+public class Colaborador {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
@@ -38,7 +38,7 @@ public class Funcionario {
 
 	@ManyToOne
 	@JoinColumn(nullable = true)
-	private Funcionario colaboradorQueRegistra;
+	private Colaborador colaboradorQueRegistra;
 
 	@ManyToOne
 	@JoinColumn(nullable = true)
@@ -114,7 +114,7 @@ public class Funcionario {
 		return estado;
 	}
 
-	public Funcionario getColaboradorQueRegistra() {
+	public Colaborador getColaboradorQueRegistra() {
 		return colaboradorQueRegistra;
 	}
 
@@ -202,7 +202,7 @@ public class Funcionario {
 		this.estado = estado;
 	}
 
-	public void setColaboradorQueRegistra(Funcionario colaboradorQueRegistra) {
+	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
 		this.colaboradorQueRegistra = colaboradorQueRegistra;
 	}
 

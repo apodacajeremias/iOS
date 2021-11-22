@@ -1,17 +1,13 @@
 package iOS.modelo.entidades;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,7 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class SectorProceso {
+public class DetalleMaterial {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
@@ -33,26 +29,23 @@ public class SectorProceso {
 	private boolean estado = true;
 
 	@ManyToOne
-	@JoinColumn(nullable = true)
-	private Colaborador colaborador;
-
+	@JoinColumn(nullable = false)
+	private Colaborador colaboradorQueRegistra;
+	
 	@ManyToOne
 	@JoinColumn(nullable = true)
-	private Sector sector;
-
-	@Column(nullable = false)
-	private String nombreProceso;
+	private PedidoDetalles detalleCarteleria;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private PedidoDetalleConfeccion detalleConfeccion;
+	
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private Material material;
 	
 	@Column(nullable = false)
-	private boolean esRepetible;
-
-	@OneToMany(mappedBy = "proceso", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<Produccion> producciones;
-
-	@Override
-	public String toString() {
-		return nombreProceso;
-	}
+	private double precioMaterial;
 
 	public int getId() {
 		return id;
@@ -66,20 +59,20 @@ public class SectorProceso {
 		return estado;
 	}
 
-	public Colaborador getColaborador() {
-		return colaborador;
+	public Colaborador getColaboradorQueRegistra() {
+		return colaboradorQueRegistra;
 	}
 
-	public Sector getSector() {
-		return sector;
+	public PedidoDetalles getDetalleCarteleria() {
+		return detalleCarteleria;
 	}
 
-	public String getNombreProceso() {
-		return nombreProceso;
+	public PedidoDetalleConfeccion getDetalleConfeccion() {
+		return detalleConfeccion;
 	}
 
-	public List<Produccion> getProducciones() {
-		return producciones;
+	public Material getMaterial() {
+		return material;
 	}
 
 	public void setId(int id) {
@@ -94,30 +87,29 @@ public class SectorProceso {
 		this.estado = estado;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
+	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
+		this.colaboradorQueRegistra = colaboradorQueRegistra;
 	}
 
-	public void setSector(Sector sector) {
-		this.sector = sector;
+	public void setDetalleCarteleria(PedidoDetalles detalleCarteleria) {
+		this.detalleCarteleria = detalleCarteleria;
 	}
 
-	public void setNombreProceso(String nombreProceso) {
-		this.nombreProceso = nombreProceso;
+	public void setDetalleConfeccion(PedidoDetalleConfeccion detalleConfeccion) {
+		this.detalleConfeccion = detalleConfeccion;
 	}
 
-	public void setProducciones(List<Produccion> producciones) {
-		this.producciones = producciones;
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 
-	public boolean isEsRepetible() {
-		return esRepetible;
+	public double getPrecioMaterial() {
+		return precioMaterial;
 	}
 
-	public void setEsRepetible(boolean esRepetible) {
-		this.esRepetible = esRepetible;
+	public void setPrecioMaterial(double precioMaterial) {
+		this.precioMaterial = precioMaterial;
 	}
+
 	
-	
-
 }

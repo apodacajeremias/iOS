@@ -17,7 +17,7 @@ import javax.swing.JTable;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.SectorDao;
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Sector;
 import iOS.modelo.entidades.SectorProceso;
 import iOS.modelo.interfaces.AccionesABM;
@@ -36,7 +36,7 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 	private ModeloTablaColaborador modeloTablaColaborador;
 	private ModeloTablaProceso modeloTablaProceso;
 
-	private List<Funcionario> colaboradoresDelSector = new ArrayList<Funcionario>();
+	private List<Colaborador> colaboradoresDelSector = new ArrayList<Colaborador>();
 	private List<SectorProceso> procesos = new ArrayList<SectorProceso>();
 
 	private SectorProceso proceso;
@@ -82,7 +82,7 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 	}
 
 	private void vaciarFormularios() {
-		colaboradoresDelSector = new ArrayList<Funcionario>();
+		colaboradoresDelSector = new ArrayList<Colaborador>();
 		modeloTablaColaborador.setLista(colaboradoresDelSector);
 		modeloTablaColaborador.fireTableDataChanged();
 

@@ -34,7 +34,7 @@ public class PedidoDetalleConfeccion {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	@Column(nullable = true)
 	private String archivo;
@@ -64,6 +64,9 @@ public class PedidoDetalleConfeccion {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificado;
+	
+	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<DetalleMaterial> materiales;
 
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
@@ -85,7 +88,7 @@ public class PedidoDetalleConfeccion {
 		return estado;
 	}
 
-	public Funcionario getColaborador() {
+	public Colaborador getColaborador() {
 		return colaborador;
 	}
 
@@ -141,7 +144,7 @@ public class PedidoDetalleConfeccion {
 		this.estado = estado;
 	}
 
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 

@@ -14,7 +14,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -545738629065442036L;
-	private String[] columnas = {"PRODUCTO","INDICACIONES","CANT.","TAM.","MOLDE","PRECIO","SUBTOTAL"};
+	private String[] columnas = { "PRODUCTO", "INDICACIONES", "CANT.", "TAM.", "MOLDE", "PRECIO", "SUBTOTAL" };
 
 	private List<PedidoDetalleConfeccion> detalle = new ArrayList<>();
 
@@ -34,6 +34,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 
 		return columnas.length;
 	}
+
 	@Override
 	public int getRowCount() {
 		return detalle.size();
@@ -79,6 +80,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 			try {
 				row.setCantidadDetalle(
 						Double.parseDouble(aValue.toString().replace(".", "").replace(",", "").replace("\\s", "")));
+				row.setPrecioDetalle(calcularSubtotal(row, row.getPrecioProducto()));
 			} catch (NumberFormatException e) {
 				return;
 			}
@@ -100,11 +102,63 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 		} else if (5 == c) {
 			try {
 				row.setPrecioProducto(Double.parseDouble(aValue.toString().replace(".", "").replace(",", "")));
+				row.setPrecioDetalle((int) calcularSubtotal(row, row.getPrecioProducto()));
+			} catch (NumberFormatException e) {
+				return;
+			}
+		}
+		else if (6 == c) {
+			try {
+				row.setPrecioDetalle(Double.parseDouble(aValue.toString().replace(".", "").replace(",", "")));
+				row.setPrecioProducto((int) calcularPrecio(row, row.getPrecioDetalle()));
 			} catch (NumberFormatException e) {
 				return;
 			}
 		}
 	}
+
+	private double calcularPrecio(PedidoDetalleConfeccion row, double subtotal) {
+		double cantidad = 0;
+		double precio = 0;
+
+		try {
+			cantidad = row.getCantidadDetalle();
+			switch (row.getProducto().getTipoCobro()) {
+			case "UNIDAD":
+				precio = subtotal / (cantidad);
+				break;
+			default:
+				precio = subtotal / (cantidad);
+				break;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return precio;
+	}
+
+	private double calcularSubtotal(PedidoDetalleConfeccion row, double precioProducto) {
+		double cantidad = 0;
+		double subtotal = 0;
+
+		try {
+			cantidad = row.getCantidadDetalle();
+			switch (row.getProducto().getTipoCobro()) {
+			case "UNIDAD":
+				subtotal = (precioProducto * cantidad);
+				break;
+			default:
+				subtotal = (precioProducto * cantidad);
+				break;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return subtotal;
+	}
+
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		switch (columnIndex) {

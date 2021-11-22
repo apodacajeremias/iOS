@@ -28,13 +28,16 @@ public class PedidoDetalles {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
 
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaModificado;
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	@Column(nullable = true)
 	private double medidaAncho;
@@ -68,8 +71,8 @@ public class PedidoDetalles {
 	@JoinColumn(nullable = false)
 	private Producto producto;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaModificado;
+	@OneToMany(mappedBy = "detalleCarteleria", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<DetalleMaterial> materiales;	
 
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
@@ -87,11 +90,15 @@ public class PedidoDetalles {
 		return fechaRegistro;
 	}
 
+	public Date getFechaModificado() {
+		return fechaModificado;
+	}
+
 	public boolean isEstado() {
 		return estado;
 	}
 
-	public Funcionario getColaborador() {
+	public Colaborador getColaborador() {
 		return colaborador;
 	}
 
@@ -135,8 +142,8 @@ public class PedidoDetalles {
 		return producto;
 	}
 
-	public Date getFechaModificado() {
-		return fechaModificado;
+	public List<DetalleMaterial> getMateriales() {
+		return materiales;
 	}
 
 	public List<Produccion> getProducciones() {
@@ -151,11 +158,15 @@ public class PedidoDetalles {
 		this.fechaRegistro = fechaRegistro;
 	}
 
+	public void setFechaModificado(Date fechaModificado) {
+		this.fechaModificado = fechaModificado;
+	}
+
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
 
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 
@@ -199,12 +210,14 @@ public class PedidoDetalles {
 		this.producto = producto;
 	}
 
-	public void setFechaModificado(Date fechaModificado) {
-		this.fechaModificado = fechaModificado;
+	public void setMateriales(List<DetalleMaterial> materiales) {
+		this.materiales = materiales;
 	}
 
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
+
+	
 
 }

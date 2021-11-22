@@ -35,7 +35,7 @@ public class Proveedor {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 	
 
 	public Date getFechaRegistro() {
@@ -79,12 +79,12 @@ public class Proveedor {
 	}
 
 
-	public Funcionario getColaborador() {
+	public Colaborador getColaborador() {
 		return colaborador;
 	}
 
 
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 

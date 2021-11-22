@@ -16,7 +16,7 @@ import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.dao.RolDao;
 import iOS.modelo.dao.SectorDao;
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.Sector;
 import iOS.modelo.interfaces.AccionesABM;
@@ -33,7 +33,7 @@ public class VentanaColaboradorControlador
 
 	private String accion;
 
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	private ColaboradorDao dao;
 	private SectorDao daoSector;
@@ -263,7 +263,7 @@ public class VentanaColaboradorControlador
 		}
 
 		if (accion.equals("NUEVO")) {
-			colaborador = new Funcionario();
+			colaborador = new Colaborador();
 			colaborador.setColaboradorQueRegistra(Sesion.getInstance().getColaborador());
 		}
 
@@ -317,7 +317,7 @@ public class VentanaColaboradorControlador
 	}
 
 	@Override
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 
 		gestionarColaborador();

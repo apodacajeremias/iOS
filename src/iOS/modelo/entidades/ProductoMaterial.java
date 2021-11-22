@@ -15,85 +15,89 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class DepositoExistencia {
+public class ProductoMaterial {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
+
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private Colaborador colaboradorQueRegistra;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaborador;
+	private Producto producto;
 	
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private Material material;
+	
+	@Column(nullable = false)
+	private double precioMaterial;
+
+	public int getId() {
+		return id;
+	}
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
 	}
-	
-	public Colaborador getColaborador() {
-		return colaborador;
+
+	public Colaborador getColaboradorQueRegistra() {
+		return colaboradorQueRegistra;
 	}
 
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
+	public Producto getProducto() {
+		return producto;
 	}
 
-	@ManyToOne
-	@JoinColumn(nullable = true)
-	private Sector deposito;
-	
-	@ManyToOne
-	@JoinColumn(nullable = true)
-	private Existencia existencia;
-
-	public int getId() {
-		return id;
+	public Material getMaterial() {
+		return material;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 
-	public Sector getDeposito() {
-		return deposito;
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
-	public void setDeposito(Sector deposito) {
-		this.deposito = deposito;
+	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
+		this.colaboradorQueRegistra = colaboradorQueRegistra;
 	}
 
-	public Existencia getExistencia() {
-		return existencia;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
-	public void setExistencia(Existencia existencia) {
-		this.existencia = existencia;
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 
-	@Override
-	public String toString() {
-		return "DepositoExistencia [id=" + id + ", deposito=" + deposito
-				+ ", existencia=" + existencia + "]";
+	public double getPrecioMaterial() {
+		return precioMaterial;
 	}
 
+	public void setPrecioMaterial(double precioMaterial) {
+		this.precioMaterial = precioMaterial;
+	}
+	
 	
 }

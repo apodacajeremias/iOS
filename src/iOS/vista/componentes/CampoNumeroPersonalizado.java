@@ -57,6 +57,9 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 	}
 
 	public Double getValue() {
+		if (this.getText().isEmpty()) {
+			return 0d;
+		}
 		return Double.parseDouble(this.getText());
 	}
 

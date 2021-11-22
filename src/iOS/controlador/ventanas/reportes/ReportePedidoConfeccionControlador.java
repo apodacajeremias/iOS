@@ -18,11 +18,11 @@ import iOS.controlador.util.EventosUtil;
 import iOS.controlador.util.Impresiones;
 import iOS.controlador.util.MetodosPedido;
 import iOS.modelo.dao.PedidoDao;
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedido;
-import iOS.vista.ventanas.pedidos.PedidoConfeccion;
+import iOS.vista.ventanas.pedidos.TransaccionPedido;
 import iOS.vista.ventanas.reportes.ReportePedido;
 
 public class ReportePedidoConfeccionControlador implements ActionListener, MouseListener {
@@ -50,8 +50,8 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 	@SuppressWarnings("unchecked")
 	private void cargarColaboradores() {
 		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
-			for (int i = 0; i < Sesion.getInstance().recuperarColaboradores().size(); i++) {
-				reporte.getCbColaborador().addItem( Sesion.getInstance().recuperarColaboradores().get(i));
+			for (int i = 0; i < Sesion.getInstance().getColaboradores().size(); i++) {
+				reporte.getCbColaborador().addItem( Sesion.getInstance().getColaboradores().get(i));
 			}
 		} else {
 			reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
@@ -78,7 +78,7 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 
 	private void filtroPorColaborador(String claseReporte) {
 		vaciarTabla();
-		Funcionario c = (Funcionario) reporte.getCbColaborador().getSelectedItem();
+		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
 		boolean pedidoCarteleria = false;
 		boolean pedidoCostura = true;
 		boolean estado = reporte.getRb3().isSelected();
@@ -198,14 +198,10 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		if (pedido == null) {
 			return;
 		}
-		PedidoConfeccion ventana = new PedidoConfeccion();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.getControlador().setPedido(pedido);
-			ventana.setVisible(true);
-		} else {
-			return;
-		}
+		TransaccionPedido ventana = new TransaccionPedido();
+		ventana.setUpConfeccionControlador();
+		ventana.getConfeccionControlador().setPedido(pedido);
+		ventana.setVisible(true);
 	}
 
 	@Override

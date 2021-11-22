@@ -33,7 +33,7 @@ public class Rol {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
@@ -43,18 +43,18 @@ public class Rol {
 		return estado;
 	}
 
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 
 	@Column(nullable = false, unique = true)
 	private String nombreRol;
 
-	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = false)
+	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RolOperacion> rolesOperaciones;
 
-	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<Funcionario> colaboradores;
+	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Colaborador> colaboradores;
 
 	public int getId() {
 		return id;
@@ -80,11 +80,11 @@ public class Rol {
 		this.rolesOperaciones = rolesOperaciones;
 	}
 
-	public List<Funcionario> getColaborador() {
+	public List<Colaborador> getColaborador() {
 		return colaboradores;
 	}
 
-	public void setColaborador(List<Funcionario> colaboradores) {
+	public void setColaborador(List<Colaborador> colaboradores) {
 		this.colaboradores = colaboradores;
 	}
 

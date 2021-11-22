@@ -4,158 +4,129 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import iOS.controlador.util.EventosUtil;
-import iOS.modelo.dao.ConfiguracionDao;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.Configuracion;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.ClienteInterface;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.vista.modelotabla.ModeloTablaPedido;
-import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorPedido;
-import iOS.vista.ventanas.transacciones.TransaccionPedido;
 
 public class BuscadorPedidoControlador implements ActionListener, ClienteInterface, MouseListener, PedidoInterface {
+	
 	private List<Pedido> pedidos;
 	private ModeloTablaPedido mtPedido;
-	private ModeloTablaPedidoDetalle mtPedidoDetalle;
 	private PedidoDao dao;
 	private BuscadorPedido bPedido;
-	@SuppressWarnings("unused")
 	private PedidoInterface interfaz;
-	private Configuracion configuracion;
 	private Cliente cliente;
 	private Pedido pedido;
 
 	public BuscadorPedidoControlador(BuscadorPedido buscador) {
 		this.bPedido = buscador;
-		estadoInicial(true);
 		
 		dao = new PedidoDao();
-
-
 		mtPedido = new ModeloTablaPedido();
 		bPedido.getTable().setModel(mtPedido);
 
-		DefaultTableCellRenderer centro = new DefaultTableCellRenderer(); // ALINEAMIENTO DE LAS COLUMNAS
-		DefaultTableCellRenderer derecha = new DefaultTableCellRenderer(); // ALINEAMIENTO DE LAS COLUMNAS
-		centro.setHorizontalAlignment(SwingConstants.CENTER);// .LEFT .RIGHT .CENTER
-		derecha.setHorizontalAlignment(SwingConstants.RIGHT);// .LEFT .RIGHT .CENTER
-
-		bPedido.getTable().getColumnModel().getColumn(0).setPreferredWidth(40);
-		bPedido.getTable().getColumnModel().getColumn(1).setPreferredWidth(40);
-		bPedido.getTable().getColumnModel().getColumn(2).setPreferredWidth(40);
-
-		bPedido.getTable().getColumnModel().getColumn(0).setCellRenderer(derecha);
-		bPedido.getTable().getColumnModel().getColumn(1).setCellRenderer(centro);
-		bPedido.getTable().getColumnModel().getColumn(2).setCellRenderer(centro);
-		
-
-
-		mtPedidoDetalle = new ModeloTablaPedidoDetalle();
-		this.bPedido.getTableDetalle().setModel(mtPedidoDetalle);
-
-		bPedido.getTableDetalle().getColumnModel().getColumn(0).setPreferredWidth(50);
-		bPedido.getTableDetalle().getColumnModel().getColumn(1).setPreferredWidth(200);
-		bPedido.getTableDetalle().getColumnModel().getColumn(2).setPreferredWidth(50);
-
-		bPedido.getTableDetalle().getColumnModel().getColumn(1).setCellRenderer(centro);
-		bPedido.getTableDetalle().getColumnModel().getColumn(2).setCellRenderer(derecha);
-
-		cargarConfiguracion();
 		setUpEvents();
-		recuperarTodo();
+		formatoTabla();
+		estadoInicial(true);
 	}
 	public void setInterfaz(PedidoInterface interfaz) {
 		this.interfaz = interfaz;
 	}
+	
+	private void formatoTabla() {
+		bPedido.getTable().getColumnModel().getColumn(1).setPreferredWidth(0);
+		bPedido.getTable().getColumnModel().getColumn(1).setMinWidth(0);
+		bPedido.getTable().getColumnModel().getColumn(1).setMaxWidth(0);
+	}
 
 	private void setUpEvents() {
 		bPedido.getBtnFiltrar().addActionListener(this);
-		bPedido.getBtnPagar().addActionListener(this);
 		this.bPedido.getBtnBuscarCliente().addActionListener(this);
 		this.bPedido.getBtnFiltrar().addActionListener(this);
-		this.bPedido.getBtnLimpiar().addActionListener(this);
 		this.bPedido.getBtnCancelar().addActionListener(this);
 		this.bPedido.getTable().addMouseListener(this);
-
 	}
-	private void cargarConfiguracion() {
-		ConfiguracionDao daoConfig = new ConfiguracionDao();
-		configuracion = daoConfig.recuperarPorId(0);
-		if (configuracion == null) {
-			JOptionPane.showMessageDialog(null,
-					"Verifique que la configuración esté cargada");
+	
+	private void seleccionarPedido(Integer posicion) {
+		// TODO Auto-generated method stub
+		if (posicion < 0) {
+			return;
 		}
+		
+		pedido = pedidos.get(posicion);
+		interfaz.setPedido(pedido);
+		bPedido.dispose();
 	}
 
 	@Override
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-		bPedido.gettCliente().setText(cliente.getNombreCompleto());
+		while (cliente == null) {
+			abrirBuscadorCliente();
+			JOptionPane.showMessageDialog(bPedido, "Seleccione el cliente");
+		}
+		
+		pedidos = cliente.getPedidos().stream().filter(o -> o.isEsPresupuesto() == false && o.isEstado() == true).collect(Collectors.toList());
+		mtPedido.setPedidos(pedidos);
+		mtPedido.fireTableDataChanged();
+		
+		bPedido.getlDatos1().setText(cliente.getNombreCompleto());
+		bPedido.getlDatos2().setText("DOCUMENTO: " + cliente.getIdentificacion() + " TELEFONO " + cliente.getContacto());
 	}
 	
 	@Override
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
-	
 	}
 	
 	private void estadoInicial(boolean b){
-		EventosUtil.limpiarCampoPersonalizado(bPedido.getLblTotalRegistro());
-		EventosUtil.limpiarCampoPersonalizado(bPedido.gettCliente());	
+		EventosUtil.limpiarCampoPersonalizado(bPedido.getlTotalRegistro());
+		EventosUtil.limpiarCampoPersonalizado(bPedido.getlDatos1());	
+		EventosUtil.limpiarCampoPersonalizado(bPedido.getlDatos2());
 		
 		EventosUtil.estadosBotones(bPedido.getBtnFiltrar(), b);
-		EventosUtil.estadosBotones(bPedido.getBtnPagar(), false);
 		EventosUtil.estadosBotones(bPedido.getBtnBuscarCliente(), b);
-		EventosUtil.estadosBotones(bPedido.getBtnCancelar(), !b);
-		EventosUtil.estadosBotones(bPedido.getBtnLimpiar(), !b);
+		EventosUtil.estadosBotones(bPedido.getBtnCancelar(), b);
 		
 	}
 	
 	private void vaciarFormulario(){
-		
-	}
-	
-	private void vaciarFormularioDetalle(){
-		
+		pedidos = new ArrayList<>();
+		mtPedido.setPedidos(pedidos);
+		mtPedido.fireTableDataChanged();
 	}
 	
 	private void filtrar() {
-		if (bPedido.gettCliente().getText().length() == 0) {
-			pedidos = dao.recuperarTodo();
-		} else {
-			pedidos = dao.recuperarPorCliente(cliente.getId());			
+		if (cliente == null) {
+			return;
+		}
+		try {
+			pedidos = dao.recuperarPorCliente(cliente.getId());
 			mtPedido.setPedidos(pedidos);
 			mtPedido.fireTableDataChanged();
+			bPedido.getlTotalRegistro().setText("Se han encontrado "+EventosUtil.separadorMiles((double) pedidos.size())+" registros en total.");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
-
-		bPedido.getLblTotalRegistro().setText("Se han encontrado "+pedidos.size()+" registros");
-		EventosUtil.estadosBotones(bPedido.getBtnLimpiar(), true);
 	}
 	
-	private void limpiar() {
-		estadoInicial(true);
-		pedidos = dao.recuperarTodo();
-		
-		mtPedido.setPedidos(pedidos);
-		bPedido.getLblTotalRegistro().setText("Se han encontrado "+pedidos.size()+" registros");
-	}
 	
-
 	private void cancelar(){
 		estadoInicial(true);
 		vaciarFormulario();
-		vaciarFormularioDetalle();
 	}
 	
 	
@@ -166,42 +137,17 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 		buscador.setVisible(true);
 	}
 	
-	private void abrirTransaccionPedido() {
-		TransaccionPedido tPres = new TransaccionPedido();
-		tPres.setUpControlador();
-		tPres.getControlador().setPedido(pedido);
-		tPres.setVisible(true);
-		bPedido.dispose();
-	}
-
-	private void visualizarDetalles(int posicion) {
-		if (posicion < 0) {
-			return;
-		}
-			
-		pedido = pedidos.get(posicion);
-//		mtPedidoDetalle.setDetalle(pedidos.get(posicion).getPedidoDetalle());
-		mtPedidoDetalle.setDetalle(pedido.getPedidoDetalles());
-		mtPedidoDetalle.fireTableDataChanged();
-		System.out.println(posicion + " / visualizar detalles");
-		EventosUtil.estadosBotones(bPedido.getBtnCancelar(), true);
-	}
-	private void recuperarTodo() {
-		pedidos = dao.recuperarTodo();
-		mtPedido.setPedidos(pedidos);
-		mtPedido.fireTableDataChanged();
-	}
-
+//	private void abrirTransaccionPedido() {
+//		TransaccionPedido tPres = new TransaccionPedido();
+//		tPres.setUpControlador();
+//		tPres.getControlador().setPedido(pedido);
+//		tPres.setVisible(true);
+//	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == bPedido.getTable() && e.getClickCount() == 1) {
-			visualizarDetalles(bPedido.getTable().getSelectedRow());
-			
-		}
-		
+	public void mouseClicked(MouseEvent e) {		
 		if (e.getSource() == bPedido.getTable() && e.getClickCount() == 2) {
-			abrirTransaccionPedido();
+			seleccionarPedido(bPedido.getTable().getSelectedRow());
 		}
 		
 	}
@@ -232,14 +178,11 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
-		case "BuscarCliente":
+		case "Buscar":
 			abrirBuscadorCliente();
 			break;
 		case "Filtrar":
 			filtrar();
-			break;
-		case "Limpiar":
-			limpiar();
 			break;
 		case "Cancelar":
 			cancelar();

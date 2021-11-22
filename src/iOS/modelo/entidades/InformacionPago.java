@@ -34,7 +34,7 @@ public class InformacionPago {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 	
 
 	public Date getFechaRegistro() {

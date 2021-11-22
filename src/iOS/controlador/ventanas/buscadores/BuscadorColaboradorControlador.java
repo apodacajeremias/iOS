@@ -7,7 +7,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import iOS.modelo.dao.ColaboradorDao;
-import iOS.modelo.entidades.Funcionario;
+import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.vista.modelotabla.ModeloTablaColaborador;
@@ -20,9 +20,9 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 	private BuscadorColaborador buscador;
 	private ModeloTablaColaborador modeloTabla;
 	private ColaboradorDao dao;
-	private List<Funcionario> lista;
+	private List<Colaborador> lista;
 	private ColaboradorInterface interfaz;
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	public void setInterfaz(ColaboradorInterface interfaz) {
 		this.interfaz = interfaz;
@@ -61,7 +61,7 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 	}
 
 	private void seleccionarRegistro(int posicion) {
-		Funcionario cliente = lista.get(posicion);
+		Colaborador cliente = lista.get(posicion);
 		// Se pasa la categoria seleccionada a la interfaz
 		interfaz.setColaborador(cliente);
 		buscador.dispose();

@@ -3,15 +3,13 @@ package iOS.vista.componentes;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.AbstractListModel;
+import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 public class PedidoGenerico extends JDialog {
@@ -24,32 +22,29 @@ public class PedidoGenerico extends JDialog {
 	private MiBoton btnBuscarCliente;
 	private MiBoton btnBuscarProducto;
 	private MiBoton btnSalir;
-
-	private MiBoton btnAgregar;
-	private LabelPersonalizado lFechaHora;
-	private LabelPersonalizado lNroPedido;
 	private JRadioButton rbConsiderarMetraje;
 	private JRadioButton rbGenerarPresupuesto;
-	private LabelPersonalizado lTotalPagar;
-	private LabelPersonalizado lGanancia;
+	private CampoNumeroPersonalizado tDescuentoPedido;
+	private MiBoton btnGuardar;
+	private LabelPersonalizado lVendedor;
+	private LabelPersonalizado lPedido2;
+	private LabelPersonalizado lPedido1;
+	private LabelPersonalizado lValorPagar;
+	private LabelPersonalizado lSumatoria;
+	private LabelPersonalizado lMetros;
+	private JRadioButton rbContado;
+	private JRadioButton rbCredito;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1_3;
+	private LabelPersonalizado lDireccion;
 	private LabelPersonalizado lCliente;
 	private LabelPersonalizado lIdentificacion;
 	private LabelPersonalizado lContacto;
-	private LabelPersonalizado lMetrosFechaEmision;
 	private LabelPersonalizado lProducto;
-	private CampoNumeroPersonalizado tDescuentoPedido;
-	private LabelPersonalizado lEstadoPedido;
-	private MiBoton btnGuardar;
-	private LabelPersonalizado lSumatoria;
-	private MiBoton btnAnular;
-	private LabelPersonalizado lMetrosPedido;
-	private JList<?> lstTipoPago;
-	private LabelPersonalizado lblprsnlzdMetrosDelPedido;
+	private JTable tableMaterial;
+	private MiBoton btnQuitar;
+	private MiBoton btnAgregar;
 
-	/**
-	 * Create the dialog.
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	public PedidoGenerico() {
 		getContentPane().setEnabled(false);
 		getContentPane().setBackground(new Color(255, 255, 255));
@@ -59,248 +54,238 @@ public class PedidoGenerico extends JDialog {
 		setLocationRelativeTo(this);
 		setResizable(false);
 		setModal(true);
-		setTitle("Registro de Pedidos");
 		getContentPane().setLayout(null);
 		setType(Type.NORMAL);
 
 		btnSalir = new MiBoton("Salir");
 		btnSalir.setText("Salir");
 		btnSalir.setActionCommand("Salir");
-		btnSalir.setBounds(1154, 570, 110, 30);
+		btnSalir.setBounds(1154, 570, 100, 30);
 		getContentPane().add(btnSalir);
 
 		JPanel panelCliente = new JPanel();
 		panelCliente.setBorder(new TitledBorder(null, "Informaci\u00F3n del Cliente", TitledBorder.LEFT,
 				TitledBorder.TOP, null, null));
-		panelCliente.setBounds(620, 11, 634, 100);
+		panelCliente.setBounds(10, 355, 400, 245);
 		getContentPane().add(panelCliente);
 		panelCliente.setLayout(null);
 
 		btnBuscarCliente = new MiBoton("Buscar");
-		btnBuscarCliente.setText("Cliente");
-		btnBuscarCliente.setBounds(524, 11, 100, 30);
+		btnBuscarCliente.setText("");
+		btnBuscarCliente.setBounds(334, 20, 50, 30);
 		panelCliente.add(btnBuscarCliente);
 		btnBuscarCliente.setActionCommand("BuscarCliente");
 
 		lCliente = new LabelPersonalizado(0);
+		lCliente.setText("ENZO JEREMIAS APODACA GONZALEZ");
 		lCliente.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lCliente.setBounds(10, 13, 500, 25);
+		lCliente.setBounds(20, 50, 370, 20);
 		panelCliente.add(lCliente);
 
 		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1 = new LabelPersonalizado(0);
-		lblprsnlzdEmisinDelPedido_2_1.setText("Identificaci\u00F3n");
-		lblprsnlzdEmisinDelPedido_2_1.setBounds(10, 40, 83, 15);
+		lblprsnlzdEmisinDelPedido_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdEmisinDelPedido_2_1.setText("Documento");
+		lblprsnlzdEmisinDelPedido_2_1.setBounds(20, 94, 370, 15);
 		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1);
 
 		lIdentificacion = new LabelPersonalizado(0);
-		lIdentificacion.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lIdentificacion.setBounds(10, 55, 110, 15);
+		lIdentificacion.setText("4563438");
+		lIdentificacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lIdentificacion.setBounds(20, 114, 370, 15);
 		panelCliente.add(lIdentificacion);
 
 		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1_1 = new LabelPersonalizado(0);
+		lblprsnlzdEmisinDelPedido_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdEmisinDelPedido_2_1_1.setText("Contacto");
-		lblprsnlzdEmisinDelPedido_2_1_1.setBounds(134, 40, 57, 15);
+		lblprsnlzdEmisinDelPedido_2_1_1.setBounds(20, 145, 370, 15);
 		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1_1);
 
 		lContacto = new LabelPersonalizado(0);
-		lContacto.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lContacto.setBounds(134, 55, 120, 15);
+		lContacto.setText("0985300003");
+		lContacto.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lContacto.setBounds(20, 160, 370, 15);
 		panelCliente.add(lContacto);
 
-		LabelPersonalizado lblMetros = new LabelPersonalizado(0);
-		lblMetros.setVisible(false);
-		lblMetros.setText("Metros < 30 D\u00EDas");
-		lblMetros.setBounds(264, 40, 110, 15);
-		panelCliente.add(lblMetros);
+		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1_2 = new LabelPersonalizado(0);
+		lblprsnlzdEmisinDelPedido_2_1_2.setText("Nombre completo");
+		lblprsnlzdEmisinDelPedido_2_1_2.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdEmisinDelPedido_2_1_2.setBounds(20, 35, 304, 15);
+		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1_2);
 
-		lMetrosFechaEmision = new LabelPersonalizado(0);
-		lMetrosFechaEmision.setVisible(false);
-		lMetrosFechaEmision.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lMetrosFechaEmision.setBounds(264, 55, 120, 25);
-		panelCliente.add(lMetrosFechaEmision);
+		lblprsnlzdEmisinDelPedido_2_1_3 = new LabelPersonalizado(0);
+		lblprsnlzdEmisinDelPedido_2_1_3.setText("Direccion");
+		lblprsnlzdEmisinDelPedido_2_1_3.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdEmisinDelPedido_2_1_3.setBounds(20, 189, 370, 15);
+		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1_3);
 
-		LabelPersonalizado lblprsnlzdaFechaDe_1_1 = new LabelPersonalizado(0);
-		lblprsnlzdaFechaDe_1_1.setVisible(false);
-		lblprsnlzdaFechaDe_1_1.setText("*A fecha de emisi\u00F3n");
-		lblprsnlzdaFechaDe_1_1.setFont(new Font("Tahoma", Font.ITALIC, 10));
-		lblprsnlzdaFechaDe_1_1.setBounds(264, 81, 120, 9);
-		panelCliente.add(lblprsnlzdaFechaDe_1_1);
+		lDireccion = new LabelPersonalizado(0);
+		lDireccion.setText("SDG");
+		lDireccion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lDireccion.setBounds(20, 204, 370, 15);
+		panelCliente.add(lDireccion);
 
 		JPanel panelPedido = new JPanel();
 		panelPedido.setBorder(new TitledBorder(null, "Informaci\u00F3n del Pedido", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
-		panelPedido.setBounds(10, 11, 600, 100);
+		panelPedido.setBounds(10, 11, 400, 340);
 		getContentPane().add(panelPedido);
 		panelPedido.setLayout(null);
 
-		LabelPersonalizado lblprsnlzdPedido = new LabelPersonalizado(0);
-		lblprsnlzdPedido.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdPedido.setText("Pedido");
-		lblprsnlzdPedido.setBounds(20, 20, 76, 15);
-		panelPedido.add(lblprsnlzdPedido);
+		lPedido1 = new LabelPersonalizado(0);
+		lPedido1.setText("PEDIDO 1000 noviembre, 18 2021");
+		lPedido1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lPedido1.setBounds(20, 20, 370, 20);
+		panelPedido.add(lPedido1);
 
-		lNroPedido = new LabelPersonalizado(0);
-		lNroPedido.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lNroPedido.setBounds(20, 39, 110, 20);
-		panelPedido.add(lNroPedido);
+		lPedido2 = new LabelPersonalizado(0);
+		lPedido2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lPedido2.setText("PEDIDO VIGENTE, GENERA DEUDA");
+		lPedido2.setBounds(20, 40, 370, 20);
+		panelPedido.add(lPedido2);
 
-		LabelPersonalizado lblprsnlzdEmisinDelPedido_2 = new LabelPersonalizado(0);
-		lblprsnlzdEmisinDelPedido_2.setText("Emisi\u00F3n del Pedido");
-		lblprsnlzdEmisinDelPedido_2.setBounds(20, 59, 114, 15);
-		panelPedido.add(lblprsnlzdEmisinDelPedido_2);
+		LabelPersonalizado lblVendedor = new LabelPersonalizado(0);
+		lblVendedor.setText("VENDEDOR");
+		lblVendedor.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblVendedor.setBounds(20, 90, 370, 20);
+		panelPedido.add(lblVendedor);
 
-		lFechaHora = new LabelPersonalizado(0);
-		lFechaHora.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lFechaHora.setBounds(20, 75, 114, 15);
-		panelPedido.add(lFechaHora);
-
-		lstTipoPago = new JList();
-		lstTipoPago.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lstTipoPago.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		lstTipoPago.setModel(new AbstractListModel() {
-			String[] values = new String[] { "CONTADO", "CREDITO" };
-
-			@Override
-			public int getSize() {
-				return values.length;
-			}
-
-			@Override
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		lstTipoPago.setSelectedIndex(0);
-		lstTipoPago
-				.setBorder(new TitledBorder(null, "Tipo de Pago", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		lstTipoPago.setBounds(166, 17, 100, 73);
-		panelPedido.add(lstTipoPago);
-
-		rbConsiderarMetraje = new JRadioButton("\u00BFConsiderar metraje?");
+		rbConsiderarMetraje = new JRadioButton("Considera metraje");
 		rbConsiderarMetraje.setEnabled(false);
-		rbConsiderarMetraje.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		rbConsiderarMetraje.setBounds(294, 17, 139, 20);
+		rbConsiderarMetraje.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		rbConsiderarMetraje.setBounds(20, 275, 190, 20);
 		panelPedido.add(rbConsiderarMetraje);
 
-		rbGenerarPresupuesto = new JRadioButton("Generar Presupuesto");
-		rbGenerarPresupuesto.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		rbGenerarPresupuesto.setBounds(294, 56, 140, 20);
+		rbGenerarPresupuesto = new JRadioButton("Generar presupuesto");
+		rbGenerarPresupuesto.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		rbGenerarPresupuesto.setBounds(20, 295, 190, 20);
 		panelPedido.add(rbGenerarPresupuesto);
 
-		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_2 = new LabelPersonalizado(0);
-		lblprsnlzdEmisinDelPedido_2_2.setText("Estado del Pedido");
-		lblprsnlzdEmisinDelPedido_2_2.setBounds(439, 17, 114, 15);
-		panelPedido.add(lblprsnlzdEmisinDelPedido_2_2);
+		lVendedor = new LabelPersonalizado(0);
+		lVendedor.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lVendedor.setText("ENZO JEREMIAS APODACA GONZALEZ");
+		lVendedor.setBounds(20, 110, 370, 20);
+		panelPedido.add(lVendedor);
 
-		lEstadoPedido = new LabelPersonalizado(0);
-		lEstadoPedido.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lEstadoPedido.setBounds(439, 33, 140, 15);
-		panelPedido.add(lEstadoPedido);
+		LabelPersonalizado lblValorPagar = new LabelPersonalizado(0);
+		lblValorPagar.setText("VALOR A PAGAR");
+		lblValorPagar.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblValorPagar.setBounds(20, 140, 370, 20);
+		panelPedido.add(lblValorPagar);
 
 		LabelPersonalizado lblprsnlzdNoSeEnvia = new LabelPersonalizado(0);
 		lblprsnlzdNoSeEnvia.setText("*No se envia a producci\u00F3n");
 		lblprsnlzdNoSeEnvia.setFont(new Font("Tahoma", Font.ITALIC, 10));
-		lblprsnlzdNoSeEnvia.setBounds(304, 75, 121, 15);
+		lblprsnlzdNoSeEnvia.setBounds(55, 315, 121, 20);
 		panelPedido.add(lblprsnlzdNoSeEnvia);
 
-		lblprsnlzdMetrosDelPedido = new LabelPersonalizado(0);
-		lblprsnlzdMetrosDelPedido.setText("Metros del Pedido");
-		lblprsnlzdMetrosDelPedido.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblprsnlzdMetrosDelPedido.setBounds(440, 59, 121, 15);
-		panelPedido.add(lblprsnlzdMetrosDelPedido);
+		lValorPagar = new LabelPersonalizado(0);
+		lValorPagar.setText("350.000 Gs");
+		lValorPagar.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lValorPagar.setBounds(20, 160, 370, 20);
+		panelPedido.add(lValorPagar);
 
-		lMetrosPedido = new LabelPersonalizado(0);
-		lMetrosPedido.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lMetrosPedido.setBounds(440, 75, 110, 15);
-		panelPedido.add(lMetrosPedido);
+		LabelPersonalizado lblSumatoria = new LabelPersonalizado(0);
+		lblSumatoria.setText("SUMATORIA");
+		lblSumatoria.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblSumatoria.setBounds(20, 180, 370, 20);
+		panelPedido.add(lblSumatoria);
+
+		lSumatoria = new LabelPersonalizado(20);
+		lSumatoria.setBounds(20, 200, 370, 20);
+		panelPedido.add(lSumatoria);
+		lSumatoria.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lSumatoria.setText("350.000 Gs");
+
+		LabelPersonalizado lblDescuento = new LabelPersonalizado(20);
+		lblDescuento.setText("DESCUENTO");
+		lblDescuento.setBounds(20, 220, 370, 20);
+		panelPedido.add(lblDescuento);
+		lblDescuento.setFont(new Font("Tahoma", Font.PLAIN, 18));
+
+		lMetros = new LabelPersonalizado(20);
+		lMetros.setText("METRAJE TOTAL: 3,5 m2");
+		lMetros.setBounds(20, 60, 370, 20);
+		panelPedido.add(lMetros);
+		lMetros.setFont(new Font("Tahoma", Font.PLAIN, 18));
+
+		tDescuentoPedido = new CampoNumeroPersonalizado();
+		tDescuentoPedido.setBounds(20, 240, 185, 25);
+		panelPedido.add(tDescuentoPedido);
+		tDescuentoPedido.setFont(new Font("Tahoma", Font.PLAIN, 18));
+
+		rbContado = new JRadioButton("CONTADO");
+		rbContado.setSelected(true);
+		buttonGroup.add(rbContado);
+		rbContado.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		rbContado.setBounds(239, 272, 109, 20);
+		panelPedido.add(rbContado);
+
+		rbCredito = new JRadioButton("CREDITO");
+		buttonGroup.add(rbCredito);
+		rbCredito.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		rbCredito.setBounds(239, 295, 109, 20);
+		panelPedido.add(rbCredito);
 
 		btnGuardar = new MiBoton("Guardar");
 		btnGuardar.setActionCommand("Guardar");
 		btnGuardar.setText("Guardar");
-		btnGuardar.setBounds(970, 570, 100, 30);
+		btnGuardar.setBounds(1044, 570, 100, 30);
 		getContentPane().add(btnGuardar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 168, 950, 432);
+		scrollPane.setBounds(420, 52, 844, 250);
 		getContentPane().add(scrollPane);
 
 		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table.setBackground(new Color(204, 204, 204));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 		table.setToolTipText("Click para seleccionar");
 
 		btnBuscarProducto = new MiBoton("Buscar");
-		btnBuscarProducto.setBounds(10, 127, 100, 30);
+		btnBuscarProducto.setBounds(430, 11, 100, 30);
 		getContentPane().add(btnBuscarProducto);
 		btnBuscarProducto.setText("Producto");
 		btnBuscarProducto.setActionCommand("BuscarProducto");
 
-		btnAgregar = new MiBoton("Nuevo");
-		btnAgregar.setBounds(120, 127, 130, 30);
-		getContentPane().add(btnAgregar);
-		btnAgregar.setText("Repetir producto");
-		btnAgregar.setActionCommand("Agregar");
-
 		lProducto = new LabelPersonalizado(0);
-		lProducto.setBounds(260, 130, 590, 25);
+		lProducto.setText("LONA IMPRESA");
+		lProducto.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lProducto.setBounds(540, 11, 724, 30);
 		getContentPane().add(lProducto);
-		lProducto.setFont(new Font("Tahoma", Font.BOLD, 20));
 
-		LabelPersonalizado lblprsnlzdTotalAPagar = new LabelPersonalizado(20);
-		lblprsnlzdTotalAPagar.setHorizontalAlignment(SwingConstants.CENTER);
-		lblprsnlzdTotalAPagar.setBounds(970, 168, 284, 25);
-		getContentPane().add(lblprsnlzdTotalAPagar);
-		lblprsnlzdTotalAPagar.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblprsnlzdTotalAPagar.setText("Total a Pagar");
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setEnabled(false);
+		scrollPane_1.setBounds(420, 354, 842, 205);
+		getContentPane().add(scrollPane_1);
 
-		lTotalPagar = new LabelPersonalizado(20);
-		lTotalPagar.setHorizontalAlignment(SwingConstants.CENTER);
-		lTotalPagar.setFont(new Font("Dialog", Font.BOLD, 20));
-		lTotalPagar.setBounds(970, 194, 284, 25);
-		getContentPane().add(lTotalPagar);
+		tableMaterial = new JTable();
+		scrollPane_1.setViewportView(tableMaterial);
+		tableMaterial.setToolTipText("Click para seleccionar");
+		tableMaterial.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableMaterial.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		tableMaterial.setBackground(new Color(204, 204, 204));
 
-		LabelPersonalizado lblprsnlzdGanancia = new LabelPersonalizado(20);
-		lblprsnlzdGanancia.setFont(new Font("Dialog", Font.PLAIN, 20));
-		lblprsnlzdGanancia.setBounds(970, 346, 284, 25);
-		getContentPane().add(lblprsnlzdGanancia);
-		lblprsnlzdGanancia.setVisible(false);
-		lblprsnlzdGanancia.setText("Ganancia");
+		btnAgregar = new MiBoton("Nuevo");
+		btnAgregar.setEnabled(false);
+		btnAgregar.setText("Agregar");
+		btnAgregar.setActionCommand("AgregarMaterial");
+		btnAgregar.setBounds(430, 313, 100, 30);
+		getContentPane().add(btnAgregar);
 
-		lGanancia = new LabelPersonalizado(20);
-		lGanancia.setBounds(970, 368, 284, 25);
-		getContentPane().add(lGanancia);
-		lGanancia.setVisible(false);
-		lGanancia.setFont(new Font("Dialog", Font.PLAIN, 20));
+		LabelPersonalizado lblprsnlzdDetallesDelProducto = new LabelPersonalizado(0);
+		lblprsnlzdDetallesDelProducto.setText("Detalles del producto seleccionado");
+		lblprsnlzdDetallesDelProducto.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblprsnlzdDetallesDelProducto.setBounds(650, 313, 350, 30);
+		getContentPane().add(lblprsnlzdDetallesDelProducto);
 
-		LabelPersonalizado lblprsnlzdDescuento = new LabelPersonalizado(20);
-		lblprsnlzdDescuento.setFont(new Font("Dialog", Font.PLAIN, 20));
-		lblprsnlzdDescuento.setBounds(970, 288, 284, 25);
-		getContentPane().add(lblprsnlzdDescuento);
-		lblprsnlzdDescuento.setText("Descuento");
-
-		tDescuentoPedido = new CampoNumeroPersonalizado();
-		tDescuentoPedido.setBounds(970, 310, 120, 25);
-		getContentPane().add(tDescuentoPedido);
-		tDescuentoPedido.setFont(new Font("Tahoma", Font.PLAIN, 12));
-
-		LabelPersonalizado lblprsnlzdSumatoria = new LabelPersonalizado(20);
-		lblprsnlzdSumatoria.setFont(new Font("Dialog", Font.PLAIN, 20));
-		lblprsnlzdSumatoria.setBounds(970, 230, 284, 25);
-		getContentPane().add(lblprsnlzdSumatoria);
-		lblprsnlzdSumatoria.setText("Sumatoria");
-
-		lSumatoria = new LabelPersonalizado(20);
-		lSumatoria.setBounds(970, 252, 284, 25);
-		getContentPane().add(lSumatoria);
-		lSumatoria.setFont(new Font("Dialog", Font.PLAIN, 20));
-
-		btnAnular = new MiBoton("Eliminar");
-		btnAnular.setBounds(860, 127, 100, 30);
-		getContentPane().add(btnAnular);
-		btnAnular.setText("Anular");
-		btnAnular.setActionCommand("Quitar");
+		btnQuitar = new MiBoton("Eliminar");
+		btnQuitar.setEnabled(false);
+		btnQuitar.setText("Quitar");
+		btnQuitar.setActionCommand("QuitarMaterial");
+		btnQuitar.setBounds(540, 313, 100, 30);
+		getContentPane().add(btnQuitar);
 	}
 
 	public static long getSerialversionuid() {
@@ -327,18 +312,6 @@ public class PedidoGenerico extends JDialog {
 		return btnSalir;
 	}
 
-	public MiBoton getBtnAgregar() {
-		return btnAgregar;
-	}
-
-	public LabelPersonalizado getlFechaHora() {
-		return lFechaHora;
-	}
-
-	public LabelPersonalizado getlNroPedido() {
-		return lNroPedido;
-	}
-
 	public JRadioButton getRbConsiderarMetraje() {
 		return rbConsiderarMetraje;
 	}
@@ -347,12 +320,56 @@ public class PedidoGenerico extends JDialog {
 		return rbGenerarPresupuesto;
 	}
 
-	public LabelPersonalizado getlTotalPagar() {
-		return lTotalPagar;
+	public CampoNumeroPersonalizado gettDescuentoPedido() {
+		return tDescuentoPedido;
 	}
 
-	public LabelPersonalizado getlGanancia() {
-		return lGanancia;
+	public MiBoton getBtnGuardar() {
+		return btnGuardar;
+	}
+
+	public LabelPersonalizado getlVendedor() {
+		return lVendedor;
+	}
+
+	public LabelPersonalizado getlPedido2() {
+		return lPedido2;
+	}
+
+	public LabelPersonalizado getlPedido1() {
+		return lPedido1;
+	}
+
+	public LabelPersonalizado getlValorPagar() {
+		return lValorPagar;
+	}
+
+	public LabelPersonalizado getlSumatoria() {
+		return lSumatoria;
+	}
+
+	public LabelPersonalizado getlMetros() {
+		return lMetros;
+	}
+
+	public JRadioButton getRbContado() {
+		return rbContado;
+	}
+
+	public JRadioButton getRbCredito() {
+		return rbCredito;
+	}
+
+	public ButtonGroup getButtonGroup() {
+		return buttonGroup;
+	}
+
+	public LabelPersonalizado getLblprsnlzdEmisinDelPedido_2_1_3() {
+		return lblprsnlzdEmisinDelPedido_2_1_3;
+	}
+
+	public LabelPersonalizado getlDireccion() {
+		return lDireccion;
 	}
 
 	public LabelPersonalizado getlCliente() {
@@ -367,44 +384,20 @@ public class PedidoGenerico extends JDialog {
 		return lContacto;
 	}
 
-	public LabelPersonalizado getlMetrosFechaEmision() {
-		return lMetrosFechaEmision;
-	}
-
 	public LabelPersonalizado getlProducto() {
 		return lProducto;
 	}
 
-	public CampoNumeroPersonalizado gettDescuentoPedido() {
-		return tDescuentoPedido;
+	public JTable getTableMaterial() {
+		return tableMaterial;
 	}
 
-	public LabelPersonalizado getlEstadoPedido() {
-		return lEstadoPedido;
+	public MiBoton getBtnQuitar() {
+		return btnQuitar;
 	}
 
-	public MiBoton getBtnGuardar() {
-		return btnGuardar;
-	}
-
-	public LabelPersonalizado getlSumatoria() {
-		return lSumatoria;
-	}
-
-	public MiBoton getBtnAnular() {
-		return btnAnular;
-	}
-
-	public LabelPersonalizado getlMetrosPedido() {
-		return lMetrosPedido;
-	}
-
-	public JList<?> getLstTipoPago() {
-		return lstTipoPago;
-	}
-
-	public LabelPersonalizado getLblprsnlzdMetrosDelPedido() {
-		return lblprsnlzdMetrosDelPedido;
+	public MiBoton getBtnAgregar() {
+		return btnAgregar;
 	}
 
 }

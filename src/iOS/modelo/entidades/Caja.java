@@ -27,6 +27,9 @@ public class Caja {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaModificado = new Date();
 
 	@ColumnDefault("true")
 	@Column(nullable = false)
@@ -34,7 +37,7 @@ public class Caja {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario colaborador;
+	private Colaborador colaborador;
 
 	@Column(nullable = false)
 	private boolean cajaCerrada;
@@ -126,7 +129,7 @@ public class Caja {
 		return estado;
 	}
 
-	public Funcionario getColaborador() {
+	public Colaborador getColaborador() {
 		return colaborador;
 	}
 
@@ -222,7 +225,7 @@ public class Caja {
 		this.estado = estado;
 	}
 
-	public void setColaborador(Funcionario colaborador) {
+	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 
@@ -304,6 +307,14 @@ public class Caja {
 
 	public void setCajaMovimientos(List<CajaMovimiento> cajaMovimientos) {
 		this.cajaMovimientos = cajaMovimientos;
+	}
+
+	public Date getFechaModificado() {
+		return fechaModificado;
+	}
+
+	public void setFechaModificado(Date fechaModificado) {
+		this.fechaModificado = fechaModificado;
 	}
 
 	

@@ -26,6 +26,7 @@
 		<mapping class="iOS.modelo.entidades.CompraDetalle"></mapping>
 		<mapping class="iOS.modelo.entidades.Configuracion"></mapping>
 		<mapping class="iOS.modelo.entidades.DepositoExistencia"></mapping>
+		<mapping class="iOS.modelo.entidades.DetalleMaterial"></mapping>
 		<mapping class="iOS.modelo.entidades.EntidadBancaria"></mapping>
 		<mapping class="iOS.modelo.entidades.Existencia"></mapping>
 		<mapping class="iOS.modelo.entidades.InformacionPago"></mapping>
@@ -39,6 +40,7 @@
 		<mapping class="iOS.modelo.entidades.PedidoDetalleConfeccion"></mapping>
 		<mapping class="iOS.modelo.entidades.Produccion"></mapping>
 		<mapping class="iOS.modelo.entidades.Producto"></mapping>
+		<mapping class="iOS.modelo.entidades.ProductoMaterial"></mapping>
 		<mapping class="iOS.modelo.entidades.Proveedor"></mapping>
 		<mapping class="iOS.modelo.entidades.ProveedorContactos"></mapping>
 		<mapping class="iOS.modelo.entidades.ProveedorCorreos"></mapping>
