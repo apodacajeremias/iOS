@@ -21,7 +21,7 @@ public class TransaccionPedido extends PedidoGenerico {
 		setTitle("PEDIDO DE CARTELERIA");
 	}
 	public void setUpConfeccionControlador() {
-		carteleriaControlador = new PedidoCarteleriaControlador(this);
+		confeccionControlador = new PedidoConfeccionControlador(this);
 		setTitle("PEDIDO DE CONFECCION");
 	}
 

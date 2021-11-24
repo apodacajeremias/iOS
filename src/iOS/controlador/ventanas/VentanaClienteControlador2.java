@@ -4,12 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -20,6 +24,7 @@ import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.ClienteInterface;
+import iOS.modelo.singleton.Metodos;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.modelotabla.ModeloTablaPedido;
 import iOS.vista.ventanas.VentanaCliente2;
@@ -41,6 +46,8 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 
 	public VentanaClienteControlador2(VentanaCliente2 ventanaCliente2) {
 		this.ventanaCliente2 = ventanaCliente2;
+		
+		tableMenu(ventanaCliente2.getTablePedidos());
 
 		modeloTablaCajaMovimiento = new ModeloTablaCajaMovimiento();
 		ventanaCliente2.getTablePagos().setModel(modeloTablaCajaMovimiento);
@@ -216,5 +223,56 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 		ventana.setUpConfeccionControlador();
 		ventana.getConfeccionControlador().setPedido(p);
 		ventana.setVisible(true);
+	}
+	
+	
+	private void tableMenu(final JTable table) {
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
+				if (r >= 0 && r < table.getRowCount()) {
+					table.setRowSelectionInterval(r, r);
+				} else {
+					table.clearSelection();
+				}
+
+				int rowindex = table.getSelectedRow();
+				if (rowindex < 0) {
+					return;
+				}
+				if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+					JPopupMenu popup = tablePopup(table, rowindex);
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
+	}
+
+	private JPopupMenu tablePopup(final JTable table, final int row) {
+		pedido = pedidos.get(row);
+		JPopupMenu popup = new JPopupMenu("Popup");
+		JMenuItem imprimirItem = new JMenuItem("Imprimir pedido");
+		imprimirItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (pedido.getPedidoCarteleria() != pedido.getPedidoCarteleria() == true) {
+					Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido, ventanaCliente2);
+				}
+
+			}
+		});
+		JMenuItem anularPedido = new JMenuItem("Anular pedido");
+		anularPedido.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Metodos.getInstance().anularRegistro(pedidos.get(row));
+
+			}
+		});
+		popup.add(imprimirItem);
+		popup.add(anularPedido);
+		return popup;
 	}
 }

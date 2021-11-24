@@ -35,6 +35,21 @@ public class CajaDao extends GenericDao<Caja> {
 			return caja;
 		}
 	}
+	
+	public List<CajaMovimiento> recuperaPagos() {
+		getSession().beginTransaction();
+		String sql = "from CajaMovimiento order by id DESC";
+		@SuppressWarnings("unchecked")
+		Query<CajaMovimiento> query = getSession().createQuery(sql);
+		try {
+			List<CajaMovimiento> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return null;
+		}
+	}
 
 	public List<CajaMovimiento> ordenarMovimientosPorID(int cajaID) {
 		getSession().beginTransaction();
@@ -79,24 +94,6 @@ public class CajaDao extends GenericDao<Caja> {
 			List<CajaMovimiento> resultados = query.getResultList();
 			commit();
 			return resultados;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-
-	public Double sumarIngresosGS(int caja) {
-		getSession().beginTransaction();
-		String sql = "SELECT SUM(valorGS) " + "FROM CajaMovimiento " + "where esRetiro = false "
-				+ "and esanulado = false " + "and caja.id = :caja";
-		@SuppressWarnings("unchecked")
-		Query<Double> query = getSession().createQuery(sql);
-		query.setParameter("caja", caja);
-		try {
-			Double resultado = query.getSingleResult();
-			commit();
-			System.out.println(resultado);
-			return resultado;
 		} catch (Exception e) {
 			rollBack();
 			return null;
@@ -205,4 +202,6 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
+	
+	
 }

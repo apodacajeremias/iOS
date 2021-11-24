@@ -15,11 +15,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import iOS.controlador.util.EventosUtil;
-import iOS.controlador.util.Impresiones;
-import iOS.controlador.util.MetodosPedido;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
+import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedido;
 import iOS.vista.ventanas.pedidos.TransaccionPedido;
@@ -136,14 +135,14 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Impresiones.getInstance().imprimirPedidoConfeccionIndividual(pedidos.get(row), reporte);
+				Metodos.getInstance().imprimirPedidoConfeccionIndividual(pedidos.get(row), reporte);
 			}
 		});
 		JMenuItem anularPedido = new JMenuItem("Anular");
 		anularPedido.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MetodosPedido.getInstance().anularPedido(pedidos.get(row), dao);
+				Metodos.getInstance().anularRegistro(pedidos.get(row));
 
 			}
 		});
@@ -217,11 +216,11 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 			break;
 		case "Imprimir":
 			if (reporte.getRb5().isSelected()) {
-				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb5().getText().toUpperCase(),
+				Metodos.getInstance().imprimirReportePedido(pedidos, reporte.getRb5().getText().toUpperCase(),
 						reporte.getTitle().toUpperCase(), reporte);
 			}
 			if (reporte.getRb6().isSelected()) {
-				Impresiones.getInstance().imprimirReportePedido(pedidos, reporte.getRb6().getText().toUpperCase(),
+				Metodos.getInstance().imprimirReportePedido(pedidos, reporte.getRb6().getText().toUpperCase(),
 						reporte.getTitle().toUpperCase(), reporte);
 			}
 

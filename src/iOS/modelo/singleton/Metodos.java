@@ -1,4 +1,4 @@
-package iOS.controlador.util;
+package iOS.modelo.singleton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,25 +7,94 @@ import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import iOS.controlador.util.ConexionReporte;
 import iOS.modelo.dao.CajaDao;
+import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Pedido;
-import iOS.modelo.singleton.Sesion;
 import net.sf.jasperreports.engine.JRException;
 
-public class Impresiones {
+public class Metodos {
+	private static Metodos metodos;
 
-	private static Impresiones impresion;
-
-	private Impresiones() {
+	private Metodos() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public synchronized static Impresiones getInstance() {
-		if (impresion == null) {
-			impresion = new Impresiones();
+	public synchronized static Metodos getInstance() {
+		if (metodos == null) {
+			metodos = new Metodos();
 		}
-		return impresion;
+		return metodos;
+	}
+
+	public void anularRegistro(Object registro) {
+		if (registro instanceof CajaMovimiento) {
+			int aceptaAnular = JOptionPane.showConfirmDialog(null, "¿Confirma la cancelación de este pago?", "ATENCION",
+					JOptionPane.YES_NO_OPTION);
+			if (aceptaAnular == JOptionPane.YES_OPTION) {
+				CajaMovimiento anular = (CajaMovimiento) registro;
+				CajaDao dao = new CajaDao();
+				anular.setEsAnulado(true);
+				anular.setEstado(false);
+				try {
+					dao.modificar(anular.getCaja());
+					dao.commit();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					dao.rollBack();
+				}
+			}
+		}
+		if (registro instanceof Pedido) {
+			double pagos = 0;
+			int aceptaAnular = JOptionPane.showConfirmDialog(null, "¿Confirma la anulación de este pedido?", "ATENCION",
+					JOptionPane.YES_NO_OPTION);
+			if (aceptaAnular == JOptionPane.YES_OPTION) {
+				Pedido anular = (Pedido) registro;
+				pagos = anular.getPagosPedido().stream()
+						.filter(o -> o.isEsAnulado() == false && o.isEsRetiro() == false && o.isEsVale() == false)
+						.mapToDouble(o -> o.getValorGS()).sum();
+				if (pagos > 0) {
+					JOptionPane.showMessageDialog(null,
+							"Este pedido posee pagos vigente por lo que no es posible anular el pedido. Verifique con la administracion.");
+					return;
+				}
+
+				PedidoDao dao = new PedidoDao();
+				anular.setGeneraDeuda(false);
+				anular.setEstado(false);
+				try {
+					dao.modificar(anular);
+					dao.commit();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					dao.rollBack();
+				}
+			}
+		}
+		return;
+	}
+	
+	public void generaDeuda(Object registro, boolean genera) {
+		// TODO Auto-generated method stub
+		if (registro instanceof Pedido) {
+			Pedido r = (Pedido) registro;
+			r.setGeneraDeuda(genera);
+			r.setDeudaPaga(!genera);
+			PedidoDao dao = new PedidoDao();
+			try {
+				dao.modificar(r);
+				dao.commit();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				dao.rollBack();
+			}
+		}
 	}
 
 	public void imprimirPedidoConfeccionIndividual(Pedido pedido, JDialog ventana) {
@@ -109,7 +178,7 @@ public class Impresiones {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void imprimirReporteCaja(List<Caja> lista, String tipoReporte, String claseReporte, JDialog reporte) {
 		if (lista.size() <= 0) {
 			JOptionPane.showMessageDialog(reporte, "No hay registros para realizar la impresión.");
@@ -161,4 +230,5 @@ public class Impresiones {
 				- verificarValidezPago(pedido);
 		return valorPendiente;
 	}
+
 }

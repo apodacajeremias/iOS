@@ -1,25 +1,21 @@
 package iOS.controlador.ventanas.reportes;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.swing.JOptionPane;
-
-import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.CajaMovimiento;
-import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
-import iOS.modelo.interfaces.ClienteInterface;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.modelotabla.ModeloTablaPedido;
-import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 
-public class ReporteDeudasPagosControlador implements ActionListener, ClienteInterface {
+public class ReporteDeudasPagosControlador implements ActionListener {
 	private ReporteDeudasPagos reporte;
 
 	private PedidoDao pedidoDao;
@@ -27,8 +23,6 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 
 	private ModeloTablaPedido modeloTablaPedido;
 	private ModeloTablaCajaMovimiento modeloTablaCaja;
-
-	private Cliente cliente;
 
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 	private List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
@@ -40,7 +34,7 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 		modeloTablaPedido = new ModeloTablaPedido();
 
 		reporte.getTable().setModel(modeloTablaPedido);
-//		reporte.getTableDetalle().setModel(modeloTablaCaja);
+		reporte.getTablePago().setModel(modeloTablaCaja);
 
 		pedidoDao = new PedidoDao();
 		cajaDao = new CajaDao();
@@ -49,36 +43,39 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 	}
 
 	private void setUpEvents() {
-		reporte.getBtnBuscarCliente().addActionListener(this);
 		reporte.getBtnFiltrar().addActionListener(this);
 		reporte.getBtnImprimir().addActionListener(this);
 
 	}
 
-	private void buscarPorCliente(Cliente c) {
-		Double sumaPedidos = 0d;
-		Double sumaPagos = 0d;
-		try {
-			pedidos = pedidoDao.recuperarPorCliente(c.getId());
-			for (int i = 0; i < pedidos.size(); i++) {
-				sumaPedidos += pedidos.get(i).getPrecioPagar();
-			}
-			modeloTablaPedido.setPedidos(pedidos);
-			modeloTablaPedido.fireTableDataChanged();
-			reporte.getL1().setText("Deudas: " + EventosUtil.separadorMiles(sumaPedidos));
+	private void vaciarTablas() {
+		pedidos = new ArrayList<Pedido>();
+		modeloTablaPedido.setPedidos(pedidos);
+		modeloTablaPedido.fireTableDataChanged();
 
-			pagos = cajaDao.recuperarPorCliente(c.getId());
-			for (int i = 0; i < pagos.size(); i++) {
-				sumaPagos += pagos.get(i).getValorGS();
-			}
+		pagos = new ArrayList<CajaMovimiento>();
+		modeloTablaCaja.setMovimiento(pagos);
+		modeloTablaCaja.fireTableDataChanged();
+
+	}
+
+	private void filtrar() {
+		reporte.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		//Pago sin pedido
+		if (reporte.getRb3().isSelected()) {
+			pagos = cajaDao.recuperaPagos();
+			pagos = pagos.stream().filter(o -> o.getPedido() == null && o.isEsRetiro() == false && o.isEsAnulado() == false).collect(Collectors.toList());
 			modeloTablaCaja.setMovimiento(pagos);
 			modeloTablaCaja.fireTableDataChanged();
-//			reporte.getL3().setText("Pagos: "+EventosUtil.separadorMiles(sumaPagos));
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(reporte, "ERROR AL BUSCAR POR CLIENTE");
-			return;
 		}
-
+		//Pedido sin pago
+		if (reporte.getRb4().isSelected()) {
+			pedidos = pedidoDao.recuperarTodo();
+			pedidos = pedidos.stream().filter(o -> o.getPagosPedido().stream().filter(u -> u.isEsAnulado() == false).collect(Collectors.toList()).size() <= 0).collect(Collectors.toList());
+			modeloTablaPedido.setPedidos(pedidos);
+			modeloTablaPedido.fireTableDataChanged();
+		}
+		reporte.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	@Override
@@ -88,10 +85,10 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 
 			break;
 		case "Filtrar":
-			buscarPorCliente(cliente);
+			filtrar();
 			break;
-		case "Buscar":
-			abrirBuscadorCliente();
+		case "Limpiar":
+			vaciarTablas();
 			break;
 
 		default:
@@ -99,26 +96,4 @@ public class ReporteDeudasPagosControlador implements ActionListener, ClienteInt
 		}
 
 	}
-
-	@Override
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-		gestionarCliente();
-	}
-
-	private void gestionarCliente() {
-		if (cliente == null) {
-			return;
-		}
-		reporte.getlCliente().setText(cliente.getNombreCompleto());
-
-	}
-
-	private void abrirBuscadorCliente() {
-		BuscadorCliente ventana = new BuscadorCliente();
-		ventana.setUpControlador();
-		ventana.getControlador().setInterfaz(this);
-		ventana.setVisible(true);
-	}
-
 }

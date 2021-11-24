@@ -47,12 +47,12 @@ public class ModeloTablaCajaMovimiento extends AbstractTableModel {
 				if (movimientos.get(r).isEsAnulado() == true) {
 					return "INGRESO ANULADO";
 				}
-				return EventosUtil.formatoFecha(movimientos.get(r).getFechaRegistro())+" INGRESO "+movimientos.get(r).getTipoValor().toUpperCase();
+				return "INGRESO "+movimientos.get(r).getTipoValor().toUpperCase()+" "+EventosUtil.formatoFecha(movimientos.get(r).getFechaRegistro());
 			} else {
 				if (movimientos.get(r).isEsAnulado() == true) {
 					return "RETIRO ANULADO";
 				}
-				return EventosUtil.formatoFecha(movimientos.get(r).getFechaRegistro())+" RETIRO "+movimientos.get(r).getTipoValor().toUpperCase();
+				return "RETIRO "+movimientos.get(r).getTipoValor().toUpperCase()+" "+EventosUtil.formatoFecha(movimientos.get(r).getFechaRegistro());
 			}
 		case 1:
 			return EventosUtil.separadorMiles(movimientos.get(r).getValorGS());

@@ -115,6 +115,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 				return;
 			}
 		}
+		fireTableDataChanged();
 	}
 
 	private double calcularPrecio(PedidoDetalleConfeccion row, double subtotal) {

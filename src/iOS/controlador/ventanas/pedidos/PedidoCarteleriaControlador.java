@@ -19,7 +19,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import iOS.controlador.util.EventosUtil;
-import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.DetalleMaterial;
@@ -30,6 +29,7 @@ import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.ClienteInterface;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.interfaces.ProductoInterface;
+import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaDetalleMaterial;
 import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
@@ -325,6 +325,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		estadoInicial(true);
 
 		ventana.getlVendedor().setText(Sesion.getInstance().getColaborador().toString());
+		ventana.getlPedido1().setText("PEDIDO NUEVO");
 		ventana.getlPedido2().setText(EventosUtil.formatoFecha(new Date()));
 
 	}
@@ -369,7 +370,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 				dao.modificar(pedido);
 			}
 			dao.commit();
-			Impresiones.getInstance().imprimirPedidoCarteleriaIndividual(pedido, ventana);
+			Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido, ventana);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);

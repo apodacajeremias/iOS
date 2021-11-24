@@ -10,10 +10,10 @@ import java.util.Date;
 import java.util.List;
 
 import iOS.controlador.util.EventosUtil;
-import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCaja;
 import iOS.vista.ventanas.reportes.ReporteCaja;
@@ -160,10 +160,10 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 			break;
 		case "Imprimir":
 			if (reporte.getRb5().isSelected()) {
-				Impresiones.getInstance().imprimirReporteCaja(cajas, reporte.getRb5().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
+				Metodos.getInstance().imprimirReporteCaja(cajas, reporte.getRb5().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
 			}
 			if (reporte.getRb6().isSelected()) {
-				Impresiones.getInstance().imprimirReporteCaja(cajas, reporte.getRb6().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
+				Metodos.getInstance().imprimirReporteCaja(cajas, reporte.getRb6().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
 			}
 			break;
 		case "Limpiar":

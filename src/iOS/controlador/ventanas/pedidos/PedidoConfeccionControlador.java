@@ -19,7 +19,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import iOS.controlador.util.EventosUtil;
-import iOS.controlador.util.Impresiones;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.DetalleMaterial;
@@ -30,6 +29,7 @@ import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.ClienteInterface;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.interfaces.ProductoInterface;
+import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaDetalleMaterial;
 import iOS.vista.modelotabla.ModeloTablaPedidoConfeccionDetalle;
@@ -109,10 +109,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	}
 
 	private void formatoTabla() {
-		ventana.getTable().getColumnModel().getColumn(4).setPreferredWidth(0);
-		ventana.getTable().getColumnModel().getColumn(4).setMaxWidth(0);
-		ventana.getTable().getColumnModel().getColumn(4).setMinWidth(0);
-
 	}
 
 	private void vaciarTablaDetalle() {
@@ -233,19 +229,19 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	}
 
 	private List<Integer> valorarPedido() {
-		int suma = 0;
+		double suma = 0;
 		int diferencia = 0;
 		List<Integer> numeros = new ArrayList<>();
 		Double descuento = ventana.gettDescuentoPedido().getValue();
 
 		try {
-			suma = detalles.stream().filter(o -> o.isEstado() == true).mapToInt(o -> Integer.parseInt(String.valueOf(o.getPrecioDetalle()))).sum();
+			suma = detalles.stream().filter(o -> o.isEstado() == true).mapToDouble(o -> o.getPrecioDetalle()).sum();
 			diferencia = (int) (suma - descuento);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 
-		numeros.add(suma);
+		numeros.add((int) suma);
 		numeros.add(diferencia);
 
 		ventana.getlSumatoria().setText(EventosUtil.separadorMiles((double) suma) + " Gs.");
@@ -274,7 +270,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 	public void nuevo() {
 		accion = "NUEVO";
 		estadoInicial(true);
-
+		ventana.getlPedido1().setText("PEDIDO NUEVO");
 		ventana.getlVendedor().setText(Sesion.getInstance().getColaborador().toString());
 		ventana.getlPedido2().setText(EventosUtil.formatoFecha(new Date()));
 	}
@@ -318,7 +314,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 				dao.modificar(pedido);
 			}
 			dao.commit();
-			Impresiones.getInstance().imprimirPedidoConfeccionIndividual(pedido, ventana);
+			Metodos.getInstance().imprimirPedidoConfeccionIndividual(pedido, ventana);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);

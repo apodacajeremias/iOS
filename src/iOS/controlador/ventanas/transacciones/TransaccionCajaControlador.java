@@ -32,6 +32,7 @@ import iOS.modelo.interfaces.CajaInterface;
 import iOS.modelo.interfaces.ClienteInterface;
 import iOS.modelo.interfaces.ColaboradorInterface;
 import iOS.modelo.interfaces.PedidoInterface;
+import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.ventanas.buscadores.BuscadorColaborador;
@@ -625,28 +626,6 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 
 	}
 
-	private void anular(int row) {
-		if (row < 0) {
-			return;
-		}
-		int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea anular este pago?", "ATENCION",
-				JOptionPane.YES_NO_OPTION);
-		if (respuesta == JOptionPane.YES_OPTION) {
-			movimiento = movimientos.get(row);
-			movimiento.setEsAnulado(true);
-			movimiento.setEstado(false);
-			caja.setCajaMovimientos(movimientos);
-			try {
-				dao.modificar(caja);
-				dao.commit();
-				setCaja(caja);
-			} catch (Exception e) {
-				dao.rollBack();
-				e.printStackTrace();
-			}
-		}
-	}
-
 	private void cancelar() {
 		if (caja == null) {
 			estadoInicial(false);
@@ -1009,7 +988,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				anular(row);
+				Metodos.getInstance().anularRegistro(movimientos.get(row));
 
 			}
 		});

@@ -55,8 +55,6 @@ public class CeldaRenderer extends DefaultTableCellRenderer {
 		case "Color":
 			String estado = (String) table.getValueAt(row, 0);
 			if (estado.startsWith(("INGRESO"))) {
-				setBackground(Color.YELLOW);
-				setForeground(Color.BLACK);
 			} else {
 				setBackground(Color.RED);
 				setForeground(Color.WHITE);

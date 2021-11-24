@@ -1,20 +1,19 @@
 package iOS.vista.ventanas.reportes;
 
 import iOS.controlador.ventanas.reportes.ReporteDeudasPagosControlador;
-import iOS.vista.componentes.LabelPersonalizado;
-import iOS.vista.componentes.MiBoton;
 import iOS.vista.componentes.ReporteGenerico;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
-public class ReporteDeudasPagos extends ReporteGenerico {	
+public class ReporteDeudasPagos extends ReporteGenerico {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8918225936203470477L;
-	private LabelPersonalizado lCliente;
-	private MiBoton btnBuscarCliente;
 	private ReporteDeudasPagosControlador controlador;
-	
+	private JTable tablePago;
+
 	public void setUpControlador() {
 		controlador = new ReporteDeudasPagosControlador(this);
 	}
@@ -23,54 +22,33 @@ public class ReporteDeudasPagos extends ReporteGenerico {
 	 * Create the dialog.
 	 */
 	public ReporteDeudasPagos() {
-		getL1().setBounds(10, 122, 420, 25);
-		getCbColaborador().setVisible(false);
-		getLblNewLabel().setLocation(10, 36);
-		getLblPorPeriodos().setLocation(299, 36);
-		getRb1().setLocation(490, 25);
-
-		getLblNewLabel().setText("Cliente");
-//		getL3().setFont(new Font("Tahoma", Font.BOLD, 20));
-//		getL3().setSize(420, 25);
-		getScrollPane().setLocation(10, 148);
-//		getScrollPane_1().setLocation(454, 148);
-//		getL3().setLocation(454, 122);
-//		getL3().setText("Pagos");
-		getL2().setVisible(false);
-		getL1().setText("Deudas");
-//		getScrollPane_1().setSize(420, 402);
-		getScrollPane().setSize(420, 402);
-		getRb2().setVisible(false);
-		getRb1().setText("Incluir anulados");
-
-		btnBuscarCliente = new MiBoton("Buscar");
-		btnBuscarCliente.setText("");
-		btnBuscarCliente.setActionCommand("Buscar");
-		btnBuscarCliente.setBounds(210, 20, 50, 30);
-		getPanel().add(btnBuscarCliente);
-
-		lCliente = new LabelPersonalizado(0);
-		lCliente.setBounds(10, 61, 250, 20);
-		getPanel().add(lCliente);
-
-
+		getScrollPane().setBounds(10, 198, 610, 402);
+		getRb4().setText("Pedido sin pago");
+		getRb3().setText("Pago sin pedido");
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(630, 198, 634, 402);
+		getContentPane().add(scrollPane);
+		
+		tablePago = new JTable();
+		scrollPane.setViewportView(tablePago);
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	public LabelPersonalizado getlCliente() {
-		return lCliente;
-	}
-
-	public MiBoton getBtnBuscarCliente() {
-		return btnBuscarCliente;
-	}
-
 	public ReporteDeudasPagosControlador getControlador() {
 		return controlador;
 	}
 
+	public void setControlador(ReporteDeudasPagosControlador controlador) {
+		this.controlador = controlador;
+	}
 
+	public JTable getTablePago() {
+		return tablePago;
+	}
+	
+	
 }
