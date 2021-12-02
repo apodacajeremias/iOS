@@ -44,7 +44,7 @@ public class ModeloTablaCliente extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return lista.get(rowIndex).getNombreCompleto();
+			return lista.get(rowIndex);
 		case 1:
 			return lista.get(rowIndex).getIdentificacion();
 		case 2:

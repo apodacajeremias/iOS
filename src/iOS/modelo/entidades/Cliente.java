@@ -137,7 +137,24 @@ public class Cliente {
 
 	@Override
 	public String toString() {
-		return nombreCompleto;
+		return nombreCompleto+" "+pagoDeuda();
+	}
+	
+	private String pagoDeuda() {
+		double diferencia = 0;
+		double pagos = 0;
+		double deuda = 0;
+		try {
+			pagos = cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false).mapToDouble(b -> b.getValorGS()).sum();
+			deuda = pedidos.stream().filter(a -> a.isEsPresupuesto() == false && a.isEstado() == true).mapToDouble(b -> b.getPrecioPagar()).sum();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		diferencia = deuda - pagos;
+		
+		return "DEUDA PENDIENTE: "+diferencia;
+
 	}
 
 }
