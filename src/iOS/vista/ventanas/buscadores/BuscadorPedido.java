@@ -60,7 +60,7 @@ public class BuscadorPedido extends JDialog {
 
 		LabelPersonalizado lblPedido = new LabelPersonalizado(20);
 		lblPedido.setText("Pedidos");
-		lblPedido.setBounds(10, 118, 79, 20);
+		lblPedido.setBounds(10, 118, 90, 20);
 		getContentPane().add(lblPedido);
 
 		btnBuscarCliente = new MiBoton("Buscar");

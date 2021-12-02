@@ -4,6 +4,7 @@ package iOS.vista.ventanas.principales;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -45,6 +46,7 @@ import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.reportes.ReporteVales;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
+import iOS.vista.ventanas.transacciones.TransaccionPagoPedido;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
 
 public class VentanaPrincipal extends JFrame {
@@ -366,6 +368,23 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnMovimientos.add(mntmPedidoCostura);
+		
+		JMenuItem mnItemPagoPedido = new JMenuItem("Relacionar pagos con pedidos");
+		mnItemPagoPedido.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					setCursor(new Cursor(Cursor.WAIT_CURSOR));
+					TransaccionPagoPedido ventana = new TransaccionPagoPedido();
+					ventana.setUpControlador();
+					ventana.setVisible(true);
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				} catch (Exception e) {
+					e.printStackTrace();
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
+			}
+		});
+		mnMovimientos.add(mnItemPagoPedido);
 		mnItemRol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemRol);
 		
@@ -533,11 +552,13 @@ public class VentanaPrincipal extends JFrame {
 	private void abrirTransaccionPedidoCarteleria() {
 		TransaccionPedido ventana = new TransaccionPedido();
 		ventana.setUpCarteleriaControlador();
+		ventana.getCarteleriaControlador().nuevo();
 		ventana.setVisible(true);
 	}
 	private void abrirTransaccionPedidoConfeccion() {
 		TransaccionPedido ventana = new TransaccionPedido();
 		ventana.setUpConfeccionControlador();
+		ventana.getConfeccionControlador().nuevo();
 		ventana.setVisible(true);
 	}
 

@@ -30,7 +30,6 @@ public class ConnectionHelper {
 			System.out.println(getSessionFactory());
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
-
 		}
 	}
 

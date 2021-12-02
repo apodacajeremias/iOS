@@ -1,12 +1,12 @@
 package iOS.vista.componentes;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
 public class VentanaGenerica extends JDialog {
@@ -51,9 +51,10 @@ public class VentanaGenerica extends JDialog {
 		getContentPane().add(miToolBar);
 		
 		lMensaje = new LabelPersonalizado(10);
-		lMensaje.setBounds(10, 390, 474, 20);
+		lMensaje.setText("REGISTRO ACTUALIZADO CON \u00C9XITO");
+		lMensaje.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lMensaje.setBounds(20, 390, 450, 20);
 		getContentPane().add(lMensaje);
-		lMensaje.setHorizontalAlignment(SwingConstants.RIGHT);
 		lMensaje.setForeground(Color.BLACK);
 	}
 

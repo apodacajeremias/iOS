@@ -135,7 +135,7 @@ public class ReportePedidoConfeccionControlador implements ActionListener, Mouse
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Metodos.getInstance().imprimirPedidoConfeccionIndividual(pedidos.get(row), reporte);
+				Metodos.getInstance().imprimirPedidoConfeccionIndividual(pedidos.get(row));
 			}
 		});
 		JMenuItem anularPedido = new JMenuItem("Anular");

@@ -1,12 +1,6 @@
 package iOS.controlador.ventanas;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ProductoDao;
@@ -16,39 +10,36 @@ import iOS.modelo.interfaces.ProductoInterface;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaProducto;
 
-public class VentanaProductoControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ProductoInterface{
+public class VentanaProductoControlador implements AccionesABM, ProductoInterface {
 	private VentanaProducto ventana;
 	private ProductoDao dao;
 	private Producto producto;
 	private String accion;
 
+	private ProductoInterface interfaz;
+
+	public void setInterfaz(ProductoInterface interfaz) {
+		this.interfaz = interfaz;
+	}
+
 	public VentanaProductoControlador(VentanaProducto ventana) {
 		this.ventana = ventana;
 		this.ventana.getMiToolBar().setAcciones(this);
-
 		dao = new ProductoDao();
-
-
-		nuevo();
-		estadoInicial(true);
 		setUpEvents();
 	}
 
-
-	//Para iniciar
+	// Para iniciar
 	private void setUpEvents() {
-		//ACTION LISTENER
+		// ACTION LISTENER
 
+		// MOUSE LISTENER
 
-		//MOUSE LISTENER
-
-		//KEY LISTENER
-		this.ventana.gettNombreProducto().addKeyListener(this);
-		this.ventana.gettCodigoReferencia().addKeyListener(this);
+		// KEY LISTENER
 
 	}
 
-	private void estadoInicial(boolean b) {		
+	private void estadoInicial(boolean b) {
 		EventosUtil.estadosCampoPersonalizado(ventana.gettNombreProducto(), b);
 		EventosUtil.estadosCampoPersonalizado(ventana.gettCodigoReferencia(), b);
 		EventosUtil.estadosCampoPersonalizado(ventana.gettMedidaAlto(), b);
@@ -61,6 +52,8 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettMedidaAncho());
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettPrecioProducto());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
+		accion = null;
+		producto = null;
 	}
 
 	private boolean validarFormulario() {
@@ -73,111 +66,49 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 		return true;
 	}
 
-	//Para trabajar con valores
+	// Para trabajar con valores
 
-	//	private void sugerirPrecios() {
-	//		int precio = Integer.parseInt(ventanaProducto.gettPrecio_5Menos().getText());
-	//		int costo = Integer.parseInt(ventanaProducto.gettCosto().getText());
-	//		int suma = costo;
-	//		int nume = 7;
-	//		int[] list = new int[nume];
+	// private void sugerirPrecios() {
+	// int precio = Integer.parseInt(ventanaProducto.gettPrecio_5Menos().getText());
+	// int costo = Integer.parseInt(ventanaProducto.gettCosto().getText());
+	// int suma = costo;
+	// int nume = 7;
+	// int[] list = new int[nume];
 	//
-	//		if (verificarPrecio()) {
-	//			int calculo = ((precio-costo)/7);
-	//			Math.floor(Double.parseDouble(calculo+""));
-	//			for (int i = 0; i < list.length; i++) {
-	//				suma = calculo+suma;
-	//				int y = suma; 
-	//				int x = y - y % 5000;
+	// if (verificarPrecio()) {
+	// int calculo = ((precio-costo)/7);
+	// Math.floor(Double.parseDouble(calculo+""));
+	// for (int i = 0; i < list.length; i++) {
+	// suma = calculo+suma;
+	// int y = suma;
+	// int x = y - y % 5000;
 	//
-	//				list[i] = x;
-	//			}
-	//			ventanaProducto.gettPrecio_5Mas().setText(list[6]+"");
-	//			ventanaProducto.gettPrecio_10Mas().setText(list[5]+"");
-	//			ventanaProducto.gettPrecio_50Mas().setText(list[4]+"");
-	//			ventanaProducto.gettPrecio_100Mas().setText(list[3]+"");
-	//			ventanaProducto.gettPrecio_200Mas().setText(list[2]+"");
-	//			ventanaProducto.gettPrecio_300Mas().setText(list[1]+"");
-	//		}
-	//	}
+	// list[i] = x;
+	// }
+	// ventanaProducto.gettPrecio_5Mas().setText(list[6]+"");
+	// ventanaProducto.gettPrecio_10Mas().setText(list[5]+"");
+	// ventanaProducto.gettPrecio_50Mas().setText(list[4]+"");
+	// ventanaProducto.gettPrecio_100Mas().setText(list[3]+"");
+	// ventanaProducto.gettPrecio_200Mas().setText(list[2]+"");
+	// ventanaProducto.gettPrecio_300Mas().setText(list[1]+"");
+	// }
+	// }
 	//
-	//	private boolean verificarPrecio() {
-	//		if (Integer.parseInt(ventanaProducto.gettCosto().getText()) >= Integer.parseInt(ventanaProducto.gettPrecio_5Menos().getText())) {
-	//			ventanaProducto.getLblMensaje().setForeground(Color.RED);
-	//			ventanaProducto.getLblMensaje().setText("El costo es mayor al precio");
-	//			ventanaProducto.gettPrecio_5Menos().requestFocus();
-	//			return false;
-	//		}
-	//		return true;
-	//	}
-
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		//		if (e.getSource() == ventanaProducto.gettBuscador() && e.getKeyCode() == KeyEvent.VK_ENTER) {
-		//			recuperarPorFiltro();
-		//		}
-		//
-		//		if (e.getSource() == ventanaProducto.gettPrecio_5Menos() && e.getKeyCode() == KeyEvent.VK_ENTER) {
-		//			sugerirPrecios();
-		//		}
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		//		if (e.getSource() == ventanaProducto.getLstTipoProducto() && e.getClickCount() == 1) {
-		//			ventanaProducto.getLstTipoProducto().getSelectedValue().toString().toUpperCase();
-		//			System.out.println("getLstTipoPago");
-		//		}
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	// private boolean verificarPrecio() {
+	// if (Integer.parseInt(ventanaProducto.gettCosto().getText()) >=
+	// Integer.parseInt(ventanaProducto.gettPrecio_5Menos().getText())) {
+	// ventanaProducto.getLblMensaje().setForeground(Color.RED);
+	// ventanaProducto.getLblMensaje().setText("El costo es mayor al precio");
+	// ventanaProducto.gettPrecio_5Menos().requestFocus();
+	// return false;
+	// }
+	// return true;
+	// }
 
 	@Override
 	public void nuevo() {
-		accion = "NUEVO";
 		estadoInicial(true);
+		accion = "NUEVO";
 		ventana.getlMensaje().setText(accion + " REGISTRO");
 		ventana.gettNombreProducto().requestFocus();
 
@@ -185,6 +116,7 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 
 	@Override
 	public void modificar() {
+		estadoInicial(true);
 		accion = "MODIFICAR";
 		ventana.getlMensaje().setText(accion + " REGISTRO");
 		ventana.gettNombreProducto().requestFocus();
@@ -193,37 +125,36 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 
 	@Override
 	public void eliminar() {
-		//		accion = "ELIMINAR";
-		//		int posicion = ventanaProducto.getTable().getSelectedRow();
-		//		if (posicion < 0) {
-		//			return;
-		//		}
-		//		ventanaProducto.getLblMensaje().setText(accion + " REGISTRO");
-		//		ventanaProducto.getLblMensaje().setForeground(Color.RED);
-		//		int respuesta = JOptionPane
-		//				.showConfirmDialog(null,
-		//						"La eliminación del producto " + producto.getDescripcion()
-		//						+ " conlleva la pérdida permanente del registro",
-		//						"ATENCION", JOptionPane.YES_NO_OPTION);
-		//		if (respuesta == JOptionPane.YES_OPTION) {
-		//			try {
-		//				dao.eliminar(producto);
-		//				dao.commit();
-		//				ventanaProducto.getLblMensaje().setText("REGISTRO ELIMINADO");
-		//				estadoInicial(true);
-		//				vaciarFormulario();
-		//				recuperarTodo();
-		//			} catch (Exception e) {
-		//				if (e.getCause().getClass() == ConstraintViolationException.class) {
-		//					JOptionPane.showMessageDialog(null, "NO ES POSIBLE ELIMINAR");
-		//				}
-		//				dao.rollBack();
-		//				e.printStackTrace();
-		//			}
-		//		}
+		// accion = "ELIMINAR";
+		// int posicion = ventanaProducto.getTable().getSelectedRow();
+		// if (posicion < 0) {
+		// return;
+		// }
+		// ventanaProducto.getLblMensaje().setText(accion + " REGISTRO");
+		// ventanaProducto.getLblMensaje().setForeground(Color.RED);
+		// int respuesta = JOptionPane
+		// .showConfirmDialog(null,
+		// "La eliminación del producto " + producto.getDescripcion()
+		// + " conlleva la pérdida permanente del registro",
+		// "ATENCION", JOptionPane.YES_NO_OPTION);
+		// if (respuesta == JOptionPane.YES_OPTION) {
+		// try {
+		// dao.eliminar(producto);
+		// dao.commit();
+		// ventanaProducto.getLblMensaje().setText("REGISTRO ELIMINADO");
+		// estadoInicial(true);
+		// vaciarFormulario();
+		// recuperarTodo();
+		// } catch (Exception e) {
+		// if (e.getCause().getClass() == ConstraintViolationException.class) {
+		// JOptionPane.showMessageDialog(null, "NO ES POSIBLE ELIMINAR");
+		// }
+		// dao.rollBack();
+		// e.printStackTrace();
+		// }
+		// }
 		//
 	}
-
 
 	@Override
 	public void guardar() {
@@ -241,7 +172,6 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 		producto.setPrecioMinimo(ventana.gettPrecioProducto().getValue());
 		producto.setPrecioMaximo(ventana.gettPrecioProducto().getValue());
 		producto.setTieneMedidaFija(ventana.getRdMedidasFijas().isSelected());
-		producto.setEsServicio(ventana.getRdEsServicio().isSelected());
 
 		if (ventana.getRdMetroCuadrado().isSelected()) {
 			producto.setTipoCobro(ventana.getRdMetroCuadrado().getText().toUpperCase());
@@ -262,28 +192,32 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(producto);
-				dao.commit();
 				ventana.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
-				estadoInicial(true);
 			} else {
 				dao.modificar(producto);
-				dao.commit();
 				ventana.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
-				estadoInicial(true);
+			}
+			dao.commit();
+			try {
+				interfaz.setProducto(producto);
+				ventana.dispose();
+			} catch (Exception e) {
+				estadoInicial(false);
+				setProducto(producto);
+				ventana.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
 			}
 		} catch (Exception e) {
 			dao.rollBack();
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void cancelar() {
-		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
 		estadoInicial(true);
 	}
 
-	public void salir(){
+	public void salir() {
 		ventana.dispose();
 	}
 
@@ -300,12 +234,9 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 		ventana.gettNombreProducto().setText(producto.getDescripcion());
 		ventana.gettCodigoReferencia().setText(producto.getCodigoReferencia());
 		ventana.gettPrecioProducto().setValue(producto.getPrecioMinimo());
-		ventana.getRdEsServicio().setSelected(producto.isEsServicio());
 		ventana.getRdMedidasFijas().setSelected(producto.isTieneMedidaFija());
 		ventana.gettMedidaAlto().setValue(producto.getAltoProducto());
 		ventana.gettMedidaAncho().setValue(producto.getAnchoProducto());
-
-		ventana.getRdEsServicio().setSelected(producto.isEsServicio());
 
 		switch (producto.getTipoCobro()) {
 		case "METRO CUADRADO":
@@ -318,12 +249,10 @@ public class VentanaProductoControlador implements AccionesABM, ActionListener, 
 			ventana.getRdUnidad().setSelected(true);
 			break;
 		default:
-
 			ventana.getRdMetroCuadrado().setSelected(false);
 			ventana.getRdMetroLineal().setSelected(false);
-			ventana.getRdUnidad().setSelected(false);
+			ventana.getRdUnidad().setSelected(true);
 			break;
 		}
 	}
 }
-

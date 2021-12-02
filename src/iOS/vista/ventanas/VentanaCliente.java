@@ -1,13 +1,10 @@
 package iOS.vista.ventanas;
 
-import java.awt.EventQueue;
-
-import javax.swing.WindowConstants;
-
 import iOS.controlador.ventanas.VentanaClienteControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.VentanaGenerica;
+import java.awt.Font;
 
 /**
  * @author 59598
@@ -26,24 +23,6 @@ public class VentanaCliente extends VentanaGenerica {
 	private CampoTextoPersonalizado tDireccion;
 	private VentanaClienteControlador controlador;
 
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					VentanaCliente dialog = new VentanaCliente();
-					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-					dialog.setUpControlador();
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	
 	public void setUpControlador() {
 		controlador = new VentanaClienteControlador(this);
 	}
@@ -53,48 +32,56 @@ public class VentanaCliente extends VentanaGenerica {
 	 */
 	public VentanaCliente() {
 		setTitle("Formulario de Cliente");
-		
+
 		tNombreCompleto = new CampoTextoPersonalizado();
-		tNombreCompleto.setBounds(12, 22, 450, 30);
+		tNombreCompleto.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tNombreCompleto.setBounds(20, 40, 432, 30);
 		tNombreCompleto.mayusculas();
 		tNombreCompleto.limite(50);
 		getPanelFormulario().add(tNombreCompleto);
-		
+
 		tIdentificacion = new CampoTextoPersonalizado();
-		tIdentificacion.setBounds(12, 76, 200, 30);
+		tIdentificacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tIdentificacion.setBounds(20, 100, 200, 30);
 		tIdentificacion.mayusculas();
 		tIdentificacion.limite(12);
 		getPanelFormulario().add(tIdentificacion);
-		
+
 		tContacto = new CampoTextoPersonalizado();
-		tContacto.setBounds(12, 131, 200, 30);
+		tContacto.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tContacto.setBounds(20, 160, 200, 30);
 		tContacto.limite(12);
 		getPanelFormulario().add(tContacto);
-		
+
 		tDireccion = new CampoTextoPersonalizado();
-		tDireccion.setBounds(12, 186, 450, 30);
+		tDireccion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tDireccion.setBounds(20, 220, 450, 30);
 		tDireccion.limite(80);
 		tDireccion.mayusculas();
 		getPanelFormulario().add(tDireccion);
-		
+
 		LabelPersonalizado lblprsnlzdNombreCompleto = new LabelPersonalizado(0);
-		lblprsnlzdNombreCompleto.setText("Nombre del cliente");
-		lblprsnlzdNombreCompleto.setBounds(12, 8, 118, 15);
+		lblprsnlzdNombreCompleto.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdNombreCompleto.setText("Nombre completo del cliente");
+		lblprsnlzdNombreCompleto.setBounds(20, 20, 258, 20);
 		getPanelFormulario().add(lblprsnlzdNombreCompleto);
-		
+
 		LabelPersonalizado lblprsnlzdIdentificacion_1 = new LabelPersonalizado(0);
-		lblprsnlzdIdentificacion_1.setText("Identificacion");
-		lblprsnlzdIdentificacion_1.setBounds(12, 63, 85, 15);
+		lblprsnlzdIdentificacion_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdIdentificacion_1.setText("Nro. CI / RUC / CPF / RG / DNI");
+		lblprsnlzdIdentificacion_1.setBounds(20, 81, 280, 20);
 		getPanelFormulario().add(lblprsnlzdIdentificacion_1);
-		
+
 		LabelPersonalizado lblprsnlzdContacto_1 = new LabelPersonalizado(0);
-		lblprsnlzdContacto_1.setText("Contacto");
-		lblprsnlzdContacto_1.setBounds(12, 117, 60, 15);
+		lblprsnlzdContacto_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdContacto_1.setText("Tel\u00E9fono para contacto");
+		lblprsnlzdContacto_1.setBounds(20, 141, 209, 20);
 		getPanelFormulario().add(lblprsnlzdContacto_1);
-		
+
 		LabelPersonalizado lblprsnlzdDireccion = new LabelPersonalizado(0);
-		lblprsnlzdDireccion.setText("Direccion");
-		lblprsnlzdDireccion.setBounds(12, 172, 60, 15);
+		lblprsnlzdDireccion.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdDireccion.setText("Direccion de vivienda");
+		lblprsnlzdDireccion.setBounds(20, 201, 230, 20);
 		getPanelFormulario().add(lblprsnlzdDireccion);
 	}
 
@@ -121,6 +108,5 @@ public class VentanaCliente extends VentanaGenerica {
 	public VentanaClienteControlador getControlador() {
 		return controlador;
 	}
-	
-	
+
 }

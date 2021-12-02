@@ -173,6 +173,8 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 			return true;
 		case 5:
 			return true;
+		case 6:
+			return true;
 		default:
 			return false;
 		}

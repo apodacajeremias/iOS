@@ -23,76 +23,81 @@ public class Pedido {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+//	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
+
 	@Column(nullable = true)
 	private String tipoPagoPedido;
-	
+
 	@Column(nullable = true)
 	private int descuentoTotal;
-	
+
 	@Column(nullable = true)
 	private int costoTotal;
-	
+
 	@Column(nullable = true)
 	private int gananciaTotal;
-	
+
 	@Column(nullable = true)
 	private int sumatoriaPrecio;
-	
+
 	@Column(nullable = true)
 	private int precioPagar;
-	
+
 	@Column(nullable = true)
 	private double metrosTotal;
-	
+
 	@Column(nullable = true)
 	private double metrosFechaEmision;
-	
+
 	@Column(nullable = true)
 	private boolean esPresupuesto;
-	
+
 	@Column(nullable = true)
 	private boolean considerarMetraje;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cliente cliente;
-	
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
+
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PedidoDetalles> pedidoDetalles;
-	
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
+
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PedidoDetalleConfeccion> pedidosConfecciones;
-	
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL, orphanRemoval=false, fetch=FetchType.LAZY)
+
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> pagosPedido;
-	
+
 	@Column(nullable = true)
 	private Boolean pedidoCostura;
-	
+
 	@Column(nullable = true)
 	private Boolean pedidoCarteleria;
-	
+
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean generaDeuda;
-	
+
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean deudaPaga;
+	
+	@Column(nullable = true)
+	private String informacionResponsable;
 
 	public int getId() {
 		return id;
@@ -269,6 +274,15 @@ public class Pedido {
 	public void setDeudaPaga(boolean deudaPaga) {
 		this.deudaPaga = deudaPaga;
 	}
+
+	public String getInformacionResponsable() {
+		return informacionResponsable;
+	}
+
+	public void setInformacionResponsable(String informacionResponsable) {
+		this.informacionResponsable = informacionResponsable;
+	}
 	
 	
+
 }

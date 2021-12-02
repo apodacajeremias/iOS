@@ -1,16 +1,8 @@
 package iOS.controlador.ventanas;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -22,45 +14,32 @@ import iOS.modelo.interfaces.ClienteInterface;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaCliente;
 
-public class VentanaClienteControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ClienteInterface{
+public class VentanaClienteControlador implements AccionesABM, ClienteInterface {
 	private VentanaCliente ventanaCliente;
 	private ClienteDao dao;
 	private Cliente cliente;
 	private String accion;
-	
+
+	private ClienteInterface interfaz;
+
+	public void setInterfaz(ClienteInterface interfaz) {
+		this.interfaz = interfaz;
+	}
 
 	public VentanaClienteControlador(VentanaCliente ventanaCliente) {
 		this.ventanaCliente = ventanaCliente;
 		this.ventanaCliente.getMiToolBar().setAcciones(this);
 		dao = new ClienteDao();
-		estadoInicial(true);
 		setUpEvents();
-		formatearTabla();
-		accion = "NUEVO";
 	}
 
-	//Para iniciar
+	// Para iniciar
 	private void setUpEvents() {
-		//ACTION LISTENER
+		// ACTION LISTENER
 
+		// MOUSE LISTENER
 
-		//MOUSE LISTENER
-
-		//KEY LISTENER
-		this.ventanaCliente.gettContacto().addKeyListener(this);
-		this.ventanaCliente.gettDireccion().addKeyListener(this);
-		this.ventanaCliente.gettIdentificacion().addKeyListener(this);
-		this.ventanaCliente.gettNombreCompleto().addKeyListener(this);
-
-	}
-
-
-	//En estas ABM ya no trabajamos con tablas, que conste
-	private void formatearTabla() {
-		DefaultTableCellRenderer centro = new DefaultTableCellRenderer();
-		DefaultTableCellRenderer derecha = new DefaultTableCellRenderer();
-		centro.setHorizontalAlignment(SwingConstants.CENTER);
-		derecha.setHorizontalAlignment(SwingConstants.RIGHT);
+		// KEY LISTENER
 
 	}
 
@@ -73,16 +52,19 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtNuevo(), b);
 		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtSalir(), b);
 
-		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtModificar(), !b);
-		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtEliminar(), !b);
-		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtCancelar(), true);
-		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtGuardar(), true);
+		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtModificar(), b);
+		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtEliminar(), b);
+		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtCancelar(), b);
+		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtGuardar(), b);
 
 		EventosUtil.limpiarCampoPersonalizado(ventanaCliente.gettContacto());
 		EventosUtil.limpiarCampoPersonalizado(ventanaCliente.gettDireccion());
 		EventosUtil.limpiarCampoPersonalizado(ventanaCliente.gettIdentificacion());
 		EventosUtil.limpiarCampoPersonalizado(ventanaCliente.gettNombreCompleto());
 		EventosUtil.limpiarCampoPersonalizado(ventanaCliente.getlMensaje());
+
+		accion = null;
+		cliente = null;
 	}
 
 	private boolean validarFormulario() {
@@ -93,7 +75,7 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 			return false;
 		}
 
-		if (ventanaCliente.gettIdentificacion().getText().equals("0") 
+		if (ventanaCliente.gettIdentificacion().getText().equals("0")
 				|| ventanaCliente.gettIdentificacion().getText().equals("00")
 				|| ventanaCliente.gettIdentificacion().getText().equals("000")
 				|| ventanaCliente.gettIdentificacion().getText().equals("0000")
@@ -109,8 +91,7 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 			ventanaCliente.gettIdentificacion().requestFocus();
 			return false;
 		}
-		if (ventanaCliente.gettContacto().getText().equals("0") 
-				|| ventanaCliente.gettContacto().getText().equals("00")
+		if (ventanaCliente.gettContacto().getText().equals("0") || ventanaCliente.gettContacto().getText().equals("00")
 				|| ventanaCliente.gettContacto().getText().equals("000")
 				|| ventanaCliente.gettContacto().getText().equals("0000")
 				|| ventanaCliente.gettContacto().getText().equals("00000")
@@ -129,56 +110,8 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void nuevo() {
+		estadoInicial(true);
 		accion = "NUEVO";
 		ventanaCliente.getlMensaje().setText(accion + " REGISTRO");
 		ventanaCliente.gettNombreCompleto().requestFocus();
@@ -187,9 +120,9 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 
 	@Override
 	public void modificar() {
+		estadoInicial(true);
 		accion = "MODIFICAR";
 		ventanaCliente.getlMensaje().setText(accion + " REGISTRO");
-
 	}
 
 	@Override
@@ -198,11 +131,8 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 
 		ventanaCliente.getlMensaje().setText(accion + " REGISTRO");
 		ventanaCliente.getlMensaje().setForeground(Color.RED);
-		int respuesta = JOptionPane
-				.showConfirmDialog(null,
-						"La eliminación del cliente " + cliente.getNombreCompleto()
-						+ " conlleva la pérdida permanente del registro",
-						"ATENCION", JOptionPane.YES_NO_OPTION);
+		int respuesta = JOptionPane.showConfirmDialog(null, "La eliminación del cliente " + cliente.getNombreCompleto()
+				+ " conlleva la pérdida permanente del registro", "ATENCION", JOptionPane.YES_NO_OPTION);
 		if (respuesta == JOptionPane.YES_OPTION) {
 			try {
 				dao.eliminar(cliente);
@@ -229,16 +159,15 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 		if (accion.equals("NUEVO")) {
 			cliente = new Cliente();
 			cliente.setColaborador(Sesion.getInstance().getColaborador());
-		}		
+		}
+
 		cliente.setNombreCompleto(ventanaCliente.gettNombreCompleto().getText());
 		cliente.setContacto(ventanaCliente.gettContacto().getText());
 		cliente.setDireccion(ventanaCliente.gettDireccion().getText());
-
 		if (ventanaCliente.gettIdentificacion().getText().isEmpty()) {
 			cliente.setIdentificacion(ventanaCliente.gettIdentificacion().getText());
 		}
-
-		//Si esta vacio el campo, se pasa como nulo
+		// Si esta vacio el campo, se pasa como nulo
 		switch (ventanaCliente.gettIdentificacion().getText()) {
 		case "":
 			cliente.setIdentificacion(null);
@@ -254,42 +183,42 @@ public class VentanaClienteControlador implements AccionesABM, ActionListener, M
 				dao.modificar(cliente);
 			}
 			dao.commit();
-			estadoInicial(true);
-			ventanaCliente.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
+			try {
+				interfaz.setCliente(cliente);
+				ventanaCliente.dispose();
+			} catch (Exception e) {
+				estadoInicial(false);
+				setCliente(cliente);
+				ventanaCliente.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
+			}
 		} catch (Exception e) {
 			dao.rollBack();
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 		}
 
 	}
 
 	@Override
 	public void cancelar() {
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente.getlMensaje());
 		estadoInicial(true);
+	}
+
+	public void salir() {
+		ventanaCliente.dispose();
 	}
 
 	@Override
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-
-		gestionarCliente();
-
-	}
-
-	private void gestionarCliente() {
 		if (cliente == null) {
+			System.err.println("CLIENTE NULL");
 			return;
+		} else {
+			System.out.println(cliente.getId() + " ID DEL CLIENTE");
 		}
-		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtModificar(), true);
-		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtEliminar(), true);
-		EventosUtil.estadosBotones(ventanaCliente.getMiToolBar().getbtGuardar(), true);
-
 		ventanaCliente.gettNombreCompleto().setText(cliente.getNombreCompleto());
 		ventanaCliente.gettIdentificacion().setText(cliente.getIdentificacion());
 		ventanaCliente.gettContacto().setText(cliente.getContacto());
 		ventanaCliente.gettDireccion().setText(cliente.getDireccion());
-
 	}
 }
-

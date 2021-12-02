@@ -54,16 +54,25 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 		ventana.getTableSeguimientoProduccion().setModel(modeloTablaProduccion);
 
 		setUpEvents();
+		estadoInicial();
+	}
+
+	private void estadoInicial() {
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettPedido());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlCliente());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlColaborador());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlPedido1());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlPedido2());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlPedido3());
+
+		vaciarTablas();
+
 	}
 
 	private void setUpEvents() {
 		ventana.getBtnBuscar().addActionListener(this);
-		ventana.getBtnCambiarEstado().addActionListener(this);
-
 		ventana.getTablePedidoDetalle().addMouseListener(this);
 		ventana.getTableSeguimientoProduccion().addMouseListener(this);
-
-		vaciarTablas();
 	}
 
 	private void vaciarTablas() {
@@ -83,7 +92,12 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 		}
 		Integer id = Integer.parseInt(ventana.gettPedido().getText());
 		try {
+			estadoInicial();
 			pedido = dao.encontrarPedido(id);
+			if (pedido.isEsPresupuesto() || !pedido.isEstado()) {
+				JOptionPane.showMessageDialog(ventana, "El pedido es un presupuesto o está anulado, verifique...");
+				return;
+			}
 			setPedido(pedido);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -111,6 +125,27 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 			e.printStackTrace();
 		}
 	}
+	
+	private void iniciarProduccion() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private void reiniciarProduccion() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private void finalizarProduccion() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private void cancelarProduccion() {
+		// TODO Auto-generated method stub
+
+	}
+	
 
 	private void cambiarEstado() {
 		if (procesoRepetido(proceso)) {
@@ -158,8 +193,8 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 		}
 
 		SectorProceso proceso = (SectorProceso) JOptionPane.showInputDialog(ventana,
-				"Seleccione el proceso:\n" + "\"Indique;\"", "Estado de seguimiento", JOptionPane.PLAIN_MESSAGE,
-				null, possibilities, "");
+				"Seleccione el proceso:\n" + "\"Indique;\"", "Estado de seguimiento", JOptionPane.PLAIN_MESSAGE, null,
+				possibilities, "");
 
 		// If a string was returned, say so.
 		if (proceso != null) {
@@ -197,11 +232,16 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 		}
 		vaciarTablas();
 
+		ventana.getlPedido1()
+				.setText("PEDIDO " + pedido.getId() + " " + EventosUtil.formatoFecha(pedido.getFechaRegistro()));
+		ventana.getlPedido2()
+				.setText("PEDIDO " + pedido.getPedidoCarteleria() != null && pedido.getPedidoCarteleria() == true
+						? "CARTELERIA"
+						: "CONFECCION".concat(pedido.isEstado() ? " VIGENTE" : " ANULADO"));
+		ventana.getlPedido3()
+				.setText("METRAJE TOTAL DEL PEDIDO " + EventosUtil.separadorDecimales(pedido.getMetrosTotal()));
 		ventana.getlCliente().setText(pedido.getCliente().toString());
 		ventana.getlColaborador().setText(pedido.getColaborador().toString());
-		ventana.getlEstado().setText(pedido.isEstado() ? "VIGENTE" : "ANULADO");
-		ventana.getlFechaRegistro().setText(EventosUtil.formatoFecha(pedido.getFechaRegistro()));
-		ventana.getlMetros().setText(EventosUtil.separadorDecimales(pedido.getMetrosTotal()));
 
 		pedidosDetalles = pedido.getPedidoDetalles();
 		modeloTablaPedidoDetalle.setDetalle(pedidosDetalles);

@@ -59,9 +59,6 @@ public class Producto {
 	@Column(nullable = false)
 	private double anchoProducto;
 
-	@Column(nullable = false)
-	private boolean esServicio;
-
 	@Column(nullable = true)
 	private Boolean productoCarteleria;
 
@@ -130,10 +127,6 @@ public class Producto {
 		return anchoProducto;
 	}
 
-	public boolean isEsServicio() {
-		return esServicio;
-	}
-
 	public Boolean getProductoCarteleria() {
 		return productoCarteleria;
 	}
@@ -200,10 +193,6 @@ public class Producto {
 
 	public void setAnchoProducto(double anchoProducto) {
 		this.anchoProducto = anchoProducto;
-	}
-
-	public void setEsServicio(boolean esServicio) {
-		this.esServicio = esServicio;
 	}
 
 	public void setProductoCarteleria(Boolean productoCarteleria) {

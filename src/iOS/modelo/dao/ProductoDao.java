@@ -57,6 +57,7 @@ public class ProductoDao extends GenericDao<Producto> {
 
 		String sql = "from Producto "
 				+ "where upper(descripcion) like :descripcion "
+				+ "or upper(codigoReferencia) like :descripcion "
 				+ "order by descripcion";
 
 		@SuppressWarnings("unchecked")

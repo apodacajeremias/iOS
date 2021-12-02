@@ -209,6 +209,18 @@ public class CajaMovimiento {
 	public void setEsVale(boolean esVale) {
 		this.esVale = esVale;
 	}
+
+
+	@Override
+	public String toString() {
+		return "CajaMovimiento [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado
+				+ ", colaboradorQueRegistra=" + colaboradorQueRegistra + ", cliente=" + cliente + ", pedido=" + pedido
+				+ ", colaborador=" + colaborador + ", caja=" + caja + ", tipoValor=" + tipoValor + ", observacion="
+				+ observacion + ", esAnulado=" + esAnulado + ", esRetiro=" + esRetiro + ", esVale=" + esVale
+				+ ", valorGS=" + valorGS + ", valorRS=" + valorRS + ", valorUS=" + valorUS + "]";
+	}
+	
+	
 	
 	
 }

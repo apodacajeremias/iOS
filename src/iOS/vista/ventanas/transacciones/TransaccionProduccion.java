@@ -25,13 +25,12 @@ public class TransaccionProduccion extends JDialog {
 	private JTable tableSeguimientoProduccion;
 	private MiBoton btnBuscar;
 	private CampoNumeroPersonalizado tPedido;
-	private LabelPersonalizado lFechaRegistro;
+	private LabelPersonalizado lPedido2;
 	private LabelPersonalizado lColaborador;
-	private LabelPersonalizado lMetros;
 	private LabelPersonalizado lCliente;
-	private LabelPersonalizado lEstado;
-	private MiBoton btnCambiarEstado;
 	private TransaccionProduccionControlador controlador;
+	private LabelPersonalizado lPedido1;
+	private LabelPersonalizado lPedido3;
 
 	public void setUpControlador() {
 		controlador = new TransaccionProduccionControlador(this);
@@ -55,7 +54,8 @@ public class TransaccionProduccion extends JDialog {
 		panel.setLayout(null);
 
 		tPedido = new CampoNumeroPersonalizado();
-		tPedido.setBounds(10, 11, 65, 30);
+		tPedido.setFont(new Font("Tahoma", Font.BOLD, 18));
+		tPedido.setBounds(10, 11, 100, 30);
 		panel.add(tPedido);
 
 		btnBuscar = new MiBoton("Buscar");
@@ -65,64 +65,48 @@ public class TransaccionProduccion extends JDialog {
 		});
 		btnBuscar.setText("Encontrar");
 		btnBuscar.setActionCommand("Buscar");
-		btnBuscar.setBounds(85, 11, 100, 30);
+		btnBuscar.setBounds(136, 11, 100, 30);
 		panel.add(btnBuscar);
 
-		LabelPersonalizado lblprsnlzdFechaDeRegistro = new LabelPersonalizado(0);
-		lblprsnlzdFechaDeRegistro.setText("Fecha de registro");
-		lblprsnlzdFechaDeRegistro.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdFechaDeRegistro.setBounds(10, 52, 390, 20);
-		panel.add(lblprsnlzdFechaDeRegistro);
+		lPedido1 = new LabelPersonalizado(0);
+		lPedido1.setText("PEDIDO 654 - noviembre 26, 2021");
+		lPedido1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lPedido1.setBounds(10, 52, 390, 20);
+		panel.add(lPedido1);
 
-		lFechaRegistro = new LabelPersonalizado(0);
-		lFechaRegistro.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lFechaRegistro.setBounds(10, 75, 390, 20);
-		panel.add(lFechaRegistro);
+		lPedido2 = new LabelPersonalizado(0);
+		lPedido2.setText("PEDIDO CARTELERIA VIGENTE");
+		lPedido2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lPedido2.setBounds(10, 75, 390, 20);
+		panel.add(lPedido2);
 
 		LabelPersonalizado lblprsnlzdVendedor = new LabelPersonalizado(0);
 		lblprsnlzdVendedor.setText("Vendedor: Nombre");
-		lblprsnlzdVendedor.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdVendedor.setBounds(10, 106, 390, 20);
+		lblprsnlzdVendedor.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdVendedor.setBounds(10, 159, 390, 20);
 		panel.add(lblprsnlzdVendedor);
 
 		lColaborador = new LabelPersonalizado(0);
-		lColaborador.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lColaborador.setBounds(10, 128, 390, 20);
+		lColaborador.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lColaborador.setBounds(10, 181, 390, 20);
 		panel.add(lColaborador);
 
-		LabelPersonalizado lblprsnlzdMetrajeTotalDel = new LabelPersonalizado(0);
-		lblprsnlzdMetrajeTotalDel.setText("Metraje total del pedido");
-		lblprsnlzdMetrajeTotalDel.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdMetrajeTotalDel.setBounds(10, 159, 390, 20);
-		panel.add(lblprsnlzdMetrajeTotalDel);
-
-		lMetros = new LabelPersonalizado(0);
-		lMetros.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lMetros.setBounds(10, 181, 390, 20);
-		panel.add(lMetros);
+		lPedido3 = new LabelPersonalizado(0);
+		lPedido3.setText("Metraje total del pedido: 3,67 mts2");
+		lPedido3.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lPedido3.setBounds(10, 106, 390, 20);
+		panel.add(lPedido3);
 
 		LabelPersonalizado lblprsnlzdClienteNombre = new LabelPersonalizado(0);
 		lblprsnlzdClienteNombre.setText("Cliente: Nombre");
-		lblprsnlzdClienteNombre.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdClienteNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdClienteNombre.setBounds(10, 212, 390, 20);
 		panel.add(lblprsnlzdClienteNombre);
 
 		lCliente = new LabelPersonalizado(0);
-		lCliente.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lCliente.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lCliente.setBounds(10, 235, 390, 20);
 		panel.add(lCliente);
-
-		LabelPersonalizado lblprsnlzdEstadoDelPedido = new LabelPersonalizado(0);
-		lblprsnlzdEstadoDelPedido.setText("Estado del pedido");
-		lblprsnlzdEstadoDelPedido.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdEstadoDelPedido.setBounds(10, 266, 390, 20);
-		panel.add(lblprsnlzdEstadoDelPedido);
-
-		lEstado = new LabelPersonalizado(0);
-		lEstado.setText("Fecha de registro");
-		lEstado.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lEstado.setBounds(10, 289, 390, 20);
-		panel.add(lEstado);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(430, 42, 834, 263);
@@ -149,12 +133,6 @@ public class TransaccionProduccion extends JDialog {
 		lblprsnlzdDetallesDelPedido.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblprsnlzdDetallesDelPedido.setBounds(430, 11, 217, 20);
 		getContentPane().add(lblprsnlzdDetallesDelPedido);
-
-		btnCambiarEstado = new MiBoton("Finalizar");
-		btnCambiarEstado.setText("Cambiar estado");
-		btnCambiarEstado.setActionCommand("Seguimiento");
-		btnCambiarEstado.setBounds(553, 309, 140, 30);
-		getContentPane().add(btnCambiarEstado);
 		setType(Type.NORMAL);
 	}
 
@@ -178,32 +156,30 @@ public class TransaccionProduccion extends JDialog {
 		return tPedido;
 	}
 
-	public LabelPersonalizado getlFechaRegistro() {
-		return lFechaRegistro;
+	public LabelPersonalizado getlPedido2() {
+		return lPedido2;
 	}
 
 	public LabelPersonalizado getlColaborador() {
 		return lColaborador;
 	}
 
-	public LabelPersonalizado getlMetros() {
-		return lMetros;
-	}
-
 	public LabelPersonalizado getlCliente() {
 		return lCliente;
-	}
-
-	public LabelPersonalizado getlEstado() {
-		return lEstado;
-	}
-
-	public MiBoton getBtnCambiarEstado() {
-		return btnCambiarEstado;
 	}
 
 	public TransaccionProduccionControlador getControlador() {
 		return controlador;
 	}
+
+	public LabelPersonalizado getlPedido1() {
+		return lPedido1;
+	}
+
+	public LabelPersonalizado getlPedido3() {
+		return lPedido3;
+	}
+
+	
 
 }

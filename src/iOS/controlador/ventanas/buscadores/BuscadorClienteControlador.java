@@ -18,7 +18,7 @@ import iOS.vista.ventanas.buscadores.BuscadorCliente;
 
 
 
-public class BuscadorClienteControlador implements KeyListener, MouseListener, AccionesABM {
+public class BuscadorClienteControlador implements KeyListener, MouseListener, AccionesABM, ClienteInterface {
 
 	// ATRIBUTOS
 	private BuscadorCliente buscador;
@@ -35,9 +35,9 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	// CONSTRUCTOR
 	public BuscadorClienteControlador(BuscadorCliente bCliente) {
 		this.buscador = bCliente;
+		this.buscador.getToolbar().setAcciones(this);
 		mtCliente = new ModeloTablaCliente();
 		this.buscador.getTable().setModel(mtCliente);
-		this.buscador.getToolbar().setAcciones(this);
 		dao = new ClienteDao();
 		setUpEvents();
 		recuperarTodo();
@@ -51,12 +51,14 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 
 	// METODO QUE RECUPERA DATOS POR FILTRO EN EL BUSCADOR
 	private void recuperarPorFiltro() {
+		cliente = null;
 		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
 		mtCliente.setLista(lista);
 		mtCliente.fireTableDataChanged();
 	}
 
 	private void recuperarTodo() {
+		cliente = null;
 		lista = dao.recuperarTodoOrdenadoPorNombre();
 		mtCliente.setLista(lista);
 		mtCliente.fireTableDataChanged();
@@ -65,6 +67,7 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 
 	private void seleccionarRegistro(int posicion) {
 		if (posicion < 0) {
+			cliente = null;
 			return;
 		}
 		cliente = lista.get(posicion);
@@ -89,10 +92,10 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	// EVENTO DEL MOUSE AL DAR DOBLE CLIC VA A SELECCIONAR UN REGISTRO
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// doble clic en un registro de la tabla
-		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+		if (e.getSource() == buscador.getTable()) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
+		// doble clic en un registro de la tabla
 		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 			try {
@@ -103,25 +106,36 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 				ventana.setUpControlador();
 				ventana.getControlador().setCliente(cliente);
 				ventana.setVisible(true);
-				buscador.dispose();
 			}
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -129,15 +143,20 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		VentanaCliente ventana = new VentanaCliente();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
+		ventana.getControlador().setInterfaz(this);
 		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
+		if (cliente == null) {
+			return;
+		}
 		VentanaCliente ventana = new VentanaCliente();
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setCliente(cliente);
+		ventana.getControlador().setInterfaz(this);
 		ventana.setVisible(true);
 	}
 
@@ -157,5 +176,11 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	public void cancelar() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setCliente(Cliente cliente) {
+		buscador.gettBuscador().setText(cliente.toString());
+		recuperarPorFiltro();
 	}
 }

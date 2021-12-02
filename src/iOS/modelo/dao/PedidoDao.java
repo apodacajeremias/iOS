@@ -112,6 +112,47 @@ public class PedidoDao extends GenericDao<Pedido> {
 			return null;
 		}
 	}
+	
+
+	public List<Pedido> aislarPedidosCarteleria() {
+		getSession().beginTransaction();
+		String sql = "FROM Pedido " 
+				+ "WHERE (pedidoCarteleria = TRUE) "
+				+ "AND estado = TRUE " 
+				+ "AND esPresupuesto = FALSE "
+				+ "ORDER BY id DESC";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<Pedido> query = getSession().createQuery(sql);
+			List<Pedido> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
+	
+	public List<Pedido> aislarPedidosConfeccion() {
+		getSession().beginTransaction();
+		String sql = "FROM Pedido " 
+				+ "WHERE (pedidoCostura = TRUE) "
+				+ "AND estado = TRUE " 
+				+ "AND esPresupuesto = FALSE "
+				+ "ORDER BY id DESC";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<Pedido> query = getSession().createQuery(sql);
+			List<Pedido> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollBack();
+			return null;
+		}
+	}
 
 	public Pedido encontrarPedido(Integer pedido) {
 		getSession().beginTransaction();

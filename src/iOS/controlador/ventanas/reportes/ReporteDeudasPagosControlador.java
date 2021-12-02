@@ -7,11 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import iOS.modelo.dao.CajaDao;
 import iOS.modelo.dao.PedidoDao;
-import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Pedido;
-import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
 import iOS.vista.modelotabla.ModeloTablaPedido;
 import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 
@@ -19,25 +16,19 @@ public class ReporteDeudasPagosControlador implements ActionListener {
 	private ReporteDeudasPagos reporte;
 
 	private PedidoDao pedidoDao;
-	private CajaDao cajaDao;
 
 	private ModeloTablaPedido modeloTablaPedido;
-	private ModeloTablaCajaMovimiento modeloTablaCaja;
 
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
-	private List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
 
 	public ReporteDeudasPagosControlador(ReporteDeudasPagos reporte) {
 		this.reporte = reporte;
 
-		modeloTablaCaja = new ModeloTablaCajaMovimiento();
 		modeloTablaPedido = new ModeloTablaPedido();
 
 		reporte.getTable().setModel(modeloTablaPedido);
-		reporte.getTablePago().setModel(modeloTablaCaja);
 
 		pedidoDao = new PedidoDao();
-		cajaDao = new CajaDao();
 
 		setUpEvents();
 	}
@@ -52,29 +43,52 @@ public class ReporteDeudasPagosControlador implements ActionListener {
 		pedidos = new ArrayList<Pedido>();
 		modeloTablaPedido.setPedidos(pedidos);
 		modeloTablaPedido.fireTableDataChanged();
-
-		pagos = new ArrayList<CajaMovimiento>();
-		modeloTablaCaja.setMovimiento(pagos);
-		modeloTablaCaja.fireTableDataChanged();
-
 	}
 
 	private void filtrar() {
 		reporte.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		//Pago sin pedido
+		// Pago sin pedido
+		if (reporte.getRb1().isSelected()) {
+			pedidos = pedidoDao.aislarPedidosCarteleria();
+		}
+		// Pedido sin pago
+		if (reporte.getRb2().isSelected()) {
+			pedidos = pedidoDao.aislarPedidosConfeccion();
+		}
 		if (reporte.getRb3().isSelected()) {
-			pagos = cajaDao.recuperaPagos();
-			pagos = pagos.stream().filter(o -> o.getPedido() == null && o.isEsRetiro() == false && o.isEsAnulado() == false).collect(Collectors.toList());
-			modeloTablaCaja.setMovimiento(pagos);
-			modeloTablaCaja.fireTableDataChanged();
+			pedidos = pedidos.stream()
+					.filter(a -> a.getPagosPedido().stream()
+							.filter(p -> p.isEsAnulado() == false && p.isEsRetiro() == false)
+							.mapToDouble(p -> p.getValorGS()).sum() >= a.getPrecioPagar())
+					.collect(Collectors.toList());
 		}
-		//Pedido sin pago
+		// Pedido sin pago
 		if (reporte.getRb4().isSelected()) {
-			pedidos = pedidoDao.recuperarTodo();
-			pedidos = pedidos.stream().filter(o -> o.getPagosPedido().stream().filter(u -> u.isEsAnulado() == false).collect(Collectors.toList()).size() <= 0).collect(Collectors.toList());
-			modeloTablaPedido.setPedidos(pedidos);
-			modeloTablaPedido.fireTableDataChanged();
+			pedidos = pedidos.stream()
+					.filter(a -> a.getPagosPedido().stream()
+							.filter(p -> p.isEsAnulado() == false && p.isEsRetiro() == false)
+							.mapToDouble(p -> p.getValorGS()).sum() < a.getPrecioPagar())
+					.collect(Collectors.toList());
 		}
+		if (reporte.getRb5().isSelected()) {
+			if (reporte.getRb1().isSelected()) {
+			
+			}
+			if (reporte.getRb2().isSelected()) {
+
+			}
+		}
+		// Pedido sin pago
+		if (reporte.getRb6().isSelected()) {
+			if (reporte.getRb1().isSelected()) {
+
+			}
+			if (reporte.getRb2().isSelected()) {
+
+			}
+		}
+		modeloTablaPedido.setPedidos(pedidos);
+		modeloTablaPedido.fireTableDataChanged();
 		reporte.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 

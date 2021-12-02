@@ -214,6 +214,7 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	private void abrirPedidoCarteleria(Pedido p) {
 		TransaccionPedido ventana = new TransaccionPedido();
 		ventana.setUpCarteleriaControlador();
+		ventana.getCarteleriaControlador().modificar();
 		ventana.getCarteleriaControlador().setPedido(p);
 		ventana.setVisible(true);
 	}
@@ -221,6 +222,7 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	private void abrirPedidoCostura(Pedido p) {
 		TransaccionPedido ventana = new TransaccionPedido();
 		ventana.setUpConfeccionControlador();
+		ventana.getConfeccionControlador().modificar();
 		ventana.getConfeccionControlador().setPedido(p);
 		ventana.setVisible(true);
 	}
@@ -258,7 +260,7 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 			public void actionPerformed(ActionEvent e) {
 				
 				if (pedido.getPedidoCarteleria() != pedido.getPedidoCarteleria() == true) {
-					Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido, ventanaCliente2);
+					Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido);
 				}
 
 			}

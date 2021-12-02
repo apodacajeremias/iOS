@@ -152,6 +152,7 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 		}
 		TransaccionPedido ventana = new TransaccionPedido();
 		ventana.setUpCarteleriaControlador();
+		ventana.getCarteleriaControlador().modificar();
 		ventana.getCarteleriaControlador().setPedido(pedido);
 		ventana.setVisible(true);
 	}
@@ -216,8 +217,7 @@ public class ReportePedidoCarteleriaControlador implements ActionListener, Mouse
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedidos.get(row), reporte);
-
+				Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedidos.get(row));
 			}
 		});
 		JMenuItem anularPedido = new JMenuItem("Anular");

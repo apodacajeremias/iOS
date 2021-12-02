@@ -1,11 +1,18 @@
 package iOS.controlador.ventanas.transacciones;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 
 import iOS.modelo.dao.ClienteDao;
 import iOS.modelo.entidades.CajaMovimiento;
@@ -33,7 +40,6 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 	private List<Pedido> pedidos;
 	private ModeloTablaPedido tablaPedido;
 
-	private CajaMovimiento m;
 	private List<CajaMovimiento> ms;
 	private ModeloTablaCajaMovimiento tablaCM;
 
@@ -43,6 +49,7 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 
 		tablaCliente = new ModeloTablaCliente();
 		ventana.getTableCliente().setModel(tablaCliente);
+		tableMenu(ventana.getTableCliente());
 
 		tablaCajaMovimiento = new ModeloTablaCajaMovimiento();
 		ventana.getTablePago().setModel(tablaCajaMovimiento);
@@ -64,6 +71,7 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 	private void recuperarTodos() {
 		// TODO Auto-generated method stub
 		clientes = dao.recuperarTodoOrdenadoPorNombre();
+		clientes = clientes.stream().filter(c -> c.getCajaMovimientos().stream().filter(a -> a.getPedido() == null).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
 		tablaCliente.setLista(clientes);
 		tablaCliente.fireTableDataChanged();
 	}
@@ -90,13 +98,21 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 		vaciarTablas();
 		cliente = clientes.get(posicion);
 
-		movimientos = dao.recuperarPagos(cliente.getId());
+		movimientos = cliente.getCajaMovimientos();
 		tablaCajaMovimiento.setMovimiento(movimientos);
 		tablaCajaMovimiento.fireTableDataChanged();
 
-		pedidos = dao.recuperarPedidos(cliente.getId());
+		pedidos = cliente.getPedidos();
 		tablaPedido.setPedidos(pedidos);
 		tablaPedido.fireTableDataChanged();
+		
+//		movimientos = dao.recuperarPagos(cliente.getId());
+//		tablaCajaMovimiento.setMovimiento(movimientos);
+//		tablaCajaMovimiento.fireTableDataChanged();
+//
+//		pedidos = dao.recuperarPedidos(cliente.getId());
+//		tablaPedido.setPedidos(pedidos);
+//		tablaPedido.fireTableDataChanged();
 	}
 
 	private void seleccionarPago(int posicion) {
@@ -123,7 +139,12 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 	}
 
 	private void asociarPago(CajaMovimiento pago, Pedido pedido, Cliente cliente) {
+		if (pago.getPedido() != null) {
+			JOptionPane.showMessageDialog(ventana, "EL PAGO YA SE ENCUENTRA ASOCIADO A UN PEDIDO VIGENTE");
+			return;
+		}
 		pago.setPedido(pedido);
+		pago.setObservacion("PAGO PEDIDO "+ pedido.getId() + " DE CLIENTE " + cliente.toString().concat(" "+pago.getObservacion()));
 		movimientos.add(pago);
 		cliente.setCajaMovimientos(movimientos);
 		
@@ -152,11 +173,7 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 				dao.rollBack();
 			}
 		}
-		
-		
-
 	}
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == ventana.getTableCliente()) {
@@ -199,6 +216,43 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void tableMenu(final JTable table) {
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
+				if (r >= 0 && r < table.getRowCount()) {
+					table.setRowSelectionInterval(r, r);
+				} else {
+					table.clearSelection();
+				}
+
+				int rowindex = table.getSelectedRow();
+				if (rowindex < 0) {
+					return;
+				}
+				if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+					JPopupMenu popup = tablePopup(table, rowindex);
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
+	}
+
+	private JPopupMenu tablePopup(final JTable table, final int row) {
+		JPopupMenu popup = new JPopupMenu("Popup");
+		JMenuItem imprimirItem = new JMenuItem("Reasociar este cliente");
+		imprimirItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+
+			}
+		});
+		popup.add(imprimirItem);
+		return popup;
 	}
 
 }

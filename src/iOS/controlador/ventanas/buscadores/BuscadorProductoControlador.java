@@ -17,49 +17,44 @@ import iOS.vista.ventanas.buscadores.BuscadorProducto;
 public class BuscadorProductoControlador implements KeyListener, MouseListener, AccionesABM, ProductoInterface {
 
 	// ATRIBUTOS
-	private BuscadorProducto bProducto;
+	private BuscadorProducto buscador;
 	private ModeloTablaProducto mtProducto;
 	private ProductoDao dao;
 	private List<Producto> lista;
 	private ProductoInterface interfaz;
 	private Producto producto;
-	
-	@SuppressWarnings("unused")
-	private boolean esServicio;
 
 	public void setInterfaz(ProductoInterface interfaz) {
 		this.interfaz = interfaz;
 	}
 
 	// CONSTRUCTOR
-	public BuscadorProductoControlador(BuscadorProducto bProducto, boolean esServicio) {
-		this.bProducto = bProducto;
-		this.esServicio = esServicio;
-		this.bProducto.getToolbar().setAcciones(this);
+	public BuscadorProductoControlador(BuscadorProducto bProducto) {
+		this.buscador = bProducto;
+		this.buscador.getToolbar().setAcciones(this);
 		mtProducto = new ModeloTablaProducto();
-		this.bProducto.getTable().setModel(mtProducto);
-
+		this.buscador.getTable().setModel(mtProducto);
 		dao = new ProductoDao();
-
-		// agregamos escuchadores de evento
 		setUpEvents();
 		recuperarTodo();
 	}
 
 	// METODO QUE LEVANTA LOS EVENTOS
 	private void setUpEvents() {
-		bProducto.gettBuscador().addKeyListener(this);
-		bProducto.getTable().addMouseListener(this);
+		buscador.gettBuscador().addKeyListener(this);
+		buscador.getTable().addMouseListener(this);
 	}
 
 	// METODO QUE RECUPERA DATOS POR FILTRO EN EL BUSCADOR
 	private void recuperarPorFiltro() {
-		lista = dao.recuperarPorFiltro(bProducto.gettBuscador().getText());
+		producto = null;
+		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
 		mtProducto.setLista(lista);
 		mtProducto.fireTableDataChanged();
 	}
 
 	private void recuperarTodo() {
+		producto = null;
 		lista = dao.recuperarTodoOrdenadoPorNombre();
 		mtProducto.setLista(lista);
 		mtProducto.fireTableDataChanged();
@@ -67,6 +62,10 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 	}
 
 	private void seleccionarRegistro(int posicion) {
+		if (posicion < 0) {
+			producto = null;
+			return;
+		}
 		producto = lista.get(posicion);
 	}
 
@@ -77,7 +76,7 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 	// EVENTO DEL BOTON AL DAR CLIC RECUPERA POR FILTRO
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getSource() == bProducto.gettBuscador() && e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if (e.getSource() == buscador.gettBuscador() && e.getKeyCode() == KeyEvent.VK_ENTER) {
 			recuperarPorFiltro();
 		}
 	}
@@ -89,71 +88,89 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 	// EVENTO DEL MOUSE AL DAR DOBLE CLIC VA A SELECCIONAR UN REGISTRO
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// doble clic en un registro de la tabla
-		if (e.getSource() == bProducto.getTable() && e.getClickCount() == 1 ) {
-			seleccionarRegistro(bProducto.getTable().getSelectedRow());
+
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
-		
-		if (e.getSource() == bProducto.getTable() && e.getClickCount() == 2) {
-			seleccionarRegistro(bProducto.getTable().getSelectedRow());
+		// doble clic en un registro de la tabla
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
 			interfaz.setProducto(producto);
-			bProducto.dispose();
+			buscador.dispose();
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void nuevo() {
 		VentanaProducto ventana = new VentanaProducto();
 		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.getControlador().setInterfaz(this);
 		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
+		if (producto == null) {
+			return;
+		}
 		VentanaProducto ventana = new VentanaProducto();
 		ventana.setUpControlador();
-		ventana.getControlador().setProducto(producto);	
 		ventana.getControlador().modificar();
+		ventana.getControlador().setProducto(producto);
+		ventana.getControlador().setInterfaz(this);
 		ventana.setVisible(true);
 	}
 
 	@Override
 	public void eliminar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void guardar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void cancelar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setProducto(Producto producto) {
-		this.producto = producto;
-		
-	}	
+		buscador.gettBuscador().setText(producto.getDescripcion());
+		recuperarPorFiltro();
+	}
 }

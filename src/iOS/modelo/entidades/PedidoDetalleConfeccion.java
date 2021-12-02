@@ -23,6 +23,9 @@ public class PedidoDetalleConfeccion {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+//	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)

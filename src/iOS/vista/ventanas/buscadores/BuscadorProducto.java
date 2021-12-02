@@ -12,15 +12,15 @@ public class BuscadorProducto extends BuscadorGenerico {
 
 	private BuscadorProductoControlador controlador;
 
-	public void setUpControlador(boolean esServicio) {
-		controlador = new BuscadorProductoControlador(this, esServicio);
+	public void setUpControlador() {
+		controlador = new BuscadorProductoControlador(this);
 	}
 
 	/**
 	 * Create the dialog.
 	 */
 	public BuscadorProducto() {
-		setTitle("Búsqueda de Productoes");
+		setTitle("Búsqueda de Productos");
 		getTable().setToolTipText("Doble click para seleccionar");
 	}
 

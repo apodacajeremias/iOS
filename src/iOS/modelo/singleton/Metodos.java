@@ -35,6 +35,14 @@ public class Metodos {
 					JOptionPane.YES_NO_OPTION);
 			if (aceptaAnular == JOptionPane.YES_OPTION) {
 				CajaMovimiento anular = (CajaMovimiento) registro;
+//				if (anular.getCaja().isCajaCerrada()) {
+//					JOptionPane.showMessageDialog(null, "El caja de este pago ya se encuentra cerrada.");
+//					return;
+//				}
+				if (anular.isEsAnulado()) {
+					JOptionPane.showMessageDialog(null, "Este pago ya se encuentra anulado, cancelando operacion...");
+					return;
+				}
 				CajaDao dao = new CajaDao();
 				anular.setEsAnulado(true);
 				anular.setEstado(false);
@@ -97,7 +105,7 @@ public class Metodos {
 		}
 	}
 
-	public void imprimirPedidoConfeccionIndividual(Pedido pedido, JDialog ventana) {
+	public void imprimirPedidoConfeccionIndividual(Pedido pedido) {
 		if (pedido == null) {
 			return;
 		}
@@ -106,8 +114,8 @@ public class Metodos {
 		if (opcion == JOptionPane.OK_OPTION) {
 			HashMap<String, Object> parametros = new HashMap<>();
 			parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
-			parametros.put("esPresupuesto", esPresupuesto(pedido));
-			parametros.put("entrega", verificarValidezPago(pedido));
+			parametros.put("esPresupuesto", pedido.isEsPresupuesto() ? "PRESUPUESTO" : "PEDIDO");
+			parametros.put("entrega", sumarPagosPedido(pedido));
 			parametros.put("valorPendiente", valorPendiente(pedido));
 
 			List<Pedido> pedidos = new ArrayList<Pedido>();
@@ -116,16 +124,15 @@ public class Metodos {
 			ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
 			try {
 				conexionReporte.generarReporte(pedidos, parametros, "PedidoImpreso3");
-				conexionReporte.ventanaReporte.setLocationRelativeTo(ventana);
+				conexionReporte.ventanaReporte.setLocationRelativeTo(null);
 				conexionReporte.ventanaReporte.setVisible(true);
 			} catch (JRException e) {
 				e.printStackTrace();
 			}
 		}
-		ventana.dispose();
 	}
 
-	public void imprimirPedidoCarteleriaIndividual(Pedido pedido, JDialog ventana) {
+	public void imprimirPedidoCarteleriaIndividual(Pedido pedido) {
 		if (pedido == null) {
 			return;
 		}
@@ -134,8 +141,8 @@ public class Metodos {
 		if (opcion == JOptionPane.OK_OPTION) {
 			HashMap<String, Object> parametros = new HashMap<>();
 			parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
-			parametros.put("esPresupuesto", esPresupuesto(pedido));
-			parametros.put("entrega", verificarValidezPago(pedido));
+			parametros.put("esPresupuesto", pedido.isEsPresupuesto() ? "PRESUPUESTO" : "PEDIDO");
+			parametros.put("entrega", sumarPagosPedido(pedido));
 			parametros.put("valorPendiente", valorPendiente(pedido));
 
 			List<Pedido> pedidos = new ArrayList<Pedido>();
@@ -144,13 +151,12 @@ public class Metodos {
 			ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
 			try {
 				conexionReporte.generarReporte(pedidos, parametros, "PedidoImpreso4");
-				conexionReporte.ventanaReporte.setLocationRelativeTo(ventana);
+				conexionReporte.ventanaReporte.setLocationRelativeTo(null);
 				conexionReporte.ventanaReporte.setVisible(true);
 			} catch (JRException e) {
 				e.printStackTrace();
 			}
 		}
-		ventana.dispose();
 	}
 
 	public void imprimirReportePedido(List<Pedido> lista, String tipoReporte, String claseReporte, JDialog reporte) {
@@ -204,30 +210,36 @@ public class Metodos {
 			e.printStackTrace();
 		}
 	}
-
-	private String esPresupuesto(Pedido pedido) {
-		if (pedido.isEsPresupuesto()) {
-			return "PRESUPUESTO";
-		} else {
-			return "PEDIDO";
+	
+	private double sumarPagosPedido(Pedido pedido) {
+		double suma = 0;
+		
+		try {
+			suma = pedido.getPagosPedido().stream().filter(p -> p.isEsAnulado() == false && p.isEsRetiro() == false).mapToDouble(p -> p.getValorGS()).sum();
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-	}
-
-	private double verificarValidezPago(Pedido pedido) {
-		List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
-		CajaDao cajaDao = new CajaDao();
-		pagos = cajaDao.recuperarEntregaPedido(pedido.getId());
-		for (int i = 0; i < pagos.size(); i++) {
-			if (!pagos.get(i).isEsAnulado()) {
-				return pedido.getPagosPedido().get(i).getValorGS();
-			}
-		}
-		return 0;
+		return suma;
+//		List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
+//		CajaDao cajaDao = new CajaDao();
+//		pagos = cajaDao.recuperarEntregaPedido(pedido.getId());
+//		for (int i = 0; i < pagos.size(); i++) {
+//			if (!pagos.get(i).isEsAnulado()) {
+//				return pedido.getPagosPedido().get(i).getValorGS();
+//			}
+//		}
+//		return 0;
 	}
 
 	private double valorPendiente(Pedido pedido) {
-		Double valorPendiente = (pedido.getSumatoriaPrecio() - pedido.getDescuentoTotal())
-				- verificarValidezPago(pedido);
+		double valorPendiente = 0;
+		try {
+			valorPendiente = (pedido.getPrecioPagar())
+					- sumarPagosPedido(pedido);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return valorPendiente;
 	}
 

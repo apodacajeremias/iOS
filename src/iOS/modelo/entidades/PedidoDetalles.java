@@ -23,6 +23,9 @@ public class PedidoDetalles {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+//	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -72,7 +75,7 @@ public class PedidoDetalles {
 	private Producto producto;
 
 	@OneToMany(mappedBy = "detalleCarteleria", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<DetalleMaterial> materiales;	
+	private List<DetalleMaterial> materiales;
 
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
@@ -80,6 +83,10 @@ public class PedidoDetalles {
 	@Override
 	public String toString() {
 		return id + " - " + fechaRegistro;
+	}
+
+	public boolean produccionTerminada() {
+		return false;
 	}
 
 	public int getId() {
@@ -217,7 +224,5 @@ public class PedidoDetalles {
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
-
-	
 
 }

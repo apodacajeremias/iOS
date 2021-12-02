@@ -62,6 +62,7 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 	private void seleccionarPedido(Integer posicion) {
 		// TODO Auto-generated method stub
 		if (posicion < 0) {
+			pedido = null;
 			return;
 		}
 		
@@ -78,7 +79,7 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 			JOptionPane.showMessageDialog(bPedido, "Seleccione el cliente");
 		}
 		
-		pedidos = cliente.getPedidos().stream().filter(o -> o.isEsPresupuesto() == false && o.isEstado() == true).collect(Collectors.toList());
+		pedidos = cliente.getPedidos().stream().filter(o -> o.isEsPresupuesto() == false && o.isEstado() == true && o.getPagosPedido().stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false).mapToDouble(b -> b.getValorGS()).sum() < o.getPrecioPagar()).collect(Collectors.toList());
 		mtPedido.setPedidos(pedidos);
 		mtPedido.fireTableDataChanged();
 		

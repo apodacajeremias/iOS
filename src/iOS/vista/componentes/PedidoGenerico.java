@@ -44,6 +44,7 @@ public class PedidoGenerico extends JDialog {
 	private JTable tableMaterial;
 	private MiBoton btnQuitar;
 	private MiBoton btnAgregar;
+	private CampoTextoPersonalizado tResponsable;
 
 	public PedidoGenerico() {
 		getContentPane().setEnabled(false);
@@ -79,50 +80,61 @@ public class PedidoGenerico extends JDialog {
 		lCliente = new LabelPersonalizado(0);
 		lCliente.setText("ENZO JEREMIAS APODACA GONZALEZ");
 		lCliente.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lCliente.setBounds(20, 50, 370, 20);
+		lCliente.setBounds(20, 55, 370, 20);
 		panelCliente.add(lCliente);
 
 		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1 = new LabelPersonalizado(0);
 		lblprsnlzdEmisinDelPedido_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdEmisinDelPedido_2_1.setText("Documento");
-		lblprsnlzdEmisinDelPedido_2_1.setBounds(20, 94, 370, 15);
+		lblprsnlzdEmisinDelPedido_2_1.setBounds(20, 80, 150, 20);
 		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1);
 
 		lIdentificacion = new LabelPersonalizado(0);
 		lIdentificacion.setText("4563438");
 		lIdentificacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lIdentificacion.setBounds(20, 114, 370, 15);
+		lIdentificacion.setBounds(20, 105, 150, 20);
 		panelCliente.add(lIdentificacion);
 
 		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1_1 = new LabelPersonalizado(0);
 		lblprsnlzdEmisinDelPedido_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdEmisinDelPedido_2_1_1.setText("Contacto");
-		lblprsnlzdEmisinDelPedido_2_1_1.setBounds(20, 145, 370, 15);
+		lblprsnlzdEmisinDelPedido_2_1_1.setBounds(204, 80, 150, 20);
 		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1_1);
 
 		lContacto = new LabelPersonalizado(0);
 		lContacto.setText("0985300003");
 		lContacto.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lContacto.setBounds(20, 160, 370, 15);
+		lContacto.setBounds(204, 105, 150, 20);
 		panelCliente.add(lContacto);
 
 		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1_2 = new LabelPersonalizado(0);
-		lblprsnlzdEmisinDelPedido_2_1_2.setText("Nombre completo");
-		lblprsnlzdEmisinDelPedido_2_1_2.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdEmisinDelPedido_2_1_2.setBounds(20, 35, 304, 15);
+		lblprsnlzdEmisinDelPedido_2_1_2.setText("Nombre completo del cliente");
+		lblprsnlzdEmisinDelPedido_2_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblprsnlzdEmisinDelPedido_2_1_2.setBounds(20, 20, 304, 30);
 		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1_2);
 
 		lblprsnlzdEmisinDelPedido_2_1_3 = new LabelPersonalizado(0);
 		lblprsnlzdEmisinDelPedido_2_1_3.setText("Direccion");
 		lblprsnlzdEmisinDelPedido_2_1_3.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblprsnlzdEmisinDelPedido_2_1_3.setBounds(20, 189, 370, 15);
+		lblprsnlzdEmisinDelPedido_2_1_3.setBounds(20, 130, 150, 20);
 		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1_3);
 
 		lDireccion = new LabelPersonalizado(0);
 		lDireccion.setText("SDG");
 		lDireccion.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lDireccion.setBounds(20, 204, 370, 15);
+		lDireccion.setBounds(20, 155, 150, 20);
 		panelCliente.add(lDireccion);
+		
+		LabelPersonalizado lblprsnlzdEmisinDelPedido_2_1_2_1 = new LabelPersonalizado(0);
+		lblprsnlzdEmisinDelPedido_2_1_2_1.setText("Informaci\u00F3n adicional sobre el responsable");
+		lblprsnlzdEmisinDelPedido_2_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdEmisinDelPedido_2_1_2_1.setBounds(20, 180, 349, 20);
+		panelCliente.add(lblprsnlzdEmisinDelPedido_2_1_2_1);
+		
+		tResponsable = new CampoTextoPersonalizado();
+		tResponsable.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tResponsable.setBounds(20, 205, 350, 25);
+		panelCliente.add(tResponsable);
 
 		JPanel panelPedido = new JPanel();
 		panelPedido.setBorder(new TitledBorder(null, "Informaci\u00F3n del Pedido", TitledBorder.LEADING,
@@ -155,7 +167,7 @@ public class PedidoGenerico extends JDialog {
 		rbConsiderarMetraje.setBounds(20, 275, 190, 20);
 		panelPedido.add(rbConsiderarMetraje);
 
-		rbGenerarPresupuesto = new JRadioButton("Generar presupuesto");
+		rbGenerarPresupuesto = new JRadioButton("Presupuesto");
 		rbGenerarPresupuesto.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		rbGenerarPresupuesto.setBounds(20, 295, 190, 20);
 		panelPedido.add(rbGenerarPresupuesto);
@@ -213,17 +225,17 @@ public class PedidoGenerico extends JDialog {
 		panelPedido.add(tDescuentoPedido);
 		tDescuentoPedido.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
-		rbContado = new JRadioButton("CONTADO");
+		rbContado = new JRadioButton("Contado");
 		rbContado.setSelected(true);
 		buttonGroup.add(rbContado);
 		rbContado.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		rbContado.setBounds(239, 272, 109, 20);
+		rbContado.setBounds(239, 272, 151, 20);
 		panelPedido.add(rbContado);
 
-		rbCredito = new JRadioButton("CREDITO");
+		rbCredito = new JRadioButton("Credito");
 		buttonGroup.add(rbCredito);
 		rbCredito.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		rbCredito.setBounds(239, 295, 109, 20);
+		rbCredito.setBounds(239, 295, 151, 20);
 		panelPedido.add(rbCredito);
 
 		btnGuardar = new MiBoton("Guardar");
@@ -400,4 +412,8 @@ public class PedidoGenerico extends JDialog {
 		return btnAgregar;
 	}
 
+	public CampoTextoPersonalizado gettResponsable() {
+		return tResponsable;
+	}
+	
 }

@@ -1,17 +1,12 @@
 package iOS.vista.ventanas.transacciones;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
-
-import iOS.controlador.util.ConnectionHelper;
-import iOS.controlador.util.EventosUtil;
 import iOS.controlador.ventanas.transacciones.TransaccionPagoPedidoControlador;
 import iOS.vista.componentes.LabelPersonalizado;
 
@@ -26,34 +21,8 @@ public class TransaccionPagoPedido extends JDialog {
 	private JTable tableRelacion;
 	private TransaccionPagoPedidoControlador controlador;
 
-	/**
-	 * 
-	 */
-	public static void main(String[] args) {
-		try {
-			BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.osLookAndFeelDecorated;
-			BeautyEyeLNFHelper.launchBeautyEyeLNF();
-			ConnectionHelper.setUp();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					TransaccionPagoPedido dialog = new TransaccionPagoPedido();
-					dialog.setUpControlador();
-					dialog.setVisible(true);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-					EventosUtil.formatException(ex);
-				}
-			}
-
-		});
-	}
 	
-	private void setUpControlador() {
+	public void setUpControlador() {
 		controlador = new TransaccionPagoPedidoControlador(this);
 
 	}
