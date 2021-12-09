@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import iOS.modelo.dao.ClienteDao;
 import iOS.modelo.dao.PedidoDao;
+import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
+import iOS.modelo.singleton.Metodos;
 import iOS.vista.modelotabla.ModeloTablaPedido;
 import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 
@@ -45,6 +48,16 @@ public class ReporteDeudasPagosControlador implements ActionListener {
 		modeloTablaPedido.fireTableDataChanged();
 	}
 
+	private void imprimir() {
+		reporte.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		ClienteDao cDao = new ClienteDao();
+		List<Cliente> clientes = new ArrayList<>();
+		clientes = cDao.recuperarTodoOrdenadoPorNombre();
+		clientes = clientes.stream().filter(a -> a.getDiferencia() > 0 && a.isEstado() == true).collect(Collectors.toList());
+		Metodos.getInstance().imprimirReporteCliente(clientes);
+		reporte.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+	}
+
 	private void filtrar() {
 		reporte.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		// Pago sin pedido
@@ -72,7 +85,7 @@ public class ReporteDeudasPagosControlador implements ActionListener {
 		}
 		if (reporte.getRb5().isSelected()) {
 			if (reporte.getRb1().isSelected()) {
-			
+
 			}
 			if (reporte.getRb2().isSelected()) {
 
@@ -96,7 +109,7 @@ public class ReporteDeudasPagosControlador implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Imprimir":
-
+			imprimir();
 			break;
 		case "Filtrar":
 			filtrar();

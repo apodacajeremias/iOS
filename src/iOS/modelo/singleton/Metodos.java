@@ -3,6 +3,7 @@ package iOS.modelo.singleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -12,6 +13,7 @@ import iOS.modelo.dao.CajaDao;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
+import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
 import net.sf.jasperreports.engine.JRException;
 
@@ -211,6 +213,52 @@ public class Metodos {
 		}
 	}
 	
+	public void imprimirReporteVale(List<CajaMovimiento> lista, String tipoReporte, String claseReporte, JDialog reporte) {
+		if (lista.size() <= 0) {
+			JOptionPane.showMessageDialog(reporte, "No hay registros para realizar la impresión.");
+			return;
+		}
+		HashMap<String, Object> parametros = new HashMap<>();
+		parametros.put("ALEATORIO", aleatorio());
+
+		// Creando reportes
+		ConexionReporte<CajaMovimiento> conexionReporte = new ConexionReporte<CajaMovimiento>();
+		try {
+			conexionReporte.generarReporte(lista, parametros, "ReporteCajaVale");
+			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
+			conexionReporte.ventanaReporte.setVisible(true);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void imprimirReporteCliente(List<Cliente> lista) {
+		if (lista.size() <= 0) {
+			JOptionPane.showMessageDialog(null, "No hay registros para realizar la impresión.");
+			return;
+		}
+		HashMap<String, Object> parametros = new HashMap<>();
+		parametros.put("solicitante", Sesion.getInstance().getColaborador().toString());
+
+		// Diario Mensual
+		parametros.put("tipoReporte", "");
+
+		// Carteleria, costura o ambos
+		parametros.put("claseReporte", "");
+
+		// Creando reportes
+		ConexionReporte<Cliente> conexionReporte = new ConexionReporte<Cliente>();
+		try {
+			conexionReporte.generarReporte(lista, parametros, "Clientes");
+			conexionReporte.ventanaReporte.setLocationRelativeTo(null);
+			conexionReporte.ventanaReporte.setVisible(true);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private double sumarPagosPedido(Pedido pedido) {
 		double suma = 0;
 		
@@ -241,6 +289,15 @@ public class Metodos {
 			e.printStackTrace();
 		}
 		return valorPendiente;
+	}
+	
+	private String aleatorio() {
+		// Random instance
+		Random random = new Random();
+		int number = random.nextInt();
+		// number stores the random integer in decimal form
+		String hexadecimal = Integer.toHexString(number);
+		return hexadecimal;
 	}
 
 }

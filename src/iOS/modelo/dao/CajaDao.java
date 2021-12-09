@@ -1,5 +1,6 @@
 package iOS.modelo.dao;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class CajaDao extends GenericDao<Caja> {
 			return caja;
 		}
 	}
-	
+
 	public List<CajaMovimiento> recuperaPagos() {
 		getSession().beginTransaction();
 		String sql = "from CajaMovimiento order by id DESC";
@@ -136,10 +137,17 @@ public class CajaDao extends GenericDao<Caja> {
 
 	public List<CajaMovimiento> recuperarCandidatosVales(String observacion) {
 		getSession().beginTransaction();
-		String sql = "from CajaMovimiento " + "where observacion LIKE :observacion " + "order by id ASC";
+		Date f = new Date();
+		int fecha = f.getMonth()+1;
+		String sql = "FROM CajaMovimiento "
+				+ "WHERE (observacion LIKE :observacion "
+				+ "OR esVale = true)"
+				+ "AND MONTH(fechaRegistro) = :fecha "
+				+ "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<CajaMovimiento> query = getSession().createQuery(sql);
 		query.setParameter("observacion", "%" + observacion + "%");
+		query.setParameter("fecha", fecha);
 		try {
 			List<CajaMovimiento> resultados = query.getResultList();
 			commit();
@@ -153,12 +161,8 @@ public class CajaDao extends GenericDao<Caja> {
 
 	public List<Caja> reporteDiarioCaja(int colaborador, boolean estado, boolean cajaCerrada, Date fecha) {
 		getSession().beginTransaction();
-		String sql = "FROM Caja " 
-		+ "WHERE colaborador.id = :colaborador " 
-				+ "AND estado = :estado "
-				+ "AND cajaCerrada = :cajaCerrada " 
-				+ "AND DATE(fechaRegistro) = :fecha " 
-				+ "ORDER BY id DESC";
+		String sql = "FROM Caja " + "WHERE colaborador.id = :colaborador " + "AND estado = :estado "
+				+ "AND cajaCerrada = :cajaCerrada " + "AND DATE(fechaRegistro) = :fecha " + "ORDER BY id DESC";
 		try {
 			@SuppressWarnings("unchecked")
 			Query<Caja> query = getSession().createQuery(sql);
@@ -175,16 +179,13 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
-	public List<Caja> reporteMensualCaja(int colaborador, boolean estado, boolean cajaCerrada, Integer mes, Integer anho) {
+
+	public List<Caja> reporteMensualCaja(int colaborador, boolean estado, boolean cajaCerrada, Integer mes,
+			Integer anho) {
 		getSession().beginTransaction();
-		String sql = "FROM Caja " 
-		+ "WHERE colaborador.id = :colaborador " 
-				+ "AND estado = :estado "
-				+ "AND cajaCerrada = :cajaCerrada " 
-				+ "AND MONTH(fechaRegistro) = :mes "
-				+ "AND YEAR(fechaRegistro) = :anho " 
-				+ "ORDER BY id DESC";
+		String sql = "FROM Caja " + "WHERE colaborador.id = :colaborador " + "AND estado = :estado "
+				+ "AND cajaCerrada = :cajaCerrada " + "AND MONTH(fechaRegistro) = :mes "
+				+ "AND YEAR(fechaRegistro) = :anho " + "ORDER BY id DESC";
 		try {
 			@SuppressWarnings("unchecked")
 			Query<Caja> query = getSession().createQuery(sql);
@@ -202,6 +203,5 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
-	
+
 }

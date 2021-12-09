@@ -69,7 +69,18 @@ public class Cliente {
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> cajaMovimientos;
-
+	
+	@ColumnDefault("0")
+	@Column(nullable = false)
+	private double pagos;
+	
+	@ColumnDefault("0")
+	@Column(nullable = false)
+	private double deudas;
+	
+	@ColumnDefault("0")
+	@Column(nullable = false)
+	private double diferencia;
 
 	public int getId() {
 		return id;
@@ -134,27 +145,46 @@ public class Cliente {
 	public void setCajaMovimientos(List<CajaMovimiento> cajaMovimientos) {
 		this.cajaMovimientos = cajaMovimientos;
 	}
-
-	@Override
-	public String toString() {
-		return nombreCompleto+" "+pagoDeuda();
-	}
 	
-	private String pagoDeuda() {
-		double diferencia = 0;
-		double pagos = 0;
-		double deuda = 0;
+
+	public double getPagos() {
+		pagos = 0;
 		try {
-			pagos = cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false).mapToDouble(b -> b.getValorGS()).sum();
-			deuda = pedidos.stream().filter(a -> a.isEsPresupuesto() == false && a.isEstado() == true).mapToDouble(b -> b.getPrecioPagar()).sum();
+			pagos = cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false)
+					.mapToDouble(b -> b.getValorGS()).sum();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pagos;
+	}
+
+	public double getDeudas() {
+		deudas = 0;
+		try {
+			deudas = pedidos.stream().filter(a -> a.isEsPresupuesto() == false && a.isEstado() == true)
+					.mapToDouble(b -> b.getPrecioPagar()).sum();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-		diferencia = deuda - pagos;
-		
-		return "DEUDA PENDIENTE: "+diferencia;
-
+		return deudas;
 	}
+
+	public double getDiferencia() {
+		diferencia = 0;
+		try {
+			diferencia = getDeudas() - getPagos();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return diferencia;
+	}
+	
+	@Override
+	public String toString() {
+		return nombreCompleto;
+	}
+	
 
 }

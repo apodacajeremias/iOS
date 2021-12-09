@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteCajaVale" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="41028385-48c9-4e8e-b389-419d6828ce8a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="ALEATORIO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="esVale" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[esVale]]></fieldDescription>
+	</field>
+	<field name="fechaRegistro" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaRegistro]]></fieldDescription>
+	</field>
+	<field name="valorUS" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorUS]]></fieldDescription>
+	</field>
+	<field name="valorRS" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorRS]]></fieldDescription>
+	</field>
+	<field name="colaborador" class="iOS.modelo.entidades.Colaborador">
+		<fieldDescription><![CDATA[colaborador]]></fieldDescription>
+	</field>
+	<field name="valorGS" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorGS]]></fieldDescription>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<fieldDescription><![CDATA[observacion]]></fieldDescription>
+	</field>
+	<variable name="valorUS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorUS}]]></variableExpression>
+	</variable>
+	<variable name="valorRS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorRS}]]></variableExpression>
+	</variable>
+	<variable name="valorGS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorGS}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="15" uuid="37d71204-b3d0-489e-8655-662d72e0f45e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb80849d-6b9c-4107-bbab-c53efe2fbc3c"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[esVale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="57" y="0" width="79" height="15" uuid="3c4ab689-3738-416b-a14f-3e7e6dc02834">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff5985da-ed8c-4480-aebc-657c26038ebf"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[fechaRegistro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="0" width="60" height="15" uuid="78ea6e69-e344-4e62-8b30-637b792939b9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5429c63-cfe4-4640-b894-d86c14a2d92b"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[valorUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="424" y="0" width="60" height="15" uuid="665e5d26-9ec4-479f-af66-b3c3314fd0c7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fda67ec2-4f9c-47a0-a41b-736d5c6a1927"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[valorRS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="0" width="100" height="15" uuid="00254acc-e636-4f50-85bc-33b94df414db">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66764e80-32f5-4189-9084-f0997bac1d22"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[colaborador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="0" width="60" height="15" uuid="80b083e8-61a0-40f8-b89d-e46bd87c18c2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="331e4345-701f-43a4-9843-50c9eb2026bc"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[valorGS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="0" width="100" height="15" uuid="5ed770cc-ff4c-4314-a478-75eeecc33cd2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="db566e7b-32fa-45a1-9429-11243b92f87a"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[observacion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="0" width="50" height="15" uuid="051e82a2-01ba-4945-8cec-92b733270056">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb80849d-6b9c-4107-bbab-c53efe2fbc3c"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{esVale} == true ? "✓":"X"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="MMM d, yyyy">
+				<reportElement x="57" y="0" width="79" height="15" uuid="4bc31553-b20b-45d1-8a6c-518798fe2d62">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff5985da-ed8c-4480-aebc-657c26038ebf"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="495" y="0" width="60" height="15" uuid="167a2c9b-2b8a-4b6d-b7f8-8c66bea49830">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5429c63-cfe4-4640-b894-d86c14a2d92b"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{valorUS}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="424" y="0" width="60" height="15" uuid="d2f3c090-99ed-4965-a0cb-88c9ed60408e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fda67ec2-4f9c-47a0-a41b-736d5c6a1927"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{valorRS}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="143" y="0" width="100" height="15" uuid="e151f0d3-3d6b-4fef-b331-73fb2f72fc43">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66764e80-32f5-4189-9084-f0997bac1d22"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{colaborador}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="357" y="0" width="60" height="15" uuid="6c3c2559-ad7c-4351-af6c-ba4076db2281">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="331e4345-701f-43a4-9843-50c9eb2026bc"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{valorGS}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="250" y="0" width="100" height="15" uuid="2bb51a82-861a-41b5-8853-5f7ac7de4b87">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="db566e7b-32fa-45a1-9429-11243b92f87a"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="45" splitType="Stretch">
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="0" y="20" width="85" height="15" uuid="703df22e-9d85-4e79-b9f0-e6b1f2c41cab">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$V{valorUS1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="85" y="20" width="85" height="15" uuid="76e858f1-9603-4706-af8e-97db795f4ee2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$V{valorRS1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="170" y="20" width="85" height="15" uuid="319ecfd9-f5d9-4ed1-b72d-ec688e32550d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$V{valorGS1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="85" height="15" uuid="ef46ae8a-1bca-4de7-9c71-589f7de67db9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="331e4345-701f-43a4-9843-50c9eb2026bc"/>
+				</reportElement>
+				<text><![CDATA[SUMA GS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="0" width="85" height="15" uuid="96becc82-eb1a-463f-9a41-f5d83b27a09d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fda67ec2-4f9c-47a0-a41b-736d5c6a1927"/>
+				</reportElement>
+				<text><![CDATA[SUMA RS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="85" height="15" uuid="795c4058-0769-4b8b-af52-a81a4a4e4617">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5429c63-cfe4-4640-b894-d86c14a2d92b"/>
+				</reportElement>
+				<text><![CDATA[SUMA US]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="30" uuid="8520d781-5ea4-4e79-bd86-f86dc928949d"/>
+				<textFieldExpression><![CDATA[$P{ALEATORIO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

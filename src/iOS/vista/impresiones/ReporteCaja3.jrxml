@@ -142,6 +142,24 @@
 	<variable name="id1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{id}]]></variableExpression>
 	</variable>
+	<variable name="saldoIngresadoGS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoIngresadoGS}]]></variableExpression>
+	</variable>
+	<variable name="saldoIngresadoRS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoIngresadoRS}]]></variableExpression>
+	</variable>
+	<variable name="saldoIngresadoUS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoIngresadoUS}]]></variableExpression>
+	</variable>
+	<variable name="saldoRetiradoGS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoRetiradoGS}]]></variableExpression>
+	</variable>
+	<variable name="saldoRetiradoRS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoRetiradoRS}]]></variableExpression>
+	</variable>
+	<variable name="saldoRetiradoUS1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoRetiradoUS}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -280,7 +298,7 @@
 			</frame>
 			<frame>
 				<reportElement x="0" y="21" width="555" height="15" uuid="dc154556-9bb5-4654-b7cf-764ae6a62568"/>
-				<textField pattern="#,##0.###;#,##0.###-" isBlankWhenNull="true">
+				<textField pattern="#,##0.###;(-#,##0.###)" isBlankWhenNull="true">
 					<reportElement x="505" y="0" width="50" height="15" uuid="b1ba30bc-863f-4807-8bc2-9bcc56d34be2">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9dca0bf0-5967-40dc-93e4-362b7caa0d4c"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -290,7 +308,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{saldoFinalUS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-" isBlankWhenNull="true">
+				<textField pattern="#,##0.###;(-#,##0.###)" isBlankWhenNull="true">
 					<reportElement x="442" y="0" width="50" height="15" uuid="98b37fbd-81ed-48bc-87fd-5084d9c44fff">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a9f7206-9411-44ac-951d-cf1eea98a328"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -300,7 +318,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{saldoFinalRS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-" isBlankWhenNull="true">
+				<textField pattern="#,##0.###;(-#,##0.###)" isBlankWhenNull="true">
 					<reportElement x="330" y="0" width="50" height="15" uuid="13dd48c0-1f2e-44f9-a8b4-4f193362f830">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="85b78aef-ff4f-43ed-b7c0-379b38afa19d"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -321,7 +339,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{colaborador}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-" isBlankWhenNull="true">
+				<textField pattern="#,##0.###;(-#,##0.###)" isBlankWhenNull="true">
 					<reportElement x="386" y="0" width="50" height="15" uuid="ab617158-da4b-4de1-861b-31948a3f07dc">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1ef2cd2-c4ba-4295-a6da-4b2f35f4c0d6"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -353,7 +371,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-" isBlankWhenNull="true">
+				<textField pattern="#,##0.###;(-#,##0.###)" isBlankWhenNull="true">
 					<reportElement x="218" y="0" width="50" height="15" uuid="6bbc01a1-3685-4353-b689-29766c348d66">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="85b78aef-ff4f-43ed-b7c0-379b38afa19d"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -363,7 +381,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{saldoInicialGS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-" isBlankWhenNull="true">
+				<textField pattern="#,##0.###;(-#,##0.###)" isBlankWhenNull="true">
 					<reportElement x="274" y="0" width="50" height="15" uuid="54e01066-14dd-46d0-b30e-1daac70952ba">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1ef2cd2-c4ba-4295-a6da-4b2f35f4c0d6"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -685,77 +703,77 @@
 					</textElement>
 					<text><![CDATA[Retiro Us.]]></text>
 				</staticText>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="67" y="0" width="65" height="15" uuid="8c1a467a-8c3e-4b05-8dfb-7445f9b93c82">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoDeclaradoGS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="67" y="15" width="65" height="15" uuid="77083fd2-c80c-4575-b5fd-590308f4b30a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoDeclaradoRS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="67" y="30" width="65" height="15" uuid="0414b339-081e-404f-a32b-7d9d28919e80">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoDeclaradoUS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="206" y="0" width="65" height="15" uuid="0c3d3ef9-10df-40f9-b7e6-b0c436018d19">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoEntregadoGS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="206" y="15" width="65" height="15" uuid="cf43b675-6e5a-4544-8172-d2c28ab60c8d">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoEntregadoRS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="206" y="30" width="65" height="15" uuid="13ae9481-703b-426f-93a9-eda6212d5242">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoEntregadoUS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="345" y="0" width="65" height="15" uuid="b3171a4f-b23e-40d9-8c67-713f95f32df7">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoIngresadoGS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="345" y="15" width="65" height="15" uuid="857ea2ba-a848-41f0-b884-706f51d6a82b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoIngresadoRS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="345" y="30" width="65" height="15" uuid="7b57e1fb-8003-464c-b33d-2ebc439f50ec">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoIngresadoUS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="488" y="0" width="65" height="15" uuid="5b536a00-6811-4384-a7b3-8061375214d0">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoRetiradoGS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="488" y="15" width="65" height="15" uuid="185d89a3-89de-476f-862c-6381b431446f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{saldoRetiradoRS}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###;#,##0.###-">
+				<textField pattern="#,##0.###;(-#,##0.###)">
 					<reportElement x="488" y="30" width="65" height="15" uuid="a747e23e-57c4-4015-a960-0268598f1bd8">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -765,7 +783,7 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="34" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<frame>
 				<reportElement x="177" y="2" width="200" height="30" uuid="a6edf018-797c-4a06-8659-b7f658aa5cd2"/>
 				<textField>
@@ -781,4 +799,94 @@
 			</frame>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="45">
+			<staticText>
+				<reportElement x="0" y="0" width="95" height="15" uuid="221ed4b1-ab18-485f-aa4b-f77db95365e0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77f9fd28-3066-4386-8b26-d657ad060cde"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suma Ingresos Gs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="15" width="95" height="15" uuid="358eff55-a9fb-45a0-8e32-c2dac63b3857">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77f9fd28-3066-4386-8b26-d657ad060cde"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suma Ingresos Rs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="95" height="15" uuid="7a689693-55fa-43c1-8168-0e52a7b13da6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="85b78aef-ff4f-43ed-b7c0-379b38afa19d"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suma Ingresos Us.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="95" height="15" uuid="2ee5f17e-90ca-4020-a4c9-a2360451bfc6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77f9fd28-3066-4386-8b26-d657ad060cde"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suma Retiros Gs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="15" width="95" height="15" uuid="58b366f5-d48f-41a7-88b7-04073732be2b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77f9fd28-3066-4386-8b26-d657ad060cde"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suma Retiros Rs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="30" width="95" height="15" uuid="0e61e1c7-3727-4525-bdb8-031baea10bf0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="85b78aef-ff4f-43ed-b7c0-379b38afa19d"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suma Retiros Us.]]></text>
+			</staticText>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="95" y="0" width="95" height="15" uuid="aeea87d6-4cb6-4691-a28a-00ceaac6283c"/>
+				<textFieldExpression><![CDATA[$V{saldoIngresadoGS1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="95" y="15" width="95" height="15" uuid="d0b4b546-30c9-43c1-acd1-7f6c34310b1f"/>
+				<textFieldExpression><![CDATA[$V{saldoIngresadoRS1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="95" y="30" width="95" height="15" uuid="957920aa-c22e-428f-a2f3-957583f1cd09"/>
+				<textFieldExpression><![CDATA[$V{saldoIngresadoUS1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="295" y="0" width="95" height="15" uuid="70ce4857-1da6-498c-b636-1f2371b83b36"/>
+				<textFieldExpression><![CDATA[$V{saldoRetiradoGS1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="295" y="15" width="95" height="15" uuid="870057d1-c298-4b60-a4e3-b5f14890277e"/>
+				<textFieldExpression><![CDATA[$V{saldoRetiradoRS1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(-#,##0.###)">
+				<reportElement x="295" y="30" width="95" height="15" uuid="5f8d8d81-70c2-4ebe-8762-91b1ed697e3b"/>
+				<textFieldExpression><![CDATA[$V{saldoRetiradoUS1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>

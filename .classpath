@@ -39,8 +39,8 @@
 	<classpathentry kind="lib" path="src/lib/RSMaterialComponents_3.0.jar" sourcepath="src/lib/RSMaterialComponents_3.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/commons-collections4-4.4.jar"/>
 	<classpathentry kind="lib" path="src/lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="src/lib/jasperreports-6.5.1.jar"/>
-	<classpathentry kind="lib" path="src/lib/jasperreports-fonts-6.5.1.jar"/>
-	<classpathentry kind="lib" path="src/lib/jasperreports-javaflow-6.5.1.jar"/>
+	<classpathentry kind="lib" path="src/lib/jasperreports-6.17.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/jasperreports-fonts-6.17.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/jasperreports-javaflow-6.17.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

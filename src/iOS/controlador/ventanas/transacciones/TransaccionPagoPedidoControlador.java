@@ -99,20 +99,14 @@ public class TransaccionPagoPedidoControlador implements MouseListener {
 		cliente = clientes.get(posicion);
 
 		movimientos = cliente.getCajaMovimientos();
+		movimientos = movimientos.stream().filter(a -> a.getPedido() == null).collect(Collectors.toList());
 		tablaCajaMovimiento.setMovimiento(movimientos);
 		tablaCajaMovimiento.fireTableDataChanged();
 
 		pedidos = cliente.getPedidos();
+		pedidos = pedidos.stream().filter(a -> a.getPagosPedido().stream().filter(b -> b.isEsAnulado() == false && b.isEsRetiro() == false).mapToDouble(c -> c.getValorGS()).sum() < a.getPrecioPagar()).collect(Collectors.toList());
 		tablaPedido.setPedidos(pedidos);
 		tablaPedido.fireTableDataChanged();
-		
-//		movimientos = dao.recuperarPagos(cliente.getId());
-//		tablaCajaMovimiento.setMovimiento(movimientos);
-//		tablaCajaMovimiento.fireTableDataChanged();
-//
-//		pedidos = dao.recuperarPedidos(cliente.getId());
-//		tablaPedido.setPedidos(pedidos);
-//		tablaPedido.fireTableDataChanged();
 	}
 
 	private void seleccionarPago(int posicion) {

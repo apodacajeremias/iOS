@@ -96,6 +96,10 @@ public class Pedido {
 	@Column(nullable = false)
 	private boolean deudaPaga;
 	
+	@ColumnDefault("0")
+	@Column(nullable = false)
+	private double sumaPagos;
+	
 	@Column(nullable = true)
 	private String informacionResponsable;
 
@@ -281,6 +285,22 @@ public class Pedido {
 
 	public void setInformacionResponsable(String informacionResponsable) {
 		this.informacionResponsable = informacionResponsable;
+	}
+
+	public double getSumaPagos() {
+		sumaPagos = 0;
+		try {
+			sumaPagos = pagosPedido.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false)
+					.mapToDouble(b -> b.getValorGS()).sum();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sumaPagos;
+	}
+
+	public void setSumaPagos(double sumaPagos) {
+		this.sumaPagos = sumaPagos;
 	}
 	
 	
