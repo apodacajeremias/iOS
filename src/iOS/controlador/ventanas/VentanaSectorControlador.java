@@ -19,12 +19,10 @@ import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.SectorDao;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Sector;
-import iOS.modelo.entidades.SectorProceso;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.SectorInterface;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaColaborador;
-import iOS.vista.modelotabla.ModeloTablaProceso;
 import iOS.vista.ventanas.VentanaSector;
 
 public class VentanaSectorControlador implements AccionesABM, MouseListener, ActionListener, SectorInterface {
@@ -34,12 +32,12 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 	private Sector sector;
 
 	private ModeloTablaColaborador modeloTablaColaborador;
-	private ModeloTablaProceso modeloTablaProceso;
+//	private ModeloTablaProceso modeloTablaProceso;
 
 	private List<Colaborador> colaboradoresDelSector = new ArrayList<Colaborador>();
-	private List<SectorProceso> procesos = new ArrayList<SectorProceso>();
+//	private List<SectorProceso> procesos = new ArrayList<SectorProceso>();
 
-	private SectorProceso proceso;
+//	private SectorProceso proceso;
 
 	public VentanaSectorControlador(VentanaSector ventana) {
 		this.ventana = ventana;
@@ -48,8 +46,8 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 		modeloTablaColaborador = new ModeloTablaColaborador();
 		ventana.getTableColaboradores().setModel(modeloTablaColaborador);
 
-		modeloTablaProceso = new ModeloTablaProceso();
-		ventana.getTableProcesos().setModel(modeloTablaProceso);
+//		modeloTablaProceso = new ModeloTablaProceso();
+//		ventana.getTableProcesos().setModel(modeloTablaProceso);
 		tableMenu(ventana.getTableProcesos());
 
 		dao = new SectorDao();
@@ -86,9 +84,9 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 		modeloTablaColaborador.setLista(colaboradoresDelSector);
 		modeloTablaColaborador.fireTableDataChanged();
 
-		procesos = new ArrayList<SectorProceso>();
-		modeloTablaProceso.setProcesos(procesos);
-		modeloTablaProceso.fireTableDataChanged();
+//		procesos = new ArrayList<SectorProceso>();
+//		modeloTablaProceso.setProcesos(procesos);
+//		modeloTablaProceso.fireTableDataChanged();
 
 	}
 
@@ -105,15 +103,15 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 		if (sector == null) {
 			return;
 		}
-		proceso = new SectorProceso();
-		proceso.setEsRepetible(true);
-		proceso.setColaborador(Sesion.getInstance().getColaborador());
-		proceso.setSector(sector);
-		proceso.setNombreProceso(nombre);
-
-		procesos.add(proceso);
-		modeloTablaProceso.setProcesos(procesos);
-		modeloTablaProceso.fireTableDataChanged();
+//		proceso = new SectorProceso();
+//		proceso.setEsRepetible(true);
+//		proceso.setColaborador(Sesion.getInstance().getColaborador());
+//		proceso.setSector(sector);
+//		proceso.setNombreProceso(nombre);
+//
+//		procesos.add(proceso);
+//		modeloTablaProceso.setProcesos(procesos);
+//		modeloTablaProceso.fireTableDataChanged();
 
 		guardar();
 
@@ -144,9 +142,9 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 		int opcion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el proceso?", "Error",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
-			procesos.remove(row);
-			modeloTablaProceso.setProcesos(procesos);
-			modeloTablaProceso.fireTableDataChanged();
+//			procesos.remove(row);
+//			modeloTablaProceso.setProcesos(procesos);
+//			modeloTablaProceso.fireTableDataChanged();
 			guardar();
 		}
 
@@ -294,9 +292,9 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 		modeloTablaColaborador.setLista(colaboradoresDelSector);
 		modeloTablaColaborador.fireTableDataChanged();
 
-		procesos = sector.getProcesos();
-		modeloTablaProceso.setProcesos(procesos);
-		modeloTablaProceso.fireTableDataChanged();
+//		procesos = sector.getProcesos();
+//		modeloTablaProceso.setProcesos(procesos);
+//		modeloTablaProceso.fireTableDataChanged();
 
 	}
 
@@ -311,11 +309,5 @@ public class VentanaSectorControlador implements AccionesABM, MouseListener, Act
 			break;
 		}
 
-	}
-
-	@Override
-	public void setProceso(SectorProceso proceso) {
-		// TODO Auto-generated method stub
-		
 	}
 }

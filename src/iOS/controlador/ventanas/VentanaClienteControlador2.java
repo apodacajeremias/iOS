@@ -258,11 +258,12 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				if (pedido.getPedidoCarteleria() != pedido.getPedidoCarteleria() == true) {
+				if (pedido.getPedidoCarteleria() == true) {
 					Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido);
 				}
-
+				if (pedido.getPedidoCostura() == true) {
+					Metodos.getInstance().imprimirPedidoConfeccionIndividual(pedido);
+				}
 			}
 		});
 		JMenuItem anularPedido = new JMenuItem("Anular pedido");

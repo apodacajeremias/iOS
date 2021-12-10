@@ -47,9 +47,5 @@
 		<mapping class="iOS.modelo.entidades.Rol"></mapping>
 		<mapping class="iOS.modelo.entidades.RolOperacion"></mapping>
 		<mapping class="iOS.modelo.entidades.Sector"></mapping>
-		<mapping class="iOS.modelo.entidades.SectorProceso"></mapping>
-		<mapping class="iOS.modelo.entidades.Servicio"></mapping>
-		<mapping class="iOS.modelo.entidades.Tinta"></mapping>
-
 	</session-factory>
 </hibernate-configuration>

@@ -41,10 +41,6 @@ public class Produccion {
 	private Sector sector;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
-	private SectorProceso proceso;
-
-	@ManyToOne
 	@JoinColumn(nullable = true)
 	private PedidoDetalles pedidoDetalle;
 
@@ -65,121 +61,101 @@ public class Produccion {
 	@Column(nullable = false)
 	private String tipoTrabajo;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaModificado;
-
 	public int getId() {
 		return id;
-	}
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-	public Maquina getMaquina() {
-		return maquina;
-	}
-
-	public Sector getSector() {
-		return sector;
-	}
-
-	public SectorProceso getProceso() {
-		return proceso;
-	}
-
-	public PedidoDetalles getPedidoDetalle() {
-		return pedidoDetalle;
-	}
-
-	public PedidoDetalleConfeccion getPedidoDetalleConfeccion() {
-		return pedidoDetalleConfeccion;
-	}
-
-	public String getObservacion() {
-		return observacion;
-	}
-
-	public boolean isDesperdicio() {
-		return desperdicio;
-	}
-
-	public double getCantidadDesperdicio() {
-		return cantidadDesperdicio;
-	}
-
-	public String getTipoTrabajo() {
-		return tipoTrabajo;
-	}
-
-	public Date getFechaModificado() {
-		return fechaModificado;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
 	}
 
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
 
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
+	}
+
+	public Maquina getMaquina() {
+		return maquina;
 	}
 
 	public void setMaquina(Maquina maquina) {
 		this.maquina = maquina;
 	}
 
+	public Sector getSector() {
+		return sector;
+	}
+
 	public void setSector(Sector sector) {
 		this.sector = sector;
 	}
 
-	public void setProceso(SectorProceso proceso) {
-		this.proceso = proceso;
+	public PedidoDetalles getPedidoDetalle() {
+		return pedidoDetalle;
 	}
 
 	public void setPedidoDetalle(PedidoDetalles pedidoDetalle) {
 		this.pedidoDetalle = pedidoDetalle;
 	}
 
+	public PedidoDetalleConfeccion getPedidoDetalleConfeccion() {
+		return pedidoDetalleConfeccion;
+	}
+
 	public void setPedidoDetalleConfeccion(PedidoDetalleConfeccion pedidoDetalleConfeccion) {
 		this.pedidoDetalleConfeccion = pedidoDetalleConfeccion;
+	}
+
+	public String getObservacion() {
+		return observacion;
 	}
 
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
 
+	public boolean isDesperdicio() {
+		return desperdicio;
+	}
+
 	public void setDesperdicio(boolean desperdicio) {
 		this.desperdicio = desperdicio;
+	}
+
+	public double getCantidadDesperdicio() {
+		return cantidadDesperdicio;
 	}
 
 	public void setCantidadDesperdicio(double cantidadDesperdicio) {
 		this.cantidadDesperdicio = cantidadDesperdicio;
 	}
 
+	public String getTipoTrabajo() {
+		return tipoTrabajo;
+	}
+
 	public void setTipoTrabajo(String tipoTrabajo) {
 		this.tipoTrabajo = tipoTrabajo;
 	}
-
-	public void setFechaModificado(Date fechaModificado) {
-		this.fechaModificado = fechaModificado;
-	}
 	
 	
-
 }

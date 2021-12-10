@@ -207,22 +207,19 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	}
 
 	private void cerrarCaja() {
-		if (caja.getColaborador().getId() == Sesion.getInstance().getColaborador().getId()
-				&& EventosUtil.formatoFecha(caja.getFechaRegistro()).equals(EventosUtil.formatoFecha(new Date()))) {
-			ventana.getlDatosCriticos().setText("CAJERO/A: " + caja.getColaborador());
-			ventana.getlDatosCriticos2().setText(EventosUtil.formatoFecha(caja.getFechaRegistro()));
-			ventana.getlDatosCriticos3().setText("CIERRE DE CAJA");
-			ventana.getlDatosCriticos4().setText("En los primeros campos indique el valor que cuenta en caja.");
-			ventana.gettObservacion().setText("En los campos de abajo ingrese el valor que entregará a la administracion.");
-			ventana.getPanelGeneral().setVisible(true);
-			ventana.getPanel_2().setVisible(true);
-			EventosUtil.estadosBotones(ventana.getBtnConfirmar(), true);
-			EventosUtil.estadosBotones(ventana.getBtnCancelar(), true);
+		ventana.getlDatosCriticos().setText("CAJERO/A: " + caja.getColaborador());
+		ventana.getlDatosCriticos2().setText(EventosUtil.formatoFecha(caja.getFechaRegistro()));
+		ventana.getlDatosCriticos3().setText("CIERRE DE CAJA");
+		ventana.getlDatosCriticos4().setText("En los primeros campos indique el valor que cuenta en caja.");
+		ventana.gettObservacion().setText("En los campos de abajo ingrese el valor que entregará a la administracion.");
+		ventana.getPanelGeneral().setVisible(true);
+		ventana.getPanel_2().setVisible(true);
+		EventosUtil.estadosBotones(ventana.getBtnConfirmar(), true);
+		EventosUtil.estadosBotones(ventana.getBtnCancelar(), true);
 
-			ventana.getPanelGeneral().setVisible(true);
-			ventana.getPanelValor1().setVisible(true);
-			ventana.getPanelValor2().setVisible(true);
-		}
+		ventana.getPanelGeneral().setVisible(true);
+		ventana.getPanelValor1().setVisible(true);
+		ventana.getPanelValor2().setVisible(true);
 	}
 
 	private void visualizarDetalles(int posicion) {

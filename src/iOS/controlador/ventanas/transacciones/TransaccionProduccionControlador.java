@@ -19,7 +19,6 @@ import iOS.modelo.entidades.Pedido;
 import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Produccion;
 import iOS.modelo.entidades.Sector;
-import iOS.modelo.entidades.SectorProceso;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.interfaces.SectorInterface;
 import iOS.modelo.singleton.Sesion;
@@ -38,7 +37,6 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 	private List<PedidoDetalles> pedidosDetalles = new ArrayList<PedidoDetalles>();
 	private Produccion produccion;
 	private List<Produccion> producciones = new ArrayList<Produccion>();
-	private SectorProceso proceso;
 
 	private ModeloTablaPedidoDetalle modeloTablaPedidoDetalle;
 	private ModeloTablaProduccion modeloTablaProduccion;
@@ -127,8 +125,11 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 	}
 	
 	private void iniciarProduccion() {
-		// TODO Auto-generated method stub
-
+		produccion = new Produccion();
+		produccion.setCantidadDesperdicio(0);
+		produccion.setColaborador(Sesion.getInstance().getColaborador());
+		produccion.setDesperdicio(false);
+		
 	}
 	
 	private void reiniciarProduccion() {
@@ -147,61 +148,46 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 	}
 	
 
-	private void cambiarEstado() {
-		if (procesoRepetido(proceso)) {
-			return;
-		}
+//	private void cambiarEstado() {
+//		if (procesoRepetido(proceso)) {
+//			return;
+//		}
+//
+//		produccion = new Produccion();
+//		produccion.setCantidadDesperdicio(0d);
+//		produccion.setColaborador(Sesion.getInstance().getColaborador());
+//		produccion.setDesperdicio(false);
+//		produccion.setMaquina(null);
+//		produccion.setObservacion("Sin observaciones.");
+//		produccion.setPedidoDetalle(pedidoDetalle);
+//		produccion.setSector(Sesion.getInstance().getColaborador().getSector());
+//		produccion.setTipoTrabajo("Sin definicion de trabajo");
+//		producciones.add(produccion);
+//		guardar();
+//		modeloTablaProduccion.setProducciones(producciones);
+//		modeloTablaProduccion.fireTableDataChanged();
+//	}
 
-		produccion = new Produccion();
-		produccion.setCantidadDesperdicio(0d);
-		produccion.setColaborador(Sesion.getInstance().getColaborador());
-		produccion.setDesperdicio(false);
-		produccion.setMaquina(null);
-		produccion.setObservacion("Sin observaciones.");
-		produccion.setPedidoDetalle(pedidoDetalle);
-		produccion.setProceso(proceso);
-		produccion.setSector(Sesion.getInstance().getColaborador().getSector());
-		produccion.setTipoTrabajo("Sin definicion de trabajo");
-		producciones.add(produccion);
-		guardar();
-		modeloTablaProduccion.setProducciones(producciones);
-		modeloTablaProduccion.fireTableDataChanged();
+	
 
-		proceso = null;
-	}
-
-	private boolean procesoRepetido(SectorProceso p) {
-		for (int i = 0; i < producciones.size(); i++) {
-			if (producciones.get(i).getProceso().getId() == p.getId()) {
-				if (producciones.get(i).getProceso().isEsRepetible()) {
-					return false;
-				}
-				if (!producciones.get(i).getProceso().isEsRepetible()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private void solicitarProceso() {
-		List<SectorProceso> procesos = Sesion.getInstance().getColaborador().getSector().getProcesos();
-		Object[] possibilities = new Object[procesos.size()];
-
-		for (int i = 0; i < possibilities.length; i++) {
-			possibilities[i] = procesos.get(i);
-		}
-
-		SectorProceso proceso = (SectorProceso) JOptionPane.showInputDialog(ventana,
-				"Seleccione el proceso:\n" + "\"Indique;\"", "Estado de seguimiento", JOptionPane.PLAIN_MESSAGE, null,
-				possibilities, "");
-
-		// If a string was returned, say so.
-		if (proceso != null) {
-			System.out.println(proceso.getId() + " " + proceso.getNombreProceso());
-		}
-		setProceso(proceso);
-	}
+//	private void solicitarProceso() {
+//		List<SectorProceso> procesos = Sesion.getInstance().getColaborador().getSector().getProcesos();
+//		Object[] possibilities = new Object[procesos.size()];
+//
+//		for (int i = 0; i < possibilities.length; i++) {
+//			possibilities[i] = procesos.get(i);
+//		}
+//
+//		SectorProceso proceso = (SectorProceso) JOptionPane.showInputDialog(ventana,
+//				"Seleccione el proceso:\n" + "\"Indique;\"", "Estado de seguimiento", JOptionPane.PLAIN_MESSAGE, null,
+//				possibilities, "");
+//
+//		// If a string was returned, say so.
+//		if (proceso != null) {
+//			System.out.println(proceso.getId() + " " + proceso.getNombreProceso());
+//		}
+//		setProceso(proceso);
+//	}
 
 	private void guardar() {
 		try {
@@ -310,7 +296,7 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 			encontrarPedido();
 			break;
 		case "Seguimiento":
-			solicitarProceso();
+//			solicitarProceso();
 			break;
 		default:
 			break;
@@ -322,15 +308,6 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 	public void setSector(Sector sector) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void setProceso(SectorProceso proceso) {
-		if (proceso == null) {
-			return;
-		}
-		this.proceso = proceso;
-		cambiarEstado();
 	}
 
 }

@@ -24,38 +24,28 @@ public class Maquina {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
 	@Column(nullable = false)
 	private String descripcion;
-	
-	@OneToMany(mappedBy = "maquina", cascade=CascadeType.ALL, orphanRemoval=false)
-	private List<Tinta> tintas;
-	
+
 	@OneToMany(mappedBy = "maquina", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
 
+	@Override
+	public String toString() {
+		return descripcion;
+	}
 
 	public int getId() {
 		return id;
@@ -63,6 +53,30 @@ public class Maquina {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	public String getDescripcion() {
@@ -73,14 +87,12 @@ public class Maquina {
 		this.descripcion = descripcion;
 	}
 
-	public List<Tinta> getTintas() {
-		return tintas;
+	public List<Produccion> getProducciones() {
+		return producciones;
 	}
 
-	public void setTintas(List<Tinta> tintas) {
-		this.tintas = tintas;
+	public void setProducciones(List<Produccion> producciones) {
+		this.producciones = producciones;
 	}
 
-	
-	
 }

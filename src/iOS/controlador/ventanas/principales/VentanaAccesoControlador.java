@@ -2,6 +2,7 @@ package iOS.controlador.ventanas.principales;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.entidades.Colaborador;
@@ -13,6 +14,7 @@ public class VentanaAccesoControlador implements ActionListener {
 	private VentanaAcceso ventana;
 	private ColaboradorDao dao;
 	private Colaborador colaborador;
+	private List<Colaborador> colaboradores;
 
 	public VentanaAccesoControlador(VentanaAcceso ventana) {
 		this.ventana = ventana;
@@ -23,13 +25,14 @@ public class VentanaAccesoControlador implements ActionListener {
 	private void setUpEvents() {
 		ventana.getBtnIngresar().addActionListener(this);
 	}
-	
+
 	public void comprobarAcceso() {
 		String usuario = ventana.gettUsuario().getText();
 		String password = String.valueOf(ventana.gettContra().getPassword());
-		
+
 		colaborador = dao.verificarAcceso(usuario, password);
-		
+		colaboradores = dao.recuperarTodoOrdenadoPorNombre();
+
 		if (colaborador == null) {
 			ventana.getlMensaje().setText("Verifique sus credenciales.");
 			ventana.gettContra().setText(null);
@@ -37,33 +40,12 @@ public class VentanaAccesoControlador implements ActionListener {
 		} else {
 			abrirVentanaPrincipal();
 		}
-		}
-	
-//	public void acceder(){
-//		String usuario = ventana.gettUsuario().getText();
-//		String password = String.valueOf(ventana.gettContra().getPassword());
-//		if (usuario.isEmpty() || password.length() <= 0) {
-//			ventana.gettUsuario().requestFocus();
-//			return;
-//		}
-//		
-//		colaborador = dao.verificarAcceso(usuario, password);
-//		
-//		if (colaborador != null) {
-//			Sesion.getInstance().setColaborador(colaborador);
-//			this.ventana.dispose();
-//			abrirVentanaPrincipal();
-//		}
-//		
-//		if (colaborador == null) {
-//			this.ventana.getlMensaje().setText("ACCESO INCORRECTO");
-//		}
-//		
-//	}
+	}
 
 	private void abrirVentanaPrincipal() {
 		try {
 			Sesion.getInstance().setColaborador(colaborador);
+			Sesion.getInstance().setColaboradores(colaboradores);
 			VentanaPrincipal principal = new VentanaPrincipal();
 			principal.getLblPODAC().setText(Sesion.getInstance().getColaborador().toString());
 			ventana.dispose();
@@ -81,7 +63,7 @@ public class VentanaAccesoControlador implements ActionListener {
 	public ColaboradorDao getDao() {
 		return dao;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {

@@ -49,7 +49,7 @@ public class ModeloTablaProduccion extends AbstractTableModel {
 		case 2:
 			return producciones.get(r).getSector();
 		case 3:
-			return producciones.get(r).getProceso();
+//			return producciones.get(r).getProceso();
 		case 4:
 			return producciones.get(r).getTipoTrabajo();
 		case 5:

@@ -39,9 +39,6 @@ public class Sector {
 	@JoinColumn(nullable = true)
 	private Colaborador colaborador;
 
-	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<SectorProceso> procesos;
-
 	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Colaborador> colaboradoresDelSector;
 	
@@ -57,66 +54,56 @@ public class Sector {
 		return id;
 	}
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-	public List<SectorProceso> getProcesos() {
-		return procesos;
-	}
-
-	public List<Colaborador> getColaboradoresDelSector() {
-		return colaboradoresDelSector;
-	}
-
-	public List<Produccion> getProducciones() {
-		return producciones;
-	}
-
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 
+	public boolean isEstado() {
+		return estado;
+	}
+
 	public void setEstado(boolean estado) {
 		this.estado = estado;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 
-	public void setProcesos(List<SectorProceso> procesos) {
-		this.procesos = procesos;
+	public List<Colaborador> getColaboradoresDelSector() {
+		return colaboradoresDelSector;
 	}
 
 	public void setColaboradoresDelSector(List<Colaborador> colaboradoresDelSector) {
 		this.colaboradoresDelSector = colaboradoresDelSector;
 	}
 
+	public List<Produccion> getProducciones() {
+		return producciones;
+	}
+
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
 	
-	
-
 }
