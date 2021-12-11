@@ -35,6 +35,7 @@ import iOS.vista.ventanas.VentanaBanco;
 import iOS.vista.ventanas.VentanaCliente;
 import iOS.vista.ventanas.VentanaColaborador;
 import iOS.vista.ventanas.VentanaConfiguracion;
+import iOS.vista.ventanas.VentanaMaquina;
 import iOS.vista.ventanas.VentanaMarca;
 import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
@@ -150,6 +151,17 @@ public class VentanaPrincipal extends JFrame {
 				abrirVentanaProducto();
 			}
 		});
+		
+		JMenuItem mnItemMaquina = new JMenuItem("Maquina");
+		mnItemMaquina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VentanaMaquina ventana = new VentanaMaquina();
+				ventana.setUpControlador();
+				ventana.getControlador().nuevo();
+				ventana.setVisible(true);
+			}
+		});
+		mnRegistros.add(mnItemMaquina);
 		mnItemProducto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemProducto);
 

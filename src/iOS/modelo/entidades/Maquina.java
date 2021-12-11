@@ -37,15 +37,13 @@ public class Maquina {
 	private Colaborador colaborador;
 
 	@Column(nullable = false)
-	private String descripcion;
+	private String nombreMaquina;
+	
+	@Column(nullable = false)
+	private String tipoMaquina;
 
 	@OneToMany(mappedBy = "maquina", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
-
-	@Override
-	public String toString() {
-		return descripcion;
-	}
 
 	public int getId() {
 		return id;
@@ -79,12 +77,20 @@ public class Maquina {
 		this.colaborador = colaborador;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public String getNombreMaquina() {
+		return nombreMaquina;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setNombreMaquina(String nombreMaquina) {
+		this.nombreMaquina = nombreMaquina;
+	}
+
+	public String getTipoMaquina() {
+		return tipoMaquina;
+	}
+
+	public void setTipoMaquina(String tipoMaquina) {
+		this.tipoMaquina = tipoMaquina;
 	}
 
 	public List<Produccion> getProducciones() {
@@ -94,5 +100,7 @@ public class Maquina {
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
-
+	
+	
+	
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Rol;
+import iOS.modelo.entidades.Sector;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.principales.VentanaAcceso;
 import iOS.vista.ventanas.principales.VentanaPrincipal;
@@ -15,6 +17,12 @@ public class VentanaAccesoControlador implements ActionListener {
 	private ColaboradorDao dao;
 	private Colaborador colaborador;
 	private List<Colaborador> colaboradores;
+
+	private Sector sector;
+	private List<Sector> sectores;
+
+	private Rol rol;
+	private List<Rol> roles;
 
 	public VentanaAccesoControlador(VentanaAcceso ventana) {
 		this.ventana = ventana;
@@ -31,13 +39,17 @@ public class VentanaAccesoControlador implements ActionListener {
 		String password = String.valueOf(ventana.gettContra().getPassword());
 
 		colaborador = dao.verificarAcceso(usuario, password);
-		colaboradores = dao.recuperarTodoOrdenadoPorNombre();
 
 		if (colaborador == null) {
 			ventana.getlMensaje().setText("Verifique sus credenciales.");
 			ventana.gettContra().setText(null);
 			ventana.gettUsuario().requestFocus();
 		} else {
+			colaboradores = dao.recuperarTodoOrdenadoPorNombre();
+			sector = colaborador.getSector();
+			sectores = dao.recuperarSectoresOrdenadoPorNombre();
+			rol = colaborador.getRol();
+			roles = dao.recuperarRolesOrdenadoPorNombre();
 			abrirVentanaPrincipal();
 		}
 	}
@@ -46,6 +58,10 @@ public class VentanaAccesoControlador implements ActionListener {
 		try {
 			Sesion.getInstance().setColaborador(colaborador);
 			Sesion.getInstance().setColaboradores(colaboradores);
+			Sesion.getInstance().setSector(sector);
+			Sesion.getInstance().setSectores(sectores);
+			Sesion.getInstance().setRol(rol);
+			Sesion.getInstance().setRoles(roles);
 			VentanaPrincipal principal = new VentanaPrincipal();
 			principal.getLblPODAC().setText(Sesion.getInstance().getColaborador().toString());
 			ventana.dispose();

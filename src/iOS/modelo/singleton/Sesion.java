@@ -5,13 +5,20 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Rol;
+import iOS.modelo.entidades.Sector;
 
 public class Sesion {
 	private static Sesion sesion;
 
 	private Colaborador colaborador;
-	
 	private List<Colaborador> colaboradores;
+
+	private Sector sector;
+	private List<Sector> sectores;
+	
+	private Rol rol;
+	private List<Rol> roles;
 
 	private Sesion() {
 	}
@@ -44,7 +51,37 @@ public class Sesion {
 	public void setColaboradores(List<Colaborador> colaboradores) {
 		this.colaboradores = colaboradores;
 	}
-	
-	
-	
+
+	public Sector getSector() {
+		return sector;
+	}
+
+	public void setSector(Sector sector) {
+		this.sector = sector;
+	}
+
+	public List<Sector> getSectores() {
+		return sectores;
+	}
+
+	public void setSectores(List<Sector> sectores) {
+		this.sectores = sectores;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}	
+
 }

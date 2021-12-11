@@ -6,16 +6,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ColaboradorDao;
-import iOS.modelo.dao.RolDao;
-import iOS.modelo.dao.SectorDao;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.Sector;
@@ -28,16 +24,10 @@ public class VentanaColaboradorControlador
 		implements AccionesABM, ActionListener, MouseListener, KeyListener, ColaboradorInterface {
 	private VentanaColaborador ventana;
 
-	SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd yyyy");
-	DecimalFormat formatter = new DecimalFormat("#,###.##");
-
 	private String accion;
 
 	private Colaborador colaborador;
-
 	private ColaboradorDao dao;
-	private SectorDao daoSector;
-	private RolDao daoRol;
 
 	private List<Sector> sectores = new ArrayList<>();
 	private List<Rol> roles = new ArrayList<>();
@@ -47,12 +37,9 @@ public class VentanaColaboradorControlador
 		ventana.getMiToolBar().setAcciones(this);
 
 		dao = new ColaboradorDao();
-		daoSector = new SectorDao();
-		daoRol = new RolDao();
 
 		estadoInicial(true);
 		setUpEvents();
-		nuevo();
 	}
 
 	private void setUpEvents() {
@@ -70,43 +57,25 @@ public class VentanaColaboradorControlador
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlFechaDesvinculacion());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlFechaVinculacion());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
-		EventosUtil.limpiarCampoPersonalizado(ventana.getCbRol());
-		EventosUtil.limpiarCampoPersonalizado(ventana.getCbSector());
-		EventosUtil.limpiarCampoPersonalizado(ventana.getRdActivarAcceso());
-		EventosUtil.limpiarCampoPersonalizado(ventana.getRdDesvinculado());
-		EventosUtil.limpiarCampoPersonalizado(ventana.getRdEsEncargado());
 
-		EventosUtil.estadosCampoPersonalizado(ventana.getpAcceso(), false);
-		EventosUtil.estadosCampoPersonalizado(ventana.getpLaboral(), b);
-		EventosUtil.estadosCampoPersonalizado(ventana.getpSalario(), b);
-		EventosUtil.estadosCampoPersonalizado(ventana.getPanelFormulario(), b);
+		accion = null;
 
-		EventosUtil.estadosCampoPersonalizado(ventana.getRdActivarAcceso(), true);
-
-		recuperarRoles();
+		cargarRoles();
 		recuperarSectores();
 	}
 
-	@SuppressWarnings({ "unchecked" })
-	private void recuperarRoles() {
-		roles = daoRol.recuperarTodoOrdenadoPorNombre();
-
-		if (roles.size() <= 0) {
-			return;
-		}
+	private void cargarRoles() {
+		roles = Sesion.getInstance().getRoles();
+		ventana.getCbRol().addItem(null);
 		for (int i = 0; i < roles.size(); i++) {
 			ventana.getCbRol().addItem(roles.get(i));
 		}
 
 	}
 
-	@SuppressWarnings({ "unchecked" })
 	private void recuperarSectores() {
-		sectores = daoSector.recuperarTodoOrdenadoPorNombre();
-
-		if (sectores.size() <= 0) {
-			return;
-		}
+		sectores = Sesion.getInstance().getSectores();
+		ventana.getCbSector().addItem(null);
 		for (int i = 0; i < sectores.size(); i++) {
 			ventana.getCbSector().addItem(sectores.get(i));
 		}
@@ -198,18 +167,24 @@ public class VentanaColaboradorControlador
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == ventana.getRdActivarAcceso() && e.getClickCount() == 1) {
+		if (e.getSource() == ventana.getRdActivarAcceso()) {
 			sugerirUsuario();
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == ventana.getRdActivarAcceso()) {
+			sugerirUsuario();
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
+		if (e.getSource() == ventana.getRdActivarAcceso()) {
+			sugerirUsuario();
+		}
 
 	}
 
@@ -240,13 +215,19 @@ public class VentanaColaboradorControlador
 
 	@Override
 	public void nuevo() {
+		estadoInicial(true);
 		accion = "NUEVO";
-
+		colaborador = null;
+		ventana.gettNombreCompleto().requestFocus();
+		ventana.getlMensaje().setText(accion + " REGISTRO");
 	}
 
 	@Override
 	public void modificar() {
-		// TODO Auto-generated method stub
+		estadoInicial(true);
+		accion = "MODIFICAR";
+		ventana.gettNombreCompleto().requestFocus();
+		ventana.getlMensaje().setText(accion + " REGISTRO");
 
 	}
 
@@ -303,10 +284,11 @@ public class VentanaColaboradorControlador
 				dao.modificar(colaborador);
 			}
 			dao.commit();
-			estadoInicial(true);
+			modificar();
+			setColaborador(colaborador);
 		} catch (Exception e) {
 			dao.rollBack();
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 		}
 
 	}
@@ -329,6 +311,23 @@ public class VentanaColaboradorControlador
 			return;
 		}
 
+		ventana.gettContacto().setText(colaborador.getContacto());
+		ventana.gettIdentificacion().setText(colaborador.getIdentificacion());
+		ventana.gettNombreCompleto().setText(colaborador.getNombreCompleto());
+		ventana.gettPassword().setText(null);
+		ventana.gettUsuario().setText(colaborador.getUsuario());
+		ventana.gettValorSalario().setValue(colaborador.getSalario());
+		ventana.getlFechaDesvinculacion()
+				.setText(colaborador.getFechaDesvinculacionColaborador() == null ? "Colaborador activo"
+						: "Desvinculado en fecha"
+								.concat(EventosUtil.formatoFecha(colaborador.getFechaDesvinculacionColaborador())));
+		ventana.getlFechaVinculacion()
+				.setText(colaborador.getFechaIngresoColaborador() == null ? "Sin informacion"
+						: "Vinculado en fecha"
+								.concat(EventosUtil.formatoFecha(colaborador.getFechaDesvinculacionColaborador())));
+		ventana.getCbRol().setSelectedItem(colaborador.getRol());
+		ventana.getCbSector().setSelectedItem(colaborador.getSector());
+		ventana.getCbTipoSalario().setSelectedItem(colaborador.getTipoSalario());
 	}
 
 }

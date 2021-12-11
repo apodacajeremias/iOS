@@ -64,7 +64,6 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface 
 		EventosUtil.limpiarCampoPersonalizado(ventanaCliente.getlMensaje());
 
 		accion = null;
-		cliente = null;
 	}
 
 	private boolean validarFormulario() {
@@ -113,6 +112,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface 
 	public void nuevo() {
 		estadoInicial(true);
 		accion = "NUEVO";
+		cliente = null;
 		ventanaCliente.getlMensaje().setText(accion + " REGISTRO");
 		ventanaCliente.gettNombreCompleto().requestFocus();
 
@@ -187,7 +187,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface 
 				interfaz.setCliente(cliente);
 				ventanaCliente.dispose();
 			} catch (Exception e) {
-				estadoInicial(false);
+				modificar();
 				setCliente(cliente);
 				ventanaCliente.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
 			}
