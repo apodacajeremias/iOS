@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.Sector;
 
@@ -19,6 +20,8 @@ public class Sesion {
 	
 	private Rol rol;
 	private List<Rol> roles;
+	
+	private List<Maquina> maquinas;
 
 	private Sesion() {
 	}
@@ -82,6 +85,16 @@ public class Sesion {
 
 	public void setRoles(List<Rol> roles) {
 		this.roles = roles;
-	}	
+	}
+
+	public List<Maquina> getMaquinas() {
+		return maquinas;
+	}
+
+	public void setMaquinas(List<Maquina> maquinas) {
+		this.maquinas = maquinas;
+	}
+	
+	
 
 }

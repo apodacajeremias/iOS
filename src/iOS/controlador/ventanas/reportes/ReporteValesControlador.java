@@ -45,7 +45,7 @@ public class ReporteValesControlador implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Imprimir":
-			Metodos.getInstance().imprimirReporteVale(movimientos, "", "", reporte);
+//			Metodos.getInstance().imprimirReporteVale(movimientos, "", "", reporte);
 			break;
 
 		default:

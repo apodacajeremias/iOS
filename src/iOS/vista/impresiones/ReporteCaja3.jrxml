@@ -61,9 +61,11 @@
 			<fieldDescription><![CDATA[observacion]]></fieldDescription>
 		</field>
 	</subDataset>
-	<parameter name="solicitante" class="java.lang.String"/>
-	<parameter name="tipoReporte" class="java.lang.String"/>
-	<parameter name="claseReporte" class="java.lang.String"/>
+	<parameter name="SOLICITANTE" class="java.lang.String"/>
+	<parameter name="TIPO_REPORTE" class="java.lang.String"/>
+	<parameter name="CLASE_REPORTE" class="java.lang.String"/>
+	<parameter name="SOLO_VALE" class="java.lang.Boolean"/>
+	<parameter name="TODOS_MOVIMIENTOS" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[SELECT * FROM pedido]]>
 	</queryString>
@@ -187,21 +189,21 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Impreso por "+$P{solicitante}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Impreso por "+$P{SOLICITANTE}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="40" width="250" height="20" uuid="875d6c9a-3f89-48d4-b522-f80bba580050">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{tipoReporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{TIPO_REPORTE}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="60" width="250" height="20" uuid="1f218ded-4882-47ae-98fd-3b03b89e5516">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{claseReporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{CLASE_REPORTE}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -481,7 +483,7 @@
 			<frame>
 				<reportElement x="0" y="101" width="555" height="20" uuid="4242cb19-72b4-4c32-b495-b586d9e717a6"/>
 				<componentElement>
-					<reportElement x="0" y="0" width="555" height="20" uuid="a4340b00-bb09-4f01-83ba-e8388ca9087d">
+					<reportElement key="" x="0" y="0" width="555" height="20" uuid="a4340b00-bb09-4f01-83ba-e8388ca9087d">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">

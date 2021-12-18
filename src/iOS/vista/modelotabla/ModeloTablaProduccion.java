@@ -14,8 +14,8 @@ public class ModeloTablaProduccion extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1864475015388508652L;
-	private String[] columnas = { "FECHA", "ENCARGADO", "SECTOR", "PROCESO", "TIPO TRABAJO", "COMENTARIOS", "MAQUINA",
-			"DESPERDICIO", "CANT. DESPERDICIO" };
+	private String[] columnas = { "FECHA", "ENCARGADO", "SECTOR", "PROCESO", "COMENTARIOS", "MAQUINA", "DESPERDICIO",
+			"CANT. DESPERDICIO" };
 	private List<Produccion> producciones = new ArrayList<>();
 
 	public void setProducciones(List<Produccion> producciones) {
@@ -49,16 +49,18 @@ public class ModeloTablaProduccion extends AbstractTableModel {
 		case 2:
 			return producciones.get(r).getSector();
 		case 3:
-//			return producciones.get(r).getProceso();
+			return producciones.get(r).getProceso();
 		case 4:
-			return producciones.get(r).getTipoTrabajo();
+			return producciones.get(r).getComentario();
 		case 5:
-			return producciones.get(r).getObservacion();
-		case 6:
 			return producciones.get(r).getMaquina();
+		case 6:
+			if (producciones.get(r).isDesperdicio()) {
+				return "\u2714";
+			} else {
+				return "\u274C";
+			}
 		case 7:
-			return producciones.get(r).isDesperdicio();
-		case 8:
 			return producciones.get(r).getCantidadDesperdicio();
 		default:
 			break;
@@ -78,19 +80,9 @@ public class ModeloTablaProduccion extends AbstractTableModel {
 		} else if (3 == c) {
 
 		} else if (4 == c) {
-			try {
-				row.setTipoTrabajo((String) aValue.toString().toUpperCase());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			row.setComentario((String) aValue.toString().toUpperCase());
 		} else if (5 == c) {
-			try {
-				row.setObservacion((String) aValue.toString().toUpperCase());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 		} else if (6 == c) {
 
 		} else if (7 == c) {
@@ -104,8 +96,6 @@ public class ModeloTablaProduccion extends AbstractTableModel {
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 4:
-			return true;
-		case 5:
 			return true;
 		default:
 			return false;

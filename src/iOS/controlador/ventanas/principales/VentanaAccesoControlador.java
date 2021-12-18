@@ -6,6 +6,7 @@ import java.util.List;
 
 import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.Sector;
 import iOS.modelo.singleton.Sesion;
@@ -23,6 +24,8 @@ public class VentanaAccesoControlador implements ActionListener {
 
 	private Rol rol;
 	private List<Rol> roles;
+	
+	private List<Maquina> maquinas;
 
 	public VentanaAccesoControlador(VentanaAcceso ventana) {
 		this.ventana = ventana;
@@ -50,6 +53,7 @@ public class VentanaAccesoControlador implements ActionListener {
 			sectores = dao.recuperarSectoresOrdenadoPorNombre();
 			rol = colaborador.getRol();
 			roles = dao.recuperarRolesOrdenadoPorNombre();
+			maquinas = dao.recuperarMaquinasOrdenadoPorNombre();
 			abrirVentanaPrincipal();
 		}
 	}
@@ -62,6 +66,7 @@ public class VentanaAccesoControlador implements ActionListener {
 			Sesion.getInstance().setSectores(sectores);
 			Sesion.getInstance().setRol(rol);
 			Sesion.getInstance().setRoles(roles);
+			Sesion.getInstance().setMaquinas(maquinas);
 			VentanaPrincipal principal = new VentanaPrincipal();
 			principal.getLblPODAC().setText(Sesion.getInstance().getColaborador().toString());
 			ventana.dispose();

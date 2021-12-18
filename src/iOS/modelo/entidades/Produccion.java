@@ -33,12 +33,12 @@ public class Produccion {
 	private Colaborador colaborador;
 
 	@ManyToOne
-	@JoinColumn(nullable = true)
-	private Maquina maquina;
-
-	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Sector sector;
+
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Maquina maquina;
 
 	@ManyToOne
 	@JoinColumn(nullable = true)
@@ -48,18 +48,19 @@ public class Produccion {
 	@JoinColumn(nullable = true)
 	private PedidoDetalleConfeccion pedidoDetalleConfeccion;
 
+	// Iniciar, reiniciar, pausar, cancelar
+	@Column(nullable = false)
+	private String proceso;
+
+	// Observaciones hechas por el operador
 	@Column(nullable = true)
-	private String observacion;
+	private String comentario;
 
 	@Column(nullable = true)
 	private boolean desperdicio;
 
 	@Column(nullable = false)
 	private double cantidadDesperdicio;
-
-	// Reimpresion o algo semejante
-	@Column(nullable = false)
-	private String tipoTrabajo;
 
 	public int getId() {
 		return id;
@@ -93,20 +94,20 @@ public class Produccion {
 		this.colaborador = colaborador;
 	}
 
-	public Maquina getMaquina() {
-		return maquina;
-	}
-
-	public void setMaquina(Maquina maquina) {
-		this.maquina = maquina;
-	}
-
 	public Sector getSector() {
 		return sector;
 	}
 
 	public void setSector(Sector sector) {
 		this.sector = sector;
+	}
+
+	public Maquina getMaquina() {
+		return maquina;
+	}
+
+	public void setMaquina(Maquina maquina) {
+		this.maquina = maquina;
 	}
 
 	public PedidoDetalles getPedidoDetalle() {
@@ -125,12 +126,20 @@ public class Produccion {
 		this.pedidoDetalleConfeccion = pedidoDetalleConfeccion;
 	}
 
-	public String getObservacion() {
-		return observacion;
+	public String getProceso() {
+		return proceso;
 	}
 
-	public void setObservacion(String observacion) {
-		this.observacion = observacion;
+	public void setProceso(String proceso) {
+		this.proceso = proceso;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
 	public boolean isDesperdicio() {
@@ -149,13 +158,4 @@ public class Produccion {
 		this.cantidadDesperdicio = cantidadDesperdicio;
 	}
 
-	public String getTipoTrabajo() {
-		return tipoTrabajo;
-	}
-
-	public void setTipoTrabajo(String tipoTrabajo) {
-		this.tipoTrabajo = tipoTrabajo;
-	}
-	
-	
 }

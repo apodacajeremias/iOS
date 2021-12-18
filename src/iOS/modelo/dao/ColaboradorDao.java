@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.query.Query;
 
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.Sector;
 
@@ -99,6 +100,24 @@ public class ColaboradorDao extends GenericDao<Colaborador> {
 		try {
 			@SuppressWarnings("unchecked")
 			Query<Rol> query = getSession().createQuery(sql);
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
+			return lista;
+		}
+	}
+	
+	public List<Maquina> recuperarMaquinasOrdenadoPorNombre() {
+		getSession().beginTransaction();
+		List<Maquina> lista = new ArrayList<Maquina>();
+		String sql = "from Maquina order by nombreMaquina";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<Maquina> query = getSession().createQuery(sql);
 			lista = query.getResultList();
 			commit();
 			return lista;

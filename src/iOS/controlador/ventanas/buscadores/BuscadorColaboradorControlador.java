@@ -48,12 +48,14 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 
 	// METODO QUE RECUPERA DATOS POR FILTRO EN EL BUSCADOR
 	private void recuperarPorFiltro() {
+		colaborador = null;
 		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
 		modeloTabla.setLista(lista);
 		modeloTabla.fireTableDataChanged();
 	}
 
 	private void recuperarTodo() {
+		colaborador = null;
 		lista = dao.recuperarTodoOrdenadoPorNombre();
 		modeloTabla.setLista(lista);
 		modeloTabla.fireTableDataChanged();
@@ -61,10 +63,11 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 	}
 
 	private void seleccionarRegistro(int posicion) {
-		Colaborador cliente = lista.get(posicion);
-		// Se pasa la categoria seleccionada a la interfaz
-		interfaz.setColaborador(cliente);
-		buscador.dispose();
+		if (posicion < 0) {
+			colaborador = null;
+			return;
+		}
+		colaborador = lista.get(posicion);
 	}
 
 	@Override
@@ -86,18 +89,38 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 	// EVENTO DEL MOUSE AL DAR DOBLE CLIC VA A SELECCIONAR UN REGISTRO
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 		// doble clic en un registro de la tabla
 		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
+			try {
+				interfaz.setColaborador(colaborador);
+				buscador.dispose();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				VentanaColaborador ventana = new VentanaColaborador();
+				ventana.setUpControlador();
+				ventana.getControlador().modificar();
+				ventana.getControlador().setColaborador(colaborador);
+				ventana.setVisible(true);
+			}
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -113,13 +136,19 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 		VentanaColaborador ventana = new VentanaColaborador();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
-		ventana.getControlador().setColaborador(colaborador);
 		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
-		// TODO Auto-generated method stub
+		if (colaborador == null) {
+			return;
+		}
+		VentanaColaborador ventana = new VentanaColaborador();
+		ventana.setUpControlador();
+		ventana.getControlador().modificar();
+		ventana.getControlador().setColaborador(colaborador);
+		ventana.setVisible(true);
 
 	}
 

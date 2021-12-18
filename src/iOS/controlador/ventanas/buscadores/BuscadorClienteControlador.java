@@ -22,7 +22,7 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 
 	// ATRIBUTOS
 	private BuscadorCliente buscador;
-	private ModeloTablaCliente mtCliente;
+	private ModeloTablaCliente modeloTabla;
 	private ClienteDao dao;
 	private List<Cliente> lista;
 	private ClienteInterface interfaz;
@@ -35,9 +35,9 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	// CONSTRUCTOR
 	public BuscadorClienteControlador(BuscadorCliente bCliente) {
 		this.buscador = bCliente;
+		modeloTabla = new ModeloTablaCliente();
+		this.buscador.getTable().setModel(modeloTabla);
 		this.buscador.getToolbar().setAcciones(this);
-		mtCliente = new ModeloTablaCliente();
-		this.buscador.getTable().setModel(mtCliente);
 		dao = new ClienteDao();
 		setUpEvents();
 		recuperarTodo();
@@ -53,15 +53,15 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	private void recuperarPorFiltro() {
 		cliente = null;
 		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
-		mtCliente.setLista(lista);
-		mtCliente.fireTableDataChanged();
+		modeloTabla.setLista(lista);
+		modeloTabla.fireTableDataChanged();
 	}
 
 	private void recuperarTodo() {
 		cliente = null;
 		lista = dao.recuperarTodoOrdenadoPorNombre();
-		mtCliente.setLista(lista);
-		mtCliente.fireTableDataChanged();
+		modeloTabla.setLista(lista);
+		modeloTabla.fireTableDataChanged();
 
 	}
 
@@ -101,7 +101,8 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 			try {
 				interfaz.setCliente(cliente);
 				buscador.dispose();
-			} catch (Exception e2) { 
+			} catch (Exception e2) {
+				e2.printStackTrace();
 				VentanaCliente2 ventana = new VentanaCliente2();
 				ventana.setUpControlador();
 				ventana.getControlador().setCliente(cliente);
@@ -126,16 +127,12 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if (e.getSource() == buscador.getTable()) {
-			seleccionarRegistro(buscador.getTable().getSelectedRow());
-		}
+		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if (e.getSource() == buscador.getTable()) {
-			seleccionarRegistro(buscador.getTable().getSelectedRow());
-		}
+		
 	}
 
 	@Override

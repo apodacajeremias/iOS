@@ -119,7 +119,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		ventana.getPanelGeneral().setVisible(false);
 		ventana.getPanelValor1().setVisible(false);
 		ventana.getPanelValor2().setVisible(false);
-		
+
 		cliente = null;
 		colaborador = null;
 		pedido = null;
@@ -194,7 +194,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 			EventosUtil.estadosBotones(ventana.getBtnCancelar(), true);
 			ventana.getPanelValor1().setVisible(false);
 			ventana.getPanelValor2().setVisible(false);
-			
+
 		} else {
 			JOptionPane.showMessageDialog(ventana,
 					"El caja solo se puede reabrir por el mismo usuario que abrio y en el mismo dia.");
@@ -474,7 +474,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 			ventana.gettValorGs().requestFocusInWindow();
 			return false;
 		}
-		if (pedido!= null && (ventana.gettValorGs().getValue() + ventana.gettValorRs().getValue()
+		if (pedido != null && (ventana.gettValorGs().getValue() + ventana.gettValorRs().getValue()
 				+ ventana.gettValorUs().getValue()) > valorPendiente) {
 			JOptionPane.showMessageDialog(ventana, "El valor ingresado es superior al valor pendiente");
 			ventana.gettValorGs().requestFocusInWindow();
@@ -541,7 +541,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 					int o = JOptionPane.showConfirmDialog(ventana, "Desea cerrar el caja de todas maneras?", "APERTURA",
 							JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 					if (o == JOptionPane.OK_OPTION) {
-						
+
 					} else {
 						return;
 					}
@@ -592,7 +592,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 			movimiento.setValorUS(ventana.gettValorUs().getValue());
 			movimientos.add(movimiento);
 			caja.setCajaMovimientos(movimientos);
-			
+
 			calcular();
 
 			caja.setSaldoFinalGS(saldoFinal.get(0));
@@ -794,6 +794,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		if (caja == null) {
 			return;
 		}
+
 		if (caja.isCajaCerrada()) {
 			estadoInicial(false);
 		} else {

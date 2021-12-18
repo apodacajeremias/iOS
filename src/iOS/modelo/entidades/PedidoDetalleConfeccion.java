@@ -67,12 +67,16 @@ public class PedidoDetalleConfeccion {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificado;
-	
+
 	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<DetalleMaterial> materiales;
 
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
+
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean produccionFinalizada = false;
 
 	@Override
 	public String toString() {
@@ -83,112 +87,130 @@ public class PedidoDetalleConfeccion {
 		return id;
 	}
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-	public String getArchivo() {
-		return archivo;
-	}
-
-	public String getTamano() {
-		return tamano;
-	}
-
-	public String getMolde() {
-		return molde;
-	}
-
-	public double getCantidadDetalle() {
-		return cantidadDetalle;
-	}
-
-	public double getPrecioProducto() {
-		return precioProducto;
-	}
-
-	public double getPrecioDetalle() {
-		return precioDetalle;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public Producto getProducto() {
-		return producto;
-	}
-
-	public Date getFechaModificado() {
-		return fechaModificado;
-	}
-
-	public List<Produccion> getProducciones() {
-		return producciones;
-	}
-
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 
+	public boolean isEstado() {
+		return estado;
+	}
+
 	public void setEstado(boolean estado) {
 		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
 	}
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
 
+	public String getArchivo() {
+		return archivo;
+	}
+
 	public void setArchivo(String archivo) {
 		this.archivo = archivo;
+	}
+
+	public String getTamano() {
+		return tamano;
 	}
 
 	public void setTamano(String tamano) {
 		this.tamano = tamano;
 	}
 
+	public String getMolde() {
+		return molde;
+	}
+
 	public void setMolde(String molde) {
 		this.molde = molde;
+	}
+
+	public double getCantidadDetalle() {
+		return cantidadDetalle;
 	}
 
 	public void setCantidadDetalle(double cantidadDetalle) {
 		this.cantidadDetalle = cantidadDetalle;
 	}
 
+	public double getPrecioProducto() {
+		return precioProducto;
+	}
+
 	public void setPrecioProducto(double precioProducto) {
 		this.precioProducto = precioProducto;
+	}
+
+	public double getPrecioDetalle() {
+		return precioDetalle;
 	}
 
 	public void setPrecioDetalle(double precioDetalle) {
 		this.precioDetalle = precioDetalle;
 	}
 
+	public Pedido getPedido() {
+		return pedido;
+	}
+
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
+	}
+
+	public Producto getProducto() {
+		return producto;
 	}
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
 
+	public Date getFechaModificado() {
+		return fechaModificado;
+	}
+
 	public void setFechaModificado(Date fechaModificado) {
 		this.fechaModificado = fechaModificado;
+	}
+
+	public List<DetalleMaterial> getMateriales() {
+		return materiales;
+	}
+
+	public void setMateriales(List<DetalleMaterial> materiales) {
+		this.materiales = materiales;
+	}
+
+	public List<Produccion> getProducciones() {
+		return producciones;
 	}
 
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
+
+	public boolean isProduccionFinalizada() {
+		return produccionFinalizada;
+	}
+
+	public void setProduccionFinalizada(boolean produccionFinalizada) {
+		this.produccionFinalizada = produccionFinalizada;
+	}
+	
+	
 
 }

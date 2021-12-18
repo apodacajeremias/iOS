@@ -69,15 +69,15 @@ public class Cliente {
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> cajaMovimientos;
-	
+
 	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double pagos;
-	
+
 	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double deudas;
-	
+
 	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double diferencia;
@@ -145,7 +145,6 @@ public class Cliente {
 	public void setCajaMovimientos(List<CajaMovimiento> cajaMovimientos) {
 		this.cajaMovimientos = cajaMovimientos;
 	}
-	
 
 	public double getPagos() {
 		pagos = 0;
@@ -180,11 +179,10 @@ public class Cliente {
 		}
 		return diferencia;
 	}
-	
+
 	@Override
 	public String toString() {
 		return nombreCompleto;
 	}
-	
 
 }

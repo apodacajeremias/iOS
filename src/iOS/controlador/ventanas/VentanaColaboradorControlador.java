@@ -38,8 +38,9 @@ public class VentanaColaboradorControlador
 
 		dao = new ColaboradorDao();
 
-		estadoInicial(true);
 		setUpEvents();
+		cargarRoles();
+		recuperarSectores();
 	}
 
 	private void setUpEvents() {
@@ -60,8 +61,6 @@ public class VentanaColaboradorControlador
 
 		accion = null;
 
-		cargarRoles();
-		recuperarSectores();
 	}
 
 	private void cargarRoles() {
@@ -255,10 +254,17 @@ public class VentanaColaboradorControlador
 		colaborador.setFueDesvinculado(false);
 
 		// Informacion de acceso
-		colaborador.setEsActivo(true);
-		colaborador.setPassword(String.valueOf(ventana.gettPassword().getPassword()));
-		colaborador.setUsuario(ventana.gettUsuario().getText());
-		colaborador.setRol((Rol) ventana.getCbRol().getSelectedItem());
+		if (ventana.getRdActivarAcceso().isSelected()) {
+			colaborador.setEsActivo(true);
+			colaborador.setPassword(String.valueOf(ventana.gettPassword().getPassword()));
+			colaborador.setUsuario(ventana.gettUsuario().getText());
+			colaborador.setRol((Rol) ventana.getCbRol().getSelectedItem());
+		} else {
+			colaborador.setEsActivo(false);
+			colaborador.setPassword(String.valueOf(ventana.gettPassword().getPassword()));
+			colaborador.setUsuario(ventana.gettUsuario().getText());
+			colaborador.setRol((Rol) ventana.getCbRol().getSelectedItem());
+		}
 
 		// Informacion en empresa
 		colaborador.setEsOperador(!ventana.getRdEsEncargado().isSelected());
@@ -311,6 +317,8 @@ public class VentanaColaboradorControlador
 			return;
 		}
 
+		System.out.println(colaborador);
+
 		ventana.gettContacto().setText(colaborador.getContacto());
 		ventana.gettIdentificacion().setText(colaborador.getIdentificacion());
 		ventana.gettNombreCompleto().setText(colaborador.getNombreCompleto());
@@ -318,16 +326,24 @@ public class VentanaColaboradorControlador
 		ventana.gettUsuario().setText(colaborador.getUsuario());
 		ventana.gettValorSalario().setValue(colaborador.getSalario());
 		ventana.getlFechaDesvinculacion()
-				.setText(colaborador.getFechaDesvinculacionColaborador() == null ? "Colaborador activo"
-						: "Desvinculado en fecha"
+				.setText(colaborador.getFechaDesvinculacionColaborador() == null ? "Colaborador activo "
+						: "Desvinculado en fecha "
 								.concat(EventosUtil.formatoFecha(colaborador.getFechaDesvinculacionColaborador())));
 		ventana.getlFechaVinculacion()
-				.setText(colaborador.getFechaIngresoColaborador() == null ? "Sin informacion"
-						: "Vinculado en fecha"
+				.setText(colaborador.getFechaIngresoColaborador() == null ? "Sin informacion "
+						: "Vinculado en fecha "
 								.concat(EventosUtil.formatoFecha(colaborador.getFechaDesvinculacionColaborador())));
-		ventana.getCbRol().setSelectedItem(colaborador.getRol());
-		ventana.getCbSector().setSelectedItem(colaborador.getSector());
+		ventana.getCbRol().getModel().setSelectedItem(colaborador.getRol());
+		ventana.getCbSector().getModel().setSelectedItem(colaborador.getSector());
 		ventana.getCbTipoSalario().setSelectedItem(colaborador.getTipoSalario());
+
+		ventana.getRdActivarAcceso().setSelected(colaborador.isEsActivo());
+		ventana.getRdDesvinculado().setSelected(!colaborador.isEstado());
+		ventana.getRdEsEncargado().setSelected(!colaborador.isEsOperador());
+
+		if (colaborador.isEsActivo()) {
+			ventana.getpAcceso().setVisible(true);
+		}
 	}
 
 }

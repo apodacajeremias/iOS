@@ -1,7 +1,5 @@
 package iOS.vista.ventanas.principales;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -39,6 +37,7 @@ import iOS.vista.ventanas.VentanaMaquina;
 import iOS.vista.ventanas.VentanaMarca;
 import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
+import iOS.vista.ventanas.buscadores.BuscadorColaborador;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.buscadores.BuscadorSector;
 import iOS.vista.ventanas.pedidos.TransaccionPedido;
@@ -58,7 +57,6 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = -4166190286945252641L;
 	private JPanel contentPane;
 	private LabelPersonalizado lblPODAC;
-
 
 	/**
 	 * Create the frame.
@@ -151,7 +149,7 @@ public class VentanaPrincipal extends JFrame {
 				abrirVentanaProducto();
 			}
 		});
-		
+
 		JMenuItem mnItemMaquina = new JMenuItem("Maquina");
 		mnItemMaquina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -330,7 +328,8 @@ public class VentanaPrincipal extends JFrame {
 				abrirTransaccionDeposito();
 			}
 		});
-		mnItemDeposito.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+		mnItemDeposito
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemDeposito);
 
 		JMenuItem mnItemExistencia = new JMenuItem("Existencia");
@@ -340,9 +339,10 @@ public class VentanaPrincipal extends JFrame {
 				abrirTransaccionExistencia();
 			}
 		});
-		mnItemExistencia.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+		mnItemExistencia
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemExistencia);
-		
+
 		JMenuItem mnItemProduccion = new JMenuItem("Produccion");
 		mnItemProduccion.addActionListener(new ActionListener() {
 			@Override
@@ -350,7 +350,8 @@ public class VentanaPrincipal extends JFrame {
 				abrirTransaccionProduccion();
 			}
 		});
-		mnItemProduccion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+		mnItemProduccion
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemProduccion);
 
 		JMenuItem mnItemPedido = new JMenuItem("Pedido Impresion");
@@ -363,7 +364,6 @@ public class VentanaPrincipal extends JFrame {
 		mnItemPedido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemPedido);
 
-
 		JMenuItem mnItemRol = new JMenuItem("Rol");
 		mnItemRol.addActionListener(new ActionListener() {
 			@Override
@@ -371,7 +371,7 @@ public class VentanaPrincipal extends JFrame {
 				abrirTransaccionRol();
 			}
 		});
-		
+
 		JMenuItem mntmPedidoCostura = new JMenuItem("Pedido Costura");
 		mntmPedidoCostura.addActionListener(new ActionListener() {
 			@Override
@@ -380,7 +380,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnMovimientos.add(mntmPedidoCostura);
-		
+
 		JMenuItem mnItemPagoPedido = new JMenuItem("Relacionar pagos con pedidos");
 		mnItemPagoPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -399,11 +399,11 @@ public class VentanaPrincipal extends JFrame {
 		mnMovimientos.add(mnItemPagoPedido);
 		mnItemRol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemRol);
-		
+
 		JMenuItem mnReportes = new JMenu("REPORTES");
 		mnReportes.setFont(new Font("Tahoma", Font.BOLD, 14));
 		menuBar.add(mnReportes);
-		
+
 		JMenuItem mnItemReporteCaja = new JMenuItem("Reporte de caja");
 		mnItemReporteCaja.addActionListener(new ActionListener() {
 			@Override
@@ -411,9 +411,10 @@ public class VentanaPrincipal extends JFrame {
 				abrirReporteCaja();
 			}
 		});
-		mnItemReporteCaja.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+		mnItemReporteCaja
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReporteCaja);
-		
+
 		JMenuItem mnItemReportePedido = new JMenuItem("Reporte de pedidos impresiones");
 		mnItemReportePedido.addActionListener(new ActionListener() {
 			@Override
@@ -421,7 +422,7 @@ public class VentanaPrincipal extends JFrame {
 				abrirReportePedidoCarteleria();
 			}
 		});
-		
+
 		JMenuItem mntmNewMenuItem = new JMenuItem("Reporte deudas y pagos");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			@Override
@@ -432,7 +433,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnReportes.add(mntmNewMenuItem);
-		
+
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Reporte vales de getColaborador()es");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			@Override
@@ -443,9 +444,10 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnReportes.add(mntmNewMenuItem_1);
-		mnItemReportePedido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+		mnItemReportePedido
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReportePedido);
-		
+
 		mnItemReportePedido = new JMenuItem("Reporte de pedidos confeccion");
 		mnItemReportePedido.addActionListener(new ActionListener() {
 			@Override
@@ -453,7 +455,8 @@ public class VentanaPrincipal extends JFrame {
 				abrirReportePedidoConfeccion();
 			}
 		});
-		mnItemReportePedido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+		mnItemReportePedido
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReportePedido);
 
 		/*
@@ -483,7 +486,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mbtnPedidoCarteleria.setFont(new Font("Tahoma", Font.BOLD, 15));
 		toolBar.add(mbtnPedidoCarteleria);
-		
+
 		MiBoton mbtnPedidoConfeccion = new MiBoton("Confeccion");
 		mbtnPedidoConfeccion.addActionListener(new ActionListener() {
 			@Override
@@ -493,7 +496,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mbtnPedidoConfeccion.setFont(new Font("Tahoma", Font.BOLD, 15));
 		toolBar.add(mbtnPedidoConfeccion);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(240, 240, 255));
 		toolBar.add(panel_1);
@@ -506,7 +509,7 @@ public class VentanaPrincipal extends JFrame {
 		panel_1.add(lblProgramadores, BorderLayout.NORTH);
 
 		lblPODAC = new LabelPersonalizado(15);
-		//		lblPODAC.setText("@PODAC.SDG");
+		// lblPODAC.setText("@PODAC.SDG");
 		lblPODAC.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_1.add(lblPODAC, BorderLayout.SOUTH);
 
@@ -516,7 +519,7 @@ public class VentanaPrincipal extends JFrame {
 
 		CampoTextoPersonalizado lblVersion = new CampoTextoPersonalizado();
 		lblVersion.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblVersion.setText("Version "+serialVersionUID);
+		lblVersion.setText("Version " + serialVersionUID);
 		lblVersion.setForeground(new Color(0, 0, 0));
 		lblVersion.setBounds(10, 563, 200, 15);
 		panelFondo.add(lblVersion);
@@ -536,7 +539,7 @@ public class VentanaPrincipal extends JFrame {
 		}
 
 	}
-	
+
 	private void abrirReportePedidoCarteleria() {
 		ReportePedido ventana = new ReportePedido();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
@@ -544,7 +547,7 @@ public class VentanaPrincipal extends JFrame {
 			ventana.setVisible(true);
 		}
 	}
-	
+
 	private void abrirReportePedidoConfeccion() {
 		ReportePedido ventana = new ReportePedido();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
@@ -567,13 +570,13 @@ public class VentanaPrincipal extends JFrame {
 		ventana.getCarteleriaControlador().nuevo();
 		ventana.setVisible(true);
 	}
+
 	private void abrirTransaccionPedidoConfeccion() {
 		TransaccionPedido ventana = new TransaccionPedido();
 		ventana.setUpConfeccionControlador();
 		ventana.getConfeccionControlador().nuevo();
 		ventana.setVisible(true);
 	}
-
 
 	protected void abrirTransaccionRol() {
 		// TODO Auto-generated method stub
@@ -597,7 +600,7 @@ public class VentanaPrincipal extends JFrame {
 
 	protected void abrirBuscadorRol() {
 		BuscadorRol ventana = new BuscadorRol();
-		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")){
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
 			ventana.setUpControlador();
 			ventana.setVisible(true);
 		}
@@ -636,13 +639,14 @@ public class VentanaPrincipal extends JFrame {
 	protected void abrirBuscadorSector() {
 		BuscadorSector ventana = new BuscadorSector();
 		ventana.setUpControlador();
-		ventana.setVisible(true); 
+		ventana.setVisible(true);
 
 	}
 
 	protected void abrirBuscadorColaborador() {
-		// TODO Auto-generated method stub
-
+		BuscadorColaborador ventana = new BuscadorColaborador();
+		ventana.setUpControlador();
+		ventana.setVisible(true);
 	}
 
 	protected void abrirBuscadorCliente() {
@@ -671,6 +675,7 @@ public class VentanaPrincipal extends JFrame {
 		VentanaColaborador ventana = new VentanaColaborador();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
+			ventana.getControlador().nuevo();
 			ventana.setVisible(true);
 		}
 	}
@@ -706,7 +711,7 @@ public class VentanaPrincipal extends JFrame {
 			ventana.setVisible(true);
 		}
 	}
-	
+
 	private void abrirVentanaMarca() {
 		VentanaMarca ventana = new VentanaMarca();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {

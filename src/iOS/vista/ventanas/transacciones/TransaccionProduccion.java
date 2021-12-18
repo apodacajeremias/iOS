@@ -1,6 +1,7 @@
 package iOS.vista.ventanas.transacciones;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
+
+import iOS.controlador.util.ConnectionHelper;
+import iOS.controlador.util.EventosUtil;
 import iOS.controlador.ventanas.transacciones.TransaccionProduccionControlador;
 import iOS.vista.componentes.CampoNumeroPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -31,6 +36,30 @@ public class TransaccionProduccion extends JDialog {
 	private TransaccionProduccionControlador controlador;
 	private LabelPersonalizado lPedido1;
 	private LabelPersonalizado lPedido3;
+	
+	public static void main(String[] args) {
+		try {
+			BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.osLookAndFeelDecorated;
+			BeautyEyeLNFHelper.launchBeautyEyeLNF();
+			ConnectionHelper.setUp();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					TransaccionProduccion dialog = new TransaccionProduccion();
+					dialog.setUpControlador();
+					dialog.setVisible(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					EventosUtil.formatException(ex);
+				}
+			}
+
+		});
+	}
 
 	public void setUpControlador() {
 		controlador = new TransaccionProduccionControlador(this);

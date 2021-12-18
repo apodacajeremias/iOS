@@ -80,149 +80,159 @@ public class PedidoDetalles {
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
 
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean produccionFinalizada = false;
+
 	@Override
 	public String toString() {
 		return id + " - " + fechaRegistro;
-	}
-
-	public boolean produccionTerminada() {
-		return false;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public Date getFechaModificado() {
-		return fechaModificado;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-	public double getMedidaAncho() {
-		return medidaAncho;
-	}
-
-	public double getMedidaAlto() {
-		return medidaAlto;
-	}
-
-	public double getMedidaDetalle() {
-		return medidaDetalle;
-	}
-
-	public int getCantidadDetalle() {
-		return cantidadDetalle;
-	}
-
-	public int getPrecioProducto() {
-		return precioProducto;
-	}
-
-	public int getPrecioDetalle() {
-		return precioDetalle;
-	}
-
-	public int getGananciaDetalle() {
-		return gananciaDetalle;
-	}
-
-	public String getArchivo() {
-		return archivo;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public Producto getProducto() {
-		return producto;
-	}
-
-	public List<DetalleMaterial> getMateriales() {
-		return materiales;
-	}
-
-	public List<Produccion> getProducciones() {
-		return producciones;
-	}
-
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 
+	public Date getFechaModificado() {
+		return fechaModificado;
+	}
+
 	public void setFechaModificado(Date fechaModificado) {
 		this.fechaModificado = fechaModificado;
+	}
+
+	public boolean isEstado() {
+		return estado;
 	}
 
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
 
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
+	}
+
+	public double getMedidaAncho() {
+		return medidaAncho;
 	}
 
 	public void setMedidaAncho(double medidaAncho) {
 		this.medidaAncho = medidaAncho;
 	}
 
+	public double getMedidaAlto() {
+		return medidaAlto;
+	}
+
 	public void setMedidaAlto(double medidaAlto) {
 		this.medidaAlto = medidaAlto;
+	}
+
+	public double getMedidaDetalle() {
+		return medidaDetalle;
 	}
 
 	public void setMedidaDetalle(double medidaDetalle) {
 		this.medidaDetalle = medidaDetalle;
 	}
 
+	public int getCantidadDetalle() {
+		return cantidadDetalle;
+	}
+
 	public void setCantidadDetalle(int cantidadDetalle) {
 		this.cantidadDetalle = cantidadDetalle;
+	}
+
+	public int getPrecioProducto() {
+		return precioProducto;
 	}
 
 	public void setPrecioProducto(int precioProducto) {
 		this.precioProducto = precioProducto;
 	}
 
+	public int getPrecioDetalle() {
+		return precioDetalle;
+	}
+
 	public void setPrecioDetalle(int precioDetalle) {
 		this.precioDetalle = precioDetalle;
+	}
+
+	public int getGananciaDetalle() {
+		return gananciaDetalle;
 	}
 
 	public void setGananciaDetalle(int gananciaDetalle) {
 		this.gananciaDetalle = gananciaDetalle;
 	}
 
+	public String getArchivo() {
+		return archivo;
+	}
+
 	public void setArchivo(String archivo) {
 		this.archivo = archivo;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
 	}
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
 
+	public Producto getProducto() {
+		return producto;
+	}
+
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+
+	public List<DetalleMaterial> getMateriales() {
+		return materiales;
 	}
 
 	public void setMateriales(List<DetalleMaterial> materiales) {
 		this.materiales = materiales;
 	}
 
+	public List<Produccion> getProducciones() {
+		return producciones;
+	}
+
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
+
+	public boolean isProduccionFinalizada() {
+		return produccionFinalizada;
+	}
+
+	public void setProduccionFinalizada(boolean produccionFinalizada) {
+		this.produccionFinalizada = produccionFinalizada;
+	}
+	
+	
 
 }

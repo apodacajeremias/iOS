@@ -14,6 +14,8 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import iOS.controlador.ventanas.VentanaColaboradorControlador;
+import iOS.modelo.entidades.Rol;
+import iOS.modelo.entidades.Sector;
 import iOS.vista.componentes.CampoNumeroPersonalizado;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -40,9 +42,9 @@ public class VentanaColaborador extends VentanaGenerica {
 
 	private JComboBox<String> cbTipoSalario;
 
-	private JComboBox<Object> cbSector;
+	private JComboBox<Sector> cbSector;
 
-	private JComboBox<Object> cbRol;
+	private JComboBox<Rol> cbRol;
 	private CampoNumeroPersonalizado tValorSalario;
 
 	private VentanaColaboradorControlador controlador;
@@ -284,11 +286,11 @@ public class VentanaColaborador extends VentanaGenerica {
 		return cbTipoSalario;
 	}
 
-	public JComboBox<Object> getCbSector() {
+	public JComboBox<Sector> getCbSector() {
 		return cbSector;
 	}
 
-	public JComboBox<Object> getCbRol() {
+	public JComboBox<Rol> getCbRol() {
 		return cbRol;
 	}
 

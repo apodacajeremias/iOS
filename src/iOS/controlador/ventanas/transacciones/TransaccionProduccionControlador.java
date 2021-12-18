@@ -4,30 +4,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.PedidoDao;
+import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Pedido;
+import iOS.modelo.entidades.PedidoDetalleConfeccion;
 import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Produccion;
-import iOS.modelo.entidades.Sector;
 import iOS.modelo.interfaces.PedidoInterface;
-import iOS.modelo.interfaces.SectorInterface;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
 import iOS.vista.modelotabla.ModeloTablaProduccion;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
 
-public class TransaccionProduccionControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface,
-		PropertyChangeListener, SectorInterface {
+public class TransaccionProduccionControlador
+		implements ActionListener, MouseListener, KeyListener, PedidoInterface, PropertyChangeListener {
 	private TransaccionProduccion ventana;
 
 	private PedidoDao dao;
@@ -48,6 +54,7 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 
 		modeloTablaPedidoDetalle = new ModeloTablaPedidoDetalle();
 		ventana.getTablePedidoDetalle().setModel(modeloTablaPedidoDetalle);
+		tableMenu(ventana.getTablePedidoDetalle());
 		modeloTablaProduccion = new ModeloTablaProduccion();
 		ventana.getTableSeguimientoProduccion().setModel(modeloTablaProduccion);
 
@@ -104,49 +111,155 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 
 	private void seleccionarRegistro(Integer posicion) {
 		if (posicion < 0) {
+			producciones = null;
+			pedidoDetalle = null;
+			pedido = null;
 			return;
 		}
 		pedidoDetalle = pedidosDetalles.get(posicion);
+		pedido = pedidoDetalle.getPedido();
 
 		cargarDetalleProduccion(pedidoDetalle);
 	}
 
-	private void cargarDetalleProduccion(PedidoDetalles pd) {
-		if (pd == null) {
-			return;
-		}
-		try {
-			producciones = pd.getProducciones();
-			modeloTablaProduccion.setProducciones(producciones);
-			modeloTablaProduccion.fireTableDataChanged();
-		} catch (Exception e) {
-			e.printStackTrace();
+	private void cargarDetalleProduccion(Object detalle) {
+		if (detalle instanceof PedidoDetalles) {
+			PedidoDetalles pd = (PedidoDetalles) detalle;
+			try {
+				producciones = pd.getProducciones();
+				modeloTablaProduccion.setProducciones(producciones);
+				modeloTablaProduccion.fireTableDataChanged();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
+	private void verificarEstadoProduccionDetalle(Object detalle) {
+		try {
+			if (detalle instanceof PedidoDetalles) {
+				PedidoDetalles pd = (PedidoDetalles) detalle;
+				List<Produccion> pr = pd.getProducciones().stream().sorted(Comparator.comparing(Produccion::getId).reversed()).collect(Collectors.toList());
+				System.out.println(pr.stream().findFirst().get().getProceso());
+			}
+
+			if (detalle instanceof PedidoDetalleConfeccion) {
+
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private Maquina pedirMaquina() {
+		List<Maquina> maquinas = Sesion.getInstance().getMaquinas();
+		Object[] possibilities = new Object[maquinas.size()];
+
+		for (int i = 0; i < possibilities.length; i++) {
+			possibilities[i] = maquinas.get(i);
+		}
+
+		Maquina maquina = (Maquina) JOptionPane.showInputDialog(ventana,
+				"Seleccione la maquina que utilizará:\n" + "\"Indique;\"", "Maquina utilizada en el proceso",
+				JOptionPane.PLAIN_MESSAGE, null, possibilities, "");
+
+		// If a string was returned, say so.
+		if (maquina != null) {
+			System.out.println();
+		}
+		return maquina;
+	}
+
+	private boolean finalizarProduccionPedido(Pedido p) {
+
+		boolean generaDeuda = p.getPedidoDetalles().stream().filter(pd -> pd.isEstado() == true)
+				.allMatch(x -> x.isProduccionFinalizada() == true);
+		return generaDeuda;
+	}
+
 	private void iniciarProduccion() {
 		produccion = new Produccion();
 		produccion.setCantidadDesperdicio(0);
 		produccion.setColaborador(Sesion.getInstance().getColaborador());
+		produccion.setComentario("N/A");
 		produccion.setDesperdicio(false);
-		
+		produccion.setMaquina(pedirMaquina());
+		produccion.setPedidoDetalle(pedidoDetalle);
+		produccion.setPedidoDetalleConfeccion(null);
+		produccion.setProceso("INICIAR");
+		produccion.setSector(Sesion.getInstance().getSector());
+
+		producciones.add(produccion);
+
+		pedidoDetalle.setProducciones(producciones);
+
+		guardar();
 	}
-	
+
 	private void reiniciarProduccion() {
-		// TODO Auto-generated method stub
+		desperdiciarProduccion();
 
+		produccion = new Produccion();
+		produccion.setCantidadDesperdicio(0);
+		produccion.setColaborador(Sesion.getInstance().getColaborador());
+		produccion.setComentario("N/A");
+		produccion.setDesperdicio(false);
+		produccion.setMaquina(pedirMaquina());
+		produccion.setPedidoDetalle(pedidoDetalle);
+		produccion.setPedidoDetalleConfeccion(null);
+		produccion.setProceso("REINICIAR");
+		produccion.setSector(Sesion.getInstance().getSector());
+
+		producciones.add(produccion);
+
+		pedidoDetalle.setProducciones(producciones);
+
+		guardar();
 	}
-	
+
 	private void finalizarProduccion() {
-		// TODO Auto-generated method stub
+		produccion = new Produccion();
+		produccion.setCantidadDesperdicio(0);
+		produccion.setColaborador(Sesion.getInstance().getColaborador());
+		produccion.setComentario("N/A");
+		produccion.setDesperdicio(false);
+		produccion.setMaquina(pedirMaquina());
+		produccion.setPedidoDetalle(pedidoDetalle);
+		produccion.setPedidoDetalleConfeccion(null);
+		produccion.setProceso("FINALIZAR");
+		produccion.setSector(Sesion.getInstance().getSector());
 
-	}
-	
-	private void cancelarProduccion() {
-		// TODO Auto-generated method stub
+		producciones.add(produccion);
 
+		pedidoDetalle.setProducciones(producciones);
+
+		pedidoDetalle.setProduccionFinalizada(true);
+
+		pedido.setGeneraDeuda(finalizarProduccionPedido(pedido));
+
+		guardar();
 	}
-	
+
+	private void desperdiciarProduccion() {
+		produccion = new Produccion();
+		produccion.setCantidadDesperdicio(pedidoDetalle.getMedidaDetalle());
+		produccion.setColaborador(Sesion.getInstance().getColaborador());
+		produccion.setComentario("N/A");
+		produccion.setDesperdicio(true);
+		produccion.setMaquina(null);
+		produccion.setPedidoDetalle(pedidoDetalle);
+		produccion.setPedidoDetalleConfeccion(null);
+		produccion.setProceso("DESPERDICIAR");
+		produccion.setSector(Sesion.getInstance().getSector());
+
+		producciones.add(produccion);
+
+		pedidoDetalle.setProducciones(producciones);
+
+		guardar();
+	}
 
 //	private void cambiarEstado() {
 //		if (procesoRepetido(proceso)) {
@@ -167,8 +280,6 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 //		modeloTablaProduccion.setProducciones(producciones);
 //		modeloTablaProduccion.fireTableDataChanged();
 //	}
-
-	
 
 //	private void solicitarProceso() {
 //		List<SectorProceso> procesos = Sesion.getInstance().getColaborador().getSector().getProcesos();
@@ -259,10 +370,6 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 			seleccionarRegistro(ventana.getTablePedidoDetalle().getSelectedRow());
 		}
 
-		if (e.getSource() == ventana.getTableSeguimientoProduccion()) {
-
-		}
-
 	}
 
 	@Override
@@ -278,15 +385,17 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == ventana.getTablePedidoDetalle()) {
+			seleccionarRegistro(ventana.getTablePedidoDetalle().getSelectedRow());
+		}
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == ventana.getTablePedidoDetalle()) {
+			seleccionarRegistro(ventana.getTablePedidoDetalle().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -304,10 +413,70 @@ public class TransaccionProduccionControlador implements ActionListener, MouseLi
 
 	}
 
-	@Override
-	public void setSector(Sector sector) {
-		// TODO Auto-generated method stub
+	private void tableMenu(final JTable table) {
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
+				if (r >= 0 && r < table.getRowCount()) {
+					table.setRowSelectionInterval(r, r);
+				} else {
+					table.clearSelection();
+				}
 
+				int rowindex = table.getSelectedRow();
+				if (rowindex < 0) {
+					return;
+				}
+				if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+					JPopupMenu popup = tablePopup(table, rowindex);
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
 	}
 
+	private JPopupMenu tablePopup(final JTable table, final int row) {
+		seleccionarRegistro(row);
+		verificarEstadoProduccionDetalle(pedidoDetalle);
+		JPopupMenu popup = new JPopupMenu("Popup");
+		JMenuItem item = new JMenuItem("\u25B6 Iniciar");
+		item.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				iniciarProduccion();
+
+			}
+		});
+		JMenuItem item2 = new JMenuItem("\uD83D\uDD01 Reiniciar");
+		item2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reiniciarProduccion();
+
+			}
+		});
+		JMenuItem item3 = new JMenuItem("\u23F9 Desperdiciar");
+		item3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				desperdiciarProduccion();
+
+			}
+		});
+		JMenuItem item4 = new JMenuItem("\u23F8 Finalizar");
+		item4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				finalizarProduccion();
+
+			}
+		});
+
+		popup.add(item);
+		popup.add(item2);
+		popup.add(item3);
+		popup.add(item4);
+		return popup;
+	}
 }

@@ -114,7 +114,7 @@ public class Caja {
 	@Column(nullable = false)
 	private double saldoEntregadoUS;
 
-	@OneToMany(mappedBy = "caja", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "caja", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> cajaMovimientos;
 
 	public int getId() {

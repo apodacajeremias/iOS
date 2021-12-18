@@ -100,6 +100,11 @@ public class Maquina {
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
+
+	@Override
+	public String toString() {
+		return id + " " + nombreMaquina + " " + tipoMaquina;
+	}
 	
 	
 	

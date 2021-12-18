@@ -15,17 +15,17 @@ public class ReporteCaja extends ReporteGenerico {
 
 	public void setUpControlador() {
 		controlador = new ReporteCajaControlador(this);
-
 	}
 
 	/**
 	 * Create the dialog.
 	 */
 	public ReporteCaja() {
-		getRb1().setText("Cajas cerradas");
-		getRb2().setText("Cajas abiertas");
-		setTitle("Reporte de Caja");
-
+		setTitle("REPORTE DE CAJA");
+		getPanelEspecifico().getRdTipo3().setText("Ambos Tipos");
+		getPanelEspecifico().getRdTipo2().setText("Caja Abierta");
+		getPanelEspecifico().getRdTipo1().setText("Caja Cerrada");
+		getPanelGeneral().getRdTodo().setText("Encontrar y Mostrar Todos los Movimientos");
 	}
 
 	public static long getSerialversionuid() {

@@ -101,6 +101,8 @@ public class Colaborador {
 	public String toString() {
 		return nombreCompleto;
 	}
+	
+	
 
 	public int getId() {
 		return id;

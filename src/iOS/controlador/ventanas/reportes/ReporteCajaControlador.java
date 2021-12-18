@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +13,6 @@ import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.CajaDao;
 import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.Colaborador;
-import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaCaja;
 import iOS.vista.ventanas.reportes.ReporteCaja;
@@ -38,24 +37,102 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 	}
 
 	private void setUpEvents() {
-		reporte.getBtnFiltrar().addActionListener(this);
+		reporte.getBtnActualizar().addActionListener(this);
 		reporte.getBtnImprimir().addActionListener(this);
-		reporte.getBtnLimpiar().addActionListener(this);
+		reporte.getBtnBuscar().addActionListener(this);
 		reporte.getTable().addMouseListener(this);
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	private void cargarColaboradores() {
 		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
 			for (int i = 0; i < Sesion.getInstance().getColaboradores().size(); i++) {
-				reporte.getCbColaborador().addItem( Sesion.getInstance().getColaboradores().get(i));
+				reporte.getPanelEspecifico().getCbColaborador().addItem(Sesion.getInstance().getColaboradores().get(i));
 			}
 		} else {
-			reporte.getCbColaborador().addItem(Sesion.getInstance().getColaborador());
+			reporte.getPanelEspecifico().getCbColaborador().addItem(Sesion.getInstance().getColaborador());
 		}
+		reporte.getPanelEspecifico().getCbColaborador().getModel()
+				.setSelectedItem(Sesion.getInstance().getColaborador());
 	}
 
 	private void estadoInicial(boolean b) {
+		if (!EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			reporte.getPanelEspecifico().setEnabled(false);
+		}
+	}
+
+	private void filtrar() {
+		vaciarTabla();
+		String sql = "FROM Caja WHERE ";
+
+		if (reporte.getPanelGeneral().getRdHoy().isSelected()) {
+			Date hoy = new Date();
+			SimpleDateFormat objSDF = new SimpleDateFormat("YYYY-MM-dd");
+			sql = sql + "(DATE(fechaRegistro) = " + objSDF.format(hoy) + ") ";
+
+			System.out.println(sql);
+		} else if (reporte.getPanelGeneral().getRdMes().isSelected()) {
+			int mes = reporte.getPanelGeneral().getMonthChooser().getMonth() + 1;
+			sql = sql + ("(MONTH(fechaRegistro) = " + mes + ") ");
+
+		} else if (reporte.getPanelGeneral().getRdAnho().isSelected()) {
+			int anho = reporte.getPanelGeneral().getYearChooser().getYear();
+			sql = sql + ("(YEAR(fechaRegistro) = " + anho + ") ");
+
+		} else {
+
+		}
+
+		if (reporte.getPanelGeneral().getRdActivo().isSelected()) {
+			sql = sql + ("AND (estado = true) ");
+
+		} else if (reporte.getPanelGeneral().getRdInactivo().isSelected()) {
+			sql = sql + ("AND (estado = false) ");
+
+		} else {
+
+		}
+
+		// Caja abierta
+		if (reporte.getPanelEspecifico().getRdTipo1().isSelected()) {
+			sql = sql + ("AND (cajaCerrada = false) ");
+
+			// Caja cerrada
+		} else if (reporte.getPanelEspecifico().getRdTipo2().isSelected()) {
+			sql = sql + ("AND (cajaCerrada = true) ");
+
+			// Caja abierta + caja cerrada
+		} else if (reporte.getPanelEspecifico().getRdTipo3().isSelected()) {
+			sql = sql + ("AND (cajaCerrada = false OR cajaCerrada = true) ");
+
+		}
+
+		if (reporte.getPanelGeneral().getRdTodo().isSelected()) {
+			Colaborador colaborador = (Colaborador) reporte.getPanelEspecifico().getCbColaborador().getSelectedItem();
+			int id = colaborador.getId();
+			sql = sql + ("AND (colaborador.id = " + id + ") ");
+
+		} else if (reporte.getPanelGeneral().getRdAlgunos().isSelected()) {
+			Colaborador colaborador = (Colaborador) reporte.getPanelEspecifico().getCbColaborador().getSelectedItem();
+			int id = colaborador.getId();
+			sql = sql + ("AND (colaborador.id = " + id + ") ");
+
+		} else if (reporte.getPanelEspecifico().getRdTodoColaborador().isSelected()) {
+
+		} else if (reporte.getPanelEspecifico().getRdColaboradorEspecifico().isSelected()) {
+			Colaborador colaborador = (Colaborador) reporte.getPanelEspecifico().getCbColaborador().getSelectedItem();
+			int id = colaborador.getId();
+			sql = sql + ("AND (colaborador.id = " + id + ") ");
+
+		} else {
+
+		}
+
+		System.out.println(sql);
+
+		cajas = dao.recuperarRegistrosPorFiltro(sql);
+		modeloTabla.setCajas(cajas);
+		modeloTabla.fireTableDataChanged();
 	}
 
 	private void vaciarTabla() {
@@ -64,33 +141,6 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		modeloTabla.fireTableDataChanged();
 	}
 
-	private void filtroPorColaborador(String claseReporte) {
-		vaciarTabla();
-		Colaborador c = (Colaborador) reporte.getCbColaborador().getSelectedItem();
-		boolean estado = reporte.getRb3().isSelected();
-		boolean cajaCerrada = reporte.getRb1().isSelected();
-		Date fecha = reporte.getDateChooser().getDate();
-		Integer mes = reporte.getDateChooser().getCalendar().get(Calendar.MONTH) + 1;
-		Integer anho = reporte.getDateChooser().getCalendar().get(Calendar.YEAR);
-
-		System.err.println("*****************************************************");
-		System.err.println("Fecha: " + fecha + " Mes: " + mes + " Año:" + anho);
-		System.err.println("*****************************************************");
-		switch (claseReporte) {
-		case "Diario":
-			cajas = dao.reporteDiarioCaja(c.getId(), estado, cajaCerrada, fecha);
-			modeloTabla.setCajas(cajas);
-			modeloTabla.fireTableDataChanged();
-			break;
-		case "Mensual":
-			cajas = dao.reporteMensualCaja(c.getId(), estado, cajaCerrada, mes, anho);
-			modeloTabla.setCajas(cajas);
-			modeloTabla.fireTableDataChanged();
-			break;
-		}
-
-	}
-	
 	private void seleccionarRegistro(int posicion) {
 		if (posicion < 0) {
 			return;
@@ -111,14 +161,16 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == reporte.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(reporte.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == reporte.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(reporte.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -138,38 +190,23 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 			return;
 		}
 		TransaccionCaja ventana = new TransaccionCaja();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.getControlador().setCaja(caja);
-			ventana.setVisible(true);
-		} else {
-			return;
-		}
+		ventana.setUpControlador();
+		ventana.getControlador().setCaja(caja);
+		ventana.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Filtrar":
-			if (reporte.getRb5().isSelected()) {
-				filtroPorColaborador("Diario");
-			}
-			if (reporte.getRb6().isSelected()) {
-				filtroPorColaborador("Mensual");
-			}
+			filtrar();
 			break;
 		case "Imprimir":
-			if (reporte.getRb5().isSelected()) {
-				Metodos.getInstance().imprimirReporteCaja(cajas, reporte.getRb5().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
-			}
-			if (reporte.getRb6().isSelected()) {
-				Metodos.getInstance().imprimirReporteCaja(cajas, reporte.getRb6().getText().toUpperCase(), reporte.getTitle().toUpperCase(), reporte);
-			}
+
 			break;
 		case "Limpiar":
-			vaciarTabla();
-			break;
 
+			break;
 		default:
 			break;
 		}

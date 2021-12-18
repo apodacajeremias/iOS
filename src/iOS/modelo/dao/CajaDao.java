@@ -35,6 +35,21 @@ public class CajaDao extends GenericDao<Caja> {
 			return caja;
 		}
 	}
+	
+	public List<Caja> recuperarRegistrosPorFiltro(String sql) {
+		getSession().beginTransaction();
+		@SuppressWarnings("unchecked")
+		Query<Caja> query = getSession().createQuery(sql);
+		try {
+			List<Caja> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return null;
+		}
+	}
+
 
 	public List<CajaMovimiento> recuperaPagos() {
 		getSession().beginTransaction();
