@@ -42,7 +42,6 @@ public class ReporteGenerico extends JDialog {
 		setTitle("REPORTE");
 		getContentPane().setLayout(null);
 		setType(Type.NORMAL);
-		setAlwaysOnTop(true);
 
 		btnActualizar = new MiBoton("Actualizar");
 		btnActualizar.setText("Actualizar");

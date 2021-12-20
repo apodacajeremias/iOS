@@ -1,7 +1,6 @@
 package iOS.vista.ventanas.reportes;
 
-import iOS.controlador.ventanas.reportes.ReportePedidoCarteleriaControlador;
-import iOS.controlador.ventanas.reportes.ReportePedidoConfeccionControlador;
+import iOS.controlador.ventanas.reportes.ReportePedidoControlador;
 import iOS.vista.componentes.ReporteGenerico;
 
 public class ReportePedido extends ReporteGenerico {
@@ -9,39 +8,38 @@ public class ReportePedido extends ReporteGenerico {
 	 * 
 	 */
 	private static final long serialVersionUID = 1203406937927609263L;
-	private ReportePedidoCarteleriaControlador controladorCarteleria;
+	private ReportePedidoControlador controlador;
 	public String modulo = "PEDIDO";
-	private ReportePedidoConfeccionControlador controladoConfeccion;
-
 
 	/**
 	 * Create the dialog.
 	 */
 
-	public void setUpControladorCarteleria() {
-		controladorCarteleria = new ReportePedidoCarteleriaControlador(this);
-	}
-	
-	public void setUpControladorConfeccion() {
-		controladoConfeccion = new ReportePedidoConfeccionControlador(this);
+	public void setUpControlador() {
+		controlador = new ReportePedidoControlador(this);
 	}
 
 	public ReportePedido() {
+		getPanelEspecifico().getRdTipo3().setText("Confeccion");
+		getPanelEspecifico().getRdTipo2().setText("Carteleria");
+		getPanelEspecifico().getRdTipo1().setText("Carteleria + Confeccion");
+		getPanelGeneral().getLblrdAlgunos().setText("Busca todos los registros de presupuestos relacionados a tu perfil");
+		getPanelGeneral().getRdAlgunos().setText("Encontrar y Mostrar Solo Presupuestos");
+		setTitle("REPORTE DE PEDIDO");
+		
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	public ReportePedidoCarteleriaControlador getControladorCarteleria() {
-		return controladorCarteleria;
+	public ReportePedidoControlador getControlador() {
+		return controlador;
 	}
 
 	public String getModulo() {
 		return modulo;
 	}
-
-	public ReportePedidoConfeccionControlador getControladoConfeccion() {
-		return controladoConfeccion;
-	}
+	
+	
 }

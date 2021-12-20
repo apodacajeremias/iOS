@@ -42,9 +42,7 @@ import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.buscadores.BuscadorSector;
 import iOS.vista.ventanas.pedidos.TransaccionPedido;
 import iOS.vista.ventanas.reportes.ReporteCaja;
-import iOS.vista.ventanas.reportes.ReporteDeudasPagos;
 import iOS.vista.ventanas.reportes.ReportePedido;
-import iOS.vista.ventanas.reportes.ReporteVales;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 import iOS.vista.ventanas.transacciones.TransaccionPagoPedido;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
@@ -412,49 +410,17 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnItemReporteCaja
-				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReporteCaja);
 
 		JMenuItem mnItemReportePedido = new JMenuItem("Reporte de pedidos impresiones");
 		mnItemReportePedido.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				abrirReportePedidoCarteleria();
+				abrirReportePedido();
 			}
 		});
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("Reporte deudas y pagos");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ReporteDeudasPagos reporte = new ReporteDeudasPagos();
-				reporte.setUpControlador();
-				reporte.setVisible(true);
-			}
-		});
-		mnReportes.add(mntmNewMenuItem);
-
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Reporte vales de getColaborador()es");
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				ReporteVales ventana = new ReporteVales();
-				ventana.setUpControlador();
-				ventana.setVisible(true);
-			}
-		});
-		mnReportes.add(mntmNewMenuItem_1);
-		mnItemReportePedido
-				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
-		mnReportes.add(mnItemReportePedido);
-
-		mnItemReportePedido = new JMenuItem("Reporte de pedidos confeccion");
-		mnItemReportePedido.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				abrirReportePedidoConfeccion();
-			}
-		});
 		mnItemReportePedido
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReportePedido);
@@ -540,18 +506,10 @@ public class VentanaPrincipal extends JFrame {
 
 	}
 
-	private void abrirReportePedidoCarteleria() {
+	private void abrirReportePedido() {
 		ReportePedido ventana = new ReportePedido();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControladorCarteleria();
-			ventana.setVisible(true);
-		}
-	}
-
-	private void abrirReportePedidoConfeccion() {
-		ReportePedido ventana = new ReportePedido();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControladorConfeccion();
+			ventana.setUpControlador();
 			ventana.setVisible(true);
 		}
 	}

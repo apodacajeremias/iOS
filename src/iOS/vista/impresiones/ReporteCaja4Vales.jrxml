@@ -50,11 +50,11 @@
 	<title>
 		<band height="100" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="130" height="20" uuid="2b8bfd1c-8691-417f-8d41-2670c9d3c90d"/>
+				<reportElement x="0" y="0" width="277" height="20" uuid="2b8bfd1c-8691-417f-8d41-2670c9d3c90d"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[REPORTE CAJA]]></text>
+				<text><![CDATA[REPORTE DE VALES]]></text>
 			</staticText>
 			<textField pattern="MMMM dd, yyyy - HH:mm">
 				<reportElement x="0" y="80" width="200" height="20" uuid="848e6ba7-057d-454d-8abc-1e5769e05ec2">

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import iOS.controlador.util.ConexionReporte;
@@ -162,25 +161,25 @@ public class Metodos {
 		}
 	}
 
-	public void imprimirReportePedido(List<Pedido> lista, String tipoReporte, String claseReporte, JDialog reporte) {
+	public void imprimirReportePedido(List<Pedido> lista, String tipoReporte, String claseReporte) {
 		if (lista.size() <= 0) {
-			JOptionPane.showMessageDialog(reporte, "No hay registros para realizar la impresión.");
+			JOptionPane.showMessageDialog(null, "No hay registros para realizar la impresión.");
 			return;
 		}
 		HashMap<String, Object> parametros = new HashMap<>();
-		parametros.put("solicitante", Sesion.getInstance().getColaborador().toString());
+		parametros.put("SOLICITANTE", Sesion.getInstance().getColaborador().toString());
 
 		// Diario Mensual
-		parametros.put("tipoReporte", tipoReporte);
+		parametros.put("TIPO_REPORTE", tipoReporte);
 
 		// Carteleria, costura o ambos
-		parametros.put("claseReporte", claseReporte);
+		parametros.put("CLASE_REPORTE", claseReporte);
 
 		// Creando reportes
 		ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
 		try {
 			conexionReporte.generarReporte(lista, parametros, "ReportePedido3");
-			conexionReporte.ventanaReporte.setLocationRelativeTo(reporte);
+			conexionReporte.ventanaReporte.setLocationRelativeTo(null);
 			conexionReporte.ventanaReporte.setVisible(true);
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
@@ -226,7 +225,7 @@ public class Metodos {
 		HashMap<String, Object> parametros = new HashMap<>();
 		parametros.put("SOLICITANTE", Sesion.getInstance().getColaborador().toString());
 
-		// Diario Mensual
+		// Diario, Mensual, Anual
 		parametros.put("TIPO_REPORTE", tipoReporte);
 
 		// Carteleria, costura o ambos

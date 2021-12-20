@@ -1,5 +1,6 @@
 package iOS.modelo.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,21 +36,6 @@ public class CajaDao extends GenericDao<Caja> {
 			return caja;
 		}
 	}
-	
-	public List<Caja> recuperarRegistrosPorFiltro(String sql) {
-		getSession().beginTransaction();
-		@SuppressWarnings("unchecked")
-		Query<Caja> query = getSession().createQuery(sql);
-		try {
-			List<Caja> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			rollBack();
-			return null;
-		}
-	}
-
 
 	public List<CajaMovimiento> recuperaPagos() {
 		getSession().beginTransaction();
@@ -130,6 +116,63 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
+	
+	public List<Caja> recuperarHoy(Date hoy) {
+		getSession().beginTransaction();
+		List<Caja> lista = new ArrayList<Caja>();
+		String sql = "FROM Caja "
+				+ "WHERE DATE(fechaRegistro) = :hoy "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Caja> query = getSession().createQuery(sql);
+		query.setParameter("hoy", hoy);
+		try {
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return lista;
+		}
+	}
+	
+	public List<Caja> recuperarMes(int mes) {
+		getSession().beginTransaction();
+		List<Caja> lista = new ArrayList<Caja>();
+		String sql = "FROM Caja "
+				+ "WHERE MONTH(fechaRegistro) = :mes "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Caja> query = getSession().createQuery(sql);
+		query.setParameter("mes", mes);
+		try {
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return lista;
+		}
+	}
+
+	public List<Caja> recuperarAnho(int anho) {
+		getSession().beginTransaction();
+		List<Caja> lista = new ArrayList<Caja>();
+		String sql = "FROM Caja "
+				+ "WHERE YEAR(fechaRegistro) = :anho "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Caja> query = getSession().createQuery(sql);
+		query.setParameter("anho", anho);
+		try {
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return lista;
+		}
+	}
 
 	public List<CajaMovimiento> recuperarPorCliente(int cliente) {
 		getSession().beginTransaction();
@@ -148,74 +191,4 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-
-	public List<CajaMovimiento> recuperarCandidatosVales(String observacion) {
-		getSession().beginTransaction();
-		Date f = new Date();
-		int fecha = f.getMonth()+1;
-		String sql = "FROM CajaMovimiento "
-				+ "WHERE (observacion LIKE :observacion "
-				+ "OR esVale = true)"
-				+ "AND MONTH(fechaRegistro) = :fecha "
-				+ "ORDER BY id DESC";
-		@SuppressWarnings("unchecked")
-		Query<CajaMovimiento> query = getSession().createQuery(sql);
-		query.setParameter("observacion", "%" + observacion + "%");
-		query.setParameter("fecha", fecha);
-		try {
-			List<CajaMovimiento> resultados = query.getResultList();
-			commit();
-			return resultados;
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollBack();
-			return null;
-		}
-	}
-
-	public List<Caja> reporteDiarioCaja(int colaborador, boolean estado, boolean cajaCerrada, Date fecha) {
-		getSession().beginTransaction();
-		String sql = "FROM Caja " + "WHERE colaborador.id = :colaborador " + "AND estado = :estado "
-				+ "AND cajaCerrada = :cajaCerrada " + "AND DATE(fechaRegistro) = :fecha " + "ORDER BY id DESC";
-		try {
-			@SuppressWarnings("unchecked")
-			Query<Caja> query = getSession().createQuery(sql);
-			query.setParameter("colaborador", colaborador);
-			query.setParameter("estado", estado);
-			query.setParameter("cajaCerrada", cajaCerrada);
-			query.setParameter("fecha", fecha);
-			List<Caja> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollBack();
-			return null;
-		}
-	}
-
-	public List<Caja> reporteMensualCaja(int colaborador, boolean estado, boolean cajaCerrada, Integer mes,
-			Integer anho) {
-		getSession().beginTransaction();
-		String sql = "FROM Caja " + "WHERE colaborador.id = :colaborador " + "AND estado = :estado "
-				+ "AND cajaCerrada = :cajaCerrada " + "AND MONTH(fechaRegistro) = :mes "
-				+ "AND YEAR(fechaRegistro) = :anho " + "ORDER BY id DESC";
-		try {
-			@SuppressWarnings("unchecked")
-			Query<Caja> query = getSession().createQuery(sql);
-			query.setParameter("colaborador", colaborador);
-			query.setParameter("estado", estado);
-			query.setParameter("cajaCerrada", cajaCerrada);
-			query.setParameter("mes", mes);
-			query.setParameter("anho", anho);
-			List<Caja> lista = query.getResultList();
-			commit();
-			return lista;
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollBack();
-			return null;
-		}
-	}
-
 }

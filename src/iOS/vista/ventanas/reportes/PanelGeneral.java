@@ -118,7 +118,7 @@ public class PanelGeneral extends JPanel {
 		rdMes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				monthChooser.setVisible(true);
-				yearChooser.setVisible(true);
+				yearChooser.setVisible(false);
 			}
 		});
 		buttonGroup.add(rdMes);
@@ -135,7 +135,7 @@ public class PanelGeneral extends JPanel {
 		add(rdAnho);
 		rdAnho.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				monthChooser.setVisible(true);
+				monthChooser.setVisible(false);
 				yearChooser.setVisible(true);
 			}
 		});
