@@ -92,6 +92,8 @@
 		<property name="com.jaspersoft.studio.field.tree.path" value="pedido"/>
 	</field>
 	<field name="pedidosConfecciones" class="java.util.List"/>
+	<field name="cliente.contacto" class="java.lang.String"/>
+	<field name="informacionResponsable" class="java.lang.String"/>
 	<background>
 		<band height="802">
 			<frame>

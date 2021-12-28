@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
@@ -217,7 +216,7 @@ public class Metodos {
 		}
 	}
 
-	public void imprimirReporteVale(List<Caja> lista, String tipoReporte, String claseReporte) {
+	public void imprimirReporteVale(List<CajaMovimiento> lista, String tipoReporte, String claseReporte) {
 		if (lista.size() <= 0) {
 			JOptionPane.showMessageDialog(null, "No hay registros para realizar la impresión.");
 			return;
@@ -234,17 +233,11 @@ public class Metodos {
 		// TRUE para imprimir solamente vales, false para imprimir todo
 		parametros.put("SOLO_VALE", true);
 		parametros.put("TODOS_MOVIMIENTOS", false);
-		
-		List<CajaMovimiento> cm = new ArrayList<CajaMovimiento>();
-		
-		for (int i = 0; i < lista.size(); i++) {
-			cm.addAll(lista.get(i).getCajaMovimientos().stream().filter(c -> c.isEsAnulado() == false && c.isEsRetiro() == true && c.isEstado() == true && c.isEsVale() == true).collect(Collectors.toList()));
-		}
 
 		// Creando reportes
 		ConexionReporte<CajaMovimiento> conexionReporte = new ConexionReporte<CajaMovimiento>();
 		try {
-			conexionReporte.generarReporte(cm, parametros, "ReporteCaja4Vales");
+			conexionReporte.generarReporte(lista, parametros, "ReporteCaja4Vales");
 			conexionReporte.ventanaReporte.setLocationRelativeTo(null);
 			conexionReporte.ventanaReporte.setVisible(true);
 		} catch (JRException e) {
@@ -253,19 +246,19 @@ public class Metodos {
 		}
 	}
 
-	public void imprimirReporteCliente(List<Cliente> lista) {
+	public void imprimirReporteCliente(List<Cliente> lista, String tipoReporte, String claseReporte) {
 		if (lista.size() <= 0) {
 			JOptionPane.showMessageDialog(null, "No hay registros para realizar la impresión.");
 			return;
 		}
 		HashMap<String, Object> parametros = new HashMap<>();
-		parametros.put("solicitante", Sesion.getInstance().getColaborador().toString());
+		parametros.put("SOLICITANTE", Sesion.getInstance().getColaborador().toString());
 
-		// Diario Mensual
-		parametros.put("tipoReporte", "");
+		// Deuda mayor o menos a 0
+		parametros.put("TIPO_REPORTE", tipoReporte);
 
-		// Carteleria, costura o ambos
-		parametros.put("claseReporte", "");
+		// GENERAL o segun filtros 
+		parametros.put("CLASE_REPORTE", claseReporte);
 
 		// Creando reportes
 		ConexionReporte<Cliente> conexionReporte = new ConexionReporte<Cliente>();

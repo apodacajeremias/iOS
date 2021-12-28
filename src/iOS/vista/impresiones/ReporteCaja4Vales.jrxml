@@ -35,6 +35,8 @@
 	<field name="observacion" class="java.lang.String">
 		<fieldDescription><![CDATA[observacion]]></fieldDescription>
 	</field>
+	<field name="colaborador.id" class="java.lang.Integer"/>
+	<sortField name="colaborador.id"/>
 	<variable name="valorUS1" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{valorUS}]]></variableExpression>
 	</variable>

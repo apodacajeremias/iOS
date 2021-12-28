@@ -2,10 +2,12 @@
 package iOS.modelo.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.query.Query;
 
+import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
@@ -110,7 +112,7 @@ public class ColaboradorDao extends GenericDao<Colaborador> {
 			return lista;
 		}
 	}
-	
+
 	public List<Maquina> recuperarMaquinasOrdenadoPorNombre() {
 		getSession().beginTransaction();
 		List<Maquina> lista = new ArrayList<Maquina>();
@@ -129,4 +131,78 @@ public class ColaboradorDao extends GenericDao<Colaborador> {
 		}
 	}
 
+	public List<CajaMovimiento> recuperarValesHoy(Date hoy) {
+		getSession().beginTransaction();
+		List<CajaMovimiento> lista = new ArrayList<CajaMovimiento>();
+		String sql = "FROM CajaMovimiento " 
+				+ "WHERE esAnulado = false " 
+				+ "AND esRetiro = true " 
+				+ "AND estado = true "
+				+ "AND esVale = true "
+				+ "AND DATE(fechaRegistro) = :hoy " 
+				+ "ORDER BY ID";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<CajaMovimiento> query = getSession().createQuery(sql);
+			query.setParameter("hoy", hoy);
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
+			return lista;
+		}
+	}
+
+	public List<CajaMovimiento> recuperarValesMes(int mes) {
+		getSession().beginTransaction();
+		List<CajaMovimiento> lista = new ArrayList<CajaMovimiento>();
+		String sql = "FROM CajaMovimiento " 
+				+ "WHERE esAnulado = false " 
+				+ "AND esRetiro = true " 
+				+ "AND estado = true "
+				+ "AND esVale = true "
+				+ "AND MONTH(fechaRegistro) = :mes " 
+				+ "ORDER BY ID";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<CajaMovimiento> query = getSession().createQuery(sql);
+			query.setParameter("mes", mes);
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
+			return lista;
+		}
+	}
+
+	public List<CajaMovimiento> recuperarValesAnho(int anho) {
+		getSession().beginTransaction();
+		List<CajaMovimiento> lista = new ArrayList<CajaMovimiento>();
+		String sql = "FROM CajaMovimiento " 
+				+ "WHERE esAnulado = false " 
+				+ "AND esRetiro = true " 
+				+ "AND estado = true "
+				+ "AND esVale = true "
+				+ "AND YEAR(fechaRegistro) = :anho "  
+				+ "ORDER BY ID";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<CajaMovimiento> query = getSession().createQuery(sql);
+			query.setParameter("anho", anho);
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
+			return lista;
+		}
+	}
 }

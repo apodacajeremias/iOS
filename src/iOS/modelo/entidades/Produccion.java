@@ -39,6 +39,18 @@ public class Produccion {
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Maquina maquina;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Pedido pedido;
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
 
 	@ManyToOne
 	@JoinColumn(nullable = true)

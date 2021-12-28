@@ -10,29 +10,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import iOS.controlador.util.EventosUtil;
-import iOS.modelo.dao.CajaDao;
-import iOS.modelo.entidades.Caja;
+import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
-import iOS.vista.modelotabla.ModeloTablaCaja;
-import iOS.vista.ventanas.reportes.ReporteCaja;
-import iOS.vista.ventanas.transacciones.TransaccionCaja;
+import iOS.vista.modelotabla.ModeloTablaCajaMovimiento;
+import iOS.vista.ventanas.VentanaColaborador;
+import iOS.vista.ventanas.reportes.ReporteColaborador;
 
-public class ReporteCajaControlador implements ActionListener, MouseListener {
-	private ReporteCaja reporte;
-	private ModeloTablaCaja modeloTabla;
-	private CajaDao dao;
-	private Caja caja;
-	private List<Caja> cajas = new ArrayList<Caja>();
+public class ReporteColaboradorControlador implements ActionListener, MouseListener {
+	private ReporteColaborador reporte;
+	private ModeloTablaCajaMovimiento modeloTabla;
+	private ColaboradorDao dao;
 
-	public ReporteCajaControlador(ReporteCaja reporte) {
+	private Colaborador colaborador;
+
+	private CajaMovimiento vale;
+	private List<CajaMovimiento> vales = new ArrayList<CajaMovimiento>();
+
+	public ReporteColaboradorControlador(ReporteColaborador reporte) {
 		this.reporte = reporte;
-		modeloTabla = new ModeloTablaCaja();
+		modeloTabla = new ModeloTablaCajaMovimiento();
 		reporte.getTable().setModel(modeloTabla);
-		dao = new CajaDao();
 
+		dao = new ColaboradorDao();
 		estadoInicial(true);
 		setUpEvents();
 		cargarColaboradores();
@@ -43,6 +45,7 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		reporte.getBtnImprimir().addActionListener(this);
 		reporte.getBtnBuscar().addActionListener(this);
 		reporte.getTable().addMouseListener(this);
+
 	}
 
 	private void cargarColaboradores() {
@@ -66,69 +69,67 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		EventosUtil.limpiarCampoPersonalizado(reporte.getPanelGeneral().getlInfo2());
 	}
 
+	private void vaciarTabla() {
+	}
+
 	private void filtrar() {
 		vaciarTabla();
 
 		if (reporte.getPanelGeneral().getRdHoy().isSelected()) {
-			cajas = dao.recuperarHoy(new Date());
+			vales = dao.recuperarValesHoy(new Date());
 
 		} else if (reporte.getPanelGeneral().getRdMes().isSelected()) {
-			cajas = dao.recuperarMes(reporte.getPanelGeneral().getMonthChooser().getMonth() + 1);
+			vales = dao.recuperarValesMes(reporte.getPanelGeneral().getMonthChooser().getMonth() + 1);
 
 		} else if (reporte.getPanelGeneral().getRdAnho().isSelected()) {
-			cajas = dao.recuperarAnho(reporte.getPanelGeneral().getYearChooser().getYear());
+			vales = dao.recuperarValesAnho(reporte.getPanelGeneral().getYearChooser().getYear());
 
 		} else {
 
 		}
 
 		if (reporte.getPanelGeneral().getRdTodo().isSelected()) {
-			cajas = cajas.stream()
+			vales = vales.stream()
 					.filter(c -> c.getColaborador().getId() == Sesion.getInstance().getColaborador().getId())
 					.collect(Collectors.toList());
 
 		} else if (reporte.getPanelGeneral().getRdAlgunos().isSelected()) {
-			cajas = cajas.stream()
+			vales = vales.stream()
 					.filter(c -> c.getColaborador().getId() == Sesion.getInstance().getColaborador().getId())
 					.collect(Collectors.toList());
 
 		} else if (reporte.getPanelEspecifico().getRdTodoColaborador().isSelected()) {
-			// No filtra colaborador, solo por el rango de fechas
 
 		} else if (reporte.getPanelEspecifico().getRdColaboradorEspecifico().isSelected()) {
 			Colaborador cc = (Colaborador) reporte.getPanelEspecifico().getCbColaborador().getSelectedItem();
-			cajas = cajas.stream().filter(c -> c.getColaborador().getId() == cc.getId()).collect(Collectors.toList());
+			vales = vales.stream().filter(c -> c.getColaborador().getId() == cc.getId()).collect(Collectors.toList());
 		} else {
 
 		}
 
 		// estado == true
 		if (reporte.getPanelGeneral().getRdActivo().isSelected()) {
-			cajas = cajas.stream().filter(x -> x.isEstado() == true).collect(Collectors.toList());
+			vales = vales.stream().filter(x -> x.isEstado() == true).collect(Collectors.toList());
 		} else if (reporte.getPanelGeneral().getRdInactivo().isSelected()) {
-			cajas = cajas.stream().filter(x -> x.isEstado() == false).collect(Collectors.toList());
+			vales = vales.stream().filter(x -> x.isEstado() == false).collect(Collectors.toList());
 		} else {
 
 		}
 
 		// Caja abierta
 		if (reporte.getPanelEspecifico().getRdTipo1().isSelected()) {
-			cajas = cajas.stream().filter(x -> x.isCajaCerrada() == true).collect(Collectors.toList());
 
 			// Caja cerrada
 		} else if (reporte.getPanelEspecifico().getRdTipo2().isSelected()) {
-			cajas = cajas.stream().filter(x -> x.isCajaCerrada() == false).collect(Collectors.toList());
 
 			// Caja abierta + caja cerrada
 		} else if (reporte.getPanelEspecifico().getRdTipo3().isSelected()) {
-			cajas = cajas.stream().filter(x -> x.isCajaCerrada() == true || x.isCajaCerrada() == false)
-					.collect(Collectors.toList());
+
 		}
 
-		reporte.getPanelEspecifico().getlInfo2().setText("Se han encontrado " + cajas.size() + " registros");
-		reporte.getPanelGeneral().getlInfo2().setText("Se han encontrado " + cajas.size() + " registros");
-
-		modeloTabla.setCajas(cajas);
+		reporte.getPanelEspecifico().getlInfo2().setText("Se han encontrado " + vales.size() + " registros");
+		reporte.getPanelGeneral().getlInfo2().setText("Se han encontrado " + vales.size() + " registros");		
+		modeloTabla.setMovimiento(vales);
 		modeloTabla.fireTableDataChanged();
 	}
 
@@ -146,35 +147,17 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		} else {
 		}
 
-		if (reporte.getPanelGeneral().getRdAlgunos().isSelected()) {
-			claseReporte = "REPORTE DE VALES PARA COLABORADORES";
-			List<CajaMovimiento> cm = new ArrayList<CajaMovimiento>();
+		claseReporte = "REPORTE GENERAL SEGUN FILTROS";
+		Metodos.getInstance().imprimirReporteVale(vales, tipoReporte, claseReporte);
 
-			for (int i = 0; i < cajas.size(); i++) {
-				cm.addAll(cajas
-						.get(i).getCajaMovimientos().stream().filter(c -> c.isEsAnulado() == false
-								&& c.isEsRetiro() == true && c.isEstado() == true && c.isEsVale() == true)
-						.collect(Collectors.toList()));
-			}
-			Metodos.getInstance().imprimirReporteVale(cm, tipoReporte, claseReporte);
-		} else {
-			claseReporte = "REPORTE GENERAL SEGUN FILTROS";
-			Metodos.getInstance().imprimirReporteCaja(cajas, tipoReporte, claseReporte);
-		}
-
-	}
-
-	private void vaciarTabla() {
-		cajas = new ArrayList<Caja>();
-		modeloTabla.setCajas(cajas);
-		modeloTabla.fireTableDataChanged();
 	}
 
 	private void seleccionarRegistro(int posicion) {
 		if (posicion < 0) {
 			return;
 		}
-		caja = cajas.get(posicion);
+		vale = vales.get(posicion);
+		colaborador = vale.getColaborador();
 	}
 
 	@Override
@@ -184,7 +167,7 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 		}
 
 		if (e.getSource() == reporte.getTable() && e.getClickCount() == 2) {
-			abrirTransaccionCaja();
+			abrirVentanaColaborador();
 		}
 	}
 
@@ -214,13 +197,14 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 
 	}
 
-	private void abrirTransaccionCaja() {
-		if (caja == null) {
+	private void abrirVentanaColaborador() {
+		if (colaborador == null) {
 			return;
 		}
-		TransaccionCaja ventana = new TransaccionCaja();
+		VentanaColaborador ventana = new VentanaColaborador();
 		ventana.setUpControlador();
-		ventana.getControlador().setCaja(caja);
+		ventana.getControlador().modificar();
+		ventana.getControlador().setColaborador(colaborador);
 		ventana.setVisible(true);
 	}
 
@@ -234,10 +218,11 @@ public class ReporteCajaControlador implements ActionListener, MouseListener {
 			imprimir();
 			break;
 		case "Limpiar":
-
+			vaciarTabla();
 			break;
 		default:
 			break;
 		}
+
 	}
 }

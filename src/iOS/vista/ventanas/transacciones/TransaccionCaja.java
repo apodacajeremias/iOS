@@ -96,7 +96,6 @@ public class TransaccionCaja extends JDialog {
 		setTitle("Registro de Pagos");
 		getContentPane().setLayout(null);
 		setType(Type.NORMAL);
-		setAlwaysOnTop(true);
 
 		panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);

@@ -28,6 +28,7 @@ import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Produccion;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.singleton.Sesion;
+import iOS.vista.modelotabla.ModeloTablaPedidoConfeccionDetalle;
 import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
 import iOS.vista.modelotabla.ModeloTablaProduccion;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
@@ -39,12 +40,17 @@ public class TransaccionProduccionControlador
 	private PedidoDao dao;
 
 	private Pedido pedido;
-	private PedidoDetalles pedidoDetalle;
-	private List<PedidoDetalles> pedidosDetalles = new ArrayList<PedidoDetalles>();
+	private PedidoDetalles detalleCarteleria;
+	private List<PedidoDetalles> detallesCarteleria = new ArrayList<PedidoDetalles>();
+
+	private PedidoDetalleConfeccion detalleConfeccion;
+	private List<PedidoDetalleConfeccion> detallesConfeccion = new ArrayList<PedidoDetalleConfeccion>();
+
 	private Produccion produccion;
 	private List<Produccion> producciones = new ArrayList<Produccion>();
 
 	private ModeloTablaPedidoDetalle modeloTablaPedidoDetalle;
+	private ModeloTablaPedidoConfeccionDetalle modeloTablaPedidoConfeccionDetalle;
 	private ModeloTablaProduccion modeloTablaProduccion;
 
 	public TransaccionProduccionControlador(TransaccionProduccion ventana) {
@@ -52,8 +58,6 @@ public class TransaccionProduccionControlador
 
 		dao = new PedidoDao();
 
-		modeloTablaPedidoDetalle = new ModeloTablaPedidoDetalle();
-		ventana.getTablePedidoDetalle().setModel(modeloTablaPedidoDetalle);
 		tableMenu(ventana.getTablePedidoDetalle());
 		modeloTablaProduccion = new ModeloTablaProduccion();
 		ventana.getTableSeguimientoProduccion().setModel(modeloTablaProduccion);
@@ -81,13 +85,22 @@ public class TransaccionProduccionControlador
 	}
 
 	private void vaciarTablas() {
-		pedidosDetalles = new ArrayList<PedidoDetalles>();
-		modeloTablaPedidoDetalle.setDetalle(pedidosDetalles);
-		modeloTablaPedidoDetalle.fireTableDataChanged();
+		try {
+			detallesCarteleria = new ArrayList<PedidoDetalles>();
+			modeloTablaPedidoDetalle.setDetalle(detallesCarteleria);
+			modeloTablaPedidoDetalle.fireTableDataChanged();
 
-		producciones = new ArrayList<Produccion>();
-		modeloTablaProduccion.setProducciones(producciones);
-		modeloTablaProduccion.fireTableDataChanged();
+			detallesConfeccion = new ArrayList<PedidoDetalleConfeccion>();
+			modeloTablaPedidoConfeccionDetalle.setDetalle(detallesConfeccion);
+			modeloTablaPedidoConfeccionDetalle.fireTableDataChanged();
+
+			producciones = new ArrayList<Produccion>();
+			modeloTablaProduccion.setProducciones(producciones);
+			modeloTablaProduccion.fireTableDataChanged();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -99,27 +112,47 @@ public class TransaccionProduccionControlador
 		try {
 			estadoInicial();
 			pedido = dao.encontrarPedido(id);
-			if (pedido.isEsPresupuesto() || !pedido.isEstado()) {
+
+			if (pedido == null) {
+				JOptionPane.showMessageDialog(ventana, "No se ha encontrado ningun pedido.");
+			} else if (pedido.isEsPresupuesto() || !pedido.isEstado()) {
 				JOptionPane.showMessageDialog(ventana, "El pedido es un presupuesto o está anulado, verifique...");
 				return;
+			}
+
+			if (pedido.getPedidoCarteleria()) {
+				modeloTablaPedidoDetalle = new ModeloTablaPedidoDetalle();
+				ventana.getTablePedidoDetalle().setModel(modeloTablaPedidoDetalle);
+			}
+			if (pedido.getPedidoCostura()) {
+				modeloTablaPedidoConfeccionDetalle = new ModeloTablaPedidoConfeccionDetalle();
+				ventana.getTablePedidoDetalle().setModel(modeloTablaPedidoConfeccionDetalle);
 			}
 			setPedido(pedido);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return;
 		}
+
 	}
 
 	private void seleccionarRegistro(Integer posicion) {
 		if (posicion < 0) {
 			producciones = null;
-			pedidoDetalle = null;
-			pedido = null;
+			produccion = null;
+			detalleCarteleria = null;
+			detalleConfeccion = null;
 			return;
 		}
-		pedidoDetalle = pedidosDetalles.get(posicion);
-		pedido = pedidoDetalle.getPedido();
+		if (pedido.getPedidoCarteleria()) {
+			detalleCarteleria = detallesCarteleria.get(posicion);
+			cargarDetalleProduccion(detalleCarteleria);
+		}
+		if (pedido.getPedidoCostura()) {
+			detalleConfeccion = detallesConfeccion.get(posicion);
+			cargarDetalleProduccion(detalleConfeccion);
 
-		cargarDetalleProduccion(pedidoDetalle);
+		}
 	}
 
 	private void cargarDetalleProduccion(Object detalle) {
@@ -127,34 +160,33 @@ public class TransaccionProduccionControlador
 			PedidoDetalles pd = (PedidoDetalles) detalle;
 			try {
 				producciones = pd.getProducciones();
+				producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
+						.collect(Collectors.toList());
 				modeloTablaProduccion.setProducciones(producciones);
 				modeloTablaProduccion.fireTableDataChanged();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private void verificarEstadoProduccionDetalle(Object detalle) {
-		try {
-			if (detalle instanceof PedidoDetalles) {
-				PedidoDetalles pd = (PedidoDetalles) detalle;
-				List<Produccion> pr = pd.getProducciones().stream().sorted(Comparator.comparing(Produccion::getId).reversed()).collect(Collectors.toList());
-				System.out.println(pr.stream().findFirst().get().getProceso());
+		if (detalle instanceof PedidoDetalleConfeccion) {
+			PedidoDetalleConfeccion pd = (PedidoDetalleConfeccion) detalle;
+			try {
+				producciones = pd.getProducciones();
+				producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
+						.collect(Collectors.toList());
+				modeloTablaProduccion.setProducciones(producciones);
+				modeloTablaProduccion.fireTableDataChanged();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
-			if (detalle instanceof PedidoDetalleConfeccion) {
-
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-
 	}
 
 	private Maquina pedirMaquina() {
-		List<Maquina> maquinas = Sesion.getInstance().getMaquinas();
+		List<Maquina> maquinas = new ArrayList<Maquina>();
+		maquinas.add(null);
+		maquinas.addAll(Sesion.getInstance().getMaquinas());
 		Object[] possibilities = new Object[maquinas.size()];
 
 		for (int i = 0; i < possibilities.length; i++) {
@@ -165,9 +197,8 @@ public class TransaccionProduccionControlador
 				"Seleccione la maquina que utilizará:\n" + "\"Indique;\"", "Maquina utilizada en el proceso",
 				JOptionPane.PLAIN_MESSAGE, null, possibilities, "");
 
-		// If a string was returned, say so.
 		if (maquina != null) {
-			System.out.println();
+			System.out.println(maquina);
 		}
 		return maquina;
 	}
@@ -179,126 +210,252 @@ public class TransaccionProduccionControlador
 		return generaDeuda;
 	}
 
+	// SOLICITAR CONFIRMACION PARA REALIZAR LOS PROCESO
 	private void iniciarProduccion() {
-		produccion = new Produccion();
-		produccion.setCantidadDesperdicio(0);
-		produccion.setColaborador(Sesion.getInstance().getColaborador());
-		produccion.setComentario("N/A");
-		produccion.setDesperdicio(false);
-		produccion.setMaquina(pedirMaquina());
-		produccion.setPedidoDetalle(pedidoDetalle);
-		produccion.setPedidoDetalleConfeccion(null);
-		produccion.setProceso("INICIAR");
-		produccion.setSector(Sesion.getInstance().getSector());
+		int acepta = JOptionPane.showConfirmDialog(null, "Iniciar la producción de este item?", "INICIAR PRODUCCION",
+				JOptionPane.YES_NO_OPTION);
+		if (acepta == JOptionPane.YES_OPTION) {
+			if (pedido.getPedidoCarteleria()) {
+				produccion = new Produccion();
+				produccion.setPedido(pedido);
+				produccion.setCantidadDesperdicio(0);
+				produccion.setColaborador(Sesion.getInstance().getColaborador());
+				produccion.setComentario("N/A");
+				produccion.setDesperdicio(false);
+				produccion.setMaquina(pedirMaquina());
+				produccion.setPedidoDetalle(detalleCarteleria);
+				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setProceso("INICIADO");
+				produccion.setSector(Sesion.getInstance().getSector());
 
-		producciones.add(produccion);
+				producciones.add(produccion);
 
-		pedidoDetalle.setProducciones(producciones);
+				detalleCarteleria.setProduccionFinalizada(false);
 
-		guardar();
+				detalleCarteleria.setProducciones(producciones);
+
+				pedido.setGeneraDeuda(false);
+				pedido.setProduccionFinalizada(false);
+
+				guardar();
+			}
+			if (pedido.getPedidoCostura()) {
+				produccion = new Produccion();
+				produccion.setPedido(pedido);
+				produccion.setCantidadDesperdicio(0);
+				produccion.setColaborador(Sesion.getInstance().getColaborador());
+				produccion.setComentario("N/A");
+				produccion.setDesperdicio(false);
+				produccion.setMaquina(pedirMaquina());
+				produccion.setPedidoDetalle(detalleCarteleria);
+				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setProceso("INICIADO");
+				produccion.setSector(Sesion.getInstance().getSector());
+
+				producciones.add(produccion);
+
+				detalleConfeccion.setProduccionFinalizada(false);
+
+				detalleConfeccion.setProducciones(producciones);
+
+				pedido.setGeneraDeuda(false);
+				pedido.setProduccionFinalizada(false);
+
+				guardar();
+			}
+
+		} else {
+			return;
+		}
+
 	}
 
 	private void reiniciarProduccion() {
-		desperdiciarProduccion();
+		int acepta = JOptionPane.showConfirmDialog(null,
+				"Al reiniciar la produccion, se crea un registro de desperdicio y otro que indica el reinicio",
+				"REINICIAR PRODUCCION", JOptionPane.YES_NO_OPTION);
+		if (acepta == JOptionPane.YES_OPTION) {
+			if (pedido.getPedidoCarteleria()) {
+				produccion = new Produccion();
+				produccion.setPedido(pedido);
+				produccion.setCantidadDesperdicio(0);
+				produccion.setColaborador(Sesion.getInstance().getColaborador());
+				produccion.setComentario("N/A");
+				produccion.setDesperdicio(false);
+				produccion.setMaquina(pedirMaquina());
+				produccion.setPedidoDetalle(detalleCarteleria);
+				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setProceso("REINICIADO");
+				produccion.setSector(Sesion.getInstance().getSector());
 
-		produccion = new Produccion();
-		produccion.setCantidadDesperdicio(0);
-		produccion.setColaborador(Sesion.getInstance().getColaborador());
-		produccion.setComentario("N/A");
-		produccion.setDesperdicio(false);
-		produccion.setMaquina(pedirMaquina());
-		produccion.setPedidoDetalle(pedidoDetalle);
-		produccion.setPedidoDetalleConfeccion(null);
-		produccion.setProceso("REINICIAR");
-		produccion.setSector(Sesion.getInstance().getSector());
+				producciones.add(produccion);
 
-		producciones.add(produccion);
+				detalleCarteleria.setProduccionFinalizada(false);
 
-		pedidoDetalle.setProducciones(producciones);
+				detalleCarteleria.setProducciones(producciones);
 
-		guardar();
+				pedido.setGeneraDeuda(false);
+				pedido.setProduccionFinalizada(false);
+
+				guardar();
+			}
+			if (pedido.getPedidoCostura()) {
+				produccion = new Produccion();
+				produccion.setPedido(pedido);
+				produccion.setCantidadDesperdicio(0);
+				produccion.setColaborador(Sesion.getInstance().getColaborador());
+				produccion.setComentario("N/A");
+				produccion.setDesperdicio(false);
+				produccion.setMaquina(pedirMaquina());
+				produccion.setPedidoDetalle(detalleCarteleria);
+				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setProceso("REINICIADO");
+				produccion.setSector(Sesion.getInstance().getSector());
+
+				producciones.add(produccion);
+
+				detalleConfeccion.setProduccionFinalizada(false);
+
+				detalleConfeccion.setProducciones(producciones);
+
+				pedido.setGeneraDeuda(false);
+				pedido.setProduccionFinalizada(false);
+
+				guardar();
+			}
+
+		} else {
+			return;
+		}
+
 	}
 
 	private void finalizarProduccion() {
-		produccion = new Produccion();
-		produccion.setCantidadDesperdicio(0);
-		produccion.setColaborador(Sesion.getInstance().getColaborador());
-		produccion.setComentario("N/A");
-		produccion.setDesperdicio(false);
-		produccion.setMaquina(pedirMaquina());
-		produccion.setPedidoDetalle(pedidoDetalle);
-		produccion.setPedidoDetalleConfeccion(null);
-		produccion.setProceso("FINALIZAR");
-		produccion.setSector(Sesion.getInstance().getSector());
+		int acepta = JOptionPane.showConfirmDialog(null, "Finalizar la producción de este item?",
+				"FINALIZAR PRODUCCION", JOptionPane.YES_NO_OPTION);
+		if (acepta == JOptionPane.YES_OPTION) {
+			if (pedido.getPedidoCarteleria()) {
+				produccion = new Produccion();
+				produccion.setPedido(pedido);
+				produccion.setCantidadDesperdicio(0);
+				produccion.setColaborador(Sesion.getInstance().getColaborador());
+				produccion.setComentario("N/A");
+				produccion.setDesperdicio(false);
+				produccion.setMaquina(null);
+				produccion.setPedidoDetalle(detalleCarteleria);
+				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setProceso("FINALIZADO");
+				produccion.setSector(Sesion.getInstance().getSector());
 
-		producciones.add(produccion);
+				producciones.add(produccion);
 
-		pedidoDetalle.setProducciones(producciones);
+				detalleCarteleria.setProducciones(producciones);
 
-		pedidoDetalle.setProduccionFinalizada(true);
+				detalleCarteleria.setProduccionFinalizada(true);
 
-		pedido.setGeneraDeuda(finalizarProduccionPedido(pedido));
+				pedido.setGeneraDeuda(finalizarProduccionPedido(pedido));
+				pedido.setProduccionFinalizada(finalizarProduccionPedido(pedido));
 
-		guardar();
+				guardar();
+			}
+			if (pedido.getPedidoCostura()) {
+				produccion = new Produccion();
+				produccion.setPedido(pedido);
+				produccion.setCantidadDesperdicio(0);
+				produccion.setColaborador(Sesion.getInstance().getColaborador());
+				produccion.setComentario("N/A");
+				produccion.setDesperdicio(false);
+				produccion.setMaquina(null);
+				produccion.setPedidoDetalle(detalleCarteleria);
+				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setProceso("FINALIZADO");
+				produccion.setSector(Sesion.getInstance().getSector());
+
+				producciones.add(produccion);
+
+				detalleConfeccion.setProducciones(producciones);
+
+				detalleConfeccion.setProduccionFinalizada(true);
+
+				pedido.setGeneraDeuda(finalizarProduccionPedido(pedido));
+				pedido.setProduccionFinalizada(finalizarProduccionPedido(pedido));
+
+				guardar();
+			}
+
+		} else {
+			return;
+		}
+
 	}
 
 	private void desperdiciarProduccion() {
-		produccion = new Produccion();
-		produccion.setCantidadDesperdicio(pedidoDetalle.getMedidaDetalle());
-		produccion.setColaborador(Sesion.getInstance().getColaborador());
-		produccion.setComentario("N/A");
-		produccion.setDesperdicio(true);
-		produccion.setMaquina(null);
-		produccion.setPedidoDetalle(pedidoDetalle);
-		produccion.setPedidoDetalleConfeccion(null);
-		produccion.setProceso("DESPERDICIAR");
-		produccion.setSector(Sesion.getInstance().getSector());
+		int acepta = JOptionPane.showConfirmDialog(null, "Debe confirmar el desperdicio para poder seguir",
+				"DESPERDICIO DE PRODUCION", JOptionPane.YES_NO_OPTION);
+		if (acepta == JOptionPane.YES_OPTION) {
+			if (pedido.getPedidoCarteleria()) {
+				if (detalleCarteleria.getUltimoEstadoProduccion().equalsIgnoreCase("CANCELADO")) {
 
-		producciones.add(produccion);
+				} else {
 
-		pedidoDetalle.setProducciones(producciones);
+					produccion = new Produccion();
+					produccion.setPedido(pedido);
+					produccion.setCantidadDesperdicio(detalleCarteleria.getMedidaDetalle());
+					produccion.setColaborador(Sesion.getInstance().getColaborador());
+					produccion.setComentario("N/A");
+					produccion.setDesperdicio(true);
+					produccion.setMaquina(null);
+					produccion.setPedidoDetalle(detalleCarteleria);
+					produccion.setPedidoDetalleConfeccion(null);
+					produccion.setProceso("CANCELADO");
+					produccion.setSector(Sesion.getInstance().getSector());
 
-		guardar();
+					producciones.add(produccion);
+
+					detalleCarteleria.setProduccionFinalizada(false);
+
+					detalleCarteleria.setProducciones(producciones);
+
+					pedido.setGeneraDeuda(false);
+					pedido.setProduccionFinalizada(false);
+					guardar();
+				}
+			}
+			if (pedido.getPedidoCostura()) {
+				if (detalleConfeccion.getUltimoEstadoProduccion().equalsIgnoreCase("CANCELADO")) {
+
+				} else {
+
+					produccion = new Produccion();
+					produccion.setPedido(pedido);
+					produccion.setCantidadDesperdicio(detalleCarteleria.getMedidaDetalle());
+					produccion.setColaborador(Sesion.getInstance().getColaborador());
+					produccion.setComentario("N/A");
+					produccion.setDesperdicio(true);
+					produccion.setMaquina(null);
+					produccion.setPedidoDetalle(detalleCarteleria);
+					produccion.setPedidoDetalleConfeccion(null);
+					produccion.setProceso("CANCELADO");
+					produccion.setSector(Sesion.getInstance().getSector());
+
+					producciones.add(produccion);
+
+					detalleConfeccion.setProduccionFinalizada(false);
+
+					detalleConfeccion.setProducciones(producciones);
+
+					pedido.setGeneraDeuda(false);
+					pedido.setProduccionFinalizada(false);
+
+					guardar();
+				}
+			}
+
+		} else {
+			return;
+		}
+
 	}
-
-//	private void cambiarEstado() {
-//		if (procesoRepetido(proceso)) {
-//			return;
-//		}
-//
-//		produccion = new Produccion();
-//		produccion.setCantidadDesperdicio(0d);
-//		produccion.setColaborador(Sesion.getInstance().getColaborador());
-//		produccion.setDesperdicio(false);
-//		produccion.setMaquina(null);
-//		produccion.setObservacion("Sin observaciones.");
-//		produccion.setPedidoDetalle(pedidoDetalle);
-//		produccion.setSector(Sesion.getInstance().getColaborador().getSector());
-//		produccion.setTipoTrabajo("Sin definicion de trabajo");
-//		producciones.add(produccion);
-//		guardar();
-//		modeloTablaProduccion.setProducciones(producciones);
-//		modeloTablaProduccion.fireTableDataChanged();
-//	}
-
-//	private void solicitarProceso() {
-//		List<SectorProceso> procesos = Sesion.getInstance().getColaborador().getSector().getProcesos();
-//		Object[] possibilities = new Object[procesos.size()];
-//
-//		for (int i = 0; i < possibilities.length; i++) {
-//			possibilities[i] = procesos.get(i);
-//		}
-//
-//		SectorProceso proceso = (SectorProceso) JOptionPane.showInputDialog(ventana,
-//				"Seleccione el proceso:\n" + "\"Indique;\"", "Estado de seguimiento", JOptionPane.PLAIN_MESSAGE, null,
-//				possibilities, "");
-//
-//		// If a string was returned, say so.
-//		if (proceso != null) {
-//			System.out.println(proceso.getId() + " " + proceso.getNombreProceso());
-//		}
-//		setProceso(proceso);
-//	}
 
 	private void guardar() {
 		try {
@@ -308,7 +465,7 @@ public class TransaccionProduccionControlador
 			e.printStackTrace();
 			dao.rollBack();
 		}
-
+		modeloTablaProduccion.fireTableDataChanged();
 	}
 
 	@Override
@@ -329,20 +486,31 @@ public class TransaccionProduccionControlador
 		}
 		vaciarTablas();
 
+		String info1 = pedido.isGeneraDeuda() ? "FINALIZADO" : "NO FINALIZADO";
+		String info2 = pedido.getPedidoCarteleria() ? "PEDIDO CARTELERIA" : "PEDIDO CONFECCION";
+
+		ventana.gettPedido().setValue((double) pedido.getId());
+
 		ventana.getlPedido1()
-				.setText("PEDIDO " + pedido.getId() + " " + EventosUtil.formatoFecha(pedido.getFechaRegistro()));
-		ventana.getlPedido2()
-				.setText("PEDIDO " + pedido.getPedidoCarteleria() != null && pedido.getPedidoCarteleria() == true
-						? "CARTELERIA"
-						: "CONFECCION".concat(pedido.isEstado() ? " VIGENTE" : " ANULADO"));
+				.setText("PEDIDO " + pedido.getId() + " del " + EventosUtil.formatoFecha(pedido.getFechaRegistro()));
+
+		ventana.getlPedido2().setText(info1 + " " + info2);
+
 		ventana.getlPedido3()
 				.setText("METRAJE TOTAL DEL PEDIDO " + EventosUtil.separadorDecimales(pedido.getMetrosTotal()));
 		ventana.getlCliente().setText(pedido.getCliente().toString());
 		ventana.getlColaborador().setText(pedido.getColaborador().toString());
 
-		pedidosDetalles = pedido.getPedidoDetalles();
-		modeloTablaPedidoDetalle.setDetalle(pedidosDetalles);
-		modeloTablaPedidoDetalle.fireTableDataChanged();
+		if (pedido.getPedidoCarteleria()) {
+			detallesCarteleria = pedido.getPedidoDetalles();
+			modeloTablaPedidoDetalle.setDetalle(detallesCarteleria);
+			modeloTablaPedidoDetalle.fireTableDataChanged();
+		}
+		if (pedido.getPedidoCostura()) {
+			detallesConfeccion = pedido.getPedidosConfecciones();
+			modeloTablaPedidoConfeccionDetalle.setDetalle(detallesConfeccion);
+			modeloTablaPedidoConfeccionDetalle.fireTableDataChanged();
+		}
 
 	}
 
@@ -438,34 +606,33 @@ public class TransaccionProduccionControlador
 
 	private JPopupMenu tablePopup(final JTable table, final int row) {
 		seleccionarRegistro(row);
-		verificarEstadoProduccionDetalle(pedidoDetalle);
 		JPopupMenu popup = new JPopupMenu("Popup");
-		JMenuItem item = new JMenuItem("\u25B6 Iniciar");
-		item.addActionListener(new ActionListener() {
+		JMenuItem iniciar = new JMenuItem("\u25B6 Iniciar");
+		iniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				iniciarProduccion();
 
 			}
 		});
-		JMenuItem item2 = new JMenuItem("\uD83D\uDD01 Reiniciar");
-		item2.addActionListener(new ActionListener() {
+		JMenuItem reiniciar = new JMenuItem("\uD83D\uDD01 Reiniciar");
+		reiniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				reiniciarProduccion();
 
 			}
 		});
-		JMenuItem item3 = new JMenuItem("\u23F9 Desperdiciar");
-		item3.addActionListener(new ActionListener() {
+		JMenuItem cancelar = new JMenuItem("\u23F9 Cancelar");
+		cancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				desperdiciarProduccion();
 
 			}
 		});
-		JMenuItem item4 = new JMenuItem("\u23F8 Finalizar");
-		item4.addActionListener(new ActionListener() {
+		JMenuItem finalizar = new JMenuItem("\u23F8 Finalizar");
+		finalizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				finalizarProduccion();
@@ -473,10 +640,56 @@ public class TransaccionProduccionControlador
 			}
 		});
 
-		popup.add(item);
-		popup.add(item2);
-		popup.add(item3);
-		popup.add(item4);
+		if (pedido.getPedidoCarteleria()) {
+			switch (detalleCarteleria.getUltimoEstadoProduccion()) {
+			case "INICIADO":
+				popup.add(cancelar);
+				popup.add(finalizar);
+				break;
+
+			case "CANCELADO":
+				popup.add(reiniciar);
+
+				break;
+			case "FINALIZADO":
+//				popup.add(cancelar);
+				break;
+			case "REINICIADO":
+				popup.add(cancelar);
+				popup.add(finalizar);
+				break;
+			default:
+				popup.add(iniciar);
+				break;
+			}
+		}
+
+		if (pedido.getPedidoCostura()) {
+			switch (detalleConfeccion.getUltimoEstadoProduccion()) {
+			case "INICIADO":
+				popup.add(reiniciar);
+				popup.add(cancelar);
+				popup.add(finalizar);
+				break;
+			case "REINICIADO":
+				popup.add(cancelar);
+				popup.add(finalizar);
+				break;
+			case "DESPERDICIADO":
+				popup.add(reiniciar);
+
+				break;
+			case "FINALIZADO":
+				popup.add(reiniciar);
+				popup.add(cancelar);
+				break;
+
+			default:
+				popup.add(iniciar);
+				break;
+			}
+		}
+
 		return popup;
 	}
 }

@@ -37,7 +37,10 @@ public class PedidoDao extends GenericDao<Pedido> {
 	public Pedido encontrarPedido(Integer pedido) {
 		getSession().beginTransaction();
 
-		String sql = "from Pedido where id = :pedido and estado = true and esPresupuesto = false order by id desc";
+		String sql = "FROM Pedido "
+				+ "WHERE id = :pedido "
+				+ "AND estado = true "
+				+ "AND esPresupuesto = false";
 
 		try {
 			@SuppressWarnings("unchecked")

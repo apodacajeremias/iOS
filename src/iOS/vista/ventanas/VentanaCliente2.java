@@ -32,6 +32,9 @@ public class VentanaCliente2 extends JDialog {
 	private VentanaClienteControlador2 controlador;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
+	private LabelPersonalizado lDeuda;
+	private LabelPersonalizado lPagos;
+	private LabelPersonalizado lDiferencia;
 	
 	public void setUpControlador() {
 		controlador = new VentanaClienteControlador2(this);
@@ -152,6 +155,42 @@ public class VentanaCliente2 extends JDialog {
 		lEstado.setBounds(10, 403, 285, 20);
 		panel.add(lEstado);
 		
+		LabelPersonalizado lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1 = new LabelPersonalizado(0);
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1.setText("Sumatoria Deuda");
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1.setBounds(10, 434, 285, 20);
+		panel.add(lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1);
+		
+		lDeuda = new LabelPersonalizado(0);
+		lDeuda.setText(" ");
+		lDeuda.setFont(new Font("Dialog", Font.BOLD, 18));
+		lDeuda.setBounds(10, 456, 285, 20);
+		panel.add(lDeuda);
+		
+		LabelPersonalizado lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1 = new LabelPersonalizado(0);
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1.setText("Sumatoria de Pagos");
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1.setBounds(10, 487, 285, 20);
+		panel.add(lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1);
+		
+		lPagos = new LabelPersonalizado(0);
+		lPagos.setText(" ");
+		lPagos.setFont(new Font("Dialog", Font.BOLD, 18));
+		lPagos.setBounds(10, 510, 285, 20);
+		panel.add(lPagos);
+		
+		LabelPersonalizado lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1_1_1 = new LabelPersonalizado(0);
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1_1_1.setText("Diferencia: Deuda - Pagos");
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1_1_1.setBounds(10, 541, 285, 20);
+		panel.add(lblprsnlzdClienteNombreCompleto_1_3_1_2_1_2_1_1_1_1_1);
+		
+		lDiferencia = new LabelPersonalizado(0);
+		lDiferencia.setText(" ");
+		lDiferencia.setFont(new Font("Dialog", Font.BOLD, 18));
+		lDiferencia.setBounds(10, 563, 285, 20);
+		panel.add(lDiferencia);
+		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(325, 11, 939, 290);
 		getContentPane().add(scrollPane);
@@ -214,6 +253,18 @@ public class VentanaCliente2 extends JDialog {
 
 	public VentanaClienteControlador2 getControlador() {
 		return controlador;
+	}
+
+	public LabelPersonalizado getlDeuda() {
+		return lDeuda;
+	}
+
+	public LabelPersonalizado getlPagos() {
+		return lPagos;
+	}
+
+	public LabelPersonalizado getlDiferencia() {
+		return lDiferencia;
 	}
 	
 	

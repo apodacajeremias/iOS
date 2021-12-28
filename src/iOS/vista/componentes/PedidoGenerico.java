@@ -249,8 +249,6 @@ public class PedidoGenerico extends JDialog {
 		getContentPane().add(scrollPane);
 
 		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		table.setBackground(new Color(204, 204, 204));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 		table.setToolTipText("Click para seleccionar");

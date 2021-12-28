@@ -1,7 +1,9 @@
 package iOS.modelo.entidades;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -77,6 +79,9 @@ public class PedidoDetalleConfeccion {
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean produccionFinalizada = false;
+
+	@Column(nullable = true)
+	private String ultimoEstadoProduccion;
 
 	@Override
 	public String toString() {
@@ -210,7 +215,23 @@ public class PedidoDetalleConfeccion {
 	public void setProduccionFinalizada(boolean produccionFinalizada) {
 		this.produccionFinalizada = produccionFinalizada;
 	}
-	
-	
 
+	public String getUltimoEstadoProduccion() {
+		ultimoEstadoProduccion = "PENDIENTE";
+		try {
+			producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId).reversed())
+					.collect(Collectors.toList());
+			ultimoEstadoProduccion = producciones.stream().findFirst().get().getProceso();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ultimoEstadoProduccion;
+	}
+
+	public void setUltimoEstadoProduccion(String ultimoEstadoProduccion) {
+		this.ultimoEstadoProduccion = ultimoEstadoProduccion;
+	}
+
+	
 }

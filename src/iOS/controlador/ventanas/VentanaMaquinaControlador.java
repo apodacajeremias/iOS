@@ -41,7 +41,6 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 
 	private void estadoInicial(boolean b) {
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettNombreCompleto());
-		EventosUtil.limpiarCampoPersonalizado(ventana.gettTipoMaquina());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getLblColaborador());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getLblEstado());
@@ -59,11 +58,6 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 			ventana.gettNombreCompleto().requestFocus();
 			JOptionPane.showMessageDialog(ventana,
 					"El nombre descriptivo de la máquina es una información importante.");
-			return false;
-		}
-		if (ventana.gettTipoMaquina().getText().isEmpty()) {
-			ventana.gettTipoMaquina().requestFocus();
-			JOptionPane.showMessageDialog(ventana, "El tipo o funcion de la máquina es una información importante.");
 			return false;
 		}
 		return true;
@@ -103,7 +97,7 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 		}
 
 		maquina.setNombreMaquina(ventana.gettNombreCompleto().getText().toUpperCase());
-		maquina.setTipoMaquina(ventana.gettTipoMaquina().getText().toUpperCase());
+		maquina.setTipoMaquina(ventana.getCbTipoMaquina().getSelectedItem().toString().toUpperCase());
 
 		try {
 			if (accion.equals("NUEVO")) {
@@ -146,7 +140,7 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 			System.out.println(maquina.getId() + " ID DE MAQUINA");
 		}
 		ventana.gettNombreCompleto().setText(maquina.getNombreMaquina());
-		ventana.gettTipoMaquina().setText(maquina.getTipoMaquina());
+		ventana.getCbTipoMaquina().setSelectedItem(maquina.getTipoMaquina());
 		ventana.getLblColaborador().setText("Registrado por " + maquina.getColaborador().toString());
 		ventana.getLblEstado().setText(maquina.isEstado() ? "MAQUINA ACTIVA" : "MAQUINA FUERA DE USO");
 		ventana.getLblFechaRegistro().setText("Registrado el " + EventosUtil.formatoFecha(maquina.getFechaRegistro()));

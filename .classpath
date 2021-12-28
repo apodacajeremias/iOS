@@ -42,5 +42,6 @@
 	<classpathentry kind="lib" path="src/lib/jasperreports-6.17.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/jasperreports-fonts-6.17.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/jasperreports-javaflow-6.17.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/jfreechart-1.5.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

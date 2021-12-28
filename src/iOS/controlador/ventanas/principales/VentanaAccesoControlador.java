@@ -69,6 +69,7 @@ public class VentanaAccesoControlador implements ActionListener {
 			Sesion.getInstance().setMaquinas(maquinas);
 			VentanaPrincipal principal = new VentanaPrincipal();
 			principal.getLblPODAC().setText(Sesion.getInstance().getColaborador().toString());
+			System.out.println(Sesion.getInstance().getColaborador().getRol());
 			ventana.dispose();
 			principal.setVisible(true);
 		} catch (Exception e) {

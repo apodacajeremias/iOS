@@ -359,9 +359,10 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			pedido.setMetrosFechaEmision(0d);
 			pedido.setPedidoCostura(false);
 			pedido.setPedidoCarteleria(true);
+			pedido.setCliente(cliente);
 		}
 
-		pedido.setCliente(cliente);
+		
 		pedido.setDescuentoTotal(Integer.parseInt(ventana.gettDescuentoPedido().getText()));
 		pedido.setEsPresupuesto(ventana.getRbGenerarPresupuesto().isSelected());
 		pedido.setInformacionResponsable(ventana.gettResponsable().getText());

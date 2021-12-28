@@ -6,6 +6,8 @@ import iOS.controlador.ventanas.VentanaMaquinaControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.VentanaGenerica;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  * @author 59598
@@ -19,12 +21,12 @@ public class VentanaMaquina extends VentanaGenerica {
 	private static final long serialVersionUID = 4569012102467509839L;
 	public String modulo = "MAQUINA";
 	private CampoTextoPersonalizado tNombreCompleto;
-	private CampoTextoPersonalizado tTipoMaquina;
 	private VentanaMaquinaControlador controlador;
 	private LabelPersonalizado lblFechaRegistro;
 	private LabelPersonalizado lblColaborador;
 	private LabelPersonalizado lblID;
 	private LabelPersonalizado lblEstado;
+	private JComboBox<String> cbTipoMaquina;
 
 	public void setUpControlador() {
 		controlador = new VentanaMaquinaControlador(this);
@@ -43,13 +45,6 @@ public class VentanaMaquina extends VentanaGenerica {
 		tNombreCompleto.limite(50);
 		getPanelFormulario().add(tNombreCompleto);
 
-		tTipoMaquina = new CampoTextoPersonalizado();
-		tTipoMaquina.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tTipoMaquina.setBounds(20, 100, 200, 30);
-		tTipoMaquina.mayusculas();
-		tTipoMaquina.limite(12);
-		getPanelFormulario().add(tTipoMaquina);
-
 		LabelPersonalizado lblprsnlzdNombreCompleto = new LabelPersonalizado(0);
 		lblprsnlzdNombreCompleto.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblprsnlzdNombreCompleto.setText("Nombre descriptivo de la maquina");
@@ -58,8 +53,8 @@ public class VentanaMaquina extends VentanaGenerica {
 
 		LabelPersonalizado lblprsnlzdIdentificacion_1 = new LabelPersonalizado(0);
 		lblprsnlzdIdentificacion_1.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdIdentificacion_1.setText("Tipo de maquina (Impresion o Costura)");
-		lblprsnlzdIdentificacion_1.setBounds(20, 81, 354, 20);
+		lblprsnlzdIdentificacion_1.setText("Tipo de maquina");
+		lblprsnlzdIdentificacion_1.setBounds(20, 80, 354, 20);
 		getPanelFormulario().add(lblprsnlzdIdentificacion_1);
 
 		lblID = new LabelPersonalizado(0);
@@ -85,6 +80,12 @@ public class VentanaMaquina extends VentanaGenerica {
 		lblEstado.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblEstado.setBounds(20, 232, 432, 20);
 		getPanelFormulario().add(lblEstado);
+		
+		cbTipoMaquina = new JComboBox<String>();
+		cbTipoMaquina.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		cbTipoMaquina.setModel(new DefaultComboBoxModel<String>(new String[] {"Impresora", "Costura"}));
+		cbTipoMaquina.setBounds(20, 100, 432, 30);
+		getPanelFormulario().add(cbTipoMaquina);
 	}
 
 	public static long getSerialversionuid() {
@@ -97,10 +98,6 @@ public class VentanaMaquina extends VentanaGenerica {
 
 	public CampoTextoPersonalizado gettNombreCompleto() {
 		return tNombreCompleto;
-	}
-
-	public CampoTextoPersonalizado gettTipoMaquina() {
-		return tTipoMaquina;
 	}
 
 	public VentanaMaquinaControlador getControlador() {
@@ -121,6 +118,10 @@ public class VentanaMaquina extends VentanaGenerica {
 
 	public LabelPersonalizado getLblEstado() {
 		return lblEstado;
+	}
+
+	public JComboBox<String> getCbTipoMaquina() {
+		return cbTipoMaquina;
 	}
 	
 	

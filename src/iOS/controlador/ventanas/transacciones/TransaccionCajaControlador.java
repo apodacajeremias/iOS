@@ -429,14 +429,19 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 			JOptionPane.showMessageDialog(ventana, "Debe abrir el caja para realizar el pago de la entrega");
 			return;
 		} else {
-			String pedidoID = JOptionPane.showInputDialog("Introduzca la referencia del pedido");
-			PedidoDao pedidoDao = new PedidoDao();
-			Pedido pedido = pedidoDao.recuperarPorId(Integer.parseInt(pedidoID));
-			if (pedido == null) {
-				JOptionPane.showMessageDialog(ventana, "No se ha encontrado el pedido indicado.");
-				return;
+			try {
+				String pedidoID = JOptionPane.showInputDialog(ventana, "Introduzca la referencia del pedido");
+				PedidoDao pedidoDao = new PedidoDao();
+				Pedido pedido = pedidoDao.recuperarPorId(Integer.parseInt(pedidoID));
+				if (pedido == null) {
+					JOptionPane.showMessageDialog(ventana, "No se ha encontrado el pedido indicado.");
+					return;
+				}
+				setPedido(pedido);
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
 			}
-			setPedido(pedido);
 		}
 	}
 
@@ -878,6 +883,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
 		buscador.setVisible(true);
+		buscador.setAlwaysOnTop(true);
 	}
 
 	@Override

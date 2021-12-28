@@ -42,6 +42,8 @@ import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.buscadores.BuscadorSector;
 import iOS.vista.ventanas.pedidos.TransaccionPedido;
 import iOS.vista.ventanas.reportes.ReporteCaja;
+import iOS.vista.ventanas.reportes.ReporteCliente;
+import iOS.vista.ventanas.reportes.ReporteColaborador;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 import iOS.vista.ventanas.transacciones.TransaccionPagoPedido;
@@ -205,7 +207,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemBuscadorCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorCliente);
 
-		JMenuItem mnItemBuscadorColaborador = new JMenuItem("Buscar getColaborador()es");
+		JMenuItem mnItemBuscadorColaborador = new JMenuItem("Buscar colaboradores");
 		mnItemBuscadorColaborador.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -413,13 +415,29 @@ public class VentanaPrincipal extends JFrame {
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReporteCaja);
 
-		JMenuItem mnItemReportePedido = new JMenuItem("Reporte de pedidos impresiones");
+		JMenuItem mnItemReportePedido = new JMenuItem("Reporte de pedidos");
 		mnItemReportePedido.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				abrirReportePedido();
 			}
 		});
+
+		JMenuItem mnItemReporteCliente = new JMenuItem("Reporte de clientes");
+		mnItemReporteCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirReporteCliente();
+			}
+		});
+		mnReportes.add(mnItemReporteCliente);
+
+		JMenuItem mnItemReporteColaborador = new JMenuItem("Reporte de Colaborador");
+		mnItemReporteColaborador.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirReporteColaborador();
+			}
+		});
+		mnReportes.add(mnItemReporteColaborador);
 
 		mnItemReportePedido
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
@@ -508,6 +526,22 @@ public class VentanaPrincipal extends JFrame {
 
 	private void abrirReportePedido() {
 		ReportePedido ventana = new ReportePedido();
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
+			ventana.setUpControlador();
+			ventana.setVisible(true);
+		}
+	}
+
+	private void abrirReporteCliente() {
+		ReporteCliente ventana = new ReporteCliente();
+		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
+			ventana.setUpControlador();
+			ventana.setVisible(true);
+		}
+	}
+
+	private void abrirReporteColaborador() {
+		ReporteColaborador ventana = new ReporteColaborador();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
 			ventana.setVisible(true);

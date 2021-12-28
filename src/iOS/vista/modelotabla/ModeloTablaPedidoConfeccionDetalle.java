@@ -44,7 +44,11 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 	public Object getValueAt(int r, int c) {
 		switch (c) {
 		case 0:
-			return detalle.get(r).getProducto();
+			if (detalle.get(r).isProduccionFinalizada()) {
+				return "\u2714" + detalle.get(r).getProducto();
+			} else {
+				return "\u274C" + detalle.get(r).getProducto();
+			}
 		case 1:
 			return detalle.get(r).getArchivo();
 		case 2:
@@ -106,8 +110,7 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 			} catch (NumberFormatException e) {
 				return;
 			}
-		}
-		else if (6 == c) {
+		} else if (6 == c) {
 			try {
 				row.setPrecioDetalle(Double.parseDouble(aValue.toString().replace(".", "").replace(",", "")));
 				row.setPrecioProducto((int) calcularPrecio(row, row.getPrecioDetalle()));

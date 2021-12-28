@@ -72,6 +72,10 @@ public class Pedido {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cliente cliente;
+	
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<Produccion> producciones;
+
 
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PedidoDetalles> pedidoDetalles;
@@ -102,6 +106,10 @@ public class Pedido {
 	
 	@Column(nullable = true)
 	private String informacionResponsable;
+	
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean produccionFinalizada = false;
 
 	public int getId() {
 		return id;
@@ -302,6 +310,23 @@ public class Pedido {
 	public void setSumaPagos(double sumaPagos) {
 		this.sumaPagos = sumaPagos;
 	}
+
+	public boolean isProduccionFinalizada() {
+		return produccionFinalizada;
+	}
+
+	public void setProduccionFinalizada(boolean produccionFinalizada) {
+		this.produccionFinalizada = produccionFinalizada;
+	}
+
+	public List<Produccion> getProducciones() {
+		return producciones;
+	}
+
+	public void setProducciones(List<Produccion> producciones) {
+		this.producciones = producciones;
+	}
+	
 	
 	
 

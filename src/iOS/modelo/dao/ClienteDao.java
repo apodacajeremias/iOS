@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.query.Query;
 
-import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
 
@@ -51,24 +50,6 @@ public class ClienteDao extends GenericDao<Cliente> {
 		}
 	}
 
-	public List<CajaMovimiento> recuperarPagos(int cliente) {
-		getSession().beginTransaction();
-		String sql = "from CajaMovimiento " + "where cliente.id = :cliente " + "and esAnulado = false "
-				+ "and esRetiro = false " + "order by id ASC";
-		@SuppressWarnings("unchecked")
-		Query<CajaMovimiento> query = getSession().createQuery(sql);
-		query.setParameter("cliente", cliente);
-		try {
-			List<CajaMovimiento> resultados = query.getResultList();
-			commit();
-			return resultados;
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollBack();
-			return null;
-		}
-	}
-
 	public List<Pedido> recuperarPedidos(int cliente) {
 		getSession().beginTransaction();
 
@@ -87,19 +68,6 @@ public class ClienteDao extends GenericDao<Cliente> {
 			rollBack();
 			return null;
 		}
-	}
-
-	public long verificarClienteEnUso(Cliente paciente) {
-		getSession().beginTransaction();
-		String sql = "select count(paciente) from Presupuesto where paciente.id = :pacienteId";
-
-		@SuppressWarnings("unchecked")
-		Query<Long> query = getSession().createQuery(sql);
-		query.setParameter("pacienteId", paciente.getId());
-		long cant = query.getSingleResult();
-		commit();
-		System.out.println(cant);
-		return cant;
 	}
 
 }

@@ -21,42 +21,42 @@ public class CajaMovimiento {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaboradorQueRegistra;	
+	private Colaborador colaboradorQueRegistra;
 
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-
 	public boolean isEstado() {
 		return estado;
 	}
+
 	public Colaborador getColaboradorQueRegistra() {
 		return colaboradorQueRegistra;
 	}
 
-
 	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
 		this.colaboradorQueRegistra = colaboradorQueRegistra;
 	}
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Cliente cliente;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Pedido pedido;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Colaborador colaborador;
@@ -65,19 +65,19 @@ public class CajaMovimiento {
 	@JoinColumn(nullable = false)
 	private Caja caja;
 
-	//Cheque, efectivo u otros
+	// Cheque, efectivo u otros
 	@Column(nullable = false)
 	private String tipoValor;
 
 	@Column(nullable = true)
 	private String observacion;
-	
+
 	@Column(nullable = false)
 	private boolean esAnulado;
-	
+
 	@Column(nullable = false)
 	private boolean esRetiro;
-	
+
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean esVale;
@@ -114,7 +114,6 @@ public class CajaMovimiento {
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
-
 
 	public Caja getCaja() {
 		return caja;
@@ -180,36 +179,29 @@ public class CajaMovimiento {
 		this.valorUS = valorUS;
 	}
 
-
 	public Pedido getPedido() {
 		return pedido;
 	}
-
 
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 
-
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
-
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
 
-
 	public boolean isEsVale() {
 		return esVale;
 	}
 
-
 	public void setEsVale(boolean esVale) {
 		this.esVale = esVale;
 	}
-
 
 	@Override
 	public String toString() {
@@ -219,8 +211,5 @@ public class CajaMovimiento {
 				+ observacion + ", esAnulado=" + esAnulado + ", esRetiro=" + esRetiro + ", esVale=" + esVale
 				+ ", valorGS=" + valorGS + ", valorRS=" + valorRS + ", valorUS=" + valorUS + "]";
 	}
-	
-	
-	
-	
+
 }

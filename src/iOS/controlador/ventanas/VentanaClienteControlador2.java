@@ -32,7 +32,7 @@ import iOS.vista.ventanas.pedidos.TransaccionPedido;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 
 public class VentanaClienteControlador2 implements ActionListener, MouseListener, KeyListener, ClienteInterface {
-	private VentanaCliente2 ventanaCliente2;
+	private VentanaCliente2 ventana;
 	private ClienteDao dao;
 	private Cliente cliente;
 
@@ -45,7 +45,7 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 
 	public VentanaClienteControlador2(VentanaCliente2 ventanaCliente2) {
-		this.ventanaCliente2 = ventanaCliente2;
+		this.ventana = ventanaCliente2;
 		
 		tableMenu(ventanaCliente2.getTablePedidos());
 
@@ -62,8 +62,8 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	}
 
 	private void setUpEvents() {
-		ventanaCliente2.getTablePagos().addMouseListener(this);
-		ventanaCliente2.getTablePedidos().addMouseListener(this);
+		ventana.getTablePagos().addMouseListener(this);
+		ventana.getTablePedidos().addMouseListener(this);
 	}
 
 	private void formatearTabla() {
@@ -75,14 +75,14 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	}
 
 	private void estadoInicial(boolean b) {
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlColaborador());
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlContacto());
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlDireccion());
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlEstado());
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlID());
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlIdentificacion());
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlNombreCompleto());
-		EventosUtil.limpiarCampoPersonalizado(ventanaCliente2.getlFechaRegistro());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlColaborador());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlContacto());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlDireccion());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlEstado());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlID());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlIdentificacion());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlNombreCompleto());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlFechaRegistro());
 
 	}
 
@@ -97,27 +97,25 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 			return;
 		}
 
-		ventanaCliente2.getlColaborador().setText(cliente.getColaborador().toString());
-		ventanaCliente2.getlContacto().setText(cliente.getContacto());
-		ventanaCliente2.getlDireccion().setText(cliente.getDireccion());
-		ventanaCliente2.getlEstado().setText(cliente.isEstado() ? "ACTIVO" : "INACTIVO");
-		ventanaCliente2.getlFechaRegistro().setText(EventosUtil.formatoFecha(cliente.getFechaRegistro()));
-		ventanaCliente2.getlID().setText(cliente.getId() + "");
-		ventanaCliente2.getlIdentificacion().setText(cliente.getIdentificacion());
-		ventanaCliente2.getlNombreCompleto().setText(cliente.getNombreCompleto());
-
-//		modeloTablaCajaMovimiento.setMovimiento(cliente.getCajaMovimientos());
-//		modeloTablaCajaMovimiento.fireTableDataChanged();
-//
-//		modeloTablaPedido.setPedidos(cliente.getPedidos());
-//		modeloTablaPedido.fireTableDataChanged();
+		ventana.getlColaborador().setText(cliente.getColaborador().toString());
+		ventana.getlContacto().setText(cliente.getContacto());
+		ventana.getlDireccion().setText(cliente.getDireccion());
+		ventana.getlEstado().setText(cliente.isEstado() ? "ACTIVO" : "INACTIVO");
+		ventana.getlFechaRegistro().setText(EventosUtil.formatoFecha(cliente.getFechaRegistro()));
+		ventana.getlID().setText(cliente.getId() + "");
+		ventana.getlIdentificacion().setText(cliente.getIdentificacion());
+		ventana.getlNombreCompleto().setText(cliente.getNombreCompleto());
+		ventana.getlDeuda().setText(EventosUtil.separadorMiles(cliente.getDeudas()));
+		ventana.getlPagos().setText(EventosUtil.separadorMiles(cliente.getPagos()));
+		ventana.getlDiferencia().setText(EventosUtil.separadorMiles(cliente.getDiferencia()));
+		
 
 		cargarTablas(cliente);
 
 	}
 
 	private void cargarTablas(Cliente cliente) {
-		movimientos = dao.recuperarPagos(cliente.getId());
+		movimientos = cliente.getCajaMovimientos();
 		modeloTablaCajaMovimiento.setMovimiento(movimientos);
 		modeloTablaCajaMovimiento.fireTableDataChanged();
 
@@ -147,13 +145,13 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == ventanaCliente2.getTablePagos() && e.getClickCount() == 2) {
-			caja = movimientos.get(ventanaCliente2.getTablePagos().getSelectedRow()).getCaja();
+		if (e.getSource() == ventana.getTablePagos() && e.getClickCount() == 2) {
+			caja = movimientos.get(ventana.getTablePagos().getSelectedRow()).getCaja();
 			abrirTransaccionCaja(caja);
 		}
 
-		if (e.getSource() == ventanaCliente2.getTablePedidos() && e.getClickCount() == 2) {
-			pedido = pedidos.get(ventanaCliente2.getTablePedidos().getSelectedRow());
+		if (e.getSource() == ventana.getTablePedidos() && e.getClickCount() == 2) {
+			pedido = pedidos.get(ventana.getTablePedidos().getSelectedRow());
 			if (pedido.getPedidoCarteleria() != (null)) {
 				if (pedido.getPedidoCarteleria()) {
 					abrirPedidoCarteleria(pedido);
@@ -168,7 +166,7 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 				}
 			}
 			if (pedido.getPedidoCarteleria() == null && pedido.getPedidoCostura() == null) {
-				JOptionPane.showMessageDialog(ventanaCliente2, "Error al consultar, comuníquese con el desarrollador.");
+				JOptionPane.showMessageDialog(ventana, "Error al consultar, comuníquese con el desarrollador.");
 			}
 		}
 
