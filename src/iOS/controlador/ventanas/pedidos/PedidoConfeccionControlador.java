@@ -489,6 +489,18 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		if (pedido == null) {
 			return;
 		}
+		
+		if (pedido.isGeneraDeuda()) {
+			EventosUtil.estadosCampoPersonalizado(ventana, false);
+		}
+		
+		if (pedido.isProduccionFinalizada()) {
+			EventosUtil.estadosCampoPersonalizado(ventana, false);
+		}
+		
+		if (pedido.getSumaPagos() > 0) {
+			EventosUtil.estadosCampoPersonalizado(ventana, false);
+		}
 
 		// Datos del cliente
 		cliente = pedido.getCliente();

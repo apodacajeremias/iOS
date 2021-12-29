@@ -25,9 +25,6 @@ public class PedidoDetalleConfeccion {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-//	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -73,12 +70,15 @@ public class PedidoDetalleConfeccion {
 	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<DetalleMaterial> materiales;
 
-	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pedidoDetalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
 
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean produccionFinalizada = false;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaUltimoRegistroProduccion;
 
 	@Column(nullable = true)
 	private String ultimoEstadoProduccion;
@@ -201,6 +201,13 @@ public class PedidoDetalleConfeccion {
 	}
 
 	public List<Produccion> getProducciones() {
+		try {
+			producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		return producciones;
 	}
 
@@ -233,5 +240,12 @@ public class PedidoDetalleConfeccion {
 		this.ultimoEstadoProduccion = ultimoEstadoProduccion;
 	}
 
-	
+	public Date getFechaUltimoRegistroProduccion() {
+		return fechaUltimoRegistroProduccion;
+	}
+
+	public void setFechaUltimoRegistroProduccion(Date fechaUltimoRegistroProduccion) {
+		this.fechaUltimoRegistroProduccion = fechaUltimoRegistroProduccion;
+	}
+
 }

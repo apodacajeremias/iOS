@@ -30,7 +30,7 @@ public class ReporteColaborador extends ReporteGenerico {
 		getPanelEspecifico().getRdTipo1().setText("Carteleria + Confeccion");
 		getPanelGeneral().getLblrdAlgunos().setText("Busca todos los registros de presupuestos relacionados a tu perfil");
 		getPanelGeneral().getRdAlgunos().setText("Encontrar y Mostrar Solo Presupuestos");
-		setTitle("REPORTE DE VALES");
+		setTitle("REPORTE DE COLABORADOR");
 		
 	}
 

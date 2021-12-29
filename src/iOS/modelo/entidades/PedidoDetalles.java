@@ -25,9 +25,6 @@ public class PedidoDetalles {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-//	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -54,7 +51,7 @@ public class PedidoDetalles {
 	private double medidaDetalle;
 
 	@Column(nullable = true)
-	private int cantidadDetalle;
+	private double cantidadDetalle;
 
 	@Column(nullable = true)
 	private int precioProducto;
@@ -85,6 +82,9 @@ public class PedidoDetalles {
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean produccionFinalizada = false;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaUltimoRegistroProduccion;
 
 	@Column(nullable = true)
 	private String ultimoEstadoProduccion;
@@ -158,14 +158,6 @@ public class PedidoDetalles {
 		this.medidaDetalle = medidaDetalle;
 	}
 
-	public int getCantidadDetalle() {
-		return cantidadDetalle;
-	}
-
-	public void setCantidadDetalle(int cantidadDetalle) {
-		this.cantidadDetalle = cantidadDetalle;
-	}
-
 	public int getPrecioProducto() {
 		return precioProducto;
 	}
@@ -223,6 +215,13 @@ public class PedidoDetalles {
 	}
 
 	public List<Produccion> getProducciones() {
+		try {
+			producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		return producciones;
 	}
 
@@ -254,6 +253,22 @@ public class PedidoDetalles {
 
 	public void setUltimoEstadoProduccion(String ultimoEstadoProduccion) {
 		this.ultimoEstadoProduccion = ultimoEstadoProduccion;
+	}
+
+	public Date getFechaUltimoRegistroProduccion() {
+		return fechaUltimoRegistroProduccion;
+	}
+
+	public void setFechaUltimoRegistroProduccion(Date fechaUltimoRegistroProduccion) {
+		this.fechaUltimoRegistroProduccion = fechaUltimoRegistroProduccion;
+	}
+
+	public double getCantidadDetalle() {
+		return cantidadDetalle;
+	}
+
+	public void setCantidadDetalle(double cantidadDetalle) {
+		this.cantidadDetalle = cantidadDetalle;
 	}
 
 }

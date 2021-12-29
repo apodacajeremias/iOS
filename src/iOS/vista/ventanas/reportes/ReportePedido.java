@@ -20,6 +20,7 @@ public class ReportePedido extends ReporteGenerico {
 	}
 
 	public ReportePedido() {
+		getPanelGeneral().getlInfo1().setText("Reporte de Pedido");
 		getPanelEspecifico().getRdTipo3().setText("Confeccion");
 		getPanelEspecifico().getRdTipo2().setText("Carteleria");
 		getPanelEspecifico().getRdTipo1().setText("Carteleria + Confeccion");

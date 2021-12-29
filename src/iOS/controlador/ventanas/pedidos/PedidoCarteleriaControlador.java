@@ -169,7 +169,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 						* detalle.getCantidadDetalle()));
 				break;
 			case "UNIDAD":
-				detalle.setPrecioDetalle(detalle.getPrecioProducto() * detalle.getCantidadDetalle());
+				detalle.setPrecioDetalle((int) (detalle.getPrecioProducto() * detalle.getCantidadDetalle()));
 				break;
 			default:
 				break;
@@ -542,6 +542,17 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	private void gestionarPedido() {
 		if (pedido == null) {
 			return;
+		}
+		if (pedido.isGeneraDeuda()) {
+			EventosUtil.estadosCampoPersonalizado(ventana, false);
+		}
+		
+		if (pedido.isProduccionFinalizada()) {
+			EventosUtil.estadosCampoPersonalizado(ventana, false);
+		}
+		
+		if (pedido.getSumaPagos() > 0) {
+			EventosUtil.estadosCampoPersonalizado(ventana, false);
 		}
 
 		// Datos del cliente

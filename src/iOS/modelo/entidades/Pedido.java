@@ -1,7 +1,9 @@
 package iOS.modelo.entidades;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,9 +25,6 @@ public class Pedido {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-//	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -72,10 +71,9 @@ public class Pedido {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cliente cliente;
-	
+
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
-
 
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PedidoDetalles> pedidoDetalles;
@@ -99,17 +97,20 @@ public class Pedido {
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean deudaPaga;
-	
+
 	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double sumaPagos;
-	
+
 	@Column(nullable = true)
 	private String informacionResponsable;
-	
+
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean produccionFinalizada = false;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaUltimoRegistroProduccion;
 
 	public int getId() {
 		return id;
@@ -172,10 +173,24 @@ public class Pedido {
 	}
 
 	public List<PedidoDetalles> getPedidoDetalles() {
+		try {
+			pedidoDetalles = pedidoDetalles.stream().sorted(Comparator.comparing(PedidoDetalles::getId))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return pedidoDetalles;
 	}
 
 	public List<PedidoDetalleConfeccion> getPedidosConfecciones() {
+		try {
+			pedidosConfecciones = pedidosConfecciones.stream()
+					.sorted(Comparator.comparing(PedidoDetalleConfeccion::getId)).collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return pedidosConfecciones;
 	}
 
@@ -320,14 +335,26 @@ public class Pedido {
 	}
 
 	public List<Produccion> getProducciones() {
+		try {
+			producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		return producciones;
 	}
 
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
-	
-	
-	
+
+	public Date getFechaUltimoRegistroProduccion() {
+		return fechaUltimoRegistroProduccion;
+	}
+
+	public void setFechaUltimoRegistroProduccion(Date fechaUltimoRegistroProduccion) {
+		this.fechaUltimoRegistroProduccion = fechaUltimoRegistroProduccion;
+	}
 
 }

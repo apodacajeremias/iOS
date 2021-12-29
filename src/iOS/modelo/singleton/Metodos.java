@@ -14,6 +14,7 @@ import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
+import iOS.modelo.entidades.Produccion;
 import net.sf.jasperreports.engine.JRException;
 
 public class Metodos {
@@ -113,11 +114,15 @@ public class Metodos {
 		int opcion = JOptionPane.showConfirmDialog(null, "¿Desea imprimir?", "Impresion", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
+			double sumaPagos = pedido.getSumaPagos();
+			double precioPagar = pedido.getPrecioPagar();
+			double valorPendiente = precioPagar - sumaPagos;
+
 			HashMap<String, Object> parametros = new HashMap<>();
 			parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
 			parametros.put("esPresupuesto", pedido.isEsPresupuesto() ? "PRESUPUESTO" : "PEDIDO");
-			parametros.put("entrega", sumarPagosPedido(pedido));
-			parametros.put("valorPendiente", valorPendiente(pedido));
+			parametros.put("entrega", sumaPagos);
+			parametros.put("valorPendiente", valorPendiente);
 
 			List<Pedido> pedidos = new ArrayList<Pedido>();
 			pedidos.add(pedido);
@@ -140,11 +145,14 @@ public class Metodos {
 		int opcion = JOptionPane.showConfirmDialog(null, "¿Desea imprimir?", "Impresion", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
+			double sumaPagos = pedido.getSumaPagos();
+			double precioPagar = pedido.getPrecioPagar();
+			double valorPendiente = precioPagar - sumaPagos;
 			HashMap<String, Object> parametros = new HashMap<>();
 			parametros.put("nombreEmpresa", "iOS Comunicacion Visual");
 			parametros.put("esPresupuesto", pedido.isEsPresupuesto() ? "PRESUPUESTO" : "PEDIDO");
-			parametros.put("entrega", sumarPagosPedido(pedido));
-			parametros.put("valorPendiente", valorPendiente(pedido));
+			parametros.put("entrega", sumaPagos);
+			parametros.put("valorPendiente", valorPendiente);
 
 			List<Pedido> pedidos = new ArrayList<Pedido>();
 			pedidos.add(pedido);
@@ -257,7 +265,7 @@ public class Metodos {
 		// Deuda mayor o menos a 0
 		parametros.put("TIPO_REPORTE", tipoReporte);
 
-		// GENERAL o segun filtros 
+		// GENERAL o segun filtros
 		parametros.put("CLASE_REPORTE", claseReporte);
 
 		// Creando reportes
@@ -272,36 +280,30 @@ public class Metodos {
 		}
 	}
 
-	private double sumarPagosPedido(Pedido pedido) {
-		double suma = 0;
-
-		try {
-			suma = pedido.getPagosPedido().stream().filter(p -> p.isEsAnulado() == false && p.isEsRetiro() == false)
-					.mapToDouble(p -> p.getValorGS()).sum();
-		} catch (Exception e) {
-			// TODO: handle exception
+	public void imprimirReporteProduccion(List<Produccion> lista, String tipoReporte, String claseReporte) {
+		if (lista.size() <= 0) {
+			JOptionPane.showMessageDialog(null, "No hay registros para realizar la impresión.");
+			return;
 		}
-		return suma;
-//		List<CajaMovimiento> pagos = new ArrayList<CajaMovimiento>();
-//		CajaDao cajaDao = new CajaDao();
-//		pagos = cajaDao.recuperarEntregaPedido(pedido.getId());
-//		for (int i = 0; i < pagos.size(); i++) {
-//			if (!pagos.get(i).isEsAnulado()) {
-//				return pedido.getPagosPedido().get(i).getValorGS();
-//			}
-//		}
-//		return 0;
-	}
+		HashMap<String, Object> parametros = new HashMap<>();
+		parametros.put("SOLICITANTE", Sesion.getInstance().getColaborador().toString());
 
-	private double valorPendiente(Pedido pedido) {
-		double valorPendiente = 0;
+		// Diario Mensual
+		parametros.put("TIPO_REPORTE", tipoReporte);
+
+		// Carteleria, costura o ambos
+		parametros.put("CLASE_REPORTE", claseReporte);
+
+		// Creando reportes
+		ConexionReporte<Produccion> conexionReporte = new ConexionReporte<Produccion>();
 		try {
-			valorPendiente = (pedido.getPrecioPagar()) - sumarPagosPedido(pedido);
-		} catch (Exception e) {
+			conexionReporte.generarReporte(lista, parametros, "ReporteProduccion");
+			conexionReporte.ventanaReporte.setLocationRelativeTo(null);
+			conexionReporte.ventanaReporte.setVisible(true);
+		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return valorPendiente;
 	}
 
 	public String aleatorio() {

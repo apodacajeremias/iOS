@@ -97,34 +97,22 @@ public class ReporteProduccionControlador implements ActionListener, MouseListen
 
 		if (reporte.getPanelGeneral().getRdTodo().isSelected()) {
 			producciones = producciones.stream()
-					.filter(c -> c.getColaborador().getId() == Sesion.getInstance().getColaborador().getId())
+					.filter(c -> c.getColaborador().getId() == Sesion.getInstance().getColaborador().getId()
+							&& c.getProceso().equals("FINALIZADO"))
 					.collect(Collectors.toList());
-
 		} else if (reporte.getPanelGeneral().getRdAlgunos().isSelected()) {
-			try {
-				producciones = producciones.stream()
-						.filter(c -> c.getColaborador().getId() == Sesion.getInstance().getColaborador().getId() && c
-								.getPedidoDetalle().getUltimoEstadoProduccion().equalsIgnoreCase("FINALIZADO") == true)
-						.collect(Collectors.toList());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				producciones = producciones.stream()
-						.filter(c -> c.getColaborador().getId() == Sesion.getInstance().getColaborador().getId()
-								&& c.getPedidoDetalleConfeccion().getUltimoEstadoProduccion()
-										.equalsIgnoreCase("FINALIZADO") == true)
-						.collect(Collectors.toList());
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+			producciones = producciones.stream()
+					.filter(c -> c.getColaborador().getId() == Sesion.getInstance().getColaborador().getId()
+							&& c.isDesperdicio() == true)
+					.collect(Collectors.toList());
 		} else if (reporte.getPanelEspecifico().getRdTodoColaborador().isSelected()) {
 			// No filtra por colaborador
-
+			producciones = producciones.stream().filter(c -> c.getProceso().equals("FINALIZADO"))
+					.collect(Collectors.toList());
 		} else if (reporte.getPanelEspecifico().getRdColaboradorEspecifico().isSelected()) {
 			Colaborador cc = (Colaborador) reporte.getPanelEspecifico().getCbColaborador().getSelectedItem();
-			producciones = producciones.stream().filter(c -> c.getColaborador().getId() == cc.getId())
+			producciones = producciones.stream()
+					.filter(c -> c.getColaborador().getId() == cc.getId() && c.getProceso().equals("FINALIZADO"))
 					.collect(Collectors.toList());
 		} else {
 
@@ -147,14 +135,12 @@ public class ReporteProduccionControlador implements ActionListener, MouseListen
 
 			// Carteleria
 		} else if (reporte.getPanelEspecifico().getRdTipo2().isSelected()) {
-			producciones = producciones.stream().filter(
-					c -> c.getPedido().getPedidoCarteleria() == true)
+			producciones = producciones.stream().filter(c -> c.getPedido().getPedidoCarteleria() == true)
 					.collect(Collectors.toList());
 
 			// Confeccion
 		} else if (reporte.getPanelEspecifico().getRdTipo3().isSelected()) {
-			producciones = producciones.stream().filter(
-					c -> c.getPedido().getPedidoCostura() == true)
+			producciones = producciones.stream().filter(c -> c.getPedido().getPedidoCostura() == true)
 					.collect(Collectors.toList());
 
 		}
@@ -181,7 +167,7 @@ public class ReporteProduccionControlador implements ActionListener, MouseListen
 		}
 
 		claseReporte = "REPORTE GENERAL SEGUN FILTROS";
-//		Metodos.getInstance().imprimirReporteProduccion(producciones, tipoReporte, claseReporte);
+		Metodos.getInstance().imprimirReporteProduccion(producciones, tipoReporte, claseReporte);
 
 	}
 

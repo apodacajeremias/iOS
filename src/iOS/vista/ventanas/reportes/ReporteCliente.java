@@ -38,7 +38,7 @@ public class ReporteCliente extends ReporteGenerico {
 		getPanelEspecifico().getRdTipo1().setText("Carteleria + Confeccion");
 		getPanelGeneral().getLblrdAlgunos().setText("Busca todos los registros relacionados en el sistema");
 		getPanelGeneral().getRdAlgunos().setText("Encontrar y Mostrar Solo Clientes Sin Deuda");
-		setTitle("REPORTE DE PEDIDO");
+		setTitle("REPORTE DE CLIENTE");
 		
 	}
 

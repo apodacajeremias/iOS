@@ -149,7 +149,7 @@ public class Cliente {
 	public double getPagos() {
 		pagos = 0;
 		try {
-			pagos = cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false)
+			pagos = cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
 					.mapToDouble(b -> b.getValorGS()).sum();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

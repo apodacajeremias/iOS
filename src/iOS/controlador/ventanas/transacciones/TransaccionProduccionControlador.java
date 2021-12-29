@@ -10,9 +10,8 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -160,8 +159,8 @@ public class TransaccionProduccionControlador
 			PedidoDetalles pd = (PedidoDetalles) detalle;
 			try {
 				producciones = pd.getProducciones();
-				producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
-						.collect(Collectors.toList());
+//				producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
+//						.collect(Collectors.toList());
 				modeloTablaProduccion.setProducciones(producciones);
 				modeloTablaProduccion.fireTableDataChanged();
 			} catch (Exception e) {
@@ -172,14 +171,19 @@ public class TransaccionProduccionControlador
 			PedidoDetalleConfeccion pd = (PedidoDetalleConfeccion) detalle;
 			try {
 				producciones = pd.getProducciones();
-				producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
-						.collect(Collectors.toList());
+//				producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
+//						.collect(Collectors.toList());
 				modeloTablaProduccion.setProducciones(producciones);
 				modeloTablaProduccion.fireTableDataChanged();
+
+//				String infoString = "PEDIDO "+pd.getPedido().getId()
+//						+"DETALLE "+pd.getId()
+//						+"PRODUCCIONES "+producciones.size();
+//				
+//				JOptionPane.showMessageDialog(ventana, infoString);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
 
@@ -198,13 +202,12 @@ public class TransaccionProduccionControlador
 				JOptionPane.PLAIN_MESSAGE, null, possibilities, "");
 
 		if (maquina != null) {
-			System.out.println(maquina);
+			JOptionPane.showMessageDialog(ventana, maquina);
 		}
 		return maquina;
 	}
 
-	private boolean finalizarProduccionPedido(Pedido p) {
-
+	private boolean verificarDetallesParaFinalizar(Pedido p) {
 		boolean generaDeuda = p.getPedidoDetalles().stream().filter(pd -> pd.isEstado() == true)
 				.allMatch(x -> x.isProduccionFinalizada() == true);
 		return generaDeuda;
@@ -227,15 +230,20 @@ public class TransaccionProduccionControlador
 				produccion.setPedidoDetalleConfeccion(null);
 				produccion.setProceso("INICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
-
 				producciones.add(produccion);
 
 				detalleCarteleria.setProduccionFinalizada(false);
-
+				detalleCarteleria.setFechaUltimoRegistroProduccion(new Date());
 				detalleCarteleria.setProducciones(producciones);
 
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
+				pedido.setFechaUltimoRegistroProduccion(new Date());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
 
 				guardar();
 			}
@@ -247,19 +255,24 @@ public class TransaccionProduccionControlador
 				produccion.setComentario("N/A");
 				produccion.setDesperdicio(false);
 				produccion.setMaquina(pedirMaquina());
-				produccion.setPedidoDetalle(detalleCarteleria);
-				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setPedidoDetalle(null);
+				produccion.setPedidoDetalleConfeccion(detalleConfeccion);
 				produccion.setProceso("INICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
-
 				producciones.add(produccion);
 
 				detalleConfeccion.setProduccionFinalizada(false);
-
+				detalleConfeccion.setFechaUltimoRegistroProduccion(new Date());
 				detalleConfeccion.setProducciones(producciones);
 
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
+				pedido.setFechaUltimoRegistroProduccion(new Date());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
 
 				guardar();
 			}
@@ -287,15 +300,20 @@ public class TransaccionProduccionControlador
 				produccion.setPedidoDetalleConfeccion(null);
 				produccion.setProceso("REINICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
-
 				producciones.add(produccion);
 
 				detalleCarteleria.setProduccionFinalizada(false);
-
+				detalleCarteleria.setFechaUltimoRegistroProduccion(new Date());
 				detalleCarteleria.setProducciones(producciones);
 
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
+				pedido.setFechaUltimoRegistroProduccion(new Date());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
 
 				guardar();
 			}
@@ -307,19 +325,24 @@ public class TransaccionProduccionControlador
 				produccion.setComentario("N/A");
 				produccion.setDesperdicio(false);
 				produccion.setMaquina(pedirMaquina());
-				produccion.setPedidoDetalle(detalleCarteleria);
-				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setPedidoDetalle(null);
+				produccion.setPedidoDetalleConfeccion(detalleConfeccion);
 				produccion.setProceso("REINICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
-
 				producciones.add(produccion);
 
 				detalleConfeccion.setProduccionFinalizada(false);
-
+				detalleConfeccion.setFechaUltimoRegistroProduccion(new Date());
 				detalleConfeccion.setProducciones(producciones);
 
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
+				pedido.setFechaUltimoRegistroProduccion(new Date());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
 
 				guardar();
 			}
@@ -346,15 +369,15 @@ public class TransaccionProduccionControlador
 				produccion.setPedidoDetalleConfeccion(null);
 				produccion.setProceso("FINALIZADO");
 				produccion.setSector(Sesion.getInstance().getSector());
-
 				producciones.add(produccion);
 
 				detalleCarteleria.setProducciones(producciones);
-
 				detalleCarteleria.setProduccionFinalizada(true);
+				detalleCarteleria.setFechaUltimoRegistroProduccion(new Date());
 
-				pedido.setGeneraDeuda(finalizarProduccionPedido(pedido));
-				pedido.setProduccionFinalizada(finalizarProduccionPedido(pedido));
+				pedido.setGeneraDeuda(verificarDetallesParaFinalizar(pedido));
+				pedido.setProduccionFinalizada(verificarDetallesParaFinalizar(pedido));
+				pedido.setFechaUltimoRegistroProduccion(new Date());
 
 				guardar();
 			}
@@ -366,19 +389,19 @@ public class TransaccionProduccionControlador
 				produccion.setComentario("N/A");
 				produccion.setDesperdicio(false);
 				produccion.setMaquina(null);
-				produccion.setPedidoDetalle(detalleCarteleria);
-				produccion.setPedidoDetalleConfeccion(null);
+				produccion.setPedidoDetalle(null);
+				produccion.setPedidoDetalleConfeccion(detalleConfeccion);
 				produccion.setProceso("FINALIZADO");
 				produccion.setSector(Sesion.getInstance().getSector());
-
 				producciones.add(produccion);
 
 				detalleConfeccion.setProducciones(producciones);
-
 				detalleConfeccion.setProduccionFinalizada(true);
+				detalleConfeccion.setFechaUltimoRegistroProduccion(new Date());
 
-				pedido.setGeneraDeuda(finalizarProduccionPedido(pedido));
-				pedido.setProduccionFinalizada(finalizarProduccionPedido(pedido));
+				pedido.setGeneraDeuda(verificarDetallesParaFinalizar(pedido));
+				pedido.setProduccionFinalizada(verificarDetallesParaFinalizar(pedido));
+				pedido.setFechaUltimoRegistroProduccion(new Date());
 
 				guardar();
 			}
@@ -395,9 +418,8 @@ public class TransaccionProduccionControlador
 		if (acepta == JOptionPane.YES_OPTION) {
 			if (pedido.getPedidoCarteleria()) {
 				if (detalleCarteleria.getUltimoEstadoProduccion().equalsIgnoreCase("CANCELADO")) {
-
+					return;
 				} else {
-
 					produccion = new Produccion();
 					produccion.setPedido(pedido);
 					produccion.setCantidadDesperdicio(detalleCarteleria.getMedidaDetalle());
@@ -409,15 +431,16 @@ public class TransaccionProduccionControlador
 					produccion.setPedidoDetalleConfeccion(null);
 					produccion.setProceso("CANCELADO");
 					produccion.setSector(Sesion.getInstance().getSector());
-
 					producciones.add(produccion);
 
 					detalleCarteleria.setProduccionFinalizada(false);
-
 					detalleCarteleria.setProducciones(producciones);
+					detalleCarteleria.setFechaUltimoRegistroProduccion(new Date());
 
 					pedido.setGeneraDeuda(false);
 					pedido.setProduccionFinalizada(false);
+					pedido.setFechaUltimoRegistroProduccion(new Date());
+
 					guardar();
 				}
 			}
@@ -425,7 +448,6 @@ public class TransaccionProduccionControlador
 				if (detalleConfeccion.getUltimoEstadoProduccion().equalsIgnoreCase("CANCELADO")) {
 
 				} else {
-
 					produccion = new Produccion();
 					produccion.setPedido(pedido);
 					produccion.setCantidadDesperdicio(detalleCarteleria.getMedidaDetalle());
@@ -433,19 +455,19 @@ public class TransaccionProduccionControlador
 					produccion.setComentario("N/A");
 					produccion.setDesperdicio(true);
 					produccion.setMaquina(null);
-					produccion.setPedidoDetalle(detalleCarteleria);
-					produccion.setPedidoDetalleConfeccion(null);
+					produccion.setPedidoDetalle(null);
+					produccion.setPedidoDetalleConfeccion(detalleConfeccion);
 					produccion.setProceso("CANCELADO");
 					produccion.setSector(Sesion.getInstance().getSector());
-
 					producciones.add(produccion);
 
 					detalleConfeccion.setProduccionFinalizada(false);
-
 					detalleConfeccion.setProducciones(producciones);
+					detalleConfeccion.setFechaUltimoRegistroProduccion(new Date());
 
 					pedido.setGeneraDeuda(false);
 					pedido.setProduccionFinalizada(false);
+					pedido.setFechaUltimoRegistroProduccion(new Date());
 
 					guardar();
 				}
@@ -667,23 +689,21 @@ public class TransaccionProduccionControlador
 		if (pedido.getPedidoCostura()) {
 			switch (detalleConfeccion.getUltimoEstadoProduccion()) {
 			case "INICIADO":
-				popup.add(reiniciar);
 				popup.add(cancelar);
 				popup.add(finalizar);
+				break;
+
+			case "CANCELADO":
+				popup.add(reiniciar);
+
+				break;
+			case "FINALIZADO":
+//				popup.add(cancelar);
 				break;
 			case "REINICIADO":
 				popup.add(cancelar);
 				popup.add(finalizar);
 				break;
-			case "DESPERDICIADO":
-				popup.add(reiniciar);
-
-				break;
-			case "FINALIZADO":
-				popup.add(reiniciar);
-				popup.add(cancelar);
-				break;
-
 			default:
 				popup.add(iniciar);
 				break;

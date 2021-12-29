@@ -20,13 +20,14 @@ public class ReporteProduccion extends ReporteGenerico {
 	}
 
 	public ReporteProduccion() {
+		getPanelGeneral().getlInfo1().setText("Reporte de Produccion");
+		getPanelGeneral().getRdTodo().setText("Encontrar y Mostrar Solo Finalizados");
 		getPanelEspecifico().getRdTipo3().setText("Confeccion");
 		getPanelEspecifico().getRdTipo2().setText("Carteleria");
 		getPanelEspecifico().getRdTipo1().setText("Carteleria + Confeccion");
 		getPanelGeneral().getLblrdAlgunos().setText("Busca todas las producciones finalizadas relacionados a tu perfil");
-		getPanelGeneral().getRdAlgunos().setText("Encontrar y Mostrar Solo Finalizados");
-		setTitle("REPORTE DE PEDIDO");
-		
+		getPanelGeneral().getRdAlgunos().setText("Encontrar y Mostrar Solo Desperdicio");
+		setTitle("REPORTE DE PRODUCCION");
 	}
 
 	public static long getSerialversionuid() {

@@ -45,6 +45,7 @@ import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.reportes.ReporteCliente;
 import iOS.vista.ventanas.reportes.ReporteColaborador;
 import iOS.vista.ventanas.reportes.ReportePedido;
+import iOS.vista.ventanas.reportes.ReporteProduccion;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 import iOS.vista.ventanas.transacciones.TransaccionPagoPedido;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
@@ -431,7 +432,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnReportes.add(mnItemReporteCliente);
 
-		JMenuItem mnItemReporteColaborador = new JMenuItem("Reporte de Colaborador");
+		JMenuItem mnItemReporteColaborador = new JMenuItem("Reporte de colaboradores");
 		mnItemReporteColaborador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirReporteColaborador();
@@ -442,6 +443,14 @@ public class VentanaPrincipal extends JFrame {
 		mnItemReportePedido
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnReportes.add(mnItemReportePedido);
+
+		JMenuItem mnItemReporteProduccion = new JMenuItem("Reporte de produccion");
+		mnItemReporteProduccion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirReporteProduccion();
+			}
+		});
+		mnReportes.add(mnItemReporteProduccion);
 
 		/*
 		 * Se obtiene nustro toolbar para los botones de paciente renta vehiculo y salir
@@ -546,6 +555,13 @@ public class VentanaPrincipal extends JFrame {
 			ventana.setUpControlador();
 			ventana.setVisible(true);
 		}
+	}
+
+	private void abrirReporteProduccion() {
+		ReporteProduccion ventana = new ReporteProduccion();
+		ventana.setUpControlador();
+		ventana.setVisible(true);
+
 	}
 
 	private void abrirTransaccionCaja() {
