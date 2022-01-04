@@ -15,7 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class DetalleMaterial {
+public class PedidoDetalleMaterial {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
@@ -30,7 +30,11 @@ public class DetalleMaterial {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Colaborador colaboradorQueRegistra;
+	private Colaborador colaborador;
+	
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private Pedido pedido;
 	
 	@ManyToOne
 	@JoinColumn(nullable = true)
@@ -44,72 +48,82 @@ public class DetalleMaterial {
 	@JoinColumn(nullable = false)
 	private Material material;
 	
+	@ColumnDefault("0")
 	@Column(nullable = false)
-	private double precioMaterial;
-
+	private double precio;
+	
 	public int getId() {
 		return id;
-	}
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaboradorQueRegistra() {
-		return colaboradorQueRegistra;
-	}
-
-	public PedidoDetalles getDetalleCarteleria() {
-		return detalleCarteleria;
-	}
-
-	public PedidoDetalleConfeccion getDetalleConfeccion() {
-		return detalleConfeccion;
-	}
-
-	public Material getMaterial() {
-		return material;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
 	}
 
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
 
-	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
-		this.colaboradorQueRegistra = colaboradorQueRegistra;
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public PedidoDetalles getDetalleCarteleria() {
+		return detalleCarteleria;
 	}
 
 	public void setDetalleCarteleria(PedidoDetalles detalleCarteleria) {
 		this.detalleCarteleria = detalleCarteleria;
 	}
 
+	public PedidoDetalleConfeccion getDetalleConfeccion() {
+		return detalleConfeccion;
+	}
+
 	public void setDetalleConfeccion(PedidoDetalleConfeccion detalleConfeccion) {
 		this.detalleConfeccion = detalleConfeccion;
+	}
+
+	public Material getMaterial() {
+		return material;
 	}
 
 	public void setMaterial(Material material) {
 		this.material = material;
 	}
 
-	public double getPrecioMaterial() {
-		return precioMaterial;
+	public double getPrecio() {
+		return precio;
 	}
 
-	public void setPrecioMaterial(double precioMaterial) {
-		this.precioMaterial = precioMaterial;
+	public void setPrecio(double precio) {
+		this.precio = precio;
 	}
-
 	
+	
+
 }

@@ -73,11 +73,11 @@ public class PedidoDetalles {
 	@JoinColumn(nullable = false)
 	private Producto producto;
 
-	@OneToMany(mappedBy = "detalleCarteleria", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<DetalleMaterial> materiales;
-
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
+	
+	@OneToMany(mappedBy = "detalleCarteleria", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<PedidoDetalleMaterial> materiales;
 
 	@ColumnDefault("false")
 	@Column(nullable = false)
@@ -206,14 +206,6 @@ public class PedidoDetalles {
 		this.producto = producto;
 	}
 
-	public List<DetalleMaterial> getMateriales() {
-		return materiales;
-	}
-
-	public void setMateriales(List<DetalleMaterial> materiales) {
-		this.materiales = materiales;
-	}
-
 	public List<Produccion> getProducciones() {
 		try {
 			producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
@@ -271,4 +263,14 @@ public class PedidoDetalles {
 		this.cantidadDetalle = cantidadDetalle;
 	}
 
+	public List<PedidoDetalleMaterial> getMateriales() {
+		return materiales;
+	}
+
+	public void setMateriales(List<PedidoDetalleMaterial> materiales) {
+		this.materiales = materiales;
+	}
+
+	
+	
 }

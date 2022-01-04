@@ -67,12 +67,13 @@ public class PedidoDetalleConfeccion {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificado;
 
-	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<DetalleMaterial> materiales;
-
 	@OneToMany(mappedBy = "pedidoDetalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
 
+	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<PedidoDetalleMaterial> materiales;
+
+	
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean produccionFinalizada = false;
@@ -192,14 +193,6 @@ public class PedidoDetalleConfeccion {
 		this.fechaModificado = fechaModificado;
 	}
 
-	public List<DetalleMaterial> getMateriales() {
-		return materiales;
-	}
-
-	public void setMateriales(List<DetalleMaterial> materiales) {
-		this.materiales = materiales;
-	}
-
 	public List<Produccion> getProducciones() {
 		try {
 			producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
@@ -248,4 +241,14 @@ public class PedidoDetalleConfeccion {
 		this.fechaUltimoRegistroProduccion = fechaUltimoRegistroProduccion;
 	}
 
+	public List<PedidoDetalleMaterial> getMateriales() {
+		return materiales;
+	}
+
+	public void setMateriales(List<PedidoDetalleMaterial> materiales) {
+		this.materiales = materiales;
+	}
+	
+	
+	
 }

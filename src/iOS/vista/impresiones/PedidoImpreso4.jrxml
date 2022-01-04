@@ -9,7 +9,7 @@
 		<queryString>
 			<![CDATA[SELECT * FROM PEDIDODETALLECONFECCION]]>
 		</queryString>
-		<field name="cantidadDetalle" class="java.lang.Integer"/>
+		<field name="cantidadDetalle" class="java.lang.Double"/>
 		<field name="medidaAncho" class="java.lang.Double"/>
 		<field name="medidaAlto" class="java.lang.Double"/>
 		<field name="archivo" class="java.lang.String"/>
@@ -73,13 +73,13 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="185" height="10" uuid="bc49df4a-8abb-418f-a11c-38407978d4fb">
+					<reportElement x="0" y="0" width="280" height="10" uuid="bc49df4a-8abb-418f-a11c-38407978d4fb">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}+" Vendedor: "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="0" y="20" width="280" height="10" uuid="b86d8e24-174c-4d16-b581-844fe52d9ffe"/>
@@ -113,7 +113,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Vendedor "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Responsable: "+$F{informacionResponsable}]]></textFieldExpression>
 				</textField>
 				<componentElement>
 					<reportElement x="0" y="60" width="555" height="13" uuid="1017ff53-9dd4-4bcd-82f1-1dd7e8b01415">
@@ -374,13 +374,13 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="185" height="10" uuid="422684e2-ee3f-43b2-9881-db274cb76e31">
+					<reportElement x="0" y="0" width="280" height="10" uuid="422684e2-ee3f-43b2-9881-db274cb76e31">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}+" Vendedor: "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="0" y="20" width="280" height="10" uuid="13d1cac5-eb65-4934-baf1-30a8a1cbf0a2"/>
@@ -414,7 +414,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Vendedor "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Responsable: "+$F{informacionResponsable}]]></textFieldExpression>
 				</textField>
 				<frame>
 					<reportElement x="290" y="0" width="160" height="40" uuid="bf7b3a37-95ee-4070-9997-8b8fde84ed66"/>
@@ -675,13 +675,13 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="185" height="10" uuid="b5f1d547-e2bc-4c02-b2d6-177fd0d79fa1">
+					<reportElement x="0" y="0" width="280" height="10" uuid="b5f1d547-e2bc-4c02-b2d6-177fd0d79fa1">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}+" Vendedor: "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="0" y="20" width="280" height="10" uuid="c6dfbd70-cdcf-4e9f-8738-839e0e3469d3"/>
@@ -715,7 +715,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Vendedor "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Responsable: "+$F{informacionResponsable}]]></textFieldExpression>
 				</textField>
 				<frame>
 					<reportElement x="455" y="0" width="100" height="40" uuid="975bce3c-1c1b-4397-8ab5-8471b2abe02f"/>
@@ -860,13 +860,13 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="185" height="10" uuid="cc3b523d-ab19-4f6e-b55e-2e14dfc9d254">
+					<reportElement x="0" y="0" width="280" height="10" uuid="cc3b523d-ab19-4f6e-b55e-2e14dfc9d254">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{esPresupuesto}+" "+$F{id}+" Vendedor: "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="0" y="20" width="280" height="10" uuid="fe16ce73-0e8a-45f2-923c-836811166ee1"/>
@@ -900,7 +900,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Tahoma" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Vendedor "+$F{colaborador.nombreCompleto}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Responsable: "+$F{informacionResponsable}]]></textFieldExpression>
 				</textField>
 				<frame>
 					<reportElement x="455" y="0" width="100" height="40" uuid="97ea0f12-93fb-494f-9fcf-a2e05b1ce7e1"/>

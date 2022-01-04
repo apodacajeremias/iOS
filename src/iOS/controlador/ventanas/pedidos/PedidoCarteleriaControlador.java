@@ -21,37 +21,43 @@ import javax.swing.JTable;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
-import iOS.modelo.entidades.DetalleMaterial;
 import iOS.modelo.entidades.Material;
 import iOS.modelo.entidades.Pedido;
+import iOS.modelo.entidades.PedidoDetalleMaterial;
 import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.ClienteInterface;
+import iOS.modelo.interfaces.MaterialInterface;
 import iOS.modelo.interfaces.PedidoInterface;
 import iOS.modelo.interfaces.ProductoInterface;
 import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
-import iOS.vista.modelotabla.ModeloTablaDetalleMaterial;
 import iOS.vista.modelotabla.ModeloTablaPedidoDetalle;
+import iOS.vista.modelotabla.ModeloTablaPedidoDetalleMaterial;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
+import iOS.vista.ventanas.buscadores.BuscadorMaterial;
 import iOS.vista.ventanas.buscadores.BuscadorProducto;
 import iOS.vista.ventanas.pedidos.TransaccionPedido;
 
 public class PedidoCarteleriaControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface,
-		ClienteInterface, ProductoInterface, PropertyChangeListener {
+		ClienteInterface, ProductoInterface, PropertyChangeListener, MaterialInterface {
 	private TransaccionPedido ventana;
 
 	private PedidoDao dao;
 	private Pedido pedido;
 
 	private Producto producto;
+
 	private PedidoDetalles detalle;
 	private List<PedidoDetalles> detalles = new ArrayList<PedidoDetalles>();
-	private ModeloTablaPedidoDetalle mtPedidoDetalle;
 
-	private DetalleMaterial material;
-	private List<DetalleMaterial> materiales = new ArrayList<DetalleMaterial>();
-	private ModeloTablaDetalleMaterial mtDetalleMaterial;
+	private Material material;
+
+	private PedidoDetalleMaterial pdMaterial;
+	private List<PedidoDetalleMaterial> materiales = new ArrayList<PedidoDetalleMaterial>();
+
+	private ModeloTablaPedidoDetalle mtPedidoDetalle;
+	private ModeloTablaPedidoDetalleMaterial mtDetalleMaterial;
 
 	private String accion;
 
@@ -63,7 +69,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.getTable().setModel(mtPedidoDetalle);
 		tableMenu(ventana.getTable());
 
-		mtDetalleMaterial = new ModeloTablaDetalleMaterial();
+		mtDetalleMaterial = new ModeloTablaPedidoDetalleMaterial();
 		ventana.getTableMaterial().setModel(mtDetalleMaterial);
 
 		dao = new PedidoDao();
@@ -104,8 +110,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		accion = null;
 		cliente = null;
 		detalle = null;
-		material = null;
-//		pedido = null;
 		producto = null;
 		vaciarTablaDetalle();
 		vaciarTablaMaterial();
@@ -128,10 +132,9 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 
 	private void vaciarTablaMaterial() {
-		materiales = new ArrayList<>();
-		mtDetalleMaterial.setLista(materiales);
+		materiales = new ArrayList<PedidoDetalleMaterial>();
+		mtDetalleMaterial.setMateriales(materiales);
 		mtDetalleMaterial.fireTableDataChanged();
-
 	}
 
 	private void agregarDetalle(Producto p) {
@@ -178,20 +181,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		// Materiales
-		materiales = new ArrayList<DetalleMaterial>();
-		if (producto.getMateriales() != null) {
-			for (int i = 0; i < producto.getMateriales().size(); i++) {
-				material = new DetalleMaterial();
-				material.setDetalleCarteleria(detalle);
-				material.setColaboradorQueRegistra(Sesion.getInstance().getColaborador());
-				material.setMaterial(producto.getMateriales().get(i).getMaterial());
-				material.setPrecioMaterial(producto.getMateriales().get(i).getMaterial().getPrecioMaximo());
-				materiales.add(material);
-			}
-		}
-
-		detalle.setMateriales(materiales);
 
 		// Para la tabla que se muestra
 		detalles.add(detalle);
@@ -222,35 +211,57 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 
 	private void seleccionarDetalle(int posicion) {
 		if (posicion < 0) {
+			detalle = null;
+			return;
 		}
 
+		vaciarTablaMaterial();
+		
 		detalle = detalles.get(posicion);
-		System.out.println(detalle);
+		materiales = detalle.getMateriales();
+		
+		if (detalle.getMateriales() != null) {
+			materiales = detalle.getMateriales();
+		} else {
+			materiales = new ArrayList<PedidoDetalleMaterial>();
+		}
+		
+		mtDetalleMaterial.setMateriales(materiales);
+		mtDetalleMaterial.fireTableDataChanged();
 
+		
 	}
 
 	private void agregarMaterial(Material m) {
-		material = new DetalleMaterial();
-		material.setDetalleCarteleria(detalle);
-		material.setMaterial(m);
-		material.setPrecioMaterial(m.getPrecioMaximo());
-		materiales.add(material);
-		mtDetalleMaterial.setLista(materiales);
-		mtDetalleMaterial.fireTableDataChanged();
+		if (detalle == null) {
+			return;
+		}
+		pdMaterial = new PedidoDetalleMaterial();
+		pdMaterial.setColaborador(Sesion.getInstance().getColaborador());
+		pdMaterial.setDetalleCarteleria(detalle);
+		pdMaterial.setMaterial(m);
+		pdMaterial.setPrecio(m.getPrecioMaximo());
+		materiales.add(pdMaterial);
+		detalle.setMateriales(materiales);
 
+		mtDetalleMaterial.setMateriales(materiales);
 	}
 
 	private void quitarMaterial(int posicion) {
 		if (posicion < 0) {
 			return;
 		}
-		int opcion = JOptionPane.showConfirmDialog(null, "¿Desasociar caracteristica de producto?", "Confirmar",
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+		int opcion = JOptionPane.showConfirmDialog(null, "¿Retirar item?", "Confirmar", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
-			materiales.remove(posicion);
-			mtDetalleMaterial.setLista(materiales);
-			mtDetalleMaterial.fireTableDataChanged();
+			detalles.remove(ventana.getTable().getSelectedRow());
+			mtPedidoDetalle.setDetalle(detalles);
+		} else {
+			return;
 		}
+		mtPedidoDetalle.fireTableDataChanged();
+		realizarCalculos();
 	}
 
 	private void seleccionarMaterial(int posicion) {
@@ -258,8 +269,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		if (posicion < 0) {
 			return;
 		}
-		material = materiales.get(posicion);
-		System.out.println(material);
 
 	}
 
@@ -362,7 +371,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			pedido.setCliente(cliente);
 		}
 
-		
 		pedido.setDescuentoTotal(Integer.parseInt(ventana.gettDescuentoPedido().getText()));
 		pedido.setEsPresupuesto(ventana.getRbGenerarPresupuesto().isSelected());
 		pedido.setInformacionResponsable(ventana.gettResponsable().getText());
@@ -378,7 +386,12 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		for (int i = 0; i < detalles.size(); i++) {
 			detalles.get(i).setPedido(pedido);
 			detalles.get(i).setFechaModificado(new Date());
+
+			for (int j = 0; j < detalles.get(i).getMateriales().size(); j++) {
+				detalles.get(i).getMateriales().get(j).setPedido(pedido);
+			}
 		}
+
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(pedido);
@@ -426,14 +439,24 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getSource() == ventana.getTable()) {
+			seleccionarDetalle(ventana.getTable().getSelectedRow());
+		}
 
+		if (e.getSource() == ventana.getTableMaterial()) {
+			seleccionarMaterial(ventana.getTableMaterial().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getSource() == ventana.getTable()) {
+			seleccionarDetalle(ventana.getTable().getSelectedRow());
+		}
 
+		if (e.getSource() == ventana.getTableMaterial()) {
+			seleccionarMaterial(ventana.getTableMaterial().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -471,7 +494,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			guardar();
 			break;
 		case "AgregarMaterial":
-			agregarMaterial(null);
+			abrirBuscadorMaterial();
 			break;
 		case "QuitarMaterial":
 			quitarMaterial(0);
@@ -488,12 +511,15 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		buscador.setVisible(true);
 	}
 
-//	private void abrirBuscadorMaterial() {
-//		BuscadorMaterial buscador = new BuscadorMaterial();
-//		buscador.setUpControlador(false);
-//		buscador.getControlador().setInterfaz(this);
-//		buscador.setVisible(true);
-//	}
+	private void abrirBuscadorMaterial() {
+		if (detalle == null) {
+			return;
+		}
+		BuscadorMaterial buscador = new BuscadorMaterial();
+		buscador.setUpControlador();
+		buscador.getControlador().setInterfaz(this);
+		buscador.setVisible(true);
+	}
 
 	private void abrirBuscadorCliente() {
 		BuscadorCliente buscador = new BuscadorCliente();
@@ -530,7 +556,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.getlIdentificacion().setText(cliente.getIdentificacion());
 		ventana.getlContacto().setText(cliente.getContacto());
 		ventana.getlDireccion().setText(cliente.getDireccion());
-		ventana.gettResponsable().setText(cliente.getNombreCompleto()+", "+cliente.getContacto());
+		ventana.gettResponsable().setText(cliente.getNombreCompleto() + ", " + cliente.getContacto());
 	}
 
 	@Override
@@ -546,11 +572,11 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		if (pedido.isGeneraDeuda()) {
 			EventosUtil.estadosCampoPersonalizado(ventana, false);
 		}
-		
+
 		if (pedido.isProduccionFinalizada()) {
 			EventosUtil.estadosCampoPersonalizado(ventana, false);
 		}
-		
+
 		if (pedido.getSumaPagos() > 0) {
 			EventosUtil.estadosCampoPersonalizado(ventana, false);
 		}
@@ -621,6 +647,18 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		popup.add(quitarItem);
 		popup.add(duplicarItem);
 		return popup;
+	}
+
+	@Override
+	public void setMaterial(Material m) {
+		this.material = m;
+
+		if (material == null) {
+			return;
+		}
+		System.out.println(material);
+		agregarMaterial(material);
+
 	}
 
 }

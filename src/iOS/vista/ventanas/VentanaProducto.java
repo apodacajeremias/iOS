@@ -44,7 +44,7 @@ public class VentanaProducto extends VentanaGenerica {
 		getPanelFormulario().setBorder(
 				new TitledBorder(null, "Informaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getPanelFormulario().setBounds(10, 110, 474, 200);
-		
+
 		tNombreProducto = new CampoTextoPersonalizado();
 		tNombreProducto.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tNombreProducto.setBounds(20, 40, 430, 30);
@@ -199,5 +199,4 @@ public class VentanaProducto extends VentanaGenerica {
 		return rdUnidad;
 	}
 
-	
 }

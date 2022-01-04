@@ -20,22 +20,24 @@ import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Produccion;
 import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
-import iOS.vista.modelotabla.ModeloTablaProduccion;
+import iOS.vista.modelotabla.ModeloTablaProduccionReporte;
 import iOS.vista.ventanas.reportes.ReporteProduccion;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
 
 public class ReporteProduccionControlador implements ActionListener, MouseListener {
 	private ReporteProduccion reporte;
-	private ModeloTablaProduccion modeloTabla;
 	private ProduccionDao dao;
 
 	private Produccion produccion;
 	private List<Produccion> producciones = new ArrayList<Produccion>();
 
+	private ModeloTablaProduccionReporte tablaProduccion;
+
 	public ReporteProduccionControlador(ReporteProduccion reporte) {
 		this.reporte = reporte;
-		modeloTabla = new ModeloTablaProduccion();
-		reporte.getTable().setModel(modeloTabla);
+
+		tablaProduccion = new ModeloTablaProduccionReporte();
+		reporte.getTable().setModel(tablaProduccion);
 		tableMenu(reporte.getTable());
 
 		dao = new ProduccionDao();
@@ -75,8 +77,8 @@ public class ReporteProduccionControlador implements ActionListener, MouseListen
 
 	private void vaciarTabla() {
 		producciones = new ArrayList<Produccion>();
-		modeloTabla.setProducciones(producciones);
-		modeloTabla.fireTableDataChanged();
+		tablaProduccion.setProducciones(producciones);
+		tablaProduccion.fireTableDataChanged();
 	}
 
 	private void filtrar() {
@@ -145,11 +147,12 @@ public class ReporteProduccionControlador implements ActionListener, MouseListen
 
 		}
 
+
 		reporte.getPanelEspecifico().getlInfo2().setText("Se han encontrado " + producciones.size() + " registros");
 		reporte.getPanelGeneral().getlInfo2().setText("Se han encontrado " + producciones.size() + " registros");
 
-		modeloTabla.setProducciones(producciones);
-		modeloTabla.fireTableDataChanged();
+		tablaProduccion.setProducciones(producciones);
+		tablaProduccion.fireTableDataChanged();
 	}
 
 	private void imprimir() {
@@ -175,7 +178,7 @@ public class ReporteProduccionControlador implements ActionListener, MouseListen
 		if (posicion < 0) {
 			return;
 		}
-		produccion = producciones.get(posicion);
+//		produccion = producciones.get(posicion);
 	}
 
 	@Override

@@ -70,10 +70,7 @@ public class Producto {
 
 	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<PedidoDetalleConfeccion> pedidoDetalleConfecciones;
-
-	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<ProductoMaterial> materiales;
-
+	
 	@Override
 	public String toString() {
 		return descripcion + " - " + tipoCobro;
@@ -143,10 +140,6 @@ public class Producto {
 		return pedidoDetalleConfecciones;
 	}
 
-	public List<ProductoMaterial> getMateriales() {
-		return materiales;
-	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -210,9 +203,4 @@ public class Producto {
 	public void setPedidoDetalleConfecciones(List<PedidoDetalleConfeccion> pedidoDetalleConfecciones) {
 		this.pedidoDetalleConfecciones = pedidoDetalleConfecciones;
 	}
-
-	public void setMateriales(List<ProductoMaterial> materiales) {
-		this.materiales = materiales;
-	}
-
 }

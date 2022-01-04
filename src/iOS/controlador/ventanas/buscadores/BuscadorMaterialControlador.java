@@ -17,7 +17,7 @@ import iOS.vista.ventanas.buscadores.BuscadorMaterial;
 public class BuscadorMaterialControlador implements KeyListener, MouseListener, AccionesABM, MaterialInterface {
 
 	// ATRIBUTOS
-	private BuscadorMaterial bMaterial;
+	private BuscadorMaterial buscador;
 	private ModeloTablaMaterial mtMaterial;
 	private MaterialDao dao;
 	private List<Material> lista;
@@ -30,32 +30,31 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 
 	// CONSTRUCTOR
 	public BuscadorMaterialControlador(BuscadorMaterial bMaterial) {
-		this.bMaterial = bMaterial;
-		this.bMaterial.getToolbar().setAcciones(this);
+		this.buscador = bMaterial;
+		this.buscador.getToolbar().setAcciones(this);
 		mtMaterial = new ModeloTablaMaterial();
-		this.bMaterial.getTable().setModel(mtMaterial);
-
+		this.buscador.getTable().setModel(mtMaterial);
 		dao = new MaterialDao();
-
-		// agregamos escuchadores de evento
 		setUpEvents();
 		recuperarTodo();
 	}
 
 	// METODO QUE LEVANTA LOS EVENTOS
 	private void setUpEvents() {
-		bMaterial.gettBuscador().addKeyListener(this);
-		bMaterial.getTable().addMouseListener(this);
+		buscador.gettBuscador().addKeyListener(this);
+		buscador.getTable().addMouseListener(this);
 	}
 
 	// METODO QUE RECUPERA DATOS POR FILTRO EN EL BUSCADOR
 	private void recuperarPorFiltro() {
-		lista = dao.recuperarPorFiltro(bMaterial.gettBuscador().getText());
+		material = null;
+		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
 		mtMaterial.setLista(lista);
 		mtMaterial.fireTableDataChanged();
 	}
 
 	private void recuperarTodo() {
+		material = null;
 		lista = dao.recuperarTodoOrdenadoPorNombre();
 		mtMaterial.setLista(lista);
 		mtMaterial.fireTableDataChanged();
@@ -63,7 +62,12 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 	}
 
 	private void seleccionarRegistro(int posicion) {
+		if (posicion < 0) {
+			material = null;
+			return;
+		}
 		material = lista.get(posicion);
+		System.out.println(material);
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 	// EVENTO DEL BOTON AL DAR CLIC RECUPERA POR FILTRO
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getSource() == bMaterial.gettBuscador() && e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if (e.getSource() == buscador.gettBuscador() && e.getKeyCode() == KeyEvent.VK_ENTER) {
 			recuperarPorFiltro();
 		}
 	}
@@ -85,73 +89,89 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 	// EVENTO DEL MOUSE AL DAR DOBLE CLIC VA A SELECCIONAR UN REGISTRO
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// doble clic en un registro de la tabla
-		if (e.getSource() == bMaterial.getTable() && e.getClickCount() == 1 ) {
-			seleccionarRegistro(bMaterial.getTable().getSelectedRow());
+
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
-		
-		if (e.getSource() == bMaterial.getTable() && e.getClickCount() == 2) {
-			seleccionarRegistro(bMaterial.getTable().getSelectedRow());
+		// doble clic en un registro de la tabla
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
 			interfaz.setMaterial(material);
-			bMaterial.dispose();
+			buscador.dispose();
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		if (e.getSource() == buscador.getTable()) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void nuevo() {
 		VentanaMaterial ventana = new VentanaMaterial();
 		ventana.setUpControlador();
-		ventana.setVisible(true);
 		ventana.getControlador().nuevo();
+		ventana.getControlador().setInterfaz(this);
+		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
+		if (material == null) {
+			return;
+		}
 		VentanaMaterial ventana = new VentanaMaterial();
 		ventana.setUpControlador();
-		ventana.getControlador().setMaterial(material);
-		ventana.setVisible(true);
 		ventana.getControlador().modificar();
+		ventana.getControlador().setMaterial(material);
+		ventana.getControlador().setInterfaz(this);
+		ventana.setVisible(true);
 	}
 
 	@Override
 	public void eliminar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void guardar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void cancelar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setMaterial(Material material) {
-		this.material = material;
-		
+		buscador.gettBuscador().setText(material.getDescripcion());
+		recuperarPorFiltro();
 	}
-
 }
