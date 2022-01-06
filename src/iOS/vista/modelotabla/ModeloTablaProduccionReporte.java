@@ -51,10 +51,10 @@ public class ModeloTablaProduccionReporte extends AbstractTableModel {
 			return producciones.get(r).getProceso();
 		case 4:
 			if (producciones.get(r).getPedido().getPedidoCarteleria() == true) {
-				return producciones.get(r).getPedidoDetalle().getProducto();
+				return producciones.get(r).getPedidoDetalle().getProducto().getDescripcion();
 			}
 			if (producciones.get(r).getPedido().getPedidoCostura() == true) {
-				return producciones.get(r).getPedidoDetalleConfeccion().getProducto();
+				return producciones.get(r).getPedidoDetalleConfeccion().getProducto().getDescripcion();
 			}
 		case 5:
 			if (producciones.get(r).getPedido().getPedidoCarteleria() == true) {

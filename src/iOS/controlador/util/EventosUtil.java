@@ -21,7 +21,9 @@ import javax.swing.JTextArea;
 
 import com.toedter.calendar.JDateChooser;
 
+import iOS.modelo.dao.CotizacionDao;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Cotizacion;
 import iOS.vista.componentes.CampoNumeroPersonalizado;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -209,5 +211,12 @@ public class EventosUtil {
 		} else {
 			return "ANULADO";
 		}
+	}
+	
+	public static Cotizacion cotizacion() {
+		CotizacionDao dao = new CotizacionDao();
+		Cotizacion cotizacion = dao.recuperarUltimaCotizacion();
+		
+		return cotizacion;
 	}
 }

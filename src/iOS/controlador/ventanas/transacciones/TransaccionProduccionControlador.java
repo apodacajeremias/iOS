@@ -230,6 +230,11 @@ public class TransaccionProduccionControlador
 				produccion.setPedidoDetalleConfeccion(null);
 				produccion.setProceso("INICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
 				producciones.add(produccion);
 
 				detalleCarteleria.setProduccionFinalizada(false);
@@ -239,11 +244,6 @@ public class TransaccionProduccionControlador
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
 				pedido.setFechaUltimoRegistroProduccion(new Date());
-
-				if (produccion.getMaquina() == null) {
-					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
-					return;
-				}
 
 				guardar();
 			}
@@ -259,6 +259,12 @@ public class TransaccionProduccionControlador
 				produccion.setPedidoDetalleConfeccion(detalleConfeccion);
 				produccion.setProceso("INICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
+
 				producciones.add(produccion);
 
 				detalleConfeccion.setProduccionFinalizada(false);
@@ -268,11 +274,6 @@ public class TransaccionProduccionControlador
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
 				pedido.setFechaUltimoRegistroProduccion(new Date());
-
-				if (produccion.getMaquina() == null) {
-					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
-					return;
-				}
 
 				guardar();
 			}
@@ -300,6 +301,12 @@ public class TransaccionProduccionControlador
 				produccion.setPedidoDetalleConfeccion(null);
 				produccion.setProceso("REINICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
+
 				producciones.add(produccion);
 
 				detalleCarteleria.setProduccionFinalizada(false);
@@ -309,11 +316,6 @@ public class TransaccionProduccionControlador
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
 				pedido.setFechaUltimoRegistroProduccion(new Date());
-
-				if (produccion.getMaquina() == null) {
-					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
-					return;
-				}
 
 				guardar();
 			}
@@ -329,6 +331,12 @@ public class TransaccionProduccionControlador
 				produccion.setPedidoDetalleConfeccion(detalleConfeccion);
 				produccion.setProceso("REINICIADO");
 				produccion.setSector(Sesion.getInstance().getSector());
+
+				if (produccion.getMaquina() == null) {
+					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
+					return;
+				}
+
 				producciones.add(produccion);
 
 				detalleConfeccion.setProduccionFinalizada(false);
@@ -338,11 +346,6 @@ public class TransaccionProduccionControlador
 				pedido.setGeneraDeuda(false);
 				pedido.setProduccionFinalizada(false);
 				pedido.setFechaUltimoRegistroProduccion(new Date());
-
-				if (produccion.getMaquina() == null) {
-					JOptionPane.showMessageDialog(ventana, "Se debe indicar la maquina ha utilizar");
-					return;
-				}
 
 				guardar();
 			}

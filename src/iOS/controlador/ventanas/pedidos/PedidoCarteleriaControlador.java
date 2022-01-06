@@ -42,22 +42,18 @@ import iOS.vista.ventanas.pedidos.TransaccionPedido;
 public class PedidoCarteleriaControlador implements ActionListener, MouseListener, KeyListener, PedidoInterface,
 		ClienteInterface, ProductoInterface, PropertyChangeListener, MaterialInterface {
 	private TransaccionPedido ventana;
+	private ModeloTablaPedidoDetalle mtPedidoDetalle;
+	private ModeloTablaPedidoDetalleMaterial mtDetalleMaterial;
 
 	private PedidoDao dao;
 	private Pedido pedido;
-
 	private Producto producto;
-
 	private PedidoDetalles detalle;
 	private List<PedidoDetalles> detalles = new ArrayList<PedidoDetalles>();
 
 	private Material material;
-
 	private PedidoDetalleMaterial pdMaterial;
 	private List<PedidoDetalleMaterial> materiales = new ArrayList<PedidoDetalleMaterial>();
-
-	private ModeloTablaPedidoDetalle mtPedidoDetalle;
-	private ModeloTablaPedidoDetalleMaterial mtDetalleMaterial;
 
 	private String accion;
 
@@ -216,20 +212,19 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		}
 
 		vaciarTablaMaterial();
-		
+
 		detalle = detalles.get(posicion);
 		materiales = detalle.getMateriales();
-		
+
 		if (detalle.getMateriales() != null) {
 			materiales = detalle.getMateriales();
 		} else {
 			materiales = new ArrayList<PedidoDetalleMaterial>();
 		}
-		
+
 		mtDetalleMaterial.setMateriales(materiales);
 		mtDetalleMaterial.fireTableDataChanged();
 
-		
 	}
 
 	private void agregarMaterial(Material m) {

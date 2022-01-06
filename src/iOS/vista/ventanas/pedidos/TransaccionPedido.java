@@ -26,9 +26,6 @@ public class TransaccionPedido extends PedidoGenerico {
 	}
 
 	public TransaccionPedido() {
-		getBtnQuitar().setEnabled(true);
-		getBtnAgregar().setEnabled(true);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static long getSerialversionuid() {

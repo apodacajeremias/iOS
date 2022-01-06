@@ -40,6 +40,7 @@ import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorColaborador;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.buscadores.BuscadorSector;
+import iOS.vista.ventanas.configuraciones.VentanaCotizacion;
 import iOS.vista.ventanas.pedidos.TransaccionPedido;
 import iOS.vista.ventanas.reportes.ReporteCaja;
 import iOS.vista.ventanas.reportes.ReporteCliente;
@@ -58,6 +59,7 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = -4166190286945252641L;
 	private JPanel contentPane;
 	private LabelPersonalizado lblPODAC;
+	private JMenu mnConfiguracion;
 
 	/**
 	 * Create the frame.
@@ -451,6 +453,19 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnReportes.add(mnItemReporteProduccion);
+		
+		mnConfiguracion = new JMenu("CONFIGURACIONES");
+		mnConfiguracion.setVisible(false);
+		mnConfiguracion.setFont(new Font("Tahoma", Font.BOLD, 14));
+		menuBar.add(mnConfiguracion);
+		
+		JMenuItem mnItemCotizacion = new JMenuItem("Cotizacion");
+		mnItemCotizacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirConfiguracionCotizacion();
+			}
+		});
+		mnConfiguracion.add(mnItemCotizacion);
 
 		/*
 		 * Se obtiene nustro toolbar para los botones de paciente renta vehiculo y salir
@@ -605,6 +620,7 @@ public class VentanaPrincipal extends JFrame {
 		// TODO Auto-generated method stub
 
 	}
+	
 
 	protected void abrirBuscadorRol() {
 		BuscadorRol ventana = new BuscadorRol();
@@ -666,6 +682,13 @@ public class VentanaPrincipal extends JFrame {
 
 	protected void abrirBuscadorBanco() {
 		// TODO Auto-generate ventana d method stub
+
+	}
+	
+	private void abrirConfiguracionCotizacion() {
+		VentanaCotizacion ventana = new VentanaCotizacion();
+		ventana.setUpControlador();
+		ventana.setVisible(true);
 
 	}
 
@@ -748,4 +771,9 @@ public class VentanaPrincipal extends JFrame {
 	public LabelPersonalizado getLblPODAC() {
 		return lblPODAC;
 	}
+
+	public JMenu getMnConfiguracion() {
+		return mnConfiguracion;
+	}
+	
 }

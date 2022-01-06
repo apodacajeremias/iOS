@@ -51,6 +51,21 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
+	
+	public List<CajaMovimiento> recuperarTodos() {
+		getSession().beginTransaction();
+		String sql = "from CajaMovimiento order by id DESC";
+		@SuppressWarnings("unchecked")
+		Query<CajaMovimiento> query = getSession().createQuery(sql);
+		try {
+			List<CajaMovimiento> lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return null;
+		}
+	}
 
 	public List<CajaMovimiento> ordenarMovimientosPorID(int cajaID) {
 		getSession().beginTransaction();

@@ -82,14 +82,29 @@ public class CajaMovimiento {
 	@Column(nullable = false)
 	private boolean esVale;
 
+	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double valorGS;
 
+	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double valorRS;
 
+	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double valorUS;
+	
+	@ColumnDefault("1")
+	@Column(nullable = false)
+	private double cotizacionGS;
+
+	@ColumnDefault("1")
+	@Column(nullable = false)
+	private double cotizacionRS;
+
+	@ColumnDefault("1")
+	@Column(nullable = false)
+	private double cotizacionUS;
 
 	public int getId() {
 		return id;
@@ -212,4 +227,30 @@ public class CajaMovimiento {
 				+ ", valorGS=" + valorGS + ", valorRS=" + valorRS + ", valorUS=" + valorUS + "]";
 	}
 
+	public double getCotizacionGS() {
+		return cotizacionGS;
+	}
+
+	public void setCotizacionGS(double cotizacionGS) {
+		this.cotizacionGS = cotizacionGS;
+	}
+
+	public double getCotizacionRS() {
+		return cotizacionRS;
+	}
+
+	public void setCotizacionRS(double cotizacionRS) {
+		this.cotizacionRS = cotizacionRS;
+	}
+
+	public double getCotizacionUS() {
+		return cotizacionUS;
+	}
+
+	public void setCotizacionUS(double cotizacionUS) {
+		this.cotizacionUS = cotizacionUS;
+	}
+
+	
+	
 }

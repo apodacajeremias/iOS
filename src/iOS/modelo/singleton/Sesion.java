@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Cotizacion;
 import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
 import iOS.modelo.entidades.Sector;
@@ -17,11 +18,13 @@ public class Sesion {
 
 	private Sector sector;
 	private List<Sector> sectores;
-	
+
 	private Rol rol;
 	private List<Rol> roles;
-	
+
 	private List<Maquina> maquinas;
+
+	private Cotizacion cotizacion;
 
 	private Sesion() {
 	}
@@ -94,7 +97,17 @@ public class Sesion {
 	public void setMaquinas(List<Maquina> maquinas) {
 		this.maquinas = maquinas;
 	}
-	
-	
+
+	public Cotizacion getCotizacion() {
+		if (cotizacion == null) {
+			JOptionPane.showMessageDialog(null, "Debe cargar la cotizacion del dia");
+			return null;
+		}
+		return cotizacion;
+	}
+
+	public void setCotizacion(Cotizacion cotizacion) {
+		this.cotizacion = cotizacion;
+	}
 
 }

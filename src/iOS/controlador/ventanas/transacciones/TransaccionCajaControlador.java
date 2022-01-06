@@ -27,6 +27,7 @@ import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Cotizacion;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.interfaces.CajaInterface;
 import iOS.modelo.interfaces.ClienteInterface;
@@ -65,6 +66,8 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	private ArrayList<Double> retiros;
 	private ArrayList<Double> saldoFinal;
 
+	private Cotizacion cotizacion;
+
 	public TransaccionCajaControlador(TransaccionCaja transaccion) {
 		this.ventana = transaccion;
 		this.mtCajaMovimiento = new ModeloTablaCajaMovimiento();
@@ -73,6 +76,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 
 		dao = new CajaDao();
 		setUpEvents();
+		recuperarCotizacion();
 		cajaAbierta();
 	}
 
@@ -165,6 +169,31 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 			setCaja(caja);
 			return true;
 		}
+	}
+
+	private void recuperarCotizacion() {
+		cotizacion = EventosUtil.cotizacion();
+		if (cotizacion == null) {
+			ventana.getlCotizacionGS().setText("GS: DEFINA COTIZACION");
+			ventana.getlCotizacionRS().setText("RS: DEFINA COTIZACION");
+			ventana.getlCotizacionUS().setText("US: DEFINA COTIZACION");
+			JOptionPane.showMessageDialog(ventana,
+					"Defina la cotizacion para empezar a operar el caja, consulte al administrador");
+			return;
+		} else if (cotizacion.getCotizacionGS() == 0 || cotizacion.getCotizacionRS() == 0
+				|| cotizacion.getCotizacionUS() == 0) {
+			ventana.getlCotizacionGS().setText("GS: DEFINA COTIZACION");
+			ventana.getlCotizacionRS().setText("RS: DEFINA COTIZACION");
+			ventana.getlCotizacionUS().setText("US: DEFINA COTIZACION");
+			JOptionPane.showMessageDialog(ventana,
+					"Defina la cotizacion para empezar a operar el caja, consulte al administrador");
+			return;
+		} else {
+			ventana.getlCotizacionGS().setText("GS: " + EventosUtil.separadorMiles(cotizacion.getCotizacionGS()));
+			ventana.getlCotizacionRS().setText("RS: " + EventosUtil.separadorMiles(cotizacion.getCotizacionRS()));
+			ventana.getlCotizacionUS().setText("US: " + EventosUtil.separadorMiles(cotizacion.getCotizacionUS()));
+		}
+
 	}
 
 	private void abrirCaja() {
@@ -493,6 +522,7 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	}
 
 	public void guardar() {
+		recuperarCotizacion();
 		switch (accion) {
 		case "ABRIR":
 			if (caja == null) {
@@ -595,6 +625,9 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 			movimiento.setValorGS(ventana.gettValorGs().getValue());
 			movimiento.setValorRS(ventana.gettValorRs().getValue());
 			movimiento.setValorUS(ventana.gettValorUs().getValue());
+			movimiento.setCotizacionGS(cotizacion.getCotizacionGS());
+			movimiento.setCotizacionRS(cotizacion.getCotizacionRS());
+			movimiento.setCotizacionUS(cotizacion.getCotizacionUS());
 			movimientos.add(movimiento);
 			caja.setCajaMovimientos(movimientos);
 

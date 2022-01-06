@@ -76,6 +76,10 @@ public class TransaccionCaja extends JDialog {
 	private CampoNumeroPersonalizado tSaldoEntregadoGS;
 	private CampoNumeroPersonalizado tSaldoEntregadoRS;
 	private CampoNumeroPersonalizado tSaldoEntregadoUS;
+	private JPanel panelCotizacion;
+	private LabelPersonalizado lCotizacionGS;
+	private LabelPersonalizado lCotizacionRS;
+	private LabelPersonalizado lCotizacionUS;
 
 	public void setUpControlador() {
 		controlador = new TransaccionCajaControlador(this);
@@ -99,12 +103,12 @@ public class TransaccionCaja extends JDialog {
 
 		panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(35, 11, 435, 111);
+		panel_2.setBounds(20, 10, 200, 150);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 
 		btnIngresarPago = new MiBoton("Guardar");
-		btnIngresarPago.setBounds(0, 0, 200, 50);
+		btnIngresarPago.setBounds(0, 0, 200, 30);
 		panel_2.add(btnIngresarPago);
 		btnIngresarPago.callToAction();
 		btnIngresarPago.setHorizontalAlignment(SwingConstants.LEFT);
@@ -113,7 +117,7 @@ public class TransaccionCaja extends JDialog {
 		btnIngresarPago.setText("Ingresar Pago");
 
 		btnRetirarVale = new MiBoton("Cancelar");
-		btnRetirarVale.setBounds(235, 0, 200, 50);
+		btnRetirarVale.setBounds(0, 80, 200, 30);
 		panel_2.add(btnRetirarVale);
 		btnRetirarVale.setHorizontalAlignment(SwingConstants.LEFT);
 		btnRetirarVale.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -121,7 +125,7 @@ public class TransaccionCaja extends JDialog {
 		btnRetirarVale.setActionCommand("RetirarVale");
 
 		btnIngresarEntrega = new MiBoton("Guardar");
-		btnIngresarEntrega.setBounds(0, 61, 200, 50);
+		btnIngresarEntrega.setBounds(0, 40, 200, 30);
 		panel_2.add(btnIngresarEntrega);
 		btnIngresarEntrega.setHorizontalAlignment(SwingConstants.LEFT);
 		btnIngresarEntrega.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -129,7 +133,7 @@ public class TransaccionCaja extends JDialog {
 		btnIngresarEntrega.setActionCommand("IngresarEntrega");
 
 		btnRetirarGasto = new MiBoton("Cancelar");
-		btnRetirarGasto.setBounds(235, 61, 200, 50);
+		btnRetirarGasto.setBounds(0, 120, 200, 30);
 		panel_2.add(btnRetirarGasto);
 		btnRetirarGasto.setHorizontalAlignment(SwingConstants.LEFT);
 		btnRetirarGasto.setText("Retirar Gasto");
@@ -137,7 +141,7 @@ public class TransaccionCaja extends JDialog {
 		btnRetirarGasto.setActionCommand("RetirarGasto");
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(505, 166, 757, 430);
+		scrollPane.setBounds(465, 121, 797, 469);
 		getContentPane().add(scrollPane);
 
 		tableMovimientos = new JTable();
@@ -149,14 +153,33 @@ public class TransaccionCaja extends JDialog {
 		btnEstadoCaja.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		btnEstadoCaja.setActionCommand("EstadoCaja");
 		btnEstadoCaja.setText("EstadoCaja");
-		btnEstadoCaja.setBounds(1112, 124, 150, 30);
+		btnEstadoCaja.setBounds(305, 130, 150, 30);
 		getContentPane().add(btnEstadoCaja);
+		
+		panelCotizacion = new JPanel();
+		panelCotizacion.setLayout(null);
+		panelCotizacion.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Cotizacion", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelCotizacion.setBackground(Color.WHITE);
+		panelCotizacion.setBounds(235, 10, 220, 100);
+		getContentPane().add(panelCotizacion);
+		
+		lCotizacionGS = new LabelPersonalizado(0);
+		lCotizacionGS.setBounds(10, 15, 200, 20);
+		panelCotizacion.add(lCotizacionGS);
+		
+		lCotizacionRS = new LabelPersonalizado(0);
+		lCotizacionRS.setBounds(10, 43, 200, 20);
+		panelCotizacion.add(lCotizacionRS);
+		
+		lCotizacionUS = new LabelPersonalizado(0);
+		lCotizacionUS.setBounds(10, 70, 200, 20);
+		panelCotizacion.add(lCotizacionUS);
 
 		panelSInicial = new JPanel();
 		panelSInicial
 				.setBorder(new TitledBorder(null, "Saldo Inicial", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelSInicial.setBackground(Color.WHITE);
-		panelSInicial.setBounds(505, 11, 220, 100);
+		panelSInicial.setBounds(465, 10, 220, 100);
 		getContentPane().add(panelSInicial);
 		panelSInicial.setLayout(null);
 
@@ -177,7 +200,7 @@ public class TransaccionCaja extends JDialog {
 		panelSIngreso.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Ingreso",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelSIngreso.setBackground(Color.WHITE);
-		panelSIngreso.setBounds(1042, 12, 220, 100);
+		panelSIngreso.setBounds(1042, 10, 220, 100);
 		getContentPane().add(panelSIngreso);
 
 		lSaldoIngresoGS = new LabelPersonalizado(0);
@@ -197,7 +220,7 @@ public class TransaccionCaja extends JDialog {
 		panelSRetiro.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Retiro",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelSRetiro.setBackground(Color.WHITE);
-		panelSRetiro.setBounds(773, 11, 220, 100);
+		panelSRetiro.setBounds(753, 10, 220, 100);
 		getContentPane().add(panelSRetiro);
 
 		lSaldoRetiroGS = new LabelPersonalizado(0);
@@ -215,7 +238,7 @@ public class TransaccionCaja extends JDialog {
 		tableMovimientos.setDefaultRenderer(Object.class, new CeldaRenderer(0, "Color"));
 
 		panelGeneral = new JPanel();
-		panelGeneral.setBounds(35, 166, 435, 364);
+		panelGeneral.setBounds(20, 172, 435, 364);
 		getContentPane().add(panelGeneral);
 		panelGeneral.setLayout(null);
 
@@ -369,41 +392,41 @@ public class TransaccionCaja extends JDialog {
 		tObservacion.setLineWrap(true);
 		tObservacion.setWrapStyleWord(true);
 		tObservacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		
+
 		panelValor2 = new JPanel();
 		panelValor2.setLayout(null);
 		panelValor2.setBackground(Color.WHITE);
 		panelValor2.setBounds(0, 308, 435, 50);
 		panelGeneral.add(panelValor2);
-		
+
 		LabelPersonalizado lblprsnlzdGs_1 = new LabelPersonalizado(0);
 		lblprsnlzdGs_1.setText("Entrega Gs");
 		lblprsnlzdGs_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblprsnlzdGs_1.setBounds(0, 0, 120, 20);
 		panelValor2.add(lblprsnlzdGs_1);
-		
+
 		tSaldoEntregadoGS = new CampoNumeroPersonalizado();
 		tSaldoEntregadoGS.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tSaldoEntregadoGS.setBounds(0, 20, 120, 30);
 		panelValor2.add(tSaldoEntregadoGS);
-		
+
 		LabelPersonalizado lblprsnlzdRs_1 = new LabelPersonalizado(0);
 		lblprsnlzdRs_1.setText("Entrega RS");
 		lblprsnlzdRs_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblprsnlzdRs_1.setBounds(157, 0, 120, 20);
 		panelValor2.add(lblprsnlzdRs_1);
-		
+
 		tSaldoEntregadoRS = new CampoNumeroPersonalizado();
 		tSaldoEntregadoRS.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tSaldoEntregadoRS.setBounds(157, 20, 120, 30);
 		panelValor2.add(tSaldoEntregadoRS);
-		
+
 		LabelPersonalizado lblprsnlzdUs_1 = new LabelPersonalizado(0);
 		lblprsnlzdUs_1.setText("Entrega US");
 		lblprsnlzdUs_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblprsnlzdUs_1.setBounds(315, 0, 120, 20);
 		panelValor2.add(lblprsnlzdUs_1);
-		
+
 		tSaldoEntregadoUS = new CampoNumeroPersonalizado();
 		tSaldoEntregadoUS.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tSaldoEntregadoUS.setBounds(315, 20, 120, 30);
@@ -416,7 +439,7 @@ public class TransaccionCaja extends JDialog {
 		btnConfirmar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnConfirmar.setFont(new Font("SansSerif", Font.BOLD, 18));
 		btnConfirmar.setActionCommand("Confirmar");
-		btnConfirmar.setBounds(35, 541, 200, 50);
+		btnConfirmar.setBounds(20, 540, 200, 50);
 		getContentPane().add(btnConfirmar);
 
 		btnCancelar = new MiBoton("Cancelar");
@@ -424,7 +447,7 @@ public class TransaccionCaja extends JDialog {
 		btnCancelar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCancelar.setFont(new Font("SansSerif", Font.BOLD, 18));
 		btnCancelar.setActionCommand("Cancelar");
-		btnCancelar.setBounds(270, 540, 200, 50);
+		btnCancelar.setBounds(255, 540, 200, 50);
 		getContentPane().add(btnCancelar);
 
 		lTitulo = new LabelPersonalizado(0);
@@ -633,5 +656,20 @@ public class TransaccionCaja extends JDialog {
 		return tSaldoEntregadoUS;
 	}
 
+	public JPanel getPanelCotizacion() {
+		return panelCotizacion;
+	}
+
+	public LabelPersonalizado getlCotizacionGS() {
+		return lCotizacionGS;
+	}
+
+	public LabelPersonalizado getlCotizacionRS() {
+		return lCotizacionRS;
+	}
+
+	public LabelPersonalizado getlCotizacionUS() {
+		return lCotizacionUS;
+	}
 
 }

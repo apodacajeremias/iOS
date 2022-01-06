@@ -313,8 +313,13 @@ public class Pedido {
 	public double getSumaPagos() {
 		sumaPagos = 0;
 		try {
-			sumaPagos = pagosPedido.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false)
-					.mapToDouble(b -> b.getValorGS()).sum();
+			sumaPagos = (pagosPedido.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false)
+					.mapToDouble(b -> b.getValorGS() * b.getCotizacionGS()).sum())
+					+ (pagosPedido.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false)
+							.mapToDouble(b -> b.getValorRS() * b.getCotizacionRS()).sum())
+					+ (pagosPedido.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false)
+							.mapToDouble(b -> b.getValorUS() * b.getCotizacionUS()).sum());
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -5,7 +5,7 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.jdbc.log.warnings">false</property>
 		<property name="hibernate.connection.driver_class"> org.postgresql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://localhost/iOSDB</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://192.168.3.200:1236/iOSDB</property>
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">126845</property>
 
@@ -24,6 +24,7 @@
 		<mapping class="iOS.modelo.entidades.Compra"></mapping>
 		<mapping class="iOS.modelo.entidades.CompraDetalle"></mapping>
 		<mapping class="iOS.modelo.entidades.Configuracion"></mapping>
+		<mapping class="iOS.modelo.entidades.Cotizacion"></mapping>
 		<mapping class="iOS.modelo.entidades.DepositoExistencia"></mapping>
 		<mapping class="iOS.modelo.entidades.EntidadBancaria"></mapping>
 		<mapping class="iOS.modelo.entidades.Existencia"></mapping>

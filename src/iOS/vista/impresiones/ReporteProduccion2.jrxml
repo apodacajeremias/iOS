@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteProduccion2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="85a6cb39-e32a-4b19-bb4f-e0281c5d2f0a">
+	<subDataset name="DetalleCarteleria" uuid="580ce298-00c9-4c52-9808-08552874ae3b">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="estado" class="java.lang.Boolean">
+			<fieldDescription><![CDATA[estado]]></fieldDescription>
+		</field>
+		<field name="medidaAlto" class="java.lang.Double">
+			<fieldDescription><![CDATA[medidaAlto]]></fieldDescription>
+		</field>
+		<field name="ultimoEstadoProduccion" class="java.lang.String">
+			<fieldDescription><![CDATA[ultimoEstadoProduccion]]></fieldDescription>
+		</field>
+		<field name="archivo" class="java.lang.String">
+			<fieldDescription><![CDATA[archivo]]></fieldDescription>
+		</field>
+		<field name="precioDetalle" class="java.lang.Integer">
+			<fieldDescription><![CDATA[precioDetalle]]></fieldDescription>
+		</field>
+		<field name="fechaModificado" class="java.util.Date">
+			<fieldDescription><![CDATA[fechaModificado]]></fieldDescription>
+		</field>
+		<field name="fechaRegistro" class="java.util.Date">
+			<fieldDescription><![CDATA[fechaRegistro]]></fieldDescription>
+		</field>
+		<field name="medidaDetalle" class="java.lang.Double">
+			<fieldDescription><![CDATA[medidaDetalle]]></fieldDescription>
+		</field>
+		<field name="produccionFinalizada" class="java.lang.Boolean">
+			<fieldDescription><![CDATA[produccionFinalizada]]></fieldDescription>
+		</field>
+		<field name="producto" class="iOS.modelo.entidades.Producto">
+			<fieldDescription><![CDATA[producto]]></fieldDescription>
+		</field>
+		<field name="fechaUltimoRegistroProduccion" class="java.util.Date">
+			<fieldDescription><![CDATA[fechaUltimoRegistroProduccion]]></fieldDescription>
+		</field>
+		<field name="medidaAncho" class="java.lang.Double">
+			<fieldDescription><![CDATA[medidaAncho]]></fieldDescription>
+		</field>
+		<field name="colaborador" class="iOS.modelo.entidades.Colaborador">
+			<fieldDescription><![CDATA[colaborador]]></fieldDescription>
+		</field>
+		<field name="gananciaDetalle" class="java.lang.Integer">
+			<fieldDescription><![CDATA[gananciaDetalle]]></fieldDescription>
+		</field>
+		<field name="cantidadDetalle" class="java.lang.Double">
+			<fieldDescription><![CDATA[cantidadDetalle]]></fieldDescription>
+		</field>
+		<field name="pedido" class="iOS.modelo.entidades.Pedido">
+			<fieldDescription><![CDATA[pedido]]></fieldDescription>
+		</field>
+		<field name="producciones" class="java.util.List">
+			<fieldDescription><![CDATA[producciones]]></fieldDescription>
+		</field>
+		<field name="id" class="java.lang.Integer">
+			<fieldDescription><![CDATA[id]]></fieldDescription>
+		</field>
+		<field name="materiales" class="java.util.List">
+			<fieldDescription><![CDATA[materiales]]></fieldDescription>
+		</field>
+		<field name="precioProducto" class="java.lang.Integer">
+			<fieldDescription><![CDATA[precioProducto]]></fieldDescription>
+		</field>
+		<field name="class" class="java.lang.Class">
+			<fieldDescription><![CDATA[class]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="DetalleConfeccion" uuid="0d3b7ef0-7457-4955-a74e-4d8d2cbaad16">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="estado" class="java.lang.Boolean">
+			<fieldDescription><![CDATA[estado]]></fieldDescription>
+		</field>
+		<field name="ultimoEstadoProduccion" class="java.lang.String">
+			<fieldDescription><![CDATA[ultimoEstadoProduccion]]></fieldDescription>
+		</field>
+		<field name="archivo" class="java.lang.String">
+			<fieldDescription><![CDATA[archivo]]></fieldDescription>
+		</field>
+		<field name="precioDetalle" class="java.lang.Double">
+			<fieldDescription><![CDATA[precioDetalle]]></fieldDescription>
+		</field>
+		<field name="fechaModificado" class="java.util.Date">
+			<fieldDescription><![CDATA[fechaModificado]]></fieldDescription>
+		</field>
+		<field name="fechaRegistro" class="java.util.Date">
+			<fieldDescription><![CDATA[fechaRegistro]]></fieldDescription>
+		</field>
+		<field name="produccionFinalizada" class="java.lang.Boolean">
+			<fieldDescription><![CDATA[produccionFinalizada]]></fieldDescription>
+		</field>
+		<field name="producto" class="iOS.modelo.entidades.Producto">
+			<fieldDescription><![CDATA[producto]]></fieldDescription>
+		</field>
+		<field name="fechaUltimoRegistroProduccion" class="java.util.Date">
+			<fieldDescription><![CDATA[fechaUltimoRegistroProduccion]]></fieldDescription>
+		</field>
+		<field name="colaborador" class="iOS.modelo.entidades.Colaborador">
+			<fieldDescription><![CDATA[colaborador]]></fieldDescription>
+		</field>
+		<field name="cantidadDetalle" class="java.lang.Double">
+			<fieldDescription><![CDATA[cantidadDetalle]]></fieldDescription>
+		</field>
+		<field name="pedido" class="iOS.modelo.entidades.Pedido">
+			<fieldDescription><![CDATA[pedido]]></fieldDescription>
+		</field>
+		<field name="producciones" class="java.util.List">
+			<fieldDescription><![CDATA[producciones]]></fieldDescription>
+		</field>
+		<field name="id" class="java.lang.Integer">
+			<fieldDescription><![CDATA[id]]></fieldDescription>
+		</field>
+		<field name="materiales" class="java.util.List">
+			<fieldDescription><![CDATA[materiales]]></fieldDescription>
+		</field>
+		<field name="precioProducto" class="java.lang.Double">
+			<fieldDescription><![CDATA[precioProducto]]></fieldDescription>
+		</field>
+		<field name="class" class="java.lang.Class">
+			<fieldDescription><![CDATA[class]]></fieldDescription>
+		</field>
+		<field name="tamano" class="java.lang.String">
+			<fieldDescription><![CDATA[tamano]]></fieldDescription>
+		</field>
+		<field name="molde" class="java.lang.String">
+			<fieldDescription><![CDATA[molde]]></fieldDescription>
+		</field>
+	</subDataset>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="pedidoCostura" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[pedidoCostura]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[estado]]></fieldDescription>
+	</field>
+	<field name="metrosFechaEmision" class="java.lang.Double">
+		<fieldDescription><![CDATA[metrosFechaEmision]]></fieldDescription>
+	</field>
+	<field name="descuentoTotal" class="java.lang.Integer">
+		<fieldDescription><![CDATA[descuentoTotal]]></fieldDescription>
+	</field>
+	<field name="deudaPaga" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[deudaPaga]]></fieldDescription>
+	</field>
+	<field name="sumatoriaPrecio" class="java.lang.Integer">
+		<fieldDescription><![CDATA[sumatoriaPrecio]]></fieldDescription>
+	</field>
+	<field name="producciones" class="java.util.List">
+		<fieldDescription><![CDATA[producciones]]></fieldDescription>
+	</field>
+	<field name="generaDeuda" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[generaDeuda]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="informacionResponsable" class="java.lang.String">
+		<fieldDescription><![CDATA[informacionResponsable]]></fieldDescription>
+	</field>
+	<field name="precioPagar" class="java.lang.Integer">
+		<fieldDescription><![CDATA[precioPagar]]></fieldDescription>
+	</field>
+	<field name="pagosPedido" class="java.util.List">
+		<fieldDescription><![CDATA[pagosPedido]]></fieldDescription>
+	</field>
+	<field name="fechaRegistro" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaRegistro]]></fieldDescription>
+	</field>
+	<field name="costoTotal" class="java.lang.Integer">
+		<fieldDescription><![CDATA[costoTotal]]></fieldDescription>
+	</field>
+	<field name="pedidoDetalles" class="java.util.List">
+		<fieldDescription><![CDATA[pedidoDetalles]]></fieldDescription>
+	</field>
+	<field name="pedidosConfecciones" class="java.util.List">
+		<fieldDescription><![CDATA[pedidosConfecciones]]></fieldDescription>
+	</field>
+	<field name="produccionFinalizada" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[produccionFinalizada]]></fieldDescription>
+	</field>
+	<field name="metrosTotal" class="java.lang.Double">
+		<fieldDescription><![CDATA[metrosTotal]]></fieldDescription>
+	</field>
+	<field name="sumaPagos" class="java.lang.Double">
+		<fieldDescription><![CDATA[sumaPagos]]></fieldDescription>
+	</field>
+	<field name="fechaUltimoRegistroProduccion" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaUltimoRegistroProduccion]]></fieldDescription>
+	</field>
+	<field name="gananciaTotal" class="java.lang.Integer">
+		<fieldDescription><![CDATA[gananciaTotal]]></fieldDescription>
+	</field>
+	<field name="esPresupuesto" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[esPresupuesto]]></fieldDescription>
+	</field>
+	<field name="colaborador" class="iOS.modelo.entidades.Colaborador">
+		<fieldDescription><![CDATA[colaborador]]></fieldDescription>
+	</field>
+	<field name="cliente" class="iOS.modelo.entidades.Cliente">
+		<fieldDescription><![CDATA[cliente]]></fieldDescription>
+	</field>
+	<field name="considerarMetraje" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[considerarMetraje]]></fieldDescription>
+	</field>
+	<field name="pedidoCarteleria" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[pedidoCarteleria]]></fieldDescription>
+	</field>
+	<field name="tipoPagoPedido" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoPagoPedido]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<componentElement>
+				<reportElement x="4" y="59" width="100" height="30" uuid="a1231b29-2f04-45e3-a2d9-32f84f7d8713"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="DetalleCarteleria" uuid="626008ad-bbdd-401d-be89-80172ead7c19">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{pedidoDetalles})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="100"/>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="204" y="62" width="100" height="30" uuid="53c12fdb-69b1-47d1-86f0-cdb17d87f9aa"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="DetalleConfeccion" uuid="6149f800-cf6c-426e-8ac3-58a586364026">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{pedidosConfecciones})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="100"/>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

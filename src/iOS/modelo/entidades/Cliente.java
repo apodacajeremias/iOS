@@ -149,8 +149,12 @@ public class Cliente {
 	public double getPagos() {
 		pagos = 0;
 		try {
-			pagos = cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
-					.mapToDouble(b -> b.getValorGS()).sum();
+			pagos = (cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
+					.mapToDouble(b -> b.getValorGS() * b.getCotizacionGS()).sum())
+					+ (cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
+							.mapToDouble(b -> b.getValorRS() * b.getCotizacionRS()).sum())
+					+ (cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
+							.mapToDouble(b -> b.getValorUS() * b.getCotizacionUS()).sum());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
