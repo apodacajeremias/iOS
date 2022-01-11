@@ -69,11 +69,11 @@ public class PedidoDetalleConfeccion {
 
 	@OneToMany(mappedBy = "pedidoDetalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
-
+	
+	
 	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<PedidoDetalleMaterial> materiales;
 
-	
 	@ColumnDefault("false")
 	@Column(nullable = false)
 	private boolean produccionFinalizada = false;
@@ -248,7 +248,6 @@ public class PedidoDetalleConfeccion {
 	public void setMateriales(List<PedidoDetalleMaterial> materiales) {
 		this.materiales = materiales;
 	}
-	
 	
 	
 }

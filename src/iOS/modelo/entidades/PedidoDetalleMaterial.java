@@ -31,27 +31,27 @@ public class PedidoDetalleMaterial {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Pedido pedido;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private PedidoDetalles detalleCarteleria;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private PedidoDetalleConfeccion detalleConfeccion;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Material material;
-	
+
 	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double precio;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -122,8 +122,25 @@ public class PedidoDetalleMaterial {
 
 	public void setPrecio(double precio) {
 		this.precio = precio;
+		try {
+			detalleCarteleria.getPrecioProducto();
+			detalleCarteleria.getPrecioDetalle();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			detalleConfeccion.getPrecioProducto();
+			detalleConfeccion.getPrecioDetalle();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "PedidoDetalleMaterial [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado
+				+ ", colaborador=" + colaborador + ", pedido=" + pedido + ", detalleCarteleria=" + detalleCarteleria
+				+ ", detalleConfeccion=" + detalleConfeccion + ", material=" + material + ", precio=" + precio + "]";
+	}
 
 }

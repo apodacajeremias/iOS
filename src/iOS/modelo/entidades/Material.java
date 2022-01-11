@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -51,9 +52,11 @@ public class Material {
 	@Column(nullable = false)
 	private String tipoCobro;
 
-	
+	@ManyToMany(mappedBy = "materiales")
+	private List<Producto> productos;
+
 	@OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<PedidoDetalleMaterial> detallePedido;
+	private List<PedidoDetalleMaterial> pedidosDetalles;
 
 	@Override
 	public String toString() {
@@ -132,12 +135,12 @@ public class Material {
 		this.tipoCobro = tipoCobro;
 	}
 
-	public List<PedidoDetalleMaterial> getDetallePedido() {
-		return detallePedido;
+	public List<Producto> getProductos() {
+		return productos;
 	}
 
-	public void setDetallePedido(List<PedidoDetalleMaterial> detallePedido) {
-		this.detallePedido = detallePedido;
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
 	}
-	
+
 }

@@ -43,5 +43,16 @@
 	<classpathentry kind="lib" path="src/lib/jasperreports-fonts-6.17.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/jasperreports-javaflow-6.17.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/jfreechart-1.5.3.jar"/>
+	<classpathentry kind="lib" path="src/lib/base-1.0.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/checker-qual-3.8.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/elemental2-promise-1.1.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/error_prone_annotations-2.5.1.jar"/>
+	<classpathentry kind="lib" path="src/lib/failureaccess-1.0.1.jar"/>
+	<classpathentry kind="lib" path="src/lib/guava-30.1.1-jre.jar"/>
+	<classpathentry kind="lib" path="src/lib/guava-gwt-30.1.1-jre.jar"/>
+	<classpathentry kind="lib" path="src/lib/j2objc-annotations-1.3.jar"/>
+	<classpathentry kind="lib" path="src/lib/jsinterop-annotations-2.0.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/jsr305-3.0.2.jar"/>
+	<classpathentry kind="lib" path="src/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

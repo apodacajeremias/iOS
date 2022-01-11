@@ -200,7 +200,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		pdMaterial.setMaterial(m);
 		pdMaterial.setPrecio(m.getPrecioMaximo());
 		materiales.add(pdMaterial);
-		detalle.setMateriales(materiales);
+//		detalle.setMateriales(materiales);
 
 		mtDetalleMaterial.setMateriales(materiales);
 	}

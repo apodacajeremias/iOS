@@ -75,7 +75,7 @@ public class PedidoDetalles {
 
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
-	
+
 	@OneToMany(mappedBy = "detalleCarteleria", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<PedidoDetalleMaterial> materiales;
 
@@ -159,6 +159,27 @@ public class PedidoDetalles {
 	}
 
 	public int getPrecioProducto() {
+		double suma = 0;
+		try {
+			for (int i = 0; i < materiales.size(); i++) {
+				Material material = materiales.get(i).getMaterial();
+				switch (material.getTipoCobro()) {
+				case "UNIDAD":
+					suma += materiales.stream().filter(m -> m.isEstado() == true && m.getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD")).mapToDouble(m -> m.getPrecio()).sum(); 
+					
+				case "METRO CUADRADO":
+					suma += materiales.stream().filter(m -> m.isEstado() == true && m.getMaterial().getTipoCobro().equalsIgnoreCase("METRO CUADRADO")).mapToDouble(m -> m.getPrecio()).sum()*medidaDetalle;
+					
+				default:
+					break;
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		setPrecioProducto((int) suma);
 		return precioProducto;
 	}
 
@@ -167,6 +188,15 @@ public class PedidoDetalles {
 	}
 
 	public int getPrecioDetalle() {
+		double porcentaje = 0;
+		double precio = 0;
+		try {
+			porcentaje = (producto.getPorcentajeSobreCosto() + 100) / 100;
+			precio = precioProducto * porcentaje;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		setPrecioDetalle((int) precio);
 		return precioDetalle;
 	}
 
@@ -271,6 +301,4 @@ public class PedidoDetalles {
 		this.materiales = materiales;
 	}
 
-	
-	
 }

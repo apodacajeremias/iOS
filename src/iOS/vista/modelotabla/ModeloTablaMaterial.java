@@ -19,6 +19,7 @@ public class ModeloTablaMaterial extends AbstractTableModel {
 	
 	public void setLista(List<Material> lista) {
 		this.lista = lista;
+		fireTableDataChanged();
 	}
 
 	@Override

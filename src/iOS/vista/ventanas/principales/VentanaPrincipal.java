@@ -35,9 +35,11 @@ import iOS.vista.ventanas.VentanaColaborador;
 import iOS.vista.ventanas.VentanaConfiguracion;
 import iOS.vista.ventanas.VentanaMaquina;
 import iOS.vista.ventanas.VentanaMarca;
+import iOS.vista.ventanas.VentanaProceso;
 import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorColaborador;
+import iOS.vista.ventanas.buscadores.BuscadorProceso;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.buscadores.BuscadorSector;
 import iOS.vista.ventanas.configuraciones.VentanaCotizacion;
@@ -163,6 +165,14 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnRegistros.add(mnItemMaquina);
+		
+		JMenuItem mnItemProceso = new JMenuItem("Procesos");
+		mnItemProceso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirVentanaProceso();
+			}
+		});
+		mnRegistros.add(mnItemProceso);
 		mnItemProducto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemProducto);
 
@@ -277,6 +287,14 @@ public class VentanaPrincipal extends JFrame {
 				abrirBuscadorProducto();
 			}
 		});
+		
+		JMenuItem mnItemBuscadorProcesos = new JMenuItem("Buscar procesos");
+		mnItemBuscadorProcesos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirBuscadorProceso();
+			}
+		});
+		mnBuscadores.add(mnItemBuscadorProcesos);
 		mnItemBuscadorProducto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.SHIFT_MASK));
 		mnBuscadores.add(mnItemBuscadorProducto);
 
@@ -637,6 +655,12 @@ public class VentanaPrincipal extends JFrame {
 
 	protected void abrirBuscadorProducto() {
 		// TODO Auto-generated method stub
+	}
+	
+	private void abrirBuscadorProceso() {
+		BuscadorProceso ventana = new BuscadorProceso();
+		ventana.setUpControlador();
+		ventana.setVisible(true);
 
 	}
 
@@ -726,13 +750,19 @@ public class VentanaPrincipal extends JFrame {
 			ventana.setVisible(true);
 		}
 	}
+	
+	private void abrirVentanaProceso() {
+		VentanaProceso ventana = new VentanaProceso();
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setVisible(true);
+	}
 
 	private void abrirVentanaProducto() {
 		VentanaProducto ventana = new VentanaProducto();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.setVisible(true);
-		}
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setVisible(true);
 	}
 
 	private void abrirVentanaConfiguracion() {
