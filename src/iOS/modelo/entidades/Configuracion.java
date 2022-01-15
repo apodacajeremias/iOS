@@ -32,14 +32,6 @@ public class Configuracion {
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
 	@Column(nullable = true)
 	private String empresa;
 
@@ -67,6 +59,22 @@ public class Configuracion {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
 	public Colaborador getColaborador() {
@@ -133,12 +141,12 @@ public class Configuracion {
 		this.ubicacion = ubicacion;
 	}
 
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
+	public String registrar() {
+		return "Configuracion [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", empresa=" + empresa + ", telefono=" + telefono + ", registroUnico=" + registroUnico
+				+ ", titular=" + titular + ", registroProfesional=" + registroProfesional + ", cedulaTitular="
+				+ cedulaTitular + ", ubicacion=" + ubicacion + "]";
 	}
-
-	public void setEstado(boolean estado) {
-		this.estado = estado;
-	}
-
+	
+	
 }

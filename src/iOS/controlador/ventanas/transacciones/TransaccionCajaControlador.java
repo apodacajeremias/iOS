@@ -978,6 +978,12 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 	}
 
 	@Override
+	public void setRepresentante(Cliente representate) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 		gestionarCliente();

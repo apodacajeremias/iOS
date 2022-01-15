@@ -38,7 +38,8 @@ import iOS.vista.ventanas.buscadores.BuscadorMaterial;
 import iOS.vista.ventanas.buscadores.BuscadorProveedor;
 import iOS.vista.ventanas.transacciones.TransaccionCompra;
 
-public class TransaccionCompraControlador implements ActionListener, MouseListener, KeyListener, CompraInterface, ProveedorInterface, MaterialInterface, PropertyChangeListener, MarcaInterface {
+public class TransaccionCompraControlador implements ActionListener, MouseListener, KeyListener, CompraInterface,
+		ProveedorInterface, MaterialInterface, PropertyChangeListener, MarcaInterface {
 	private TransaccionCompra transaccionCompra;
 	private ModeloTablaCompraDetalle mtCompraDetalle;
 	private CompraDao dao;
@@ -74,7 +75,6 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		recuperarMarcas();
 	}
 
-
 	private void estadoInicial(boolean b) {
 		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlContacto());
 		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlFechaHora());
@@ -101,39 +101,37 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		mtCompraDetalle.setDetalle(detalles);
 		mtCompraDetalle.fireTableDataChanged();
 
-		//Botones que se mantienen disponibles si o si
+		// Botones que se mantienen disponibles si o si
 		EventosUtil.estadosBotones(transaccionCompra.getBtnBuscarProveedor(), true);
 		EventosUtil.estadosBotones(transaccionCompra.getBtnSalir(), true);
 
-		//Cuando setProveedor, se activa
+		// Cuando setProveedor, se activa
 		EventosUtil.estadosBotones(transaccionCompra.getBtnBuscarMaterial(), false);
 
-		//Cuando setMaterial, se activa
+		// Cuando setMaterial, se activa
 		EventosUtil.estadosBotones(transaccionCompra.getBtnAgregar(), false);
 
-		//Si se selecciona un detalle
-		//		EventosUtil.estadosBotones(transaccionCompra.getBtnAnular(), false);
+		// Si se selecciona un detalle
+		// EventosUtil.estadosBotones(transaccionCompra.getBtnAnular(), false);
 
-
-		//Si es presupuesto
+		// Si es presupuesto
 		EventosUtil.estadosBotones(transaccionCompra.getBtnGuardar(), false);
 
 		transaccionCompra.getBtnBuscarProveedor().requestFocus();
 
 	}
 
-
 	private void setUpEvents() {
-		//MOUSE LISTENER
+		// MOUSE LISTENER
 
-		//ACTION LISTENER
+		// ACTION LISTENER
 		this.transaccionCompra.getBtnBuscarProveedor().addActionListener(this);
 		this.transaccionCompra.getBtnBuscarMaterial().addActionListener(this);
 		this.transaccionCompra.getBtnGuardar().addActionListener(this);
 
-		//KEY LISTENER
+		// KEY LISTENER
 
-		//PROPERTY CHANGES
+		// PROPERTY CHANGES
 		this.transaccionCompra.getTable().addPropertyChangeListener(this);
 		this.transaccionCompra.gettValorNTCR().addPropertyChangeListener(this);
 	}
@@ -142,47 +140,41 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		String v = "";
 		DecimalFormat df = new DecimalFormat("#.###");
 
-		//se redondea el valor recibido 
-		//Math.ceil(valor)
+		// se redondea el valor recibido
+		// Math.ceil(valor)
 
-		//luego se acorta
+		// luego se acorta
 		v = df.format(valor);
 
 		return v;
 
 	}
 
-
 	private void agregarItem() {
 		if (material == null) {
 			return;
-		}	
+		}
 
-		//Nueva fila
+		// Nueva fila
 		detalle = new CompraDetalle();
+		detalle.setColaborador(Sesion.getInstance().getColaborador());
 		detalle.setMaterial(material);
 		detalle.setMarca(marca);
 
-
-
-		//Medidas
+		// Medidas
 		detalle.setMedidaAlto(100);
 		detalle.setMedidaAncho(100);
 		detalle.setMedidaDetalle(1d);
 
-
-		//Detalle sobre el material
+		// Detalle sobre el material
 		detalle.setCantidadDetalle(1);
 		detalle.setCostoMaterial(1000);
 
-
-
-		//Minorista
+		// Minorista
 		detalle.setPrecioMinorista(1500);
 		detalle.setPorcentajeMinorista(50d);
 
-
-		//Mayorista
+		// Mayorista
 		detalle.setPrecioMayorista5(1350);
 		detalle.setPrecioMayorista10(1350);
 		detalle.setPrecioMayorista50(1350);
@@ -191,7 +183,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		detalle.setPrecioMayorista300(1350);
 		detalle.setPorcentajeMayorista(35d);
 
-		//Se añade a la tabla
+		// Se añade a la tabla
 		detalles.add(detalle);
 		mtCompraDetalle.setDetalle(detalles);
 		mtCompraDetalle.fireTableDataChanged();
@@ -216,18 +208,18 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 	private void calcularMedidaDetalle() {
 		for (int i = 0; i < detalles.size(); i++) {
 
-			//Se obttienen las medidas para calcular el area
+			// Se obttienen las medidas para calcular el area
 			double alto = detalles.get(i).getMedidaAlto();
 			double ancho = detalles.get(i).getMedidaAncho();
 			int cantidad = detalles.get(i).getCantidadDetalle();
 
-			//calculo de area
-			double area = alto*ancho;		
+			// calculo de area
+			double area = alto * ancho;
 
-			//Como las medidas son en cm pasamos a M2			
-			double metros = (area/10000)*cantidad;
+			// Como las medidas son en cm pasamos a M2
+			double metros = (area / 10000) * cantidad;
 
-			//y pasamos los metros m2 resultantes limitandos los decimales a dos digitos
+			// y pasamos los metros m2 resultantes limitandos los decimales a dos digitos
 			String metro = limitarDouble(metros);
 
 			transaccionCompra.getTable().setValueAt(metro, i, 5);
@@ -247,7 +239,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		transaccionCompra.getlValorPago().setText(formatter.format(dif));
 	}
 
-	private boolean validarFormulario(){
+	private boolean validarFormulario() {
 		if (proveedor == null) {
 			transaccionCompra.getBtnBuscarProveedor().requestFocus();
 			return false;
@@ -256,7 +248,8 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 			transaccionCompra.getBtnBuscarMaterial().requestFocus();
 			return false;
 		}
-		if (Integer.parseInt(transaccionCompra.gettValorNTCR().getText()) > 0 && transaccionCompra.gettNroNTCR().getText().isEmpty()) {
+		if (Integer.parseInt(transaccionCompra.gettValorNTCR().getText()) > 0
+				&& transaccionCompra.gettNroNTCR().getText().isEmpty()) {
 			transaccionCompra.gettNroNTCR().requestFocus();
 			return false;
 		}
@@ -291,7 +284,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		totalCompra();
 		compra.setProveedor(proveedor);
 		compra.setFechaRegistroCompra(new Date());
-		compra.setValorCompra(total);		
+		compra.setValorCompra(total);
 		compra.setValorNTCR(descuento);
 		compra.setValorPago(dif);
 		compra.setFechaCompra(new Date());
@@ -321,10 +314,12 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		}
 
 	}
+
 	public void nuevo() {
 		accion = "NUEVO";
 		estadoInicial(false);
 	}
+
 	public void modificar() {
 		accion = "MODIFICAR";
 		estadoInicial(false);
@@ -336,7 +331,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getSource() == transaccionCompra.getTable()){
+		if (evt.getSource() == transaccionCompra.getTable()) {
 			calcularMedidaDetalle();
 			totalCompra();
 		}
@@ -346,13 +341,11 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	}
 
-
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
-
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -360,13 +353,11 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	}
 
-
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
-
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -377,13 +368,11 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	}
 
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
-
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -391,19 +380,16 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	}
 
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
-
 	@Override
 	public void mouseExited(MouseEvent e) {
 
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -422,7 +408,6 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		}
 	}
 
-
 	@Override
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
@@ -431,7 +416,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void gestionarProveedor() {
-		transaccionCompra.getCbInformacionPago().setModel(new DefaultComboBoxModel(new String[] {"Seleccionar"}));
+		transaccionCompra.getCbInformacionPago().setModel(new DefaultComboBoxModel(new String[] { "Seleccionar" }));
 		transaccionCompra.getCbInformacionPago().setSelectedIndex(0);
 
 		transaccionCompra.getlProveedor().setText(proveedor.getNombreCompleto());
@@ -474,39 +459,37 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		buscador.setVisible(true);
 	}
 
-	//	private void abrirBuscadorMarca() {
-	//		BuscadorMarca buscador = new BuscadorMarca();
-	//		buscador.setUpControlador();
-	//		buscador.getControlador().setInterfaz(this);
-	//		buscador.setVisible(true);
-	//	}
-
+	// private void abrirBuscadorMarca() {
+	// BuscadorMarca buscador = new BuscadorMarca();
+	// buscador.setUpControlador();
+	// buscador.getControlador().setInterfaz(this);
+	// buscador.setVisible(true);
+	// }
 
 	private void crearTablaCombo() {
-		//Combo y valores
+		// Combo y valores
 		JComboBox<Marca> comboBox = new JComboBox<Marca>();
 
 		try {
+			comboBox.addItem(null);
 			for (int i = 0; i < marcas.size(); i++) {
 				comboBox.addItem(marcas.get(i));
 			}
 		} catch (Exception e) {
-			comboBox.addItem(null);
+
 			e.printStackTrace();
 		}
 
-		//se agrega model al JTable
-		transaccionCompra.getTable().setRowHeight(22);//altura de filas
-		//se indica que columna tendra el JComboBox
-		transaccionCompra.getTable().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));        
+		// se agrega model al JTable
+		transaccionCompra.getTable().setRowHeight(22);// altura de filas
+		// se indica que columna tendra el JComboBox
+		transaccionCompra.getTable().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
 		transaccionCompra.getTable().setDefaultRenderer(Object.class, new CeldaRenderer(1, "ComboBox"));
 	}
 
 	private void recuperarMarcas() {
-		marcas = daoMarca.recuperarTodoOrdenadoPorNombre();		
+		marcas = daoMarca.recuperarTodoOrdenadoPorNombre();
 	}
-
-
 
 	@Override
 	public void setCompra(Compra compra) {
@@ -516,7 +499,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 	}
 
 	private void gestionarCompra() {
-		//Informacion de la compra
+		// Informacion de la compra
 		transaccionCompra.getlNroCompra().setText(String.valueOf(compra.getId()));
 		transaccionCompra.getlFechaHora().setText(sdf.format(compra.getFechaRegistroCompra()));
 		transaccionCompra.getDtchFechaRealCompra().setDate(compra.getFechaCompra());
@@ -526,18 +509,16 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		transaccionCompra.gettNroFactura().setText(compra.getNroFactura());
 		transaccionCompra.gettNroNTCR().setText(compra.getNroNTCR());
 
-
-		//Informacion proveedor
+		// Informacion proveedor
 		transaccionCompra.getlProveedor().setText(compra.getProveedor().getNombreCompleto());
 		transaccionCompra.getlIdentificacion().setText(compra.getProveedor().getIdentificacion());
 		transaccionCompra.getlContacto().setText(compra.getProveedor().getListaContactos().get(0).getNumeroTelefono());
 
-		//Detalles de la compra
+		// Detalles de la compra
 		detalles = compra.getCompraDetalles();
 		mtCompraDetalle.setDetalle(detalles);
 		mtCompraDetalle.fireTableDataChanged();
 	}
-
 
 	@Override
 	public void setMarca(Marca marca) {

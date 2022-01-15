@@ -119,11 +119,11 @@ public class TransaccionProduccionControlador
 				return;
 			}
 
-			if (pedido.getPedidoCarteleria()) {
+			if (pedido.isPedidoCarteleria()) {
 				modeloTablaPedidoDetalle = new ModeloTablaPedidoDetalle();
 				ventana.getTablePedidoDetalle().setModel(modeloTablaPedidoDetalle);
 			}
-			if (pedido.getPedidoCostura()) {
+			if (pedido.isPedidoCostura()) {
 				modeloTablaPedidoConfeccionDetalle = new ModeloTablaPedidoConfeccionDetalle();
 				ventana.getTablePedidoDetalle().setModel(modeloTablaPedidoConfeccionDetalle);
 			}
@@ -143,11 +143,11 @@ public class TransaccionProduccionControlador
 			detalleConfeccion = null;
 			return;
 		}
-		if (pedido.getPedidoCarteleria()) {
+		if (pedido.isPedidoCarteleria()) {
 			detalleCarteleria = detallesCarteleria.get(posicion);
 			cargarDetalleProduccion(detalleCarteleria);
 		}
-		if (pedido.getPedidoCostura()) {
+		if (pedido.isPedidoCostura()) {
 			detalleConfeccion = detallesConfeccion.get(posicion);
 			cargarDetalleProduccion(detalleConfeccion);
 
@@ -218,7 +218,7 @@ public class TransaccionProduccionControlador
 		int acepta = JOptionPane.showConfirmDialog(null, "Iniciar la producción de este item?", "INICIAR PRODUCCION",
 				JOptionPane.YES_NO_OPTION);
 		if (acepta == JOptionPane.YES_OPTION) {
-			if (pedido.getPedidoCarteleria()) {
+			if (pedido.isPedidoCarteleria()) {
 				produccion = new Produccion();
 				produccion.setPedido(pedido);
 				produccion.setCantidadDesperdicio(0);
@@ -247,7 +247,7 @@ public class TransaccionProduccionControlador
 
 				guardar();
 			}
-			if (pedido.getPedidoCostura()) {
+			if (pedido.isPedidoCostura()) {
 				produccion = new Produccion();
 				produccion.setPedido(pedido);
 				produccion.setCantidadDesperdicio(0);
@@ -289,7 +289,7 @@ public class TransaccionProduccionControlador
 				"Al reiniciar la produccion, se crea un registro de desperdicio y otro que indica el reinicio",
 				"REINICIAR PRODUCCION", JOptionPane.YES_NO_OPTION);
 		if (acepta == JOptionPane.YES_OPTION) {
-			if (pedido.getPedidoCarteleria()) {
+			if (pedido.isPedidoCarteleria()) {
 				produccion = new Produccion();
 				produccion.setPedido(pedido);
 				produccion.setCantidadDesperdicio(0);
@@ -319,7 +319,7 @@ public class TransaccionProduccionControlador
 
 				guardar();
 			}
-			if (pedido.getPedidoCostura()) {
+			if (pedido.isPedidoCostura()) {
 				produccion = new Produccion();
 				produccion.setPedido(pedido);
 				produccion.setCantidadDesperdicio(0);
@@ -360,7 +360,7 @@ public class TransaccionProduccionControlador
 		int acepta = JOptionPane.showConfirmDialog(null, "Finalizar la producción de este item?",
 				"FINALIZAR PRODUCCION", JOptionPane.YES_NO_OPTION);
 		if (acepta == JOptionPane.YES_OPTION) {
-			if (pedido.getPedidoCarteleria()) {
+			if (pedido.isPedidoCarteleria()) {
 				produccion = new Produccion();
 				produccion.setPedido(pedido);
 				produccion.setCantidadDesperdicio(0);
@@ -384,7 +384,7 @@ public class TransaccionProduccionControlador
 
 				guardar();
 			}
-			if (pedido.getPedidoCostura()) {
+			if (pedido.isPedidoCostura()) {
 				produccion = new Produccion();
 				produccion.setPedido(pedido);
 				produccion.setCantidadDesperdicio(0);
@@ -419,7 +419,7 @@ public class TransaccionProduccionControlador
 		int acepta = JOptionPane.showConfirmDialog(null, "Debe confirmar el desperdicio para poder seguir",
 				"DESPERDICIO DE PRODUCION", JOptionPane.YES_NO_OPTION);
 		if (acepta == JOptionPane.YES_OPTION) {
-			if (pedido.getPedidoCarteleria()) {
+			if (pedido.isPedidoCarteleria()) {
 				if (detalleCarteleria.getUltimoEstadoProduccion().equalsIgnoreCase("CANCELADO")) {
 					return;
 				} else {
@@ -447,7 +447,7 @@ public class TransaccionProduccionControlador
 					guardar();
 				}
 			}
-			if (pedido.getPedidoCostura()) {
+			if (pedido.isPedidoCostura()) {
 				if (detalleConfeccion.getUltimoEstadoProduccion().equalsIgnoreCase("CANCELADO")) {
 
 				} else {
@@ -512,7 +512,7 @@ public class TransaccionProduccionControlador
 		vaciarTablas();
 
 		String info1 = pedido.isGeneraDeuda() ? "FINALIZADO" : "NO FINALIZADO";
-		String info2 = pedido.getPedidoCarteleria() ? "PEDIDO CARTELERIA" : "PEDIDO CONFECCION";
+		String info2 = pedido.isPedidoCarteleria() ? "PEDIDO CARTELERIA" : "PEDIDO CONFECCION";
 
 		ventana.gettPedido().setValue((double) pedido.getId());
 
@@ -526,12 +526,12 @@ public class TransaccionProduccionControlador
 		ventana.getlCliente().setText(pedido.getCliente().toString());
 		ventana.getlColaborador().setText(pedido.getColaborador().toString());
 
-		if (pedido.getPedidoCarteleria()) {
+		if (pedido.isPedidoCarteleria()) {
 			detallesCarteleria = pedido.getPedidoDetalles();
 			modeloTablaPedidoDetalle.setDetalle(detallesCarteleria);
 			modeloTablaPedidoDetalle.fireTableDataChanged();
 		}
-		if (pedido.getPedidoCostura()) {
+		if (pedido.isPedidoCostura()) {
 			detallesConfeccion = pedido.getPedidosConfecciones();
 			modeloTablaPedidoConfeccionDetalle.setDetalle(detallesConfeccion);
 			modeloTablaPedidoConfeccionDetalle.fireTableDataChanged();
@@ -665,7 +665,7 @@ public class TransaccionProduccionControlador
 			}
 		});
 
-		if (pedido.getPedidoCarteleria()) {
+		if (pedido.isPedidoCarteleria()) {
 			switch (detalleCarteleria.getUltimoEstadoProduccion()) {
 			case "INICIADO":
 				popup.add(cancelar);
@@ -689,7 +689,7 @@ public class TransaccionProduccionControlador
 			}
 		}
 
-		if (pedido.getPedidoCostura()) {
+		if (pedido.isPedidoCostura()) {
 			switch (detalleConfeccion.getUltimoEstadoProduccion()) {
 			case "INICIADO":
 				popup.add(cancelar);

@@ -42,28 +42,43 @@ public class PedidoDetalles {
 	private Colaborador colaborador;
 
 	@Column(nullable = true)
+	private String archivo;
+
+	@ColumnDefault("100")
+	@Column(nullable = true)
 	private double medidaAncho;
 
+	@ColumnDefault("100")
 	@Column(nullable = true)
 	private double medidaAlto;
 
+	@ColumnDefault("100")
 	@Column(nullable = true)
 	private double medidaDetalle;
 
+	@ColumnDefault("1")
 	@Column(nullable = true)
 	private double cantidadDetalle;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int precioProducto;
+	private double precioProducto;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int precioDetalle;
+	private double precioDetalle;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int gananciaDetalle;
+	private double gananciaDetalle;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private String archivo;
+	private double costo;
+
+	@ColumnDefault("0")
+	@Column(nullable = true)
+	private double porcentajeSobreCosto;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -88,11 +103,6 @@ public class PedidoDetalles {
 
 	@Column(nullable = true)
 	private String ultimoEstadoProduccion;
-
-	@Override
-	public String toString() {
-		return id + " - " + fechaRegistro;
-	}
 
 	public int getId() {
 		return id;
@@ -158,60 +168,6 @@ public class PedidoDetalles {
 		this.medidaDetalle = medidaDetalle;
 	}
 
-	public int getPrecioProducto() {
-		double suma = 0;
-		try {
-			for (int i = 0; i < materiales.size(); i++) {
-				Material material = materiales.get(i).getMaterial();
-				switch (material.getTipoCobro()) {
-				case "UNIDAD":
-					suma += materiales.stream().filter(m -> m.isEstado() == true && m.getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD")).mapToDouble(m -> m.getPrecio()).sum(); 
-					
-				case "METRO CUADRADO":
-					suma += materiales.stream().filter(m -> m.isEstado() == true && m.getMaterial().getTipoCobro().equalsIgnoreCase("METRO CUADRADO")).mapToDouble(m -> m.getPrecio()).sum()*medidaDetalle;
-					
-				default:
-					break;
-				}
-			}
-			
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		setPrecioProducto((int) suma);
-		return precioProducto;
-	}
-
-	public void setPrecioProducto(int precioProducto) {
-		this.precioProducto = precioProducto;
-	}
-
-	public int getPrecioDetalle() {
-		double porcentaje = 0;
-		double precio = 0;
-		try {
-			porcentaje = (producto.getPorcentajeSobreCosto() + 100) / 100;
-			precio = precioProducto * porcentaje;
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		setPrecioDetalle((int) precio);
-		return precioDetalle;
-	}
-
-	public void setPrecioDetalle(int precioDetalle) {
-		this.precioDetalle = precioDetalle;
-	}
-
-	public int getGananciaDetalle() {
-		return gananciaDetalle;
-	}
-
-	public void setGananciaDetalle(int gananciaDetalle) {
-		this.gananciaDetalle = gananciaDetalle;
-	}
-
 	public String getArchivo() {
 		return archivo;
 	}
@@ -273,8 +229,60 @@ public class PedidoDetalles {
 		return ultimoEstadoProduccion;
 	}
 
-	public void setUltimoEstadoProduccion(String ultimoEstadoProduccion) {
-		this.ultimoEstadoProduccion = ultimoEstadoProduccion;
+	public double getCantidadDetalle() {
+		return cantidadDetalle;
+	}
+
+	public void setCantidadDetalle(double cantidadDetalle) {
+		this.cantidadDetalle = cantidadDetalle;
+	}
+
+	public double getPrecioProducto() {
+		return precioProducto;
+	}
+
+	public void setPrecioProducto(double precioProducto) {
+		this.precioProducto = precioProducto;
+	}
+
+	public double getPrecioDetalle() {
+		return precioDetalle;
+	}
+
+	public void setPrecioDetalle(double precioDetalle) {
+		this.precioDetalle = precioDetalle;
+	}
+
+	public double getGananciaDetalle() {
+		return gananciaDetalle;
+	}
+
+	public void setGananciaDetalle(double gananciaDetalle) {
+		this.gananciaDetalle = gananciaDetalle;
+	}
+
+	public double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(double costo) {
+		this.costo = costo;
+	}
+
+	public double getPorcentajeSobreCosto() {
+		return porcentajeSobreCosto;
+	}
+
+	public void setPorcentajeSobreCosto(double porcentajeSobreCosto) {
+		this.porcentajeSobreCosto = porcentajeSobreCosto;
+	}
+
+	public List<PedidoDetalleMaterial> getMateriales() {
+		return materiales;
+	}
+
+	public void setMateriales(List<PedidoDetalleMaterial> materiales) {
+		this.materiales = materiales;
 	}
 
 	public Date getFechaUltimoRegistroProduccion() {
@@ -285,20 +293,25 @@ public class PedidoDetalles {
 		this.fechaUltimoRegistroProduccion = fechaUltimoRegistroProduccion;
 	}
 
-	public double getCantidadDetalle() {
-		return cantidadDetalle;
+	public void setUltimoEstadoProduccion(String ultimoEstadoProduccion) {
+		this.ultimoEstadoProduccion = ultimoEstadoProduccion;
 	}
 
-	public void setCantidadDetalle(double cantidadDetalle) {
-		this.cantidadDetalle = cantidadDetalle;
+	public String registrar() {
+		return "PedidoDetalles [id=" + id + ", fechaRegistro=" + fechaRegistro + ", fechaModificado=" + fechaModificado
+				+ ", estado=" + estado + ", colaborador=" + colaborador + ", archivo=" + archivo + ", medidaAncho="
+				+ medidaAncho + ", medidaAlto=" + medidaAlto + ", medidaDetalle=" + medidaDetalle + ", cantidadDetalle="
+				+ cantidadDetalle + ", precioProducto=" + precioProducto + ", precioDetalle=" + precioDetalle
+				+ ", gananciaDetalle=" + gananciaDetalle + ", costo=" + costo + ", porcentajeSobreCosto="
+				+ porcentajeSobreCosto + ", pedido=" + pedido + ", producto=" + producto + ", producciones="
+				+ producciones + ", materiales=" + materiales + ", produccionFinalizada=" + produccionFinalizada
+				+ ", fechaUltimoRegistroProduccion=" + fechaUltimoRegistroProduccion + ", ultimoEstadoProduccion="
+				+ ultimoEstadoProduccion + "]";
 	}
 
-	public List<PedidoDetalleMaterial> getMateriales() {
-		return materiales;
-	}
-
-	public void setMateriales(List<PedidoDetalleMaterial> materiales) {
-		this.materiales = materiales;
+	@Override
+	public String toString() {
+		return id + " - " + fechaRegistro;
 	}
 
 }

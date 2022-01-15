@@ -6,4 +6,6 @@ public interface ClienteInterface {
 
 	public void setCliente(Cliente cliente);
 	
+	public void setRepresentante(Cliente representate);
+	
 }

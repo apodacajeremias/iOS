@@ -106,6 +106,7 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 				dao.modificar(maquina);
 			}
 			dao.commit();
+//			Metodos.getInstance().registrar(maquina, accion, maquina.registrar());
 			try {
 				interfaz.setMaquina(maquina);
 				ventana.dispose();

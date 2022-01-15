@@ -200,14 +200,14 @@ public class VentanaProducto extends VentanaGenerica {
 		getPanelFormulario().add(rdConfeccion);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(316, 61, 330, 499);
+		scrollPane.setBounds(316, 61, 668, 250);
 		getContentPane().add(scrollPane);
 
 		tableMateriales = new JTable();
 		scrollPane.setViewportView(tableMateriales);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(654, 61, 330, 499);
+		scrollPane_1.setBounds(317, 356, 668, 200);
 		getContentPane().add(scrollPane_1);
 
 		tableProcesos = new JTable();
@@ -230,21 +230,21 @@ public class VentanaProducto extends VentanaGenerica {
 		lblprsnlzdProcesos.setText("Procesos");
 		lblprsnlzdProcesos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblprsnlzdProcesos.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdProcesos.setBounds(654, 20, 220, 30);
+		lblprsnlzdProcesos.setBounds(318, 322, 220, 30);
 		getContentPane().add(lblprsnlzdProcesos);
 
 		btnAgregarProceso = new MiBoton("Nuevo");
 		btnAgregarProceso.setText("Agregar");
 		btnAgregarProceso.setActionCommand("AgregarProceso");
-		btnAgregarProceso.setBounds(884, 20, 100, 30);
+		btnAgregarProceso.setBounds(548, 322, 100, 30);
 		getContentPane().add(btnAgregarProceso);
 
 		LabelPersonalizado labelPersonalizado_1 = new LabelPersonalizado(0);
 		labelPersonalizado_1.setBounds(546, 489, 84, 40);
 		getContentPane().add(labelPersonalizado_1);
-
 	}
 
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

@@ -290,6 +290,7 @@ public class VentanaColaboradorControlador
 				dao.modificar(colaborador);
 			}
 			dao.commit();
+//			Metodos.getInstance().registrar(colaborador, accion, colaborador.registrar());
 			modificar();
 			setColaborador(colaborador);
 		} catch (Exception e) {

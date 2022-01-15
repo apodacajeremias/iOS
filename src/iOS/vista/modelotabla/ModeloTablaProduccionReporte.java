@@ -50,24 +50,24 @@ public class ModeloTablaProduccionReporte extends AbstractTableModel {
 		case 3:
 			return producciones.get(r).getProceso();
 		case 4:
-			if (producciones.get(r).getPedido().getPedidoCarteleria() == true) {
+			if (producciones.get(r).getPedido().isPedidoCarteleria() == true) {
 				return producciones.get(r).getPedidoDetalle().getProducto().getDescripcion();
 			}
-			if (producciones.get(r).getPedido().getPedidoCostura() == true) {
+			if (producciones.get(r).getPedido().isPedidoCostura() == true) {
 				return producciones.get(r).getPedidoDetalleConfeccion().getProducto().getDescripcion();
 			}
 		case 5:
-			if (producciones.get(r).getPedido().getPedidoCarteleria() == true) {
+			if (producciones.get(r).getPedido().isPedidoCarteleria() == true) {
 				return producciones.get(r).getPedidoDetalle().getCantidadDetalle();
 			}
-			if (producciones.get(r).getPedido().getPedidoCostura() == true) {
+			if (producciones.get(r).getPedido().isPedidoCostura() == true) {
 				return producciones.get(r).getPedidoDetalleConfeccion().getCantidadDetalle();
 			}
 		case 6:
-			if (producciones.get(r).getPedido().getPedidoCarteleria() == true) {
+			if (producciones.get(r).getPedido().isPedidoCarteleria() == true) {
 				return "CARTELERIA";
 			}
-			if (producciones.get(r).getPedido().getPedidoCostura() == true) {
+			if (producciones.get(r).getPedido().isPedidoCostura() == true) {
 				return "CONFECCION";
 			}
 		case 7:

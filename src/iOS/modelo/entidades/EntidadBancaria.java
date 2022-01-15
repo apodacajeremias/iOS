@@ -22,38 +22,17 @@ public class EntidadBancaria {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
-
 
 	@Column(nullable = false)
 	private String nombreBanco;
@@ -85,19 +64,33 @@ public class EntidadBancaria {
 		this.informacionesPago = informacionesPago;
 	}
 
-
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
 	@Override
 	public String toString() {
-		return "EntidadBancaria [id=" + id + ", nombreBanco=" + nombreBanco
-				+ ", fechaRegistro=" + fechaRegistro + ", informacionesPago="
-				+ informacionesPago + "]";
+		return nombreBanco;
 	}
-	
-	
-	
-	
+
 }

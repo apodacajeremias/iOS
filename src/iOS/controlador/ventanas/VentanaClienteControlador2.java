@@ -46,7 +46,7 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 
 	public VentanaClienteControlador2(VentanaCliente2 ventanaCliente2) {
 		this.ventana = ventanaCliente2;
-		
+
 		tableMenu(ventanaCliente2.getTablePedidos());
 
 		modeloTablaCajaMovimiento = new ModeloTablaCajaMovimiento();
@@ -87,6 +87,12 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 	}
 
 	@Override
+	public void setRepresentante(Cliente representate) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 		gestionarCliente();
@@ -108,7 +114,6 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 		ventana.getlDeuda().setText(EventosUtil.separadorMiles(cliente.getDeudas()));
 		ventana.getlPagos().setText(EventosUtil.separadorMiles(cliente.getPagos()));
 		ventana.getlDiferencia().setText(EventosUtil.separadorMiles(cliente.getDiferencia()));
-		
 
 		cargarTablas(cliente);
 
@@ -152,20 +157,26 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 
 		if (e.getSource() == ventana.getTablePedidos() && e.getClickCount() == 2) {
 			pedido = pedidos.get(ventana.getTablePedidos().getSelectedRow());
-			if (pedido.getPedidoCarteleria() != (null)) {
-				if (pedido.getPedidoCarteleria()) {
+			try {
+				if (pedido.isPedidoCarteleria()) {
 					abrirPedidoCarteleria(pedido);
 					return;
 				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 
-			if (pedido.getPedidoCostura() != (null)) {
-				if (pedido.getPedidoCostura()) {
+			try {
+				if (pedido.isPedidoCostura()) {
 					abrirPedidoCostura(pedido);
 					return;
 				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			if (pedido.getPedidoCarteleria() == null && pedido.getPedidoCostura() == null) {
+			if (!pedido.isPedidoCarteleria() && !pedido.isPedidoCostura()) {
 				JOptionPane.showMessageDialog(ventana, "Error al consultar, comuníquese con el desarrollador.");
 			}
 		}
@@ -224,8 +235,7 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 		ventana.getConfeccionControlador().setPedido(p);
 		ventana.setVisible(true);
 	}
-	
-	
+
 	private void tableMenu(final JTable table) {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -256,10 +266,10 @@ public class VentanaClienteControlador2 implements ActionListener, MouseListener
 		imprimirItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (pedido.getPedidoCarteleria() == true) {
+				if (pedido.isPedidoCarteleria() == true) {
 					Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido);
 				}
-				if (pedido.getPedidoCostura() == true) {
+				if (pedido.isPedidoCostura() == true) {
 					Metodos.getInstance().imprimirPedidoConfeccionIndividual(pedido);
 				}
 			}

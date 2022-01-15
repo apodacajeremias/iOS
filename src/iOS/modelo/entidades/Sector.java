@@ -41,14 +41,9 @@ public class Sector {
 
 	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Colaborador> colaboradoresDelSector;
-	
+
 	@OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
-
-	@Override
-	public String toString() {
-		return descripcion;
-	}
 
 	public int getId() {
 		return id;
@@ -105,5 +100,15 @@ public class Sector {
 	public void setProducciones(List<Produccion> producciones) {
 		this.producciones = producciones;
 	}
-	
+
+	public String registrar() {
+		return "Sector [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", descripcion="
+				+ descripcion + ", colaborador=" + colaborador + ", colaboradoresDelSector=" + colaboradoresDelSector
+				+ ", producciones=" + producciones + "]";
+	}
+
+	@Override
+	public String toString() {
+		return descripcion;
+	}
 }

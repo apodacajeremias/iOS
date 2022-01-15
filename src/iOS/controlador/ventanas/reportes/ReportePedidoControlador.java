@@ -130,16 +130,16 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 
 		// Caja abierta
 		if (reporte.getPanelEspecifico().getRdTipo1().isSelected()) {
-			pedidos = pedidos.stream().filter(x -> x.getPedidoCarteleria() == true || x.getPedidoCostura() == true)
+			pedidos = pedidos.stream().filter(x -> x.isPedidoCarteleria() == true || x.isPedidoCostura() == true)
 					.collect(Collectors.toList());
 
 			// Caja cerrada
 		} else if (reporte.getPanelEspecifico().getRdTipo2().isSelected()) {
-			pedidos = pedidos.stream().filter(x -> x.getPedidoCarteleria() == true).collect(Collectors.toList());
+			pedidos = pedidos.stream().filter(x -> x.isPedidoCarteleria() == true).collect(Collectors.toList());
 
 			// Caja abierta + caja cerrada
 		} else if (reporte.getPanelEspecifico().getRdTipo3().isSelected()) {
-			pedidos = pedidos.stream().filter(x -> x.getPedidoCostura() == true).collect(Collectors.toList());
+			pedidos = pedidos.stream().filter(x -> x.isPedidoCostura() == true).collect(Collectors.toList());
 
 		}
 

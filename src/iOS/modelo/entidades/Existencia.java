@@ -36,16 +36,6 @@ public class Existencia {
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 	
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private CompraDetalle compraDetalle;
@@ -111,16 +101,35 @@ public class Existencia {
 		this.estadoUso = estadoUso;
 	}
 
-	@Override
-	public String toString() {
-		return "Existencia [id=" + id + ", compraDetalle=" + compraDetalle
-				+ ", material=" + material + ", referencia=" + referencia
-				+ ", estadoUso=" + estadoUso + "]";
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
-	
-	
-	
-	
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public String registrar() {
+		return "Existencia [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", compraDetalle=" + compraDetalle + ", material=" + material + ", depositoExistencia="
+				+ depositoExistencia + ", referencia=" + referencia + ", estadoUso=" + estadoUso + "]";
+	}
+
 	
 }

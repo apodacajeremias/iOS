@@ -157,6 +157,8 @@ public class VentanaConfiguracionControlador implements ActionListener, Acciones
 				vConfiguracion.getLblAccion().setText("Actualizado");
 			}
 			
+//			Metodos.getInstance().registrar(configuracion, accion, configuracion.registrar());
+			
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);

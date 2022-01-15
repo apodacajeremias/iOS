@@ -1,7 +1,6 @@
 package iOS.vista.ventanas.transacciones;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.JComboBox;
@@ -12,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -53,29 +51,9 @@ public class TransaccionCompra extends JDialog {
 	@SuppressWarnings("rawtypes")
 	private JComboBox cbInformacionPago;
 	private JPanel panelCompra;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					TransaccionCompra dialog = new TransaccionCompra();
-					dialog.setUpControlador();
-					dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
-	private void setUpControlador() {
+	public void setUpControlador() {
 		controlador = new TransaccionCompraControlador(this);
-
 	}
 
 	/**

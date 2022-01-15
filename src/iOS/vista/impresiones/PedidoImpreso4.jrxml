@@ -13,8 +13,8 @@
 		<field name="medidaAncho" class="java.lang.Double"/>
 		<field name="medidaAlto" class="java.lang.Double"/>
 		<field name="archivo" class="java.lang.String"/>
-		<field name="precioProducto" class="java.lang.Integer"/>
-		<field name="precioDetalle" class="java.lang.Integer"/>
+		<field name="precioProducto" class="java.lang.Double"/>
+		<field name="precioDetalle" class="java.lang.Double"/>
 		<field name="producto.descripcion" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="esPresupuesto" class="java.lang.String"/>
@@ -28,7 +28,7 @@
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="pedido"/>
 	</field>
-	<field name="descuentoTotal" class="java.lang.Integer">
+	<field name="descuentoTotal" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.name" value="descuentototal"/>
 		<property name="com.jaspersoft.studio.field.label" value="descuentototal"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="pedido"/>
@@ -43,12 +43,12 @@
 		<property name="com.jaspersoft.studio.field.label" value="fecharegistro"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="pedido"/>
 	</field>
-	<field name="precioPagar" class="java.lang.Integer">
+	<field name="precioPagar" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.name" value="preciopagar"/>
 		<property name="com.jaspersoft.studio.field.label" value="preciopagar"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="pedido"/>
 	</field>
-	<field name="sumatoriaPrecio" class="java.lang.Integer">
+	<field name="sumatoriaPrecio" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.name" value="sumatoriaprecio"/>
 		<property name="com.jaspersoft.studio.field.label" value="sumatoriaprecio"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="pedido"/>

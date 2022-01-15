@@ -96,7 +96,11 @@ public class Cotizacion {
 	public void setCotizacionUS(double cotizacionUS) {
 		this.cotizacionUS = cotizacionUS;
 	}
-	
-	
-	
+
+	public String registrar() {
+		return "Cotizacion [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", cotizacionGS=" + cotizacionGS + ", cotizacionRS=" + cotizacionRS + ", cotizacionUS="
+				+ cotizacionUS + "]";
+	}
+
 }

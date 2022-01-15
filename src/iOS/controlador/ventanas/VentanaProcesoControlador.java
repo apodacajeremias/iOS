@@ -122,7 +122,11 @@ public class VentanaProcesoControlador implements AccionesABM, ProcesoInterface,
 		}
 
 		proceso.setDescripcion(ventana.gettNombreCompleto().getText());
-		proceso.setIcon(EventosUtil.entradaImagen(archivo));
+		try {
+			proceso.setIcon(EventosUtil.entradaImagen(archivo));
+		} catch (Exception e1) {
+			proceso.setIcon(null);
+		}
 
 		try {
 			if (accion.equals("NUEVO")) {
@@ -166,11 +170,17 @@ public class VentanaProcesoControlador implements AccionesABM, ProcesoInterface,
 		}
 
 		ventana.gettNombreCompleto().setText(proceso.getDescripcion());
-		ventana.getlIcono().setIcon(new ImageIcon(proceso.getIcon()));
 		ventana.getLblColaborador().setText("Registrado por " + proceso.getColaborador().toString());
 		ventana.getLblEstado().setText(proceso.isEstado() ? "PROCESO ACTIVO" : "PROCESO FUERA DE USO");
 		ventana.getLblFechaRegistro().setText("Registrado el " + EventosUtil.formatoFecha(proceso.getFechaRegistro()));
 		ventana.getLblID().setText("ID " + proceso.getId());
+		
+		try {
+			ventana.getlIcono().setIcon(new ImageIcon(proceso.getIcon()));
+		} catch (Exception e) {
+			ventana.getlIcono().setText("N/A");
+			e.printStackTrace();
+		}
 	}
 
 	@Override

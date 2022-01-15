@@ -8,6 +8,9 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import iOS.modelo.entidades.Proceso;
+import iOS.modelo.entidades.Sector;
+
 public class MiBoton extends JButton {
 	/**
 	 * 
@@ -31,6 +34,35 @@ public class MiBoton extends JButton {
 		setIcono(text);
 	}
 
+	public MiBoton(Object entidad) {
+		setBackground(Color.WHITE);
+		setPreferredSize(new Dimension(80, 80));
+		setMaximumSize(new Dimension(100, 30));
+		setHorizontalAlignment(CENTER);
+		setHorizontalTextPosition(TRAILING);
+		setVerticalAlignment(CENTER);
+		setVerticalTextPosition(CENTER);
+		setFont(new Font("Helvetica", Font.BOLD, 10));
+		setFocusPainted(true);
+		setContentAreaFilled(true);
+		setBorderPainted(true);
+		setOpaque(true);
+		setBorder(new RoundedBorder(90));
+		if (entidad instanceof Proceso) {
+			Proceso proceso = (Proceso) entidad;
+			try {
+				setIcon(new ImageIcon(proceso.getIcon()));
+			} catch (Exception e) {
+				setIcono("NoDisponible");
+				e.printStackTrace();
+			}
+			super.setText(proceso.toString());
+		} else if (entidad instanceof Sector) {
+			Sector sector = (Sector) entidad;
+			setIcono("NoDisponible");
+			super.setText(sector.toString());
+		}
+	}
 
 	public void setIcono(String nombreIcono) {
 		try {

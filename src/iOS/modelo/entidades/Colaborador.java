@@ -84,9 +84,12 @@ public class Colaborador {
 
 	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Pedido> pedidos;
-	
+
 	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
+
+//	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+//	private List<Registro> registros;
 
 	@Column(nullable = false, unique = true)
 	private String usuario;
@@ -96,13 +99,6 @@ public class Colaborador {
 
 	@Column(nullable = false)
 	private boolean esActivo;
-
-	@Override
-	public String toString() {
-		return nombreCompleto;
-	}
-	
-	
 
 	public int getId() {
 		return id;
@@ -280,5 +276,21 @@ public class Colaborador {
 		this.esActivo = esActivo;
 	}
 
-	
+//	public String registrar() {
+//		return "Colaborador [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado
+//				+ ", colaboradorQueRegistra=" + colaboradorQueRegistra + ", sector=" + sector + ", rol=" + rol
+//				+ ", nombreCompleto=" + nombreCompleto + ", identificacion=" + identificacion + ", contacto=" + contacto
+//				+ ", salario=" + salario + ", tipoSalario=" + tipoSalario + ", esOperador=" + esOperador
+//				+ ", fechaIngresoColaborador=" + fechaIngresoColaborador + ", fechaDesvinculacionColaborador="
+//				+ fechaDesvinculacionColaborador + ", fueDesvinculado=" + fueDesvinculado + ", caja=" + caja
+//				+ ", cajaMovimientos=" + cajaMovimientos + ", pedidos=" + pedidos + ", producciones=" + producciones
+//				+ ", registros=" + registros + ", usuario=" + usuario + ", password=" + password + ", esActivo="
+//				+ esActivo + "]";
+//	}
+
+	@Override
+	public String toString() {
+		return nombreCompleto;
+	}
+
 }

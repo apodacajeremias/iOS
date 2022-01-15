@@ -1,5 +1,6 @@
 package iOS.modelo.entidades;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -37,11 +37,9 @@ public class Material {
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 
+	@ColumnDefault("0")
 	@Column(nullable = false)
-	private double precioMinimo;
-
-	@Column(nullable = false)
-	private double precioMaximo;
+	private double costo;
 
 	@Column(nullable = false)
 	private String descripcion;
@@ -52,16 +50,8 @@ public class Material {
 	@Column(nullable = false)
 	private String tipoCobro;
 
-	@ManyToMany(mappedBy = "materiales")
-	private List<Producto> productos;
-
 	@OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<PedidoDetalleMaterial> pedidosDetalles;
-
-	@Override
-	public String toString() {
-		return descripcion;
-	}
+	private List<ProductoMaterial> productos = new ArrayList<ProductoMaterial>();
 
 	public int getId() {
 		return id;
@@ -95,20 +85,12 @@ public class Material {
 		this.colaborador = colaborador;
 	}
 
-	public double getPrecioMinimo() {
-		return precioMinimo;
+	public double getCosto() {
+		return costo;
 	}
 
-	public void setPrecioMinimo(double precioMinimo) {
-		this.precioMinimo = precioMinimo;
-	}
-
-	public double getPrecioMaximo() {
-		return precioMaximo;
-	}
-
-	public void setPrecioMaximo(double precioMaximo) {
-		this.precioMaximo = precioMaximo;
+	public void setCosto(double costo) {
+		this.costo = costo;
 	}
 
 	public String getDescripcion() {
@@ -135,12 +117,17 @@ public class Material {
 		this.tipoCobro = tipoCobro;
 	}
 
-	public List<Producto> getProductos() {
+	public List<ProductoMaterial> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(List<Producto> productos) {
+	public void setProductos(List<ProductoMaterial> productos) {
 		this.productos = productos;
+	}
+
+	@Override
+	public String toString() {
+		return descripcion + " - " + tipoCobro;
 	}
 
 }

@@ -508,6 +508,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	private void gestionarBanco() {
 		informacionPago = new InformacionPago();
 		informacionPago.setEntidadBancaria(banco);
+		informacionPago.setColaborador(Sesion.getInstance().getColaborador());
 		informacionesPagos.add(informacionPago);
 		mtInformacionPago.setInformacion(informacionesPagos);
 		mtInformacionPago.fireTableDataChanged();

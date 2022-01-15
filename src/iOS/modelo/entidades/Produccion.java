@@ -44,13 +44,6 @@ public class Produccion {
 	@JoinColumn(nullable = true)
 	private Pedido pedido;
 
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
 
 	@ManyToOne
 	@JoinColumn(nullable = true)
@@ -122,6 +115,14 @@ public class Produccion {
 		this.maquina = maquina;
 	}
 
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
 	public PedidoDetalles getPedidoDetalle() {
 		return pedidoDetalle;
 	}
@@ -170,4 +171,18 @@ public class Produccion {
 		this.cantidadDesperdicio = cantidadDesperdicio;
 	}
 
+	
+	public String registrar() {
+		return "Produccion [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", sector=" + sector + ", maquina=" + maquina + ", pedido=" + pedido
+				+ ", pedidoDetalle=" + pedidoDetalle + ", pedidoDetalleConfeccion=" + pedidoDetalleConfeccion
+				+ ", proceso=" + proceso + ", comentario=" + comentario + ", desperdicio=" + desperdicio
+				+ ", cantidadDesperdicio=" + cantidadDesperdicio + "]";
+	}
+	@Override
+	public String toString() {
+		return id +" - "+fechaRegistro;
+	}
+
+	
 }

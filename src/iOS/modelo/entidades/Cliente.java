@@ -36,21 +36,13 @@ public class Cliente {
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean esB2B;
 
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean esB2C;
 
 	@Column(nullable = false)
 	private String nombreCompleto;
@@ -69,6 +61,9 @@ public class Cliente {
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> cajaMovimientos;
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<Representante> representantes;
 
 	@ColumnDefault("0")
 	@Column(nullable = false)
@@ -149,11 +144,14 @@ public class Cliente {
 	public double getPagos() {
 		pagos = 0;
 		try {
-			pagos = (cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
+			pagos = (cajaMovimientos.stream()
+					.filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
 					.mapToDouble(b -> b.getValorGS() * b.getCotizacionGS()).sum())
-					+ (cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
+					+ (cajaMovimientos.stream()
+							.filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
 							.mapToDouble(b -> b.getValorRS() * b.getCotizacionRS()).sum())
-					+ (cajaMovimientos.stream().filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
+					+ (cajaMovimientos.stream()
+							.filter(a -> a.isEsAnulado() == false && a.isEsRetiro() == false && a.getPedido() != null)
 							.mapToDouble(b -> b.getValorUS() * b.getCotizacionUS()).sum());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -182,6 +180,66 @@ public class Cliente {
 			e.printStackTrace();
 		}
 		return diferencia;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setPagos(double pagos) {
+		this.pagos = pagos;
+	}
+
+	public void setDeudas(double deudas) {
+		this.deudas = deudas;
+	}
+
+	public void setDiferencia(double diferencia) {
+		this.diferencia = diferencia;
+	}
+
+//	public String registrar() {
+//		return "Cliente [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+//				+ colaborador + ", nombreCompleto=" + nombreCompleto + ", identificacion=" + identificacion
+//				+ ", contacto=" + contacto + ", direccion=" + direccion + ", pedidos=" + pedidos + ", cajaMovimientos="
+//				+ cajaMovimientos + ", registros=" + registros + ", pagos=" + pagos + ", deudas=" + deudas
+//				+ ", diferencia=" + diferencia + "]";
+//	}
+
+	public boolean isEsB2B() {
+		return esB2B;
+	}
+
+	public void setEsB2B(boolean esB2B) {
+		this.esB2B = esB2B;
+	}
+
+	public boolean isEsB2C() {
+		return esB2C;
+	}
+
+	public void setEsB2C(boolean esB2C) {
+		this.esB2C = esB2C;
+	}
+
+	public List<Representante> getRepresentantes() {
+		return representantes;
+	}
+
+	public void setRepresentantes(List<Representante> representantes) {
+		this.representantes = representantes;
 	}
 
 	@Override

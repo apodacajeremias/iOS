@@ -1,3 +1,4 @@
+
 package iOS.vista.ventanas.principales;
 
 import java.awt.BorderLayout;
@@ -40,6 +41,7 @@ import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorColaborador;
 import iOS.vista.ventanas.buscadores.BuscadorProceso;
+import iOS.vista.ventanas.buscadores.BuscadorProducto;
 import iOS.vista.ventanas.buscadores.BuscadorRol;
 import iOS.vista.ventanas.buscadores.BuscadorSector;
 import iOS.vista.ventanas.configuraciones.VentanaCotizacion;
@@ -50,6 +52,7 @@ import iOS.vista.ventanas.reportes.ReporteColaborador;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.reportes.ReporteProduccion;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
+import iOS.vista.ventanas.transacciones.TransaccionCompra;
 import iOS.vista.ventanas.transacciones.TransaccionPagoPedido;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
 
@@ -165,7 +168,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnRegistros.add(mnItemMaquina);
-		
+
 		JMenuItem mnItemProceso = new JMenuItem("Procesos");
 		mnItemProceso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -287,7 +290,7 @@ public class VentanaPrincipal extends JFrame {
 				abrirBuscadorProducto();
 			}
 		});
-		
+
 		JMenuItem mnItemBuscadorProcesos = new JMenuItem("Buscar procesos");
 		mnItemBuscadorProcesos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -471,12 +474,12 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnReportes.add(mnItemReporteProduccion);
-		
+
 		mnConfiguracion = new JMenu("CONFIGURACIONES");
 		mnConfiguracion.setVisible(false);
 		mnConfiguracion.setFont(new Font("Tahoma", Font.BOLD, 14));
 		menuBar.add(mnConfiguracion);
-		
+
 		JMenuItem mnItemCotizacion = new JMenuItem("Cotizacion");
 		mnItemCotizacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -635,10 +638,12 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	protected void abrirTransaccionCompra() {
-		// TODO Auto-generated method stub
-
+		TransaccionCompra ventana = new TransaccionCompra();
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			ventana.setUpControlador();
+			ventana.setVisible(true);
+		}
 	}
-	
 
 	protected void abrirBuscadorRol() {
 		BuscadorRol ventana = new BuscadorRol();
@@ -654,9 +659,12 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	protected void abrirBuscadorProducto() {
-		// TODO Auto-generated method stub
+		BuscadorProducto ventana = new BuscadorProducto();
+		ventana.setUpControlador();
+		ventana.getControlador().recuperarTodo(false, false);
+		ventana.setVisible(true);
 	}
-	
+
 	private void abrirBuscadorProceso() {
 		BuscadorProceso ventana = new BuscadorProceso();
 		ventana.setUpControlador();
@@ -708,7 +716,7 @@ public class VentanaPrincipal extends JFrame {
 		// TODO Auto-generate ventana d method stub
 
 	}
-	
+
 	private void abrirConfiguracionCotizacion() {
 		VentanaCotizacion ventana = new VentanaCotizacion();
 		ventana.setUpControlador();
@@ -750,7 +758,7 @@ public class VentanaPrincipal extends JFrame {
 			ventana.setVisible(true);
 		}
 	}
-	
+
 	private void abrirVentanaProceso() {
 		VentanaProceso ventana = new VentanaProceso();
 		ventana.setUpControlador();
@@ -775,10 +783,8 @@ public class VentanaPrincipal extends JFrame {
 
 	private void abrirVentanaMarca() {
 		VentanaMarca ventana = new VentanaMarca();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.setVisible(true);
-		}
+		ventana.setUpControlador();
+		ventana.setVisible(true);
 	}
 
 	public void recuperarConfiguracion() {
@@ -805,5 +811,5 @@ public class VentanaPrincipal extends JFrame {
 	public JMenu getMnConfiguracion() {
 		return mnConfiguracion;
 	}
-	
+
 }

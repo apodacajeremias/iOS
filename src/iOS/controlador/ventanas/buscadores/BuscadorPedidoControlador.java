@@ -72,6 +72,12 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 	}
 
 	@Override
+	public void setRepresentante(Cliente representate) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 		while (cliente == null) {

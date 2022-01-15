@@ -1,6 +1,5 @@
 package iOS.controlador.ventanas.buscadores;
 
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -16,8 +15,6 @@ import iOS.vista.ventanas.VentanaCliente;
 import iOS.vista.ventanas.VentanaCliente2;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 
-
-
 public class BuscadorClienteControlador implements KeyListener, MouseListener, AccionesABM, ClienteInterface {
 
 	// ATRIBUTOS
@@ -27,6 +24,8 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	private List<Cliente> lista;
 	private ClienteInterface interfaz;
 	private Cliente cliente;
+
+	private boolean representante = false;
 
 	public void setInterfaz(ClienteInterface interfaz) {
 		this.interfaz = interfaz;
@@ -54,15 +53,12 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		cliente = null;
 		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
 		modeloTabla.setLista(lista);
-		modeloTabla.fireTableDataChanged();
 	}
 
 	private void recuperarTodo() {
 		cliente = null;
 		lista = dao.recuperarTodoOrdenadoPorNombre();
 		modeloTabla.setLista(lista);
-		modeloTabla.fireTableDataChanged();
-
 	}
 
 	private void seleccionarRegistro(int posicion) {
@@ -71,6 +67,15 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 			return;
 		}
 		cliente = lista.get(posicion);
+
+	}
+
+	private void abrirVentanaClientePerfil(Cliente cliente) {
+		VentanaCliente2 ventana = new VentanaCliente2();
+		ventana.setUpControlador();
+		ventana.getControlador().setCliente(cliente);
+		ventana.setVisible(true);
+
 	}
 
 	@Override
@@ -98,15 +103,20 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		// doble clic en un registro de la tabla
 		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
-			try {
-				interfaz.setCliente(cliente);
+
+			if (representante) {
+				interfaz.setRepresentante(cliente);
 				buscador.dispose();
-			} catch (Exception e2) {
-				e2.printStackTrace();
-				VentanaCliente2 ventana = new VentanaCliente2();
-				ventana.setUpControlador();
-				ventana.getControlador().setCliente(cliente);
-				ventana.setVisible(true);
+			}
+			if (!representante) {
+				try {
+					interfaz.setCliente(cliente);
+					buscador.dispose();
+				} catch (Exception e2) {
+					abrirVentanaClientePerfil(cliente);
+					e2.printStackTrace();
+					return;
+				}
 			}
 		}
 	}
@@ -127,12 +137,12 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		
+
 	}
 
 	@Override
@@ -160,19 +170,19 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 	@Override
 	public void eliminar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void guardar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void cancelar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -180,4 +190,13 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		buscador.gettBuscador().setText(cliente.toString());
 		recuperarPorFiltro();
 	}
+
+	@Override
+	public void setRepresentante(Cliente representante) {
+	}
+
+	public void setRepresentante(boolean representante) {
+		this.representante = representante;
+	}
+
 }

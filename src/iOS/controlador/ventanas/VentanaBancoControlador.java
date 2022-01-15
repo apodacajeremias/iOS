@@ -20,7 +20,8 @@ import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaProveedorCuenta;
 import iOS.vista.ventanas.VentanaBanco;
 
-public class VentanaBancoControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, BancoInterface{
+public class VentanaBancoControlador
+		implements AccionesABM, ActionListener, MouseListener, KeyListener, BancoInterface {
 	private VentanaBanco ventanaBanco;
 	private BancoDao dao;
 	private EntidadBancaria banco;
@@ -33,7 +34,7 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 	public VentanaBancoControlador(VentanaBanco ventanaBanco) {
 		this.ventanaBanco = ventanaBanco;
 		this.ventanaBanco.getMiToolBar().setAcciones(this);
-		
+
 		mtProveedorCuenta = new ModeloTablaProveedorCuenta();
 		this.ventanaBanco.gettProveedorCuenta().setModel(mtProveedorCuenta);
 
@@ -41,8 +42,6 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 		nuevo();
 		estadoInicial(true);
 		setUpEvents();
-
-	
 
 	}
 
@@ -55,32 +54,28 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 		EventosUtil.estadosBotones(ventanaBanco.getMiToolBar().getbtCancelar(), !b);
 		EventosUtil.estadosBotones(ventanaBanco.getMiToolBar().getbtGuardar(), b);
 
-
-
 	}
 
 	private void setUpEvents() {
-		//ACTION LISTENER
-		
+		// ACTION LISTENER
 
-		//MOUSE LISTENER
+		// MOUSE LISTENER
 		this.ventanaBanco.gettProveedorCuenta().addMouseListener(this);
-		
 
-		//KEY LISTENER
+		// KEY LISTENER
 		this.ventanaBanco.gettNombreBanco().addKeyListener(this);
 		this.ventanaBanco.gettProveedorCuenta().addKeyListener(this);
 
 	}
-	
+
 	private boolean validarFormulario() {
 		if (ventanaBanco.gettNombreBanco().getText().isEmpty()) {
 			ventanaBanco.getlMensaje().setText("El nombre de la entidad bancaria está vacío");
 			ventanaBanco.getlMensaje().setForeground(Color.RED);
 			return false;
 		}
-		
-	return true;
+
+		return true;
 
 	}
 
@@ -144,7 +139,7 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 		estadoInicial(false);
 		ventanaBanco.getlMensaje().setText(accion + " REGISTRO");
 		ventanaBanco.gettNombreBanco().requestFocus();
-		
+
 	}
 
 	@Override
@@ -170,10 +165,10 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 			banco = new EntidadBancaria();
 			banco.setColaborador(Sesion.getInstance().getColaborador());
 		}
-		
+
 		banco.setNombreBanco(ventanaBanco.gettNombreBanco().getText());
 		banco.setInformacionesPago(null);
-		
+
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(banco);
@@ -183,13 +178,13 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Mou
 				ventanaBanco.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
 			}
 			dao.commit();
+//			Metodos.getInstance().registrar(banco, accion, banco.registrar());
 			estadoInicial(true);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);
 		}
 
-		
 	}
 
 	@Override

@@ -51,6 +51,7 @@ public class Metodos {
 				try {
 					dao.modificar(anular.getCaja());
 					dao.commit();
+//					registrar(anular, "ANULAR", anular.registrar());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -79,6 +80,7 @@ public class Metodos {
 				try {
 					dao.modificar(anular);
 					dao.commit();
+//					registrar(anular, "ANULAR", anular.registrar());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -99,6 +101,7 @@ public class Metodos {
 			try {
 				dao.modificar(r);
 				dao.commit();
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -134,7 +137,9 @@ public class Metodos {
 				conexionReporte.ventanaReporte.setVisible(true);
 			} catch (JRException e) {
 				e.printStackTrace();
+				return;
 			}
+//			registrar(pedido, "IMPRIMIR", pedido.registrar());
 		}
 	}
 
@@ -164,7 +169,9 @@ public class Metodos {
 				conexionReporte.ventanaReporte.setVisible(true);
 			} catch (JRException e) {
 				e.printStackTrace();
+				return;
 			}
+//			registrar(pedido, "IMPRIMIR", pedido.registrar());
 		}
 	}
 
@@ -314,5 +321,538 @@ public class Metodos {
 		String hexadecimal = Integer.toHexString(number);
 		return hexadecimal;
 	}
+
+//	public void registrar(Object objeto, String accion, String informacion) {
+//		Registro registro = null;
+//		RegistroDao dao = new RegistroDao();
+//		if (objeto instanceof Caja) {
+//			Caja obj = (Caja) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof CajaMovimiento) {
+//			CajaMovimiento obj = (CajaMovimiento) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj.getCliente());
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Cliente) {
+//			Cliente obj = (Cliente) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Colaborador) {
+//			Colaborador obj = (Colaborador) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Compra) {
+//			Compra obj = (Compra) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof CompraDetalle) {
+//			CompraDetalle obj = (CompraDetalle) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Configuracion) {
+//			Configuracion obj = (Configuracion) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Cotizacion) {
+//			Cotizacion obj = (Cotizacion) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof DepositoExistencia) {
+//			DepositoExistencia obj = (DepositoExistencia) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof EntidadBancaria) {
+//			EntidadBancaria obj = (EntidadBancaria) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Existencia) {
+//			Existencia obj = (Existencia) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof InformacionPago) {
+//			InformacionPago obj = (InformacionPago) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Maquina) {
+//			Maquina obj = (Maquina) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Marca) {
+//			CajaMovimiento obj = (CajaMovimiento) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj.getCliente());
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Material) {
+//			Material obj = (Material) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Modulo) {
+//			Modulo obj = (Modulo) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Operacion) {
+//			Operacion obj = (Operacion) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Pedido) {
+//			Pedido obj = (Pedido) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj.getCliente());
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof PedidoDetalleConfeccion) {
+//			PedidoDetalleConfeccion obj = (PedidoDetalleConfeccion) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj.getPedido().getCliente());
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof PedidoDetalleMaterial) {
+//			PedidoDetalleMaterial obj = (PedidoDetalleMaterial) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj.getPedido().getCliente());
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof PedidoDetalles) {
+//			PedidoDetalles obj = (PedidoDetalles) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj.getPedido().getCliente());
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Proceso) {
+//			Proceso obj = (Proceso) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Produccion) {
+//			Produccion obj = (Produccion) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(obj.getPedido().getCliente());
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Producto) {
+//			Producto obj = (Producto) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof ProductoMaterial) {
+//			ProductoMaterial obj = (ProductoMaterial) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Proveedor) {
+//			Proveedor obj = (Proveedor) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof ProveedorContactos) {
+//			ProveedorContactos obj = (ProveedorContactos) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof ProveedorCorreos) {
+//			ProveedorCorreos obj = (ProveedorCorreos) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//
+//		if (objeto instanceof Rol) {
+//			Rol obj = (Rol) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof RolOperacion) {
+//			RolOperacion obj = (RolOperacion) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//		if (objeto instanceof Sector) {
+//			Sector obj = (Sector) objeto;
+//			registro = new Registro();
+//			registro.setAccion(accion);
+//			registro.setCliente(null);
+//			registro.setColaborador(Sesion.getInstance().getColaborador());
+//			registro.setInformación(obj.registrar());
+//
+//			try {
+//				dao.insertar(registro);
+//				dao.commit();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				dao.rollBack();
+//			}
+//		}
+//	}
 
 }

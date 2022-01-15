@@ -34,7 +34,7 @@ public class MiToolbar extends JToolBar implements ActionListener {
 	public MiToolbar() {
 		setBackground(new Color(255, 255, 255));
 		setFloatable(false);
-		
+
 		horizontalGlue = Box.createHorizontalGlue();
 		add(horizontalGlue);
 
@@ -54,12 +54,12 @@ public class MiToolbar extends JToolBar implements ActionListener {
 		btGuardar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btGuardar.setToolTipText("Guardar Registro");
 		add(btGuardar);
-		
-				btModificar = new MiBoton("Modificar");
-				btModificar.setVisible(false);
-				btModificar.setFont(new Font("Tahoma", Font.BOLD, 14));
-				btModificar.setToolTipText("Modificar Registro");
-				add(btModificar);
+
+		btModificar = new MiBoton("Modificar");
+		btModificar.setVisible(false);
+		btModificar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btModificar.setToolTipText("Modificar Registro");
+		add(btModificar);
 
 		btCancelar = new MiBoton("Cancelar");
 		btCancelar.setFont(new Font("Tahoma", Font.BOLD, 14));

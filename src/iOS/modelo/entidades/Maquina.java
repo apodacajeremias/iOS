@@ -38,7 +38,7 @@ public class Maquina {
 
 	@Column(nullable = false)
 	private String nombreMaquina;
-	
+
 	@Column(nullable = false)
 	private String tipoMaquina;
 
@@ -101,11 +101,15 @@ public class Maquina {
 		this.producciones = producciones;
 	}
 
+	public String registrar() {
+		return "Maquina [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", nombreMaquina=" + nombreMaquina + ", tipoMaquina=" + tipoMaquina + ", producciones="
+				+ producciones + "]";
+	}
+
 	@Override
 	public String toString() {
-		return id + " " + nombreMaquina + " " + tipoMaquina;
+		return nombreMaquina + " " + tipoMaquina;
 	}
-	
-	
-	
+
 }

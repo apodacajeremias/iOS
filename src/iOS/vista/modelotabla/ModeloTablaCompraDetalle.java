@@ -16,7 +16,7 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 	 */
 	private static final long serialVersionUID = -545738629065442036L;
 
-	private String[] columnas = {"MATERIAL","MARCA","TIPO","ANCHO CM","ALTO CM","AREA M2","CANT.","COSTO","MIN."," MIN. %","MAY. > 5","MAY. > 10","MAY. > 50","MAY. > 100","MAY. > 200","MAY. > 300","MAY. %"};
+	private String[] columnas = {"MATERIAL","MARCA","TIPO","ANCHO CM","ALTO CM","AREA M2","CANT.","COSTO"};
 
 	private List<CompraDetalle> detalle = new ArrayList<>();
 
@@ -60,24 +60,24 @@ public class ModeloTablaCompraDetalle extends AbstractTableModel {
 			return detalle.get(r).getCantidadDetalle();
 		case 7:
 			return detalle.get(r).getCostoMaterial();
-		case 8:
-			return detalle.get(r).getPrecioMinorista();
-		case 9:
-			return detalle.get(r).getPorcentajeMinorista();
-		case 10:
-			return detalle.get(r).getPrecioMayorista5();
-		case 11:
-			return detalle.get(r).getPrecioMayorista10();
-		case 12:
-			return detalle.get(r).getPrecioMayorista50();
-		case 13:
-			return detalle.get(r).getPrecioMayorista100();
-		case 14:
-			return detalle.get(r).getPrecioMayorista200();
-		case 15:
-			return detalle.get(r).getPrecioMayorista300();
-		case 16:
-			return detalle.get(r).getPorcentajeMayorista();
+//		case 8:
+//			return detalle.get(r).getPrecioMinorista();
+//		case 9:
+//			return detalle.get(r).getPorcentajeMinorista();
+//		case 10:
+//			return detalle.get(r).getPrecioMayorista5();
+//		case 11:
+//			return detalle.get(r).getPrecioMayorista10();
+//		case 12:
+//			return detalle.get(r).getPrecioMayorista50();
+//		case 13:
+//			return detalle.get(r).getPrecioMayorista100();
+//		case 14:
+//			return detalle.get(r).getPrecioMayorista200();
+//		case 15:
+//			return detalle.get(r).getPrecioMayorista300();
+//		case 16:
+//			return detalle.get(r).getPorcentajeMayorista();
 		default:
 			return null;
 		}

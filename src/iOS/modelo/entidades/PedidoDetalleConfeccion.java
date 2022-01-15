@@ -30,6 +30,9 @@ public class PedidoDetalleConfeccion {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
 
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaModificado;
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
@@ -56,6 +59,18 @@ public class PedidoDetalleConfeccion {
 	@Column(nullable = true)
 	private double precioDetalle;
 
+	@ColumnDefault("0")
+	@Column(nullable = true)
+	private double gananciaDetalle;
+
+	@ColumnDefault("0")
+	@Column(nullable = true)
+	private double costo;
+
+	@ColumnDefault("0")
+	@Column(nullable = true)
+	private double porcentajeSobreCosto;
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Pedido pedido;
@@ -64,13 +79,9 @@ public class PedidoDetalleConfeccion {
 	@JoinColumn(nullable = false)
 	private Producto producto;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaModificado;
-
 	@OneToMany(mappedBy = "pedidoDetalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
-	
-	
+
 	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<PedidoDetalleMaterial> materiales;
 
@@ -83,11 +94,6 @@ public class PedidoDetalleConfeccion {
 
 	@Column(nullable = true)
 	private String ultimoEstadoProduccion;
-
-	@Override
-	public String toString() {
-		return id + " - " + fechaRegistro;
-	}
 
 	public int getId() {
 		return id;
@@ -229,8 +235,36 @@ public class PedidoDetalleConfeccion {
 		return ultimoEstadoProduccion;
 	}
 
-	public void setUltimoEstadoProduccion(String ultimoEstadoProduccion) {
-		this.ultimoEstadoProduccion = ultimoEstadoProduccion;
+	public double getGananciaDetalle() {
+		return gananciaDetalle;
+	}
+
+	public void setGananciaDetalle(double gananciaDetalle) {
+		this.gananciaDetalle = gananciaDetalle;
+	}
+
+	public double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(double costo) {
+		this.costo = costo;
+	}
+
+	public double getPorcentajeSobreCosto() {
+		return porcentajeSobreCosto;
+	}
+
+	public void setPorcentajeSobreCosto(double porcentajeSobreCosto) {
+		this.porcentajeSobreCosto = porcentajeSobreCosto;
+	}
+
+	public List<PedidoDetalleMaterial> getMateriales() {
+		return materiales;
+	}
+
+	public void setMateriales(List<PedidoDetalleMaterial> materiales) {
+		this.materiales = materiales;
 	}
 
 	public Date getFechaUltimoRegistroProduccion() {
@@ -241,13 +275,27 @@ public class PedidoDetalleConfeccion {
 		this.fechaUltimoRegistroProduccion = fechaUltimoRegistroProduccion;
 	}
 
-	public List<PedidoDetalleMaterial> getMateriales() {
-		return materiales;
+	public void setUltimoEstadoProduccion(String ultimoEstadoProduccion) {
+		this.ultimoEstadoProduccion = ultimoEstadoProduccion;
 	}
 
-	public void setMateriales(List<PedidoDetalleMaterial> materiales) {
-		this.materiales = materiales;
+	public String registrar() {
+		return "PedidoDetalleConfeccion [id=" + id + ", fechaRegistro=" + fechaRegistro + ", fechaModificado="
+				+ fechaModificado + ", estado=" + estado + ", colaborador=" + colaborador + ", archivo=" + archivo
+				+ ", tamano=" + tamano + ", molde=" + molde + ", cantidadDetalle=" + cantidadDetalle
+				+ ", precioProducto=" + precioProducto + ", precioDetalle=" + precioDetalle + ", gananciaDetalle="
+				+ gananciaDetalle + ", costo=" + costo + ", porcentajeSobreCosto=" + porcentajeSobreCosto + ", pedido="
+				+ pedido + ", producto=" + producto + ", producciones=" + producciones + ", materiales=" + materiales
+				+ ", produccionFinalizada=" + produccionFinalizada + ", fechaUltimoRegistroProduccion="
+				+ fechaUltimoRegistroProduccion + ", ultimoEstadoProduccion=" + ultimoEstadoProduccion + "]";
 	}
+	@Override
+	public String toString() {
+		return id + " - " + fechaRegistro;
+	}
+	
+	
+	
 	
 	
 }

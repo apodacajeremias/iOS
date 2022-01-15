@@ -33,22 +33,6 @@ public class CajaMovimiento {
 	@JoinColumn(nullable = false)
 	private Colaborador colaboradorQueRegistra;
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public Colaborador getColaboradorQueRegistra() {
-		return colaboradorQueRegistra;
-	}
-
-	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
-		this.colaboradorQueRegistra = colaboradorQueRegistra;
-	}
-
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Cliente cliente;
@@ -93,7 +77,7 @@ public class CajaMovimiento {
 	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double valorUS;
-	
+
 	@ColumnDefault("1")
 	@Column(nullable = false)
 	private double cotizacionGS;
@@ -114,12 +98,44 @@ public class CajaMovimiento {
 		this.id = id;
 	}
 
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaboradorQueRegistra() {
+		return colaboradorQueRegistra;
+	}
+
+	public void setColaboradorQueRegistra(Colaborador colaboradorQueRegistra) {
+		this.colaboradorQueRegistra = colaboradorQueRegistra;
+	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 	public Colaborador getColaborador() {
@@ -170,6 +186,14 @@ public class CajaMovimiento {
 		this.esRetiro = esRetiro;
 	}
 
+	public boolean isEsVale() {
+		return esVale;
+	}
+
+	public void setEsVale(boolean esVale) {
+		this.esVale = esVale;
+	}
+
 	public double getValorGS() {
 		return valorGS;
 	}
@@ -192,39 +216,6 @@ public class CajaMovimiento {
 
 	public void setValorUS(double valorUS) {
 		this.valorUS = valorUS;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
-	}
-
-	public void setEstado(boolean estado) {
-		this.estado = estado;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-
-	public boolean isEsVale() {
-		return esVale;
-	}
-
-	public void setEsVale(boolean esVale) {
-		this.esVale = esVale;
-	}
-
-	@Override
-	public String toString() {
-		return "CajaMovimiento [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado
-				+ ", colaboradorQueRegistra=" + colaboradorQueRegistra + ", cliente=" + cliente + ", pedido=" + pedido
-				+ ", colaborador=" + colaborador + ", caja=" + caja + ", tipoValor=" + tipoValor + ", observacion="
-				+ observacion + ", esAnulado=" + esAnulado + ", esRetiro=" + esRetiro + ", esVale=" + esVale
-				+ ", valorGS=" + valorGS + ", valorRS=" + valorRS + ", valorUS=" + valorUS + "]";
 	}
 
 	public double getCotizacionGS() {
@@ -251,6 +242,13 @@ public class CajaMovimiento {
 		this.cotizacionUS = cotizacionUS;
 	}
 
-	
-	
+	public String registrar() {
+		return "CajaMovimiento [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado
+				+ ", colaboradorQueRegistra=" + colaboradorQueRegistra + ", cliente=" + cliente + ", pedido=" + pedido
+				+ ", colaborador=" + colaborador + ", caja=" + caja + ", tipoValor=" + tipoValor + ", observacion="
+				+ observacion + ", esAnulado=" + esAnulado + ", esRetiro=" + esRetiro + ", esVale=" + esVale
+				+ ", valorGS=" + valorGS + ", valorRS=" + valorRS + ", valorUS=" + valorUS + ", cotizacionGS="
+				+ cotizacionGS + ", cotizacionRS=" + cotizacionRS + ", cotizacionUS=" + cotizacionUS + "]";
+	}
+
 }

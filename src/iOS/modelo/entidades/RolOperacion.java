@@ -20,31 +20,22 @@ public class RolOperacion {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Colaborador colaborador;
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Rol rol;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Operacion operacion;
@@ -55,6 +46,30 @@ public class RolOperacion {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	public Rol getRol() {
@@ -72,4 +87,15 @@ public class RolOperacion {
 	public void setOperacion(Operacion operacion) {
 		this.operacion = operacion;
 	}
+
+	public String registrar() {
+		return "RolOperacion [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", rol=" + rol + ", operacion=" + operacion + "]";
+	}
+
+	@Override
+	public String toString() {
+		return rol + " " + operacion;
+	}
+
 }

@@ -75,6 +75,10 @@ public class Producto {
 	@Column(nullable = false)
 	private double anchoProducto;
 
+	@ColumnDefault("0")
+	@Column(nullable = false)
+	private double areaProducto;
+
 	@ColumnDefault("false")
 	@Column(nullable = true)
 	private boolean productoCarteleria;
@@ -89,16 +93,11 @@ public class Producto {
 	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<PedidoDetalleConfeccion> pedidoDetalleConfecciones;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Material> materiales = new ArrayList<Material>();
+	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = false)
+	private List<ProductoMaterial> materiales = new ArrayList<ProductoMaterial>();
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Proceso> procesos = new ArrayList<Proceso>();
-
-	@Override
-	public String toString() {
-		return descripcion + " - " + tipoCobro;
-	}
 
 	public int getId() {
 		return id;
@@ -244,22 +243,12 @@ public class Producto {
 		this.pedidoDetalleConfecciones = pedidoDetalleConfecciones;
 	}
 
-	public void addMaterial(Material material) {
-		this.materiales.add(material);
-
-	}
-
-	public List<Material> getMateriales() {
+	public List<ProductoMaterial> getMateriales() {
 		return materiales;
 	}
 
-	public void setMateriales(List<Material> materiales) {
+	public void setMateriales(List<ProductoMaterial> materiales) {
 		this.materiales = materiales;
-	}
-
-	public void addProceso(Proceso proceso) {
-		this.procesos.add(proceso);
-
 	}
 
 	public List<Proceso> getProcesos() {
@@ -268,6 +257,30 @@ public class Producto {
 
 	public void setProcesos(List<Proceso> procesos) {
 		this.procesos = procesos;
+	}
+
+	public double getAreaProducto() {
+		return areaProducto;
+	}
+
+	public void setAreaProducto(double areaProducto) {
+		this.areaProducto = areaProducto;
+	}
+
+	public String registrar() {
+		return "Producto [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", porcentajeSobreCosto=" + porcentajeSobreCosto + ", costo=" + costo
+				+ ", precioMinimo=" + precioMinimo + ", precioMaximo=" + precioMaximo + ", tipoCobro=" + tipoCobro
+				+ ", descripcion=" + descripcion + ", codigoReferencia=" + codigoReferencia + ", tieneMedidaFija="
+				+ tieneMedidaFija + ", altoProducto=" + altoProducto + ", anchoProducto=" + anchoProducto
+				+ ", productoCarteleria=" + productoCarteleria + ", productoCostura=" + productoCostura
+				+ ", pedidoDetalles=" + pedidoDetalles + ", pedidoDetalleConfecciones=" + pedidoDetalleConfecciones
+				+ ", materiales=" + materiales + ", procesos=" + procesos + "]";
+	}
+
+	@Override
+	public String toString() {
+		return descripcion + " - " + tipoCobro;
 	}
 
 }

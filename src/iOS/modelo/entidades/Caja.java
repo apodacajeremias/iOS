@@ -27,7 +27,7 @@ public class Caja {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificado = new Date();
 
@@ -116,6 +116,20 @@ public class Caja {
 
 	@OneToMany(mappedBy = "caja", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> cajaMovimientos;
+
+	public String registrar() {
+		return "Caja [id=" + id + ", fechaRegistro=" + fechaRegistro + ", fechaModificado=" + fechaModificado
+				+ ", estado=" + estado + ", colaborador=" + colaborador + ", cajaCerrada=" + cajaCerrada
+				+ ", saldoInicialGS=" + saldoInicialGS + ", saldoInicialRS=" + saldoInicialRS + ", saldoInicialUS="
+				+ saldoInicialUS + ", saldoFinalGS=" + saldoFinalGS + ", saldoFinalRS=" + saldoFinalRS
+				+ ", saldoFinalUS=" + saldoFinalUS + ", saldoIngresadoGS=" + saldoIngresadoGS + ", saldoIngresadoRS="
+				+ saldoIngresadoRS + ", saldoIngresadoUS=" + saldoIngresadoUS + ", saldoRetiradoGS=" + saldoRetiradoGS
+				+ ", saldoRetiradoRS=" + saldoRetiradoRS + ", saldoRetiradoUS=" + saldoRetiradoUS
+				+ ", saldoDeclaradoGS=" + saldoDeclaradoGS + ", saldoDeclaradoRS=" + saldoDeclaradoRS
+				+ ", saldoDeclaradoUS=" + saldoDeclaradoUS + ", saldoEntregadoGS=" + saldoEntregadoGS
+				+ ", saldoEntregadoRS=" + saldoEntregadoRS + ", saldoEntregadoUS=" + saldoEntregadoUS
+				+ ", cajaMovimientos=" + cajaMovimientos + "]";
+	}
 
 	public int getId() {
 		return id;
@@ -317,5 +331,4 @@ public class Caja {
 		this.fechaModificado = fechaModificado;
 	}
 
-	
 }

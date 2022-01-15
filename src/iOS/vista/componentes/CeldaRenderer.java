@@ -5,6 +5,7 @@ import java.awt.Component;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -16,6 +17,7 @@ public class CeldaRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = -2920471479030586542L;
 	private int col = -1;
 	private String accion;
+	private JComponent component = new JCheckBox();
 
 	public CeldaRenderer(int col, String accion) {
 		this.col = col;
@@ -40,16 +42,15 @@ public class CeldaRenderer extends DefaultTableCellRenderer {
 			}
 			break;
 		case "CheckBox":
+			System.out.println("CheckBox");
 			// retorna un checkbox con el valor seleccionado
 			if (col == column) {// la columna que contiene el JComboBox
-				JCheckBox check = new JCheckBox();
-				check.setVisible(true);
-				check.setSelected((boolean) value);
-				if (value instanceof Boolean)
-					return check;
-				else
-					return null;
-
+				  //Color de fondo en modo edicion
+		        ( (JCheckBox) component).setBackground( new Color(200,200,0) );
+		        //obtiene valor de celda y coloca en el JCheckBox
+		        boolean b = ((Boolean) value).booleanValue();
+		        ( (JCheckBox) component).setSelected( b );
+		        return ( (JCheckBox) component);
 			}
 			break;
 		case "Color":

@@ -17,105 +17,82 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
-
 @Entity
 public class CompraDetalle {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
-	
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
-
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Compra compra;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Material material;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Marca marca;
-	
+
 	@Column(nullable = true)
 	private double medidaAncho;
-	
+
 	@Column(nullable = true)
 	private double medidaAlto;
-	
+
 	@Column(nullable = true)
 	private double medidaDetalle;
-	
+
 	@Column(nullable = true)
 	private int cantidadDetalle;
-	
+
 	@Column(nullable = true)
 	private int costoMaterial;
-	
+
 	@Column(nullable = true)
 	private int precioMinorista;
-	
+
 	@Column(nullable = true)
 	private int precioMayorista5;
-	
+
 	@Column(nullable = true)
 	private int precioMayorista10;
-	
+
 	@Column(nullable = true)
 	private int precioMayorista50;
-	
+
 	@Column(nullable = true)
 	private int precioMayorista100;
-	
+
 	@Column(nullable = true)
 	private int precioMayorista200;
-	
+
 	@Column(nullable = true)
 	private int precioMayorista300;
-	
+
 	@Column(nullable = true)
 	private double porcentajeMinorista;
-	
+
 	@Column(nullable = true)
 	private double porcentajeMayorista;
-	
+
 	@Column(nullable = false)
 	private boolean existenciaDisponible;
-	
-	@OneToMany(mappedBy = "compraDetalle", cascade=CascadeType.ALL, orphanRemoval=false)
+
+	@OneToMany(mappedBy = "compraDetalle", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<Existencia> existencia;
 
 	public int getId() {
@@ -277,5 +254,43 @@ public class CompraDetalle {
 	public void setExistenciaDisponible(boolean existenciaDisponible) {
 		this.existenciaDisponible = existenciaDisponible;
 	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public String registrar() {
+		return "CompraDetalle [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", compra=" + compra + ", material=" + material + ", marca=" + marca + ", medidaAncho="
+				+ medidaAncho + ", medidaAlto=" + medidaAlto + ", medidaDetalle=" + medidaDetalle + ", cantidadDetalle="
+				+ cantidadDetalle + ", costoMaterial=" + costoMaterial + ", precioMinorista=" + precioMinorista
+				+ ", precioMayorista5=" + precioMayorista5 + ", precioMayorista10=" + precioMayorista10
+				+ ", precioMayorista50=" + precioMayorista50 + ", precioMayorista100=" + precioMayorista100
+				+ ", precioMayorista200=" + precioMayorista200 + ", precioMayorista300=" + precioMayorista300
+				+ ", porcentajeMinorista=" + porcentajeMinorista + ", porcentajeMayorista=" + porcentajeMayorista
+				+ ", existenciaDisponible=" + existenciaDisponible + ", existencia=" + existencia + "]";
+	}
 	
+	
+
 }

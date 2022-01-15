@@ -23,42 +23,27 @@ public class Operacion {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
 	@Column(nullable = false)
 	private String nombreOperacion;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Modulo modulo;
-	
-	@OneToMany(mappedBy = "operacion", cascade=CascadeType.ALL, orphanRemoval=false)
-	private List<RolOperacion> rolesOperaciones;
 
-	@Override
-	public String toString() {
-		return nombreOperacion+" "+modulo;
-	}
+	@OneToMany(mappedBy = "operacion", cascade = CascadeType.ALL, orphanRemoval = false)
+	private List<RolOperacion> rolesOperaciones;
 
 	public int getId() {
 		return id;
@@ -66,6 +51,30 @@ public class Operacion {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	public String getNombreOperacion() {
@@ -91,11 +100,16 @@ public class Operacion {
 	public void setRolesOperaciones(List<RolOperacion> rolesOperaciones) {
 		this.rolesOperaciones = rolesOperaciones;
 	}
-	
-	
-	
-	
-	
-	
-	
+
+	public String registrar() {
+		return "Operacion [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", nombreOperacion=" + nombreOperacion + ", modulo=" + modulo + ", rolesOperaciones="
+				+ rolesOperaciones + "]";
+	}
+
+	@Override
+	public String toString() {
+		return nombreOperacion + " " + modulo;
+	}
+
 }

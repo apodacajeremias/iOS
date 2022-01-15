@@ -19,6 +19,7 @@ public class ModeloTablaCliente extends AbstractTableModel {
 	
 	public void setLista(List<Cliente> lista) {
 		this.lista = lista;
+		fireTableDataChanged();
 	}
 
 	@Override

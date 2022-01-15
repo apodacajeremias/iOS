@@ -23,32 +23,22 @@ public class Modulo {
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private int id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = new Date();
-	
+
 	@ColumnDefault("true")
 	@Column(nullable = false)
 	private boolean estado = true;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
 	@Column(nullable = false)
 	private String nombreModulo;
-	
-	@OneToMany(mappedBy = "modulo", cascade=CascadeType.ALL, orphanRemoval=false)
+
+	@OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<Operacion> operaciones;
 
 	public int getId() {
@@ -57,6 +47,30 @@ public class Modulo {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	public String getNombreModulo() {
@@ -75,12 +89,14 @@ public class Modulo {
 		this.operaciones = operaciones;
 	}
 
+	public String registrar() {
+		return "Modulo [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", nombreModulo=" + nombreModulo + ", operaciones=" + operaciones + "]";
+	}
+
 	@Override
 	public String toString() {
 		return nombreModulo;
 	}
-	
-	
-	
 
 }

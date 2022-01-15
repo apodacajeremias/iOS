@@ -150,6 +150,7 @@ public class VentanaMarcaControlador implements AccionesABM, ActionListener, Mou
 				ventanaMarca.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
 			}
 			dao.commit();
+//			Metodos.getInstance().registrar(marca, accion, marca.registrar());
 			estadoInicial(true);
 		} catch (Exception e) {
 			dao.rollBack();

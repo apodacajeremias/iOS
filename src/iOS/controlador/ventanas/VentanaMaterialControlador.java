@@ -163,8 +163,7 @@ public class VentanaMaterialControlador implements AccionesABM, MaterialInterfac
 			material.setColaborador(Sesion.getInstance().getColaborador());
 		}
 		material.setDescripcion(ventana.gettNombreMaterial().getText());
-		material.setPrecioMinimo(ventana.gettPrecioMaterial().getValue());
-		material.setPrecioMaximo(ventana.gettPrecioMaterial().getValue());
+		material.setCosto(ventana.gettPrecioMaterial().getValue());
 
 		if (ventana.getRdMetroCuadrado().isSelected()) {
 			material.setTipoCobro(ventana.getRdMetroCuadrado().getText().toUpperCase());
@@ -190,6 +189,7 @@ public class VentanaMaterialControlador implements AccionesABM, MaterialInterfac
 				dao.modificar(material);
 				ventana.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
 			}
+//			Metodos.getInstance().registrar(material, accion, material.registrar());
 			dao.commit();
 			try {
 				interfaz.setMaterial(material);
@@ -226,7 +226,7 @@ public class VentanaMaterialControlador implements AccionesABM, MaterialInterfac
 		}
 		ventana.gettNombreMaterial().setText(material.getDescripcion());
 		ventana.gettCodigoReferencia().setText(material.getCodigoReferencia());
-		ventana.gettPrecioMaterial().setValue(material.getPrecioMinimo());
+		ventana.gettPrecioMaterial().setValue(material.getCosto());
 
 		switch (material.getTipoCobro()) {
 		case "METRO CUADRADO":

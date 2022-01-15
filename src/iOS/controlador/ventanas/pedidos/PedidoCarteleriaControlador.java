@@ -26,6 +26,7 @@ import iOS.modelo.entidades.Pedido;
 import iOS.modelo.entidades.PedidoDetalleMaterial;
 import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Producto;
+import iOS.modelo.entidades.Representante;
 import iOS.modelo.interfaces.ClienteInterface;
 import iOS.modelo.interfaces.MaterialInterface;
 import iOS.modelo.interfaces.PedidoInterface;
@@ -44,7 +45,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	private TransaccionPedido ventana;
 	private ModeloTablaPedidoDetalle mtPedidoDetalle;
 	private ModeloTablaPedidoDetalleMaterial mtDetalleMaterial;
-
 	private PedidoDao dao;
 	private Pedido pedido;
 	private Producto producto;
@@ -68,8 +68,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.getTableMaterial().setModel(mtDetalleMaterial);
 
 		dao = new PedidoDao();
-		pedido = new Pedido();
-
 		setUpEvents();
 		formatoTabla();
 	}
@@ -81,6 +79,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.getBtnGuardar().addActionListener(this);
 		ventana.getBtnQuitar().addActionListener(this);
 		ventana.getBtnSalir().addActionListener(this);
+		ventana.getCbRepresentantes().addActionListener(this);
 
 		ventana.getTable().addMouseListener(this);
 		ventana.getTable().addPropertyChangeListener(this);
@@ -115,91 +114,228 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	private void formatoTabla() {
 		ventana.getTable().getColumnModel().getColumn(0).setPreferredWidth(200);
 		ventana.getTable().getColumnModel().getColumn(1).setPreferredWidth(200);
-//		ventana.getTable().getColumnModel().getColumn(4).setPreferredWidth(0);
-//		ventana.getTable().getColumnModel().getColumn(4).setMaxWidth(0);
-//		ventana.getTable().getColumnModel().getColumn(4).setMinWidth(0);
-
 	}
 
 	private void vaciarTablaDetalle() {
 		detalles = new ArrayList<PedidoDetalles>();
 		mtPedidoDetalle.setDetalle(detalles);
+		System.out.println("vaciarTablaDetalle");
 	}
 
 	private void vaciarTablaMaterial() {
 		materiales = new ArrayList<PedidoDetalleMaterial>();
 		mtDetalleMaterial.setMateriales(materiales);
+		System.out.println("vaciarTablaMaterial");
+		System.out.println("size " + materiales.size());
 	}
 
+	// Se agregar el producto al detalle pero con los valores por defecto
 	private void agregarDetalle(Producto p) {
+		if (p == null) {
+			return;
+		}
+		if (p.isProductoCostura()) {
+			JOptionPane.showMessageDialog(ventana, "Este producto es de confeccion.");
+			return;
+		}
 		if (!limitarItems(detalles)) {
 			return;
 		}
-		detalle = new PedidoDetalles();
-		detalle.setColaborador(Sesion.getInstance().getColaborador());
-		detalle.setArchivo("Sin indicaciones");
+		try {
+			detalle = new PedidoDetalles();
+			detalle.setArchivo("Sin indicaciones");
+			detalle.setCantidadDetalle(1);
+			detalle.setColaborador(Sesion.getInstance().getColaborador());
+			detalle.setCosto(0);
+			detalle.setFechaModificado(new Date());
+			detalle.setFechaUltimoRegistroProduccion(new Date());
+			detalle.setGananciaDetalle(0);
+			detalle.setMedidaAlto(100);
+			detalle.setMedidaAncho(100);
+			detalle.setMedidaDetalle(1);
+			detalle.setPorcentajeSobreCosto(50);
+			detalle.setPrecioDetalle(0);
+			detalle.setPrecioProducto(0);
+			detalle.setProduccionFinalizada(false);
+			detalle.setProducto(p);
+			ajustarDetalle(detalle);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-		// Medidas
+	// Se recibe un detalle y se hace el formateo
+	private void ajustarDetalle(PedidoDetalles detalle) {
+		producto = detalle.getProducto();
+		// Medidas fijas
 		if (producto.isTieneMedidaFija()) {
 			detalle.setMedidaAlto(producto.getAltoProducto());
 			detalle.setMedidaAncho(producto.getAnchoProducto());
-			detalle.setMedidaDetalle((double) (producto.getAltoProducto() * producto.getAnchoProducto()) / 10000);
-		} else {
-			detalle.setMedidaAlto(0);
-			detalle.setMedidaAncho(0);
-			detalle.setMedidaDetalle(0);
-		}
-		// Cantidad
-		detalle.setCantidadDetalle(1);
-
-		detalle.setProducto(producto);
-		detalle.setPrecioProducto((int) producto.getPrecioMaximo());
-
-		try {
-			switch (producto.getTipoCobro()) {
-			case "METRO CUADRADO":
-				detalle.setPrecioDetalle((int) (detalle.getPrecioProducto() * detalle.getMedidaDetalle()
-						* detalle.getCantidadDetalle()));
-				break;
-			case "METRO LINEAL":
-				detalle.setPrecioDetalle((int) (detalle.getPrecioProducto() * detalle.getMedidaDetalle()
-						* detalle.getCantidadDetalle()));
-				break;
-			case "UNIDAD":
-				detalle.setPrecioDetalle((int) (detalle.getPrecioProducto() * detalle.getCantidadDetalle()));
-				break;
-			default:
-				break;
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			detalle.setMedidaDetalle(calcularArea(detalle.getMedidaAlto(), detalle.getMedidaAncho()));
 		}
 
-		for (int i = 0; i < producto.getMateriales().size(); i++) {
-			System.out.println("id" + detalle.getId());
-			System.out.println("material" + producto.getMateriales().get(i));
-			agregarMaterial(detalle, producto.getMateriales().get(i));
-		}
+		asociarMaterial(detalle);
+
+		detalle.setCosto(costoProducto(detalle));
+		detalle.setPorcentajeSobreCosto(detalle.getProducto().getPorcentajeSobreCosto());
+		detalle.setPrecioDetalle(precioDetalle(detalle));
+		detalle.setPrecioProducto(precioProducto(detalle));
 
 		// Para la tabla que se muestra
 		detalles.add(detalle);
 		mtPedidoDetalle.setDetalle(detalles);
-		mtPedidoDetalle.fireTableDataChanged();
 		ventana.getBtnBuscarProducto().requestFocus();
 
 		// Metodos referentes
 		realizarCalculos();
 	}
 
+	private double calcularArea(double alto, double ancho) {
+		double area = 0;
+		try {
+			area = (alto * ancho) / 10000;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return area;
+	}
+
+	// Se hace el calculo de costo del detalle recibido
+	private double costoProducto(PedidoDetalles detalle) {
+		double costoUnidad = 0;
+		double costoMetroC = 0;
+		double costoMetroL = 0;
+		double costoTotal = 0;
+		try {
+			costoUnidad = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoMetroC = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO CUADRADO") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoMetroL = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO LINEAL") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoTotal = costoUnidad + costoMetroC + costoMetroL;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return costoTotal;
+	}
+
+	private double precioProducto(PedidoDetalles detalle) {
+		double costoUnidad = 0;
+		double costoMetroC = 0;
+		double costoMetroL = 0;
+		double precioProducto = 0;
+		double porcentajeSobreCosto = 0;
+		try {
+			porcentajeSobreCosto = (detalle.getProducto().getPorcentajeSobreCosto() + 100) / 100;
+			costoUnidad = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoMetroC = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO CUADRADO") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoMetroL = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO LINEAL") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoUnidad = (costoUnidad * porcentajeSobreCosto);
+			costoMetroC = (costoMetroC * porcentajeSobreCosto);
+			costoMetroL = (costoMetroL * porcentajeSobreCosto);
+			precioProducto = costoUnidad + costoMetroC + costoMetroL;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		System.out.println("precioProducto");
+		System.out.println("costoUnidad " + costoUnidad);
+		System.out.println("costoMetroC " + costoMetroC);
+		System.out.println("costoMetroL " + costoMetroL);
+		System.out.println("precioProducto " + precioProducto);
+		return precioProducto;
+	}
+
+	private double precioDetalle(PedidoDetalles detalle) {
+		double costoUnidad = 0;
+		double costoMetroC = 0;
+		double costoMetroL = 0;
+		double porcentajeSobreCosto = 0;
+		double precioDetalle = 0;
+		try {
+			porcentajeSobreCosto = (detalle.getProducto().getPorcentajeSobreCosto() + 100) / 100;
+
+			costoUnidad = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoMetroC = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO CUADRADO") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+			costoMetroL = (detalle.getMateriales().stream()
+					.filter(m -> m.isEstado() == true
+							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO LINEAL") == true)
+					.mapToDouble(m -> m.getSubtotal()).sum());
+
+			costoUnidad = (costoUnidad * porcentajeSobreCosto) * detalle.getCantidadDetalle();
+			costoMetroC = (costoMetroC * porcentajeSobreCosto) * detalle.getCantidadDetalle()
+					* detalle.getMedidaDetalle();
+			costoMetroL = (costoMetroL * porcentajeSobreCosto) * detalle.getCantidadDetalle()
+					* detalle.getMedidaDetalle();
+			precioDetalle = costoUnidad + costoMetroC + costoMetroL;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		System.out.println("precioDetalle");
+		System.out.println("costoUnidad " + costoUnidad);
+		System.out.println("costoMetroC " + costoMetroC);
+		System.out.println("costoMetroL " + costoMetroL);
+		System.out.println("precioDetalle " + precioDetalle);
+		return precioDetalle;
+	}
+
 	private void quitarDetalle(int posicion) {
 		if (posicion < 0) {
 			return;
 		}
-
 		int opcion = JOptionPane.showConfirmDialog(null, "¿Retirar item?", "Confirmar", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
+			try {
+				if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+					// Si la deuda = valor - pagos > al valor del detalle a retirar
+					if ((detalles.get(posicion).getPedido().getPrecioPagar()
+							- detalles.get(posicion).getPedido().getSumaPagos()) <= detalles.get(posicion)
+									.getPrecioDetalle()) {
+						JOptionPane.showMessageDialog(ventana,
+								"El valor del item retirado supera el valor de la deuda pendiente de este pedido.");
+						return;
+					}
+				} else if ((!EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(),
+						"ADMINISTRADOR"))) {
+					if (detalles.get(posicion).getPedido().getSumaPagos() > 0) {
+						JOptionPane.showMessageDialog(ventana,
+								"No se puede modificar ningun pago que cuente con algun pago, solicite a un administrador");
+						return;
+					}
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+//			System.out.println("SumaPagos " + detalles.get(posicion).getPedido().getPrecioPagar());
+//			System.out.println("PrecioPagar " + detalles.get(posicion).getPedido().getSumaPagos());
+//			System.out.println("PrecioPagar - SumaPagos " + (detalles.get(posicion).getPedido().getPrecioPagar()
+//					- detalles.get(posicion).getPedido().getSumaPagos()));
+//			System.out.println("ValorItem " + detalles.get(posicion).getPrecioDetalle());
+
 			detalles.remove(ventana.getTable().getSelectedRow());
 			mtPedidoDetalle.setDetalle(detalles);
 		} else {
@@ -218,30 +354,62 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		vaciarTablaMaterial();
 
 		detalle = detalles.get(posicion);
-		materiales = detalle.getMateriales();
+//		materiales = detalle.getMateriales();
 
 		if (detalle.getMateriales() != null) {
 			materiales = detalle.getMateriales();
 		} else {
 			materiales = new ArrayList<PedidoDetalleMaterial>();
 		}
+		mtDetalleMaterial.setMateriales(materiales);
+		System.out.println("materiales " + materiales.size());
+	}
 
-		System.out.println(materiales.size());
+	private void asociarMaterial(PedidoDetalles detalle) {
+		if (detalle == null) {
+			return;
+		}
+
+		for (int i = 0; i < detalle.getProducto().getMateriales().size(); i++) {
+			material = new PedidoDetalleMaterial();
+			material.setCantidadDetalle(detalle.getProducto().getMateriales().get(i).getCantidad());
+			material.setColaborador(Sesion.getInstance().getColaborador());
+			material.setCosto(detalle.getProducto().getMateriales().get(i).getCosto());
+			material.setDetalleCarteleria(detalle);
+			material.setDetalleConfeccion(null);
+			material.setMaterial(detalle.getProducto().getMateriales().get(i));
+			material.setMedidaAlto(detalle.getProducto().getMateriales().get(i).getAlto());
+			material.setMedidaAncho(detalle.getProducto().getMateriales().get(i).getAncho());
+			material.setMedidaDetalle(calcularArea(detalle.getProducto().getMateriales().get(i).getAlto(),
+					detalle.getProducto().getMateriales().get(i).getAncho()));
+			material.setSubtotal(detalle.getProducto().getMateriales().get(i).getSubtotal());
+			materiales.add(material);
+		}
+
+		detalle.setMateriales(materiales);
 
 		mtDetalleMaterial.setMateriales(materiales);
-
 	}
 
 	private void agregarMaterial(PedidoDetalles detalle, Material m) {
 		if (detalle == null) {
 			return;
 		}
-		material = new PedidoDetalleMaterial();
-		material.setColaborador(Sesion.getInstance().getColaborador());
-		material.setDetalleCarteleria(detalle);
-		material.setMaterial(m);
-		material.setPrecio(m.getPrecioMaximo());
-		materiales.add(material);
+
+		for (int i = 0; i < detalle.getProducto().getMateriales().size(); i++) {
+			material = new PedidoDetalleMaterial();
+			material.setCantidadDetalle(1);
+			material.setColaborador(Sesion.getInstance().getColaborador());
+			material.setCosto(m.getCosto());
+			material.setDetalleCarteleria(detalle);
+			material.setDetalleConfeccion(null);
+			material.setMaterial(detalle.getProducto().getMateriales().get(i));
+			material.setMedidaAlto(detalle.getProducto().getMateriales().get(i).getAlto());
+			material.setMedidaAlto(detalle.getProducto().getMateriales().get(i).getAncho());
+			material.setMedidaDetalle(detalle.getProducto().getMateriales().get(i).getAncho());
+			material.setSubtotal(detalle.getProducto().getMateriales().get(i).getSubtotal());
+			materiales.add(material);
+		}
 
 		detalle.setMateriales(materiales);
 
@@ -298,14 +466,14 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		return suma;
 	}
 
-	private List<Integer> valorarPedido() {
-		int suma = 0;
-		int diferencia = 0;
-		List<Integer> numeros = new ArrayList<>();
-		Double descuento = ventana.gettDescuentoPedido().getValue();
+	private List<Double> valorarPedido() {
+		double suma = 0;
+		double diferencia = 0;
+		List<Double> numeros = new ArrayList<>();
+		double descuento = ventana.gettDescuentoPedido().getValue();
 
 		try {
-			suma = detalles.stream().filter(o -> o.isEstado() == true).mapToInt(o -> o.getPrecioDetalle()).sum();
+			suma = detalles.stream().filter(o -> o.isEstado() == true).mapToDouble(o -> o.getPrecioDetalle()).sum();
 			diferencia = (int) (suma - descuento);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -320,9 +488,34 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		return numeros;
 	}
 
+	// private void valorarDetalle() {
+	// if (detalle == null) {
+	// return;
+	// }
+	// double costo = 0;
+	// for (int i = 0; i < detalle.getMateriales().size(); i++) {
+	// switch (detalle.getMateriales().get(i).getMaterial().getTipoCobro()) {
+	// case "UNIDAD":
+	// costo += detalle.getMateriales().get(i).getMaterial().getPrecioMaximo();
+	// case "METRO CUADRADO":
+	// costo +=
+	// detalle.getMateriales().get(i).getMaterial().getPrecioMaximo()*detalle.getMedidaDetalle();
+	// default:
+	// break;
+	// }
+	// }
+	//
+	// detalle.setPrecioProducto((int) ((int)
+	// costo*detalle.getProducto().getPorcentajeSobreCosto()));
+	// detalle.setPrecioDetalle((int) ((int)
+	// (costo*detalle.getProducto().getPorcentajeSobreCosto())*detalle.getMedidaDetalle()));
+	// mtPedidoDetalle.fireTableDataChanged();
+	// }
+
 	private void realizarCalculos() {
 		sumarMedidaDetalle();
 		valorarPedido();
+		// valorarDetalle();
 	}
 
 	private boolean validarFormulario() {
@@ -334,6 +527,11 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			JOptionPane.showMessageDialog(ventana, "Cargue productos al pedido");
 			return false;
 		}
+		if ((Representante) ventana.getCbRepresentantes().getSelectedItem() == null) {
+			JOptionPane.showMessageDialog(ventana, "Debe haber un representante para el pedido, actualice la informacion del cliente");
+			return false;
+		}
+		
 
 		return true;
 	}
@@ -364,7 +562,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		if (accion.equals("NUEVO")) {
 			pedido = new Pedido();
 			pedido.setColaborador(Sesion.getInstance().getColaborador());
-			pedido.setConsiderarMetraje(ventana.getRbConsiderarMetraje().isSelected());
+			pedido.setConsiderarMetraje(false);
 			pedido.setCostoTotal(0);
 			pedido.setDeudaPaga(false);
 			pedido.setGananciaTotal(0);
@@ -377,24 +575,35 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 
 		pedido.setDescuentoTotal(Integer.parseInt(ventana.gettDescuentoPedido().getText()));
 		pedido.setEsPresupuesto(ventana.getRbGenerarPresupuesto().isSelected());
-		pedido.setInformacionResponsable(ventana.gettResponsable().getText());
+		pedido.setConDetalle(ventana.getRbDetallado().isSelected());
 		pedido.setMetrosTotal(sumarMedidaDetalle());
 		pedido.setTipoPagoPedido(ventana.getRbContado().isSelected() ? "CONTADO" : "CREDITO");
-
 		pedido.setSumatoriaPrecio(valorarPedido().get(0));
 		pedido.setPrecioPagar(valorarPedido().get(1));
-
 		pedido.setPedidosConfecciones(null);
 		pedido.setPedidoDetalles(detalles);
+
+		try {
+			pedido.setRepresentante((Representante) ventana.getCbRepresentantes().getSelectedItem());
+			pedido.setInformacionResponsable(ventana.gettResponsable().getText());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		for (int i = 0; i < detalles.size(); i++) {
 			detalles.get(i).setPedido(pedido);
 			detalles.get(i).setFechaModificado(new Date());
+			for (int j = 0; j < detalles.get(i).getMateriales().size(); j++) {
+				detalles.get(i).getMateriales().get(j).setDetalleCarteleria(detalles.get(i));
+				detalles.get(i).getMateriales().get(j).setDetalleConfeccion(null);
+			}
 		}
 
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(pedido);
+
 			} else {
 				dao.modificar(pedido);
 			}
@@ -476,15 +685,31 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		if (e.getSource() == ventana.getTable()) {
 			realizarCalculos();
 		}
-		
+
 		if (e.getSource() == ventana.getTableMaterial()) {
-			mtPedidoDetalle.fireTableDataChanged();
+			try {
+				detalle.setCosto(costoProducto(detalle));
+				detalle.setPrecioProducto(precioProducto(detalle));
+				detalle.setPrecioDetalle(precioDetalle(detalle));
+				mtPedidoDetalle.fireTableDataChanged();
+				mtDetalleMaterial.fireTableDataChanged();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
+		case "comboBoxChanged":
+			Representante r = (Representante) ventana.getCbRepresentantes().getSelectedItem();
+			String s = r.getRepresentante().getNombreCompleto() + ", " + r.getRepresentante().getContacto();
+			System.out.println(s);
+			ventana.gettResponsable().setText(null);
+			ventana.gettResponsable().setText(s);
+			break;
 		case "BuscarCliente":
 			abrirBuscadorCliente();
 			break;
@@ -511,7 +736,9 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	private void abrirBuscadorProducto() {
 		BuscadorProducto buscador = new BuscadorProducto();
 		buscador.setUpControlador();
+		buscador.setTitle(buscador.getTitle().concat(": CARTELERIA"));
 		buscador.getControlador().setInterfaz(this);
+		buscador.getControlador().recuperarTodo(true, false);
 		buscador.setVisible(true);
 	}
 
@@ -548,6 +775,12 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	}
 
 	@Override
+	public void setRepresentante(Cliente representate) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 		gestionarCliente();
@@ -562,6 +795,24 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.getlContacto().setText(cliente.getContacto());
 		ventana.getlDireccion().setText(cliente.getDireccion());
 		ventana.gettResponsable().setText(cliente.getNombreCompleto() + ", " + cliente.getContacto());
+
+		List<Representante> representantes = new ArrayList<Representante>();
+		try {
+			representantes = cliente.getRepresentantes();
+			for (int i = 0; i < representantes.size(); i++) {
+				ventana.getCbRepresentantes().addItem(representantes.get(i));
+			}
+			try {
+				ventana.gettResponsable().setText(representantes.get(0).getRepresentante().getNombreCompleto() + ", "
+						+ representantes.get(0).getRepresentante().getContacto());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			ventana.getCbRepresentantes().addItem(null);
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -603,10 +854,27 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.gettDescuentoPedido().setValue((double) pedido.getDescuentoTotal());
 		ventana.gettResponsable().setText(pedido.getInformacionResponsable());
 
+		ventana.getlProduccion().setText(pedido.isProduccionFinalizada() ? "NO FINALIZADO" : "CONCLUIDO");
+		try {
+			ventana.getCbRepresentantes().getModel().setSelectedItem(pedido.getRepresentante());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// Detalles del pedido
 		detalles = pedido.getPedidoDetalles();
 		mtPedidoDetalle.setDetalle(detalles);
 		mtPedidoDetalle.fireTableDataChanged();
+	}
+
+	@Override
+	public void setMaterial(Material m) {
+		if (m == null) {
+			return;
+		}
+		vaciarTablaMaterial();
+		agregarMaterial(detalle, m);
 	}
 
 	private void tableMenu(final JTable table) {
@@ -652,16 +920,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		popup.add(quitarItem);
 		popup.add(duplicarItem);
 		return popup;
-	}
-
-	@Override
-	public void setMaterial(Material m) {
-		if (m == null) {
-			return;
-		}
-		vaciarTablaMaterial();
-		agregarMaterial(detalle, m);
-
 	}
 
 }

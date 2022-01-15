@@ -64,11 +64,14 @@ public class ModeloTablaPedido extends AbstractTableModel {
 			} else {
 				pedido = "PEDIDO";
 			}
-			if (lista.get(r).getPedidoCarteleria() != null && lista.get(r).getPedidoCarteleria() == true) {
+			if (lista.get(r).isPedidoCarteleria() == true) {
 				tipo = "CARTELERIA";
 			}
-			if (lista.get(r).getPedidoCostura() != null && lista.get(r).getPedidoCostura() == true) {
+			if (lista.get(r).isPedidoCostura() == true) {
 				tipo = "CONFECCION";
+			}
+			if ((lista.get(r).isPedidoCarteleria() && lista.get(r).isPedidoCarteleria()) || (!lista.get(r).isPedidoCarteleria() && !lista.get(r).isPedidoCarteleria())) {
+				tipo = "INDEFINIDO";
 			}
 			if (lista.get(r).isEstado()) {
 				estado = "VIGENTE";

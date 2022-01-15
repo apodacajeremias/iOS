@@ -41,36 +41,49 @@ public class Pedido {
 	@Column(nullable = true)
 	private String tipoPagoPedido;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int descuentoTotal;
+	private double descuentoTotal;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int costoTotal;
+	private double costoTotal;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int gananciaTotal;
+	private double gananciaTotal;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int sumatoriaPrecio;
+	private double sumatoriaPrecio;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
-	private int precioPagar;
+	private double precioPagar;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
 	private double metrosTotal;
 
+	@ColumnDefault("0")
 	@Column(nullable = true)
 	private double metrosFechaEmision;
 
+	@ColumnDefault("false")
 	@Column(nullable = true)
 	private boolean esPresupuesto;
 
+	@ColumnDefault("false")
 	@Column(nullable = true)
 	private boolean considerarMetraje;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cliente cliente;
+
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Representante representante;
 
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<Produccion> producciones;
@@ -85,10 +98,10 @@ public class Pedido {
 	private List<CajaMovimiento> pagosPedido;
 
 	@Column(nullable = true)
-	private Boolean pedidoCostura;
+	private boolean pedidoCostura;
 
 	@Column(nullable = true)
-	private Boolean pedidoCarteleria;
+	private boolean pedidoCarteleria;
 
 	@ColumnDefault("false")
 	@Column(nullable = false)
@@ -112,6 +125,10 @@ public class Pedido {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaUltimoRegistroProduccion;
 
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean conDetalle = false;
+
 	public int getId() {
 		return id;
 	}
@@ -126,30 +143,6 @@ public class Pedido {
 
 	public Colaborador getColaborador() {
 		return colaborador;
-	}
-
-	public String getTipoPagoPedido() {
-		return tipoPagoPedido;
-	}
-
-	public int getDescuentoTotal() {
-		return descuentoTotal;
-	}
-
-	public int getCostoTotal() {
-		return costoTotal;
-	}
-
-	public int getGananciaTotal() {
-		return gananciaTotal;
-	}
-
-	public int getSumatoriaPrecio() {
-		return sumatoriaPrecio;
-	}
-
-	public int getPrecioPagar() {
-		return precioPagar;
 	}
 
 	public double getMetrosTotal() {
@@ -198,12 +191,28 @@ public class Pedido {
 		return pagosPedido;
 	}
 
-	public Boolean getPedidoCostura() {
+	public Representante getRepresentante() {
+		return representante;
+	}
+
+	public void setRepresentante(Representante representante) {
+		this.representante = representante;
+	}
+
+	public boolean isPedidoCostura() {
 		return pedidoCostura;
 	}
 
-	public Boolean getPedidoCarteleria() {
+	public void setPedidoCostura(boolean pedidoCostura) {
+		this.pedidoCostura = pedidoCostura;
+	}
+
+	public boolean isPedidoCarteleria() {
 		return pedidoCarteleria;
+	}
+
+	public void setPedidoCarteleria(boolean pedidoCarteleria) {
+		this.pedidoCarteleria = pedidoCarteleria;
 	}
 
 	public boolean isGeneraDeuda() {
@@ -354,6 +363,48 @@ public class Pedido {
 		this.producciones = producciones;
 	}
 
+	
+
+	public double getDescuentoTotal() {
+		return descuentoTotal;
+	}
+
+	public void setDescuentoTotal(double descuentoTotal) {
+		this.descuentoTotal = descuentoTotal;
+	}
+
+	public double getCostoTotal() {
+		return costoTotal;
+	}
+
+	public void setCostoTotal(double costoTotal) {
+		this.costoTotal = costoTotal;
+	}
+
+	public double getGananciaTotal() {
+		return gananciaTotal;
+	}
+
+	public void setGananciaTotal(double gananciaTotal) {
+		this.gananciaTotal = gananciaTotal;
+	}
+
+	public double getSumatoriaPrecio() {
+		return sumatoriaPrecio;
+	}
+
+	public void setSumatoriaPrecio(double sumatoriaPrecio) {
+		this.sumatoriaPrecio = sumatoriaPrecio;
+	}
+
+	public double getPrecioPagar() {
+		return precioPagar;
+	}
+
+	public void setPrecioPagar(double precioPagar) {
+		this.precioPagar = precioPagar;
+	}
+
 	public Date getFechaUltimoRegistroProduccion() {
 		return fechaUltimoRegistroProduccion;
 	}
@@ -362,4 +413,20 @@ public class Pedido {
 		this.fechaUltimoRegistroProduccion = fechaUltimoRegistroProduccion;
 	}
 
+	public boolean isConDetalle() {
+		return conDetalle;
+	}
+
+	public void setConDetalle(boolean conDetalle) {
+		this.conDetalle = conDetalle;
+	}
+
+	public String getTipoPagoPedido() {
+		return tipoPagoPedido;
+	}
+
+	@Override
+	public String toString() {
+		return id + " - " + fechaRegistro;
+	}
 }

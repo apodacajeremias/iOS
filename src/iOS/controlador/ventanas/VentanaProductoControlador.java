@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,21 +22,24 @@ import iOS.modelo.dao.ProductoDao;
 import iOS.modelo.entidades.Material;
 import iOS.modelo.entidades.Proceso;
 import iOS.modelo.entidades.Producto;
+import iOS.modelo.entidades.ProductoMaterial;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.MaterialInterface;
 import iOS.modelo.interfaces.ProcesoInterface;
 import iOS.modelo.interfaces.ProductoInterface;
 import iOS.modelo.singleton.Sesion;
-import iOS.vista.modelotabla.ModeloTablaMaterial;
+import iOS.vista.componentes.CellEditor;
+import iOS.vista.componentes.CellRender;
 import iOS.vista.modelotabla.ModeloTablaProceso;
+import iOS.vista.modelotabla.ModeloTablaProductoMaterial;
 import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorMaterial;
 import iOS.vista.ventanas.buscadores.BuscadorProceso;
 
 public class VentanaProductoControlador implements AccionesABM, ProductoInterface, ActionListener, KeyListener,
-		MaterialInterface, ProcesoInterface, MouseListener {
+		MaterialInterface, ProcesoInterface, MouseListener, PropertyChangeListener {
 	private VentanaProducto ventana;
-	private ModeloTablaMaterial tablaMaterial;
+	private ModeloTablaProductoMaterial tablaProductoMaterial;
 	private ModeloTablaProceso tablaProceso;
 
 	private ProductoDao dao;
@@ -46,8 +51,8 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 	private Proceso proceso;
 	private List<Proceso> procesos = new ArrayList<Proceso>();
 
-	private Material material;
-	private List<Material> materiales = new ArrayList<Material>();
+	private ProductoMaterial productoMaterial;
+	private List<ProductoMaterial> productoMateriales = new ArrayList<ProductoMaterial>();
 
 	public void setInterfaz(ProductoInterface interfaz) {
 		this.interfaz = interfaz;
@@ -57,9 +62,22 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 		this.ventana = ventana;
 		this.ventana.getMiToolBar().setAcciones(this);
 
-		tablaMaterial = new ModeloTablaMaterial();
-		ventana.getTableMateriales().setModel(tablaMaterial);
+		tablaProductoMaterial = new ModeloTablaProductoMaterial();
+		ventana.getTableMateriales().setModel(tablaProductoMaterial);
 		tableMenuMateriales(ventana.getTableMateriales());
+		// Se crea el JCheckBox en la columna indicada en getColumn, en este caso, la
+		// primera columna
+		ventana.getTableMateriales().getColumnModel().getColumn(1).setCellEditor(new CellEditor());
+		// para pintar la columna con el CheckBox en la tabla, en este caso, la primera
+		// columna
+		ventana.getTableMateriales().getColumnModel().getColumn(1).setCellRenderer(new CellRender());
+
+		// Se crea el JCheckBox en la columna indicada en getColumn, en este caso, la
+		// primera columna
+		ventana.getTableMateriales().getColumnModel().getColumn(4).setCellEditor(new CellEditor());
+		// para pintar la columna con el CheckBox en la tabla, en este caso, la primera
+		// columna
+		ventana.getTableMateriales().getColumnModel().getColumn(4).setCellRenderer(new CellRender());
 
 		tablaProceso = new ModeloTablaProceso();
 		ventana.getTableProcesos().setModel(tablaProceso);
@@ -79,10 +97,11 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 		ventana.getTableMateriales().addMouseListener(this);
 		ventana.getTableProcesos().addMouseListener(this);
 		// KEY LISTENER
-
-		// FOCUS LISTENER
 		ventana.gettPorcentajeSobreCosto().addKeyListener(this);
 		ventana.gettPrecioVenta().addKeyListener(this);
+
+		// PROPERTY LISTENER
+		ventana.getTableMateriales().addPropertyChangeListener(this);
 
 	}
 
@@ -104,8 +123,8 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 	}
 
 	private void vaciarTablas() {
-		materiales = new ArrayList<Material>();
-		tablaMaterial.setLista(materiales);
+		productoMateriales = new ArrayList<>();
+		tablaProductoMaterial.setLista(productoMateriales);
 
 		procesos = new ArrayList<Proceso>();
 		tablaProceso.setLista(procesos);
@@ -113,9 +132,9 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 
 	private void seleccionarMaterial(int posicion) {
 		try {
-			material = materiales.get(posicion);
+			productoMaterial = productoMateriales.get(posicion);
 		} catch (Exception e) {
-			material = null;
+			productoMaterial = null;
 			e.printStackTrace();
 			return;
 		}
@@ -124,20 +143,31 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 
 	private void agregarMaterial(Material material) {
 		try {
-			materiales.add(material);
-			tablaMaterial.setLista(materiales);
+			productoMaterial = new ProductoMaterial();
+			productoMaterial.setAlto(100);
+			productoMaterial.setAncho(100);
+			productoMaterial.setArea(1);
+			productoMaterial.setCantidad(1);
+			productoMaterial.setColaborador(Sesion.getInstance().getColaborador());
+			productoMaterial.setCosto(material.getCosto());
+			productoMaterial.setMaterial(material);
+			productoMaterial.setSubtotal(material.getCosto());
+			productoMaterial.setTieneMedidaFija(false);
+			productoMateriales.add(productoMaterial);
+			tablaProductoMaterial.setLista(productoMateriales);
 			calcularPrecioVenta();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private boolean quitarMaterial(Material material) {
+	private boolean quitarMaterial(int posicion) {
 		try {
-			boolean remove = materiales.remove(material);
-			tablaMaterial.setLista(materiales);
+			productoMateriales.remove(posicion);
+			tablaProductoMaterial.setLista(productoMateriales);
+			calcularCosto();
 			calcularPrecioVenta();
-			return remove;
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -179,7 +209,8 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 	private double calcularCosto() {
 		double costo = 0;
 		try {
-			costo = materiales.stream().filter(m -> m.isEstado() == true).mapToDouble(m -> m.getPrecioMaximo()).sum();
+			costo = productoMateriales.stream().filter(p -> p.isEstado() == true).mapToDouble(m -> m.getSubtotal())
+					.sum();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -200,11 +231,6 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("calcularPrecioVenta");
-		System.out.println("Precio = " + precio);
-		System.out.println("Porcentaje Precio = " + porcentaje);
-		System.out.println("Costo Precio = " + costo);
-		System.out.println("*****");
 		ventana.gettPrecioVenta().setValue(precio);
 		return precio;
 	}
@@ -221,11 +247,6 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("calcularPorcentajeVenta");
-		System.out.println("Porcentaje = " + porcentaje);
-		System.out.println("Precio Porcentaje = " + precio);
-		System.out.println("Costo Porcentaje = " + costo);
-		System.out.println("*****");
 		ventana.gettPorcentajeSobreCosto().setValue(porcentaje);
 		return porcentaje;
 	}
@@ -275,7 +296,7 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			}
 		}
 
-		if (materiales == null || materiales.size() <= 0) {
+		if (productoMateriales == null || productoMateriales.size() <= 0) {
 			ventana.getBtnAgregarMaterial().requestFocus();
 			JOptionPane.showMessageDialog(ventana,
 					"El producto debe registrarse con todos los materiales que usan para su produccion");
@@ -324,13 +345,13 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			producto = new Producto();
 			producto.setColaborador(Sesion.getInstance().getColaborador());
 		}
-		
+
 		System.out.println(accion);
 		producto.setAltoProducto(ventana.gettMedidaAlto().getValue());
 		producto.setAnchoProducto(ventana.gettMedidaAncho().getValue());
 		producto.setCosto(ventana.gettCosto().getValue());
 		producto.setDescripcion(ventana.gettNombreProducto().getText());
-		producto.setPorcentajeSobreCosto(ventana.gettPorcentajeSobreCosto().getValue());
+		producto.setPorcentajeSobreCosto(calcularPorcentajeVenta());
 		producto.setPrecioMaximo(ventana.gettPrecioVenta().getValue());
 		producto.setPrecioMinimo(ventana.gettPrecioVenta().getValue());
 		producto.setProductoCarteleria(ventana.getRdCarteleria().isSelected());
@@ -345,10 +366,13 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			producto.setCodigoReferencia(ventana.gettCodigoReferencia().getText());
 			break;
 		}
-		
+
 		System.out.println("switch (ventana.gettCodigoReferencia().getText().length())");
-		
-		producto.setMateriales(materiales);
+
+		for (int i = 0; i < productoMateriales.size(); i++) {
+			productoMateriales.get(i).setProducto(producto);
+		}
+		producto.setMateriales(productoMateriales);
 		producto.setProcesos(procesos);
 
 		try {
@@ -415,8 +439,8 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			ventana.gettPorcentajeSobreCosto().setValue(producto.getPorcentajeSobreCosto());
 			ventana.gettPrecioVenta().setValue(producto.getPrecioMaximo());
 
-			materiales = producto.getMateriales();
-			tablaMaterial.setLista(materiales);
+			productoMateriales = producto.getMateriales();
+			tablaProductoMaterial.setLista(productoMateriales);
 			procesos = producto.getProcesos();
 			tablaProceso.setLista(procesos);
 		} catch (Exception e) {
@@ -428,7 +452,6 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 
 	@Override
 	public void setMaterial(Material material) {
-		this.material = material;
 		try {
 			agregarMaterial(material);
 			calcularCosto();
@@ -456,7 +479,7 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "comboBoxChanged":
-			ventana.getLblValor().getText().concat(ventana.getCbTipoCobro().getSelectedItem().toString());
+			ventana.getLblValor().setText("Precio Venta: " + ventana.getCbTipoCobro().getSelectedItem().toString());
 			break;
 		case "AgregarMaterial":
 			abrirBuscadorMaterial();
@@ -499,7 +522,7 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 		quitarItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				quitarMaterial(material);
+				quitarMaterial(row);
 
 			}
 		});
@@ -548,6 +571,16 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == ventana.getTableMateriales()) {
 			seleccionarMaterial(ventana.getTableMateriales().getSelectedRow());
+
+			if (ventana.getTableMateriales().getSelectedColumn() == 1) {
+				tablaProductoMaterial.setValueAt(false, ventana.getTableMateriales().getSelectedRow(),
+						ventana.getTableMateriales().getSelectedColumn());
+			}
+
+			if (ventana.getTableMateriales().getSelectedColumn() == 4) {
+				tablaProductoMaterial.setValueAt(false, ventana.getTableMateriales().getSelectedRow(),
+						ventana.getTableMateriales().getSelectedColumn());
+			}
 		}
 		if (e.getSource() == ventana.getTableProcesos()) {
 			seleccionarProceso(ventana.getTableProcesos().getSelectedRow());
@@ -594,17 +627,25 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
 		if (e.getSource() == ventana.gettPrecioVenta()) {
 			calcularPorcentajeVenta();
 		}
 		if (e.getSource() == ventana.gettPorcentajeSobreCosto()) {
 			calcularPrecioVenta();
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getSource() == ventana.getTableMateriales()) {
+			calcularCosto();
+			calcularPrecioVenta();
+		}
+
 	}
 }

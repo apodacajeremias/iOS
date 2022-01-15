@@ -35,29 +35,6 @@ public class Compra {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
-	
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
-	
-	
-	public Colaborador getColaborador() {
-		return colaborador;
-	}
-
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
-
-
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -95,72 +72,104 @@ public class Compra {
 		return id;
 	}
 
-	public Date getFechaRegistroCompra() {
-		return fechaRegistroCompra;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public Date getFechaCompra() {
-		return fechaCompra;
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
-	public int getValorCompra() {
-		return valorCompra;
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 
-	public int getValorNTCR() {
-		return valorNTCR;
+	public boolean isEstado() {
+		return estado;
 	}
 
-	public int getValorPago() {
-		return valorPago;
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
-	public String getNroFactura() {
-		return nroFactura;
+	public Colaborador getColaborador() {
+		return colaborador;
 	}
 
-	public String getNroNTCR() {
-		return nroNTCR;
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	public Proveedor getProveedor() {
 		return proveedor;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public InformacionPago getInformacionPago() {
+		return informacionPago;
+	}
+
+	public void setInformacionPago(InformacionPago informacionPago) {
+		this.informacionPago = informacionPago;
+	}
+
+	public Date getFechaRegistroCompra() {
+		return fechaRegistroCompra;
 	}
 
 	public void setFechaRegistroCompra(Date fechaRegistroCompra) {
 		this.fechaRegistroCompra = fechaRegistroCompra;
 	}
 
+	public Date getFechaCompra() {
+		return fechaCompra;
+	}
+
 	public void setFechaCompra(Date fechaCompra) {
 		this.fechaCompra = fechaCompra;
+	}
+
+	public int getValorCompra() {
+		return valorCompra;
 	}
 
 	public void setValorCompra(int valorCompra) {
 		this.valorCompra = valorCompra;
 	}
 
+	public int getValorNTCR() {
+		return valorNTCR;
+	}
+
 	public void setValorNTCR(int valorNTCR) {
 		this.valorNTCR = valorNTCR;
+	}
+
+	public int getValorPago() {
+		return valorPago;
 	}
 
 	public void setValorPago(int valorPago) {
 		this.valorPago = valorPago;
 	}
 
+	public String getNroFactura() {
+		return nroFactura;
+	}
+
 	public void setNroFactura(String nroFactura) {
 		this.nroFactura = nroFactura;
 	}
 
-	public void setNroNTCR(String nroNTCR) {
-		this.nroNTCR = nroNTCR;
+	public String getNroNTCR() {
+		return nroNTCR;
 	}
 
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
+	public void setNroNTCR(String nroNTCR) {
+		this.nroNTCR = nroNTCR;
 	}
 
 	public List<CompraDetalle> getCompraDetalles() {
@@ -171,16 +180,13 @@ public class Compra {
 		this.compraDetalles = compraDetalles;
 	}
 
-	public InformacionPago getInformacionPago() {
-		return informacionPago;
+	public String registrar() {
+		return "Compra [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", proveedor=" + proveedor + ", informacionPago=" + informacionPago
+				+ ", fechaRegistroCompra=" + fechaRegistroCompra + ", fechaCompra=" + fechaCompra + ", valorCompra="
+				+ valorCompra + ", valorNTCR=" + valorNTCR + ", valorPago=" + valorPago + ", nroFactura=" + nroFactura
+				+ ", nroNTCR=" + nroNTCR + ", compraDetalles=" + compraDetalles + "]";
 	}
 
-	public void setInformacionPago(InformacionPago informacionPago) {
-		this.informacionPago = informacionPago;
-	}
-	
-	
-	
-	
 	
 }

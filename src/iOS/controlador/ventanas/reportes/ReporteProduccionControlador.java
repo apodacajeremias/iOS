@@ -132,17 +132,17 @@ public class ReporteProduccionControlador implements ActionListener, MouseListen
 		// Carteleria + Confeccion
 		if (reporte.getPanelEspecifico().getRdTipo1().isSelected()) {
 			producciones = producciones.stream().filter(
-					c -> c.getPedido().getPedidoCarteleria() == true || c.getPedido().getPedidoCostura() == true)
+					c -> c.getPedido().isPedidoCarteleria() == true || c.getPedido().isPedidoCostura() == true)
 					.collect(Collectors.toList());
 
 			// Carteleria
 		} else if (reporte.getPanelEspecifico().getRdTipo2().isSelected()) {
-			producciones = producciones.stream().filter(c -> c.getPedido().getPedidoCarteleria() == true)
+			producciones = producciones.stream().filter(c -> c.getPedido().isPedidoCarteleria() == true)
 					.collect(Collectors.toList());
 
 			// Confeccion
 		} else if (reporte.getPanelEspecifico().getRdTipo3().isSelected()) {
-			producciones = producciones.stream().filter(c -> c.getPedido().getPedidoCostura() == true)
+			producciones = producciones.stream().filter(c -> c.getPedido().isPedidoCostura() == true)
 					.collect(Collectors.toList());
 
 		}

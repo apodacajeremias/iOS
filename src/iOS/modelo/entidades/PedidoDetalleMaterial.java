@@ -33,10 +33,6 @@ public class PedidoDetalleMaterial {
 	private Colaborador colaborador;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Pedido pedido;
-
-	@ManyToOne
 	@JoinColumn(nullable = true)
 	private PedidoDetalles detalleCarteleria;
 
@@ -46,11 +42,35 @@ public class PedidoDetalleMaterial {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Material material;
+	private ProductoMaterial material;
 
 	@ColumnDefault("0")
 	@Column(nullable = false)
-	private double precio;
+	private double costo;
+
+	@ColumnDefault("0")
+	@Column(nullable = false)
+	private double subtotal;
+
+	@ColumnDefault("100")
+	@Column(nullable = true)
+	private double medidaAncho;
+
+	@ColumnDefault("100")
+	@Column(nullable = true)
+	private double medidaAlto;
+
+	@ColumnDefault("100")
+	@Column(nullable = true)
+	private double medidaDetalle;
+
+	@ColumnDefault("1")
+	@Column(nullable = true)
+	private double cantidadDetalle;
+
+	@ColumnDefault("false")
+	@Column(nullable = false)
+	private boolean materialFijo;
 
 	public int getId() {
 		return id;
@@ -84,14 +104,6 @@ public class PedidoDetalleMaterial {
 		this.colaborador = colaborador;
 	}
 
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-
 	public PedidoDetalles getDetalleCarteleria() {
 		return detalleCarteleria;
 	}
@@ -108,39 +120,74 @@ public class PedidoDetalleMaterial {
 		this.detalleConfeccion = detalleConfeccion;
 	}
 
-	public Material getMaterial() {
+	public ProductoMaterial getMaterial() {
 		return material;
 	}
 
-	public void setMaterial(Material material) {
+	public void setMaterial(ProductoMaterial material) {
 		this.material = material;
 	}
 
-	public double getPrecio() {
-		return precio;
+	public double getCosto() {
+		return costo;
 	}
 
-	public void setPrecio(double precio) {
-		this.precio = precio;
-		try {
-			detalleCarteleria.getPrecioProducto();
-			detalleCarteleria.getPrecioDetalle();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			detalleConfeccion.getPrecioProducto();
-			detalleConfeccion.getPrecioDetalle();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void setCosto(double costo) {
+		this.costo = costo;
 	}
+
+	public double getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
+	}
+
+	public double getMedidaAncho() {
+		return medidaAncho;
+	}
+
+	public void setMedidaAncho(double medidaAncho) {
+		this.medidaAncho = medidaAncho;
+	}
+
+	public double getMedidaAlto() {
+		return medidaAlto;
+	}
+
+	public void setMedidaAlto(double medidaAlto) {
+		this.medidaAlto = medidaAlto;
+	}
+
+	public double getMedidaDetalle() {
+		return medidaDetalle;
+	}
+
+	public void setMedidaDetalle(double medidaDetalle) {
+		this.medidaDetalle = medidaDetalle;
+	}
+
+	public double getCantidadDetalle() {
+		return cantidadDetalle;
+	}
+
+	public void setCantidadDetalle(double cantidadDetalle) {
+		this.cantidadDetalle = cantidadDetalle;
+	}
+
+	public boolean isMaterialFijo() {
+		return materialFijo;
+	}
+
+	public void setMaterialFijo(boolean materialFijo) {
+		this.materialFijo = materialFijo;
+	}
+	
 
 	@Override
 	public String toString() {
-		return "PedidoDetalleMaterial [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado
-				+ ", colaborador=" + colaborador + ", pedido=" + pedido + ", detalleCarteleria=" + detalleCarteleria
-				+ ", detalleConfeccion=" + detalleConfeccion + ", material=" + material + ", precio=" + precio + "]";
+		return id + " - " + fechaRegistro;
 	}
 
 }

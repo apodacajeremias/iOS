@@ -1,5 +1,6 @@
 package iOS.modelo.entidades;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,11 +45,6 @@ public class Proceso {
 
 	@ManyToMany(mappedBy = "procesos")
 	private List<Producto> productos;
-	
-	@Override
-	public String toString() {
-		return descripcion;
-	}
 
 	public int getId() {
 		return id;
@@ -104,6 +100,17 @@ public class Proceso {
 
 	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
+	}
+
+	public String registrar() {
+		return "Proceso [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", descripcion=" + descripcion + ", icon=" + Arrays.toString(icon) + ", productos="
+				+ productos + "]";
+	}
+
+	@Override
+	public String toString() {
+		return descripcion;
 	}
 
 }

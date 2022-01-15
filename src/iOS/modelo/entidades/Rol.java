@@ -35,18 +35,6 @@ public class Rol {
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
-
 	@Column(nullable = false, unique = true)
 	private String nombreRol;
 
@@ -62,6 +50,30 @@ public class Rol {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	public String getNombreRol() {
@@ -80,17 +92,22 @@ public class Rol {
 		this.rolesOperaciones = rolesOperaciones;
 	}
 
-	public List<Colaborador> getColaborador() {
+	public List<Colaborador> getColaboradores() {
 		return colaboradores;
 	}
 
-	public void setColaborador(List<Colaborador> colaboradores) {
+	public void setColaboradores(List<Colaborador> colaboradores) {
 		this.colaboradores = colaboradores;
+	}
+
+	public String registrar() {
+		return "Rol [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
+				+ colaborador + ", nombreRol=" + nombreRol + ", rolesOperaciones=" + rolesOperaciones
+				+ ", colaboradores=" + colaboradores + "]";
 	}
 
 	@Override
 	public String toString() {
 		return nombreRol;
 	}
-
 }

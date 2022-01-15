@@ -14,8 +14,8 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -545738629065442036L;
-	private String[] columnas = { "PRODUCTO", "INDICACIONES", "ALTO cm", "ANCHO cm ", "ÁREA m2", "CANT.", "PRECIO",
-			"SUBTOTAL" };
+	private String[] columnas = { "PRODUCTO", "INDICACIONES", "ALTO cm", "ANCHO cm ", "ÁREA m2", "CANT.", "COSTO", "%",
+			"PRECIO", "SUBTOTAL" };
 
 	private List<PedidoDetalles> detalle = new ArrayList<>();
 
@@ -46,9 +46,9 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		switch (c) {
 		case 0:
 			if (detalle.get(r).isProduccionFinalizada()) {
-				return "\u2714" + detalle.get(r).getProducto();
+				return "\u2714 " + detalle.get(r).getProducto();
 			} else {
-				return "\u274C" + detalle.get(r).getProducto();
+				return "\u274C " + detalle.get(r).getProducto();
 			}
 
 		case 1:
@@ -62,8 +62,12 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		case 5:
 			return EventosUtil.separadorMiles((double) detalle.get(r).getCantidadDetalle());
 		case 6:
-			return EventosUtil.separadorMiles((double) detalle.get(r).getPrecioProducto());
+			return EventosUtil.separadorMiles(detalle.get(r).getCosto());
 		case 7:
+			return EventosUtil.separadorDecimales(detalle.get(r).getPorcentajeSobreCosto());
+		case 8:
+			return EventosUtil.separadorMiles((double) detalle.get(r).getPrecioProducto());
+		case 9:
 			return EventosUtil.separadorMiles((double) detalle.get(r).getPrecioDetalle());
 		default:
 			return null;
@@ -124,7 +128,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 				e.printStackTrace();
 			}
 
-		} else if (6 == c) {
+		} else if (8 == c) {
 			try {
 				String nv = aValue.toString().replace(",", "").replace(".", "").replace("cm", "").replace("m", "")
 						.replace("\\scm", "").replace("\\sm", "").replace("\\s", "");
@@ -134,7 +138,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 				// TODO: handle exception
 				e.printStackTrace();
 			}
-		} else if (7 == c) {
+		} else if (9 == c) {
 			try {
 				String nv = aValue.toString().replace(",", "").replace(".", "").replace("cm", "").replace("m", "")
 						.replace("\\scm", "").replace("\\sm", "").replace("\\s", "");
@@ -150,18 +154,14 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 
 	private double calcularArea(double alto, double ancho) {
 		// TODO Auto-generated method stub
-
 		double area = 0;
-
 		try {
 			area = (alto * ancho) / 10000;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return area;
-
 	}
 
 	private double calcularAncho(double area, double alto) {
@@ -249,7 +249,9 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 			return true;
 		case 6:
 			return true;
-		case 7:
+		case 8:
+			return true;
+		case 9:
 			return true;
 		default:
 			return false;
