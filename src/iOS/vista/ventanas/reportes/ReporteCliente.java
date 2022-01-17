@@ -23,9 +23,9 @@ public class ReporteCliente extends ReporteGenerico {
 		getPanelEspecifico().getPanel_2().setVisible(false);
 		getPanelGeneral().getPanel_3().setVisible(false);
 		getPanelGeneral().getPanel_2().setVisible(false);
-		getPanelGeneral().getLblrdAnho().setText("Buscar los registros del a\u00F1o");
 		getPanelEspecifico().getlInfo1().setText("Reporte de Cliente");
-		getPanelEspecifico().getLblprsnlzdBuscaTodosLos_1().setText("Busca los registros del cliente indicado en las opciones abajo\r\n");
+		getPanelEspecifico().getLblprsnlzdBuscaTodosLos_1()
+				.setText("Busca los registros del cliente indicado en las opciones abajo\r\n");
 		getPanelEspecifico().getRdColaboradorEspecifico().setText("Encontrar y Mostrar Cliente Registrador Por");
 		getPanelEspecifico().getRdTodoColaborador().setText("Encontrar y Mostrar Todos los Clientes");
 		getPanelGeneral().getLblrdTodo().setText("Busca todos los registros relacionados en el sistema");
@@ -39,7 +39,7 @@ public class ReporteCliente extends ReporteGenerico {
 		getPanelGeneral().getLblrdAlgunos().setText("Busca todos los registros relacionados en el sistema");
 		getPanelGeneral().getRdAlgunos().setText("Encontrar y Mostrar Solo Clientes Sin Deuda");
 		setTitle("REPORTE DE CLIENTE");
-		
+
 	}
 
 	public static long getSerialversionuid() {
@@ -53,6 +53,5 @@ public class ReporteCliente extends ReporteGenerico {
 	public String getModulo() {
 		return modulo;
 	}
-	
-	
+
 }

@@ -38,7 +38,7 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 		setUpEvents();
 		recuperarTodo();
 	}
-
+	
 	// METODO QUE LEVANTA LOS EVENTOS
 	private void setUpEvents() {
 		buscador.gettBuscador().addKeyListener(this);

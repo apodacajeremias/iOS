@@ -56,7 +56,7 @@ public class BarraProduccionProcesos implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int numero = Integer.parseInt(tf.getText());
+//		int numero = Integer.parseInt(tf.getText());
 		procesos = dao.recuperarTodoOrdenadoPorNombre();
 		// Primero llenamos con el numero de elementos requeridos
 		for (int i = 0; i < procesos.size(); i++) {

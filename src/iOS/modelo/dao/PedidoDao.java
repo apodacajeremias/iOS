@@ -112,4 +112,24 @@ public class PedidoDao extends GenericDao<Pedido> {
 			return lista;
 		}
 	}
+	
+	public List<Pedido> recuperarPeriodo(Date inicio, Date fin) {
+		getSession().beginTransaction();
+		List<Pedido> lista = new ArrayList<Pedido>();
+		String sql = "FROM Pedido "
+				+ "WHERE DATE(fechaRegistro) BETWEEN DATE(:inicio) AND DATE(:fin) "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Pedido> query = getSession().createQuery(sql);
+		query.setParameter("inicio", inicio);
+		query.setParameter("fin", fin);
+		try {
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return lista;
+		}
+	}
 }

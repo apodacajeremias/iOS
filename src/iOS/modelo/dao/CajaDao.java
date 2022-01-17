@@ -51,7 +51,7 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<CajaMovimiento> recuperarTodos() {
 		getSession().beginTransaction();
 		String sql = "from CajaMovimiento order by id DESC";
@@ -131,13 +131,11 @@ public class CajaDao extends GenericDao<Caja> {
 			return null;
 		}
 	}
-	
+
 	public List<Caja> recuperarHoy(Date hoy) {
 		getSession().beginTransaction();
 		List<Caja> lista = new ArrayList<Caja>();
-		String sql = "FROM Caja "
-				+ "WHERE DATE(fechaRegistro) = :hoy "
-				+ "ORDER BY id DESC";
+		String sql = "FROM Caja " + "WHERE DATE(fechaRegistro) = :hoy " + "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<Caja> query = getSession().createQuery(sql);
 		query.setParameter("hoy", hoy);
@@ -150,13 +148,11 @@ public class CajaDao extends GenericDao<Caja> {
 			return lista;
 		}
 	}
-	
+
 	public List<Caja> recuperarMes(int mes) {
 		getSession().beginTransaction();
 		List<Caja> lista = new ArrayList<Caja>();
-		String sql = "FROM Caja "
-				+ "WHERE MONTH(fechaRegistro) = :mes "
-				+ "ORDER BY id DESC";
+		String sql = "FROM Caja " + "WHERE MONTH(fechaRegistro) = :mes " + "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<Caja> query = getSession().createQuery(sql);
 		query.setParameter("mes", mes);
@@ -173,12 +169,28 @@ public class CajaDao extends GenericDao<Caja> {
 	public List<Caja> recuperarAnho(int anho) {
 		getSession().beginTransaction();
 		List<Caja> lista = new ArrayList<Caja>();
-		String sql = "FROM Caja "
-				+ "WHERE YEAR(fechaRegistro) = :anho "
-				+ "ORDER BY id DESC";
+		String sql = "FROM Caja " + "WHERE YEAR(fechaRegistro) = :anho " + "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<Caja> query = getSession().createQuery(sql);
 		query.setParameter("anho", anho);
+		try {
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return lista;
+		}
+	}
+
+	public List<Caja> recuperarPeriodo(Date inicio, Date fin) {
+		getSession().beginTransaction();
+		List<Caja> lista = new ArrayList<Caja>();
+		String sql = "FROM Caja " + "WHERE DATE(fechaRegistro) BETWEEN DATE(:inicio) AND DATE(:fin) ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Caja> query = getSession().createQuery(sql);
+		query.setParameter("inicio", inicio);
+		query.setParameter("fin", fin);
 		try {
 			lista = query.getResultList();
 			commit();

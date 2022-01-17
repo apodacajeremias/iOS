@@ -14,7 +14,8 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -545738629065442036L;
-	private String[] columnas = { "PRODUCTO", "INDICACIONES", "CANT.", "TAM.", "MOLDE", "PRECIO", "SUBTOTAL" };
+	private String[] columnas = { "PRODUCTO", "INDICACIONES", "CANT.", "TAM.", "MOLDE", "COSTO", "%", "PRECIO",
+			"SUBTOTAL" };
 
 	private List<PedidoDetalleConfeccion> detalle = new ArrayList<>();
 
@@ -58,8 +59,12 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 		case 4:
 			return detalle.get(r).getMolde();
 		case 5:
-			return EventosUtil.separadorMiles(detalle.get(r).getPrecioProducto());
+			return EventosUtil.separadorMiles(detalle.get(r).getCosto());
 		case 6:
+			return EventosUtil.separadorDecimales(detalle.get(r).getPorcentajeSobreCosto());
+		case 7:
+			return EventosUtil.separadorMiles(detalle.get(r).getPrecioProducto());
+		case 8:
 			return EventosUtil.separadorMiles(detalle.get(r).getPrecioDetalle());
 		default:
 			return null;
@@ -103,14 +108,14 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 				e.printStackTrace();
 				return;
 			}
-		} else if (5 == c) {
+		} else if (7 == c) {
 			try {
 				row.setPrecioProducto(Double.parseDouble(aValue.toString().replace(".", "").replace(",", "")));
 				row.setPrecioDetalle((int) calcularSubtotal(row, row.getPrecioProducto()));
 			} catch (NumberFormatException e) {
 				return;
 			}
-		} else if (6 == c) {
+		} else if (8 == c) {
 			try {
 				row.setPrecioDetalle(Double.parseDouble(aValue.toString().replace(".", "").replace(",", "")));
 				row.setPrecioProducto((int) calcularPrecio(row, row.getPrecioDetalle()));
@@ -173,10 +178,6 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 		case 3:
 			return true;
 		case 4:
-			return true;
-		case 5:
-			return true;
-		case 6:
 			return true;
 		default:
 			return false;

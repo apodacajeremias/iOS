@@ -7,10 +7,12 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ProductoDao;
 import iOS.modelo.entidades.Producto;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.ProductoInterface;
+import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaProducto;
 import iOS.vista.ventanas.VentanaProducto;
 import iOS.vista.ventanas.buscadores.BuscadorProducto;
@@ -39,6 +41,7 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 		this.buscador.getTable().setModel(mtProducto);
 		dao = new ProductoDao();
 		setUpEvents();
+		ocultarBarra();
 	}
 
 	// METODO QUE LEVANTA LOS EVENTOS
@@ -46,12 +49,25 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 		buscador.gettBuscador().addKeyListener(this);
 		buscador.getTable().addMouseListener(this);
 	}
+	
+	private void ocultarBarra() {
+		buscador.getToolbar().setVisible(false);
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			buscador.getToolbar().setVisible(true);
+		}
+
+	}
+
 
 	// METODO QUE RECUPERA DATOS POR FILTRO EN EL BUSCADOR
 	private void recuperarPorFiltro() {
 		producto = null;
 		lista = dao.recuperarPorFiltro(buscador.gettBuscador().getText());
-		lista = lista.stream().filter(l -> l.isEstado() == true && l.isProductoCarteleria() == productoCarteleria && l.isProductoCostura() == productoConfeccion).collect(Collectors.toList());
+		if (!productoCarteleria && !productoConfeccion) {
+			
+		} else {
+			lista = lista.stream().filter(l -> l.isEstado() == true && l.isProductoCarteleria() == productoCarteleria && l.isProductoCostura() == productoConfeccion).collect(Collectors.toList());
+		}
 		mtProducto.setLista(lista);
 		mtProducto.fireTableDataChanged();
 	}
@@ -61,7 +77,12 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 		this.productoConfeccion = productoConfeccion;
 		producto = null;
 		lista = dao.recuperarTodoOrdenadoPorNombre();
-		lista = lista.stream().filter(l -> l.isEstado() == true && l.isProductoCarteleria() == productoCarteleria && l.isProductoCostura() == productoConfeccion).collect(Collectors.toList());
+		if (!productoCarteleria && !productoConfeccion) {
+			
+		} else {
+			lista = lista.stream().filter(l -> l.isEstado() == true && l.isProductoCarteleria() == productoCarteleria && l.isProductoCostura() == productoConfeccion).collect(Collectors.toList());
+		}
+		
 		mtProducto.setLista(lista);
 		mtProducto.fireTableDataChanged();
 	}

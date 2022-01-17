@@ -47,10 +47,19 @@ public class ModeloTablaPedidoDetalleMaterial extends AbstractTableModel {
 		case 0:
 			return materiales.get(r).getMaterial();
 		case 1:
+			if (materiales.get(r).getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD")) {
+				return "ø";
+			}
 			return EventosUtil.separadorMiles(materiales.get(r).getMedidaAlto());
 		case 2:
+			if (materiales.get(r).getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD")) {
+				return "ø";
+			}
 			return EventosUtil.separadorMiles(materiales.get(r).getMedidaAncho());
 		case 3:
+			if (materiales.get(r).getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD")) {
+				return "ø";
+			}
 			return EventosUtil.separadorDecimales(materiales.get(r).getMedidaDetalle());
 		case 4:
 			return EventosUtil.separadorMiles(materiales.get(r).getCantidadDetalle());
@@ -90,10 +99,26 @@ public class ModeloTablaPedidoDetalleMaterial extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		PedidoDetalleMaterial row = materiales.get(rowIndex);
+		if (!row.getMaterial().isEditable()) {
+			return false;
+		}
 		switch (columnIndex) {
 		case 1:
+			if (row.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD")) {
+				return false;
+			}
+			if (row.getMaterial().isTieneMedidaFija()) {
+				return false;
+			}
 			return true;
 		case 2:
+			if (row.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD")) {
+				return false;
+			}
+			if (row.getMaterial().isTieneMedidaFija()) {
+				return false;
+			}
 			return true;
 		default:
 			return false;

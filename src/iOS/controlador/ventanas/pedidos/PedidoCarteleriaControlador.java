@@ -528,10 +528,10 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			return false;
 		}
 		if ((Representante) ventana.getCbRepresentantes().getSelectedItem() == null) {
-			JOptionPane.showMessageDialog(ventana, "Debe haber un representante para el pedido, actualice la informacion del cliente");
+			JOptionPane.showMessageDialog(ventana,
+					"Debe haber un representante para el pedido, actualice la informacion del cliente");
 			return false;
 		}
-		
 
 		return true;
 	}
@@ -797,6 +797,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.gettResponsable().setText(cliente.getNombreCompleto() + ", " + cliente.getContacto());
 
 		List<Representante> representantes = new ArrayList<Representante>();
+		ventana.getCbRepresentantes().removeAllItems();
 		try {
 			representantes = cliente.getRepresentantes();
 			for (int i = 0; i < representantes.size(); i++) {

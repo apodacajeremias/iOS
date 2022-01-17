@@ -118,20 +118,20 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		ventana.getTable().getColumnModel().getColumn(0).setPreferredWidth(200);
 		ventana.getTable().getColumnModel().getColumn(1).setPreferredWidth(200);
 
-		ventana.getTableMaterial().getColumnModel().getColumn(1).setPreferredWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(1).setMaxWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(1).setMinWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(1).setResizable(false);
-
-		ventana.getTableMaterial().getColumnModel().getColumn(2).setPreferredWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(2).setMaxWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(2).setMinWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(2).setResizable(false);
-
-		ventana.getTableMaterial().getColumnModel().getColumn(3).setPreferredWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(3).setMaxWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(3).setMinWidth(0);
-		ventana.getTableMaterial().getColumnModel().getColumn(3).setResizable(false);
+//		ventana.getTableMaterial().getColumnModel().getColumn(1).setPreferredWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(1).setMaxWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(1).setMinWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(1).setResizable(false);
+//
+//		ventana.getTableMaterial().getColumnModel().getColumn(2).setPreferredWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(2).setMaxWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(2).setMinWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(2).setResizable(false);
+//
+//		ventana.getTableMaterial().getColumnModel().getColumn(3).setPreferredWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(3).setMaxWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(3).setMinWidth(0);
+//		ventana.getTableMaterial().getColumnModel().getColumn(3).setResizable(false);
 	}
 
 	private void crearComboBoxTabla() {
@@ -317,15 +317,15 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			costoUnidad = (detalle.getMateriales().stream()
 					.filter(m -> m.isEstado() == true
 							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("UNIDAD") == true)
-					.mapToDouble(m -> m.getSubtotal() * m.getMedidaDetalle()).sum());
+					.mapToDouble(m -> m.getSubtotal()).sum());
 			costoMetroC = (detalle.getMateriales().stream()
 					.filter(m -> m.isEstado() == true
 							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO CUADRADO") == true)
-					.mapToDouble(m -> m.getSubtotal() * m.getMedidaDetalle()).sum());
+					.mapToDouble(m -> m.getSubtotal()).sum());
 			costoMetroL = (detalle.getMateriales().stream()
 					.filter(m -> m.isEstado() == true
 							&& m.getMaterial().getMaterial().getTipoCobro().equalsIgnoreCase("METRO LINEAL") == true)
-					.mapToDouble(m -> m.getSubtotal() * m.getMedidaDetalle()).sum());
+					.mapToDouble(m -> m.getSubtotal()).sum());
 
 			costoUnidad = (costoUnidad * porcentajeSobreCosto) * detalle.getCantidadDetalle();
 			costoMetroC = (costoMetroC * porcentajeSobreCosto) * detalle.getCantidadDetalle();
@@ -689,6 +689,19 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		if (e.getSource() == ventana.getTable()) {
 			realizarCalculos();
 		}
+
+		if (e.getSource() == ventana.getTableMaterial()) {
+			try {
+				detalle.setCosto(costoProducto(detalle));
+				detalle.setPrecioProducto(precioProducto(detalle));
+				detalle.setPrecioDetalle(precioDetalle(detalle));
+				mtPedidoDetalle.fireTableDataChanged();
+				mtDetalleMaterial.fireTableDataChanged();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -793,6 +806,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		ventana.gettResponsable().setText(cliente.getNombreCompleto() + ", " + cliente.getContacto());
 
 		List<Representante> representantes = new ArrayList<Representante>();
+		ventana.getCbRepresentantes().removeAllItems();
 		try {
 			representantes = cliente.getRepresentantes();
 			for (int i = 0; i < representantes.size(); i++) {
@@ -854,7 +868,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 
 		ventana.getlProduccion().setText(pedido.isProduccionFinalizada() ? "NO FINALIZADO" : "CONCLUIDO");
 		ventana.getCbRepresentantes().getModel().setSelectedItem(pedido.getRepresentante());
-		
+
 		ventana.getRbDetallado().setSelected(pedido.isConDetalle());
 		ventana.getRbGenerarPresupuesto().setSelected(pedido.isEsPresupuesto());
 

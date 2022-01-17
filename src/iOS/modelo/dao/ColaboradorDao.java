@@ -207,6 +207,32 @@ public class ColaboradorDao extends GenericDao<Colaborador> {
 		}
 	}
 	
+	public List<CajaMovimiento> recuperarPeriodo(Date inicio, Date fin) {
+		getSession().beginTransaction();
+		List<CajaMovimiento> lista = new ArrayList<CajaMovimiento>();
+		String sql = "FROM CajaMovimiento " 
+				+ "WHERE esAnulado = false " 
+				+ "AND esRetiro = true " 
+				+ "AND estado = true "
+				+ "AND esVale = true "
+				+ "AND DATE(fechaRegistro) BETWEEN DATE(:inicio) AND DATE(:fin) "  
+				+ "ORDER BY ID";
+		try {
+			@SuppressWarnings("unchecked")
+			Query<CajaMovimiento> query = getSession().createQuery(sql);
+			query.setParameter("inicio", inicio);
+			query.setParameter("fin", fin);
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
+			return lista;
+		}
+	}
+	
 	public Cotizacion recuperarUltimaCotizacion() {
 		getSession().beginTransaction();
 

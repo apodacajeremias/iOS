@@ -76,15 +76,13 @@ public class ReporteColaboradorControlador implements ActionListener, MouseListe
 		vaciarTabla();
 
 		if (reporte.getPanelGeneral().getRdHoy().isSelected()) {
+			reporte.getPanelGeneral().getcFechaDesde().setDate(new Date());
+			reporte.getPanelGeneral().getcFechaHasta().setDate(new Date());
 			vales = dao.recuperarValesHoy(new Date());
 
 		} else if (reporte.getPanelGeneral().getRdMes().isSelected()) {
-			vales = dao.recuperarValesMes(reporte.getPanelGeneral().getMonthChooser().getMonth() + 1);
-
-		} else if (reporte.getPanelGeneral().getRdAnho().isSelected()) {
-			vales = dao.recuperarValesAnho(reporte.getPanelGeneral().getYearChooser().getYear());
-
-		} else {
+			vales = dao.recuperarPeriodo(reporte.getPanelGeneral().getcFechaDesde().getDate(),
+					reporte.getPanelGeneral().getcFechaHasta().getDate());
 
 		}
 
@@ -128,7 +126,7 @@ public class ReporteColaboradorControlador implements ActionListener, MouseListe
 		}
 
 		reporte.getPanelEspecifico().getlInfo2().setText("Se han encontrado " + vales.size() + " registros");
-		reporte.getPanelGeneral().getlInfo2().setText("Se han encontrado " + vales.size() + " registros");		
+		reporte.getPanelGeneral().getlInfo2().setText("Se han encontrado " + vales.size() + " registros");
 		modeloTabla.setMovimiento(vales);
 		modeloTabla.fireTableDataChanged();
 	}
@@ -140,11 +138,9 @@ public class ReporteColaboradorControlador implements ActionListener, MouseListe
 			tipoReporte = "REPORTE DIARIO. FECHA: " + EventosUtil.formatoFecha(new Date());
 
 		} else if (reporte.getPanelGeneral().getRdMes().isSelected()) {
-			tipoReporte = "REPORTE MENSUAL. MES: " + (reporte.getPanelGeneral().getMonthChooser().getMonth() + 1);
-
-		} else if (reporte.getPanelGeneral().getRdAnho().isSelected()) {
-			tipoReporte = "REPORTE ANUAL. AÑO: " + reporte.getPanelGeneral().getYearChooser().getYear();
-		} else {
+			tipoReporte = "REPORTE POR PERIODO DE TIEMPO." + " DESDE: "
+					+ EventosUtil.formatoFecha(reporte.getPanelGeneral().getcFechaDesde().getDate()) + " HASTA: "
+					+ EventosUtil.formatoFecha(reporte.getPanelGeneral().getcFechaHasta().getDate());
 		}
 
 		claseReporte = "REPORTE GENERAL SEGUN FILTROS";

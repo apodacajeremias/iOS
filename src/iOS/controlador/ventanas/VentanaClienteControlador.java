@@ -100,8 +100,12 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 			JOptionPane.showMessageDialog(ventana, "El representante debe ser una persona fisica");
 			return;
 		}
+		if (!r.isEsB2C()) {
+			JOptionPane.showMessageDialog(ventana, "El representante debe ser una persona fisica");
+			return;
+		}
 		for (int i = 0; i < representantes.size(); i++) {
-			if (representantes.get(i).getId() == r.getId()) {
+			if (representantes.get(i).getCliente().getId() == r.getId()) {
 				return;
 			}
 		}

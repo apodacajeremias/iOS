@@ -83,15 +83,13 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 		vaciarTabla();
 
 		if (reporte.getPanelGeneral().getRdHoy().isSelected()) {
+			reporte.getPanelGeneral().getcFechaDesde().setDate(new Date());
+			reporte.getPanelGeneral().getcFechaHasta().setDate(new Date());
 			pedidos = dao.recuperarHoy(new Date());
 
 		} else if (reporte.getPanelGeneral().getRdMes().isSelected()) {
-			pedidos = dao.recuperarMes(reporte.getPanelGeneral().getMonthChooser().getMonth() + 1);
-
-		} else if (reporte.getPanelGeneral().getRdAnho().isSelected()) {
-			pedidos = dao.recuperarAnho(reporte.getPanelGeneral().getYearChooser().getYear());
-
-		} else {
+			pedidos = dao.recuperarPeriodo(reporte.getPanelGeneral().getcFechaDesde().getDate(),
+					reporte.getPanelGeneral().getcFechaHasta().getDate());
 
 		}
 
@@ -157,11 +155,9 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 			tipoReporte = "REPORTE DIARIO. FECHA: " + EventosUtil.formatoFecha(new Date());
 
 		} else if (reporte.getPanelGeneral().getRdMes().isSelected()) {
-			tipoReporte = "REPORTE MENSUAL. MES: " + (reporte.getPanelGeneral().getMonthChooser().getMonth() + 1);
-
-		} else if (reporte.getPanelGeneral().getRdAnho().isSelected()) {
-			tipoReporte = "REPORTE ANUAL. AÑO: " + reporte.getPanelGeneral().getYearChooser().getYear();
-		} else {
+			tipoReporte = "REPORTE POR PERIODO DE TIEMPO." + " DESDE: "
+					+ EventosUtil.formatoFecha(reporte.getPanelGeneral().getcFechaDesde().getDate()) + " HASTA: "
+					+ EventosUtil.formatoFecha(reporte.getPanelGeneral().getcFechaHasta().getDate());
 		}
 
 		claseReporte = "REPORTE GENERAL SEGUN FILTROS";

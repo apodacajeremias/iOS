@@ -13,13 +13,11 @@ public class ProduccionDao extends GenericDao<Produccion> {
 	public ProduccionDao() {
 		super(Produccion.class);
 	}
-	
+
 	public List<Produccion> recuperarHoy(Date hoy) {
 		getSession().beginTransaction();
 		List<Produccion> lista = new ArrayList<Produccion>();
-		String sql = "FROM Produccion "
-				+ "WHERE DATE(fechaRegistro) = :hoy "
-				+ "ORDER BY id DESC";
+		String sql = "FROM Produccion " + "WHERE DATE(fechaRegistro) = :hoy " + "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<Produccion> query = getSession().createQuery(sql);
 		query.setParameter("hoy", hoy);
@@ -32,13 +30,11 @@ public class ProduccionDao extends GenericDao<Produccion> {
 			return lista;
 		}
 	}
-	
+
 	public List<Produccion> recuperarMes(int mes) {
 		getSession().beginTransaction();
 		List<Produccion> lista = new ArrayList<Produccion>();
-		String sql = "FROM Produccion "
-				+ "WHERE MONTH(fechaRegistro) = :mes "
-				+ "ORDER BY id DESC";
+		String sql = "FROM Produccion " + "WHERE MONTH(fechaRegistro) = :mes " + "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<Produccion> query = getSession().createQuery(sql);
 		query.setParameter("mes", mes);
@@ -55,9 +51,7 @@ public class ProduccionDao extends GenericDao<Produccion> {
 	public List<Produccion> recuperarAnho(int anho) {
 		getSession().beginTransaction();
 		List<Produccion> lista = new ArrayList<Produccion>();
-		String sql = "FROM Produccion "
-				+ "WHERE YEAR(fechaRegistro) = :anho "
-				+ "ORDER BY id DESC";
+		String sql = "FROM Produccion " + "WHERE YEAR(fechaRegistro) = :anho " + "ORDER BY id DESC";
 		@SuppressWarnings("unchecked")
 		Query<Produccion> query = getSession().createQuery(sql);
 		query.setParameter("anho", anho);
@@ -70,7 +64,24 @@ public class ProduccionDao extends GenericDao<Produccion> {
 			return lista;
 		}
 	}
-	
-	
+
+	public List<Produccion> recuperarPeriodo(Date inicio, Date fin) {
+		getSession().beginTransaction();
+		List<Produccion> lista = new ArrayList<Produccion>();
+		String sql = "FROM Produccion " + "WHERE DATE(fechaRegistro) BETWEEN DATE(:inicio) AND DATE(:fin) "
+				+ "ORDER BY id DESC";
+		@SuppressWarnings("unchecked")
+		Query<Produccion> query = getSession().createQuery(sql);
+		query.setParameter("inicio", inicio);
+		query.setParameter("fin", fin);
+		try {
+			lista = query.getResultList();
+			commit();
+			return lista;
+		} catch (Exception e) {
+			rollBack();
+			return lista;
+		}
+	}
 
 }
