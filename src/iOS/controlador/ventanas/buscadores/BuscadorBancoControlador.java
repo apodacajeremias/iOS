@@ -37,7 +37,7 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 		setUpEvents();
 		recuperarTodo();
 	}
-	
+
 	public void setInterfaz(BancoInterface interfaz) {
 		this.interfaz = interfaz;
 	}
@@ -63,6 +63,10 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 	}
 
 	private void seleccionarRegistro(int posicion) {
+		if (posicion < 0) {
+			banco = null;
+			return;
+		}
 		banco = lista.get(posicion);
 	}
 
@@ -86,25 +90,33 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// doble clic en un registro de la tabla
-		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1 ) {
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
-		
+
 		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 			// Se pasa el valor seleccionado a la interfaz
 			interfaz.setBanco(banco);
 			buscador.dispose();
 		}
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		// doble clic en un registro de la tabla
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		// doble clic en un registro de la tabla
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -119,18 +131,22 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 	public void nuevo() {
 		VentanaBanco ventana = new VentanaBanco();
 		ventana.setUpControlador();
-		ventana.setVisible(true);
 		ventana.getControlador().nuevo();
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(buscador);
+		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
 		VentanaBanco ventana = new VentanaBanco();
 		ventana.setUpControlador();
-		ventana.getControlador().setBanco(banco);
-		ventana.setVisible(true);
 		ventana.getControlador().modificar();
-		
+		ventana.getControlador().setBanco(banco);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(buscador);
+		ventana.setVisible(true);
+
 	}
 
 	@Override
@@ -157,7 +173,7 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 
 		gestionarBanco();
 	}
-	
+
 	private void gestionarBanco() {
 		if (banco == null) {
 			return;

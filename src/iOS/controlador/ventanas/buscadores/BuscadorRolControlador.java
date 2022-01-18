@@ -24,7 +24,6 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 	private List<Rol> lista = new ArrayList<Rol>();
 	private Rol rol;
 
-
 	public BuscadorRolControlador(BuscadorRol buscador) {
 		this.buscador = buscador;
 		this.buscador.getToolbar().setAcciones(this);
@@ -63,10 +62,11 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 
 	private void seleccionarRegistro(int posicion) {
 		if (posicion < 0) {
+			rol = null;
 			return;
 		}
 		rol = lista.get(posicion);
-		
+
 		if (rol == null) {
 			return;
 		}
@@ -76,15 +76,23 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 	public void nuevo() {
 		TransaccionRol transaccion = new TransaccionRol();
 		transaccion.setUpControlador();
-		transaccion.setVisible(true);
 		transaccion.getControlador().nuevo();
+		transaccion.setAlwaysOnTop(true);
+		transaccion.setLocationRelativeTo(buscador);
+		transaccion.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
+		if (rol == null) {
+			return;
+		}
+
 		TransaccionRol ventana = new TransaccionRol();
 		ventana.setUpControlador();
 		ventana.getControlador().setRol(rol);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
 
@@ -108,7 +116,7 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1 ) {
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
 
@@ -121,14 +129,16 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -162,12 +172,10 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void setRol(Rol rol) {
-		this.rol = rol;	
+		this.rol = rol;
 	}
-
-
 
 }

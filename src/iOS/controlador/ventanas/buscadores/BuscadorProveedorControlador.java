@@ -37,7 +37,7 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 		setUpEvents();
 		recuperarTodo();
 	}
-	
+
 	public void setInterfaz(ProveedorInterface interfaz) {
 		this.interfaz = interfaz;
 	}
@@ -63,6 +63,10 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 	}
 
 	private void seleccionarRegistro(int posicion) {
+		if (posicion < 0) {
+			proveedor = null;
+			return;
+		}
 		proveedor = lista.get(posicion);
 	}
 
@@ -86,16 +90,16 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// doble clic en un registro de la tabla
-		if (e.getSource() == bProveedor.getTable() && e.getClickCount() == 1 ) {
+		if (e.getSource() == bProveedor.getTable() && e.getClickCount() == 1) {
 			seleccionarRegistro(bProveedor.getTable().getSelectedRow());
 		}
-		
+
 		if (e.getSource() == bProveedor.getTable() && e.getClickCount() == 2) {
 			seleccionarRegistro(bProveedor.getTable().getSelectedRow());
 			interfaz.setProveedor(proveedor);
 			bProveedor.dispose();
 		}
-		
+
 	}
 
 	@Override
@@ -118,18 +122,25 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 	public void nuevo() {
 		VentanaProveedor ventana = new VentanaProveedor();
 		ventana.setUpControlador();
-		ventana.setVisible(true);
 		ventana.getControlador().nuevo();
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(bProveedor);
+		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
+		if (proveedor == null) {
+			return;
+		}
 		VentanaProveedor ventana = new VentanaProveedor();
 		ventana.setUpControlador();
-		ventana.getControlador().setProveedor(proveedor);
-		ventana.setVisible(true);
 		ventana.getControlador().modificar();
-		
+		ventana.getControlador().setProveedor(proveedor);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(bProveedor);
+		ventana.setVisible(true);
+
 	}
 
 	@Override

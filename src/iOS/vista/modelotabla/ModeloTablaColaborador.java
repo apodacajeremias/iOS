@@ -19,6 +19,7 @@ public class ModeloTablaColaborador extends AbstractTableModel {
 	
 	public void setLista(List<Colaborador> lista) {
 		this.lista = lista;
+		fireTableDataChanged();
 	}
 
 	@Override

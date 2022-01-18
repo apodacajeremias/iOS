@@ -35,7 +35,8 @@ import iOS.vista.modelotabla.ModeloTablaProveedorCuenta;
 import iOS.vista.ventanas.VentanaProveedor;
 import iOS.vista.ventanas.buscadores.BuscadorBanco;
 
-public class VentanaProveedorControlador implements AccionesABM, ActionListener, MouseListener, KeyListener, ProveedorInterface, BancoInterface{
+public class VentanaProveedorControlador
+		implements AccionesABM, ActionListener, MouseListener, KeyListener, ProveedorInterface, BancoInterface {
 	private VentanaProveedor ventana;
 	private ProveedorDao dao;
 	private Proveedor proveedor;
@@ -49,7 +50,6 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	private List<ProveedorContactos> contactos = new ArrayList<ProveedorContactos>();
 	private List<ProveedorCorreos> correos = new ArrayList<ProveedorCorreos>();
 	private List<InformacionPago> informacionesPagos = new ArrayList<InformacionPago>();
-
 
 	private ModeloTablaProveedorContacto mtContacto;
 	private ModeloTablaProveedorCorreo mtCorreo;
@@ -69,12 +69,11 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 		this.ventana.getTableInformacionPago().setModel(mtInformacionPago);
 		dao = new ProveedorDao();
 		nuevo();
-		estadoInicial(true);
 		setUpEvents();
 	}
 
 	private void setUpEvents() {
-		//MOUSE LISTENER
+		// MOUSE LISTENER
 		ventana.getTableContactos().addMouseListener(this);
 		ventana.getTableCorreos().addMouseListener(this);
 		ventana.getTableInformacionPago().addMouseListener(this);
@@ -82,66 +81,35 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 		ventana.getlCorreos().addMouseListener(this);
 		ventana.getlInformacionPago().addMouseListener(this);
 
-		//KEY LISTENER
+		// KEY LISTENER
 		ventana.getTableContactos().addKeyListener(this);
 		ventana.getTableCorreos().addKeyListener(this);
 		ventana.getTableInformacionPago().addKeyListener(this);
 
 	}
 
-	private void estadoInicial(boolean b) {
-		//LABEL DE MENSAJES EMPIEZA OBLIGATORIAMENTE CON AMARILLO
-		
-
-
-		//LIMPIAR JTEXTFIELD
+	private void estadoInicial() {
+		accion = null;
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettDireccion());
-		EventosUtil.limpiarCampoPersonalizado(ventana.gettIdentificacion());
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettNombreCompleto());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettIdentificacion());
 
+		vaciarTablas();
+	}
 
-		//BLOQUEAR JTEXTFIELD
-		EventosUtil.estadosCampoPersonalizado(ventana.gettDireccion(), b);
-		EventosUtil.estadosCampoPersonalizado(ventana.gettIdentificacion(), b);
-		EventosUtil.estadosCampoPersonalizado(ventana.gettNombreCompleto(), b);
-
-
-		//BLOQUEAR BOTONES
-		//SI ACCION NUEVO
-		if (accion.equals("NUEVO")) {
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtModificar(), !b);
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtEliminar(), !b);
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtCancelar(), b);
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtGuardar(), b);
-		}
-
-		//SI ACCION MODIFICAR
-		if (accion.equals("MODIFICAR")) {
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtModificar(), b);
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtEliminar(), b);
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtCancelar(), !b);
-			EventosUtil.estadosBotones(ventana.getMiToolBar().getbtGuardar(), !b);
-		}
-
-		//BLOQUEAR TABLAS
-		EventosUtil.estadosCampoPersonalizado(ventana.getTableContactos(), b);
-		EventosUtil.estadosCampoPersonalizado(ventana.getTableCorreos(), b);
-		EventosUtil.estadosCampoPersonalizado(ventana.getTableInformacionPago(), b);
-
-		//INICIAR TABLAS COMO VACIAS
-		contactos = new ArrayList<>();
-		correos = new ArrayList<>();
-		informacionesPagos = new ArrayList<>();
+	private void vaciarTablas() {
+		contactos = new ArrayList<ProveedorContactos>();
 		mtContacto.setContacto(contactos);
-		mtContacto.fireTableDataChanged();
+
+		correos = new ArrayList<ProveedorCorreos>();
 		mtCorreo.setCorreo(correos);
-		mtCorreo.fireTableDataChanged();
+
+		informacionesPagos = new ArrayList<InformacionPago>();
 		mtInformacionPago.setInformacion(informacionesPagos);
-		mtInformacionPago.fireTableDataChanged();
 
 	}
 
-	private boolean validarFormulario(){
+	private boolean validarFormulario() {
 		if (ventana.gettNombreCompleto().getText().isEmpty()) {
 			ventana.gettNombreCompleto().setBorder(BorderFactory.createLineBorder(Color.RED, 1));
 			ventana.gettNombreCompleto().requestFocus();
@@ -168,7 +136,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	}
 
 	private boolean validarIdentificacion() {
-		if (ventana.gettIdentificacion().getText().equals("\\s")){
+		if (ventana.gettIdentificacion().getText().equals("\\s")) {
 			return false;
 		}
 		if (ventana.gettIdentificacion().getText().equals("0+")) {
@@ -182,24 +150,24 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 			try {
 				if (informacionesPagos.get(i).getNombreCuenta().isEmpty()) {
 					ventana.getlMensaje().setForeground(Color.red);
-					ventana.getlMensaje().setText("VERIFIQUE NOMBRE DE LA CUENTA BANCARIA");	
+					ventana.getlMensaje().setText("VERIFIQUE NOMBRE DE LA CUENTA BANCARIA");
 					return false;
 				}
 			} catch (Exception e) {
 				ventana.getlMensaje().setForeground(Color.red);
-				ventana.getlMensaje().setText("VERIFIQUE NOMBRE DE LA CUENTA BANCARIA");	
+				ventana.getlMensaje().setText("VERIFIQUE NOMBRE DE LA CUENTA BANCARIA");
 				return false;
 			}
 
 			try {
 				if (informacionesPagos.get(i).getNumeroCuenta().isEmpty()) {
 					ventana.getlMensaje().setForeground(Color.red);
-					ventana.getlMensaje().setText("VERIFIQUE NUMERO DE LA CUENTA BANCARIA");	
+					ventana.getlMensaje().setText("VERIFIQUE NUMERO DE LA CUENTA BANCARIA");
 					return false;
 				}
 			} catch (Exception e) {
 				ventana.getlMensaje().setForeground(Color.red);
-				ventana.getlMensaje().setText("VERIFIQUE NUMERO DE LA CUENTA BANCARIA");	
+				ventana.getlMensaje().setText("VERIFIQUE NUMERO DE LA CUENTA BANCARIA");
 				return false;
 			}
 
@@ -208,7 +176,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	}
 
 	private void pedirContacto() {
-		String telefono = JOptionPane.showInputDialog("Introduzca el número");	
+		String telefono = JOptionPane.showInputDialog("Introduzca el número");
 
 		try {
 			while (telefono.isEmpty()) {
@@ -218,12 +186,13 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 				}
 			}
 		} catch (Exception e) {
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 			return;
 		}
 
 		agregarContacto(telefono);
 	}
+
 	private void agregarContacto(String telefono) {
 		contacto = new ProveedorContactos();
 		contacto.setColaborador(Sesion.getInstance().getColaborador());
@@ -233,7 +202,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 		mtContacto.fireTableDataChanged();
 	}
 
-	private void pedirCorreo(){
+	private void pedirCorreo() {
 		String correo = JOptionPane.showInputDialog("INTRODUZCA EL CORREO");
 
 		Pattern pattern = Pattern.compile("([a-z0-9]+(\\.?[a-z0-9])*)+@(([a-z]+)\\.([a-z]+))+");
@@ -248,25 +217,25 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 
 		Matcher mather = pattern.matcher(correo);
 
-
 		try {
 			while (mather.find() == false) {
-				correo = JOptionPane.showInputDialog("CORREO NO VALIDO");	
+				correo = JOptionPane.showInputDialog("CORREO NO VALIDO");
 				mather = pattern.matcher(correo);
 				if (mather.find() == true) {
 					agregarCorreo(correo);
 					return;
 				}
-			} 
+			}
 		} catch (Exception e) {
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 			return;
 		}
 
 		agregarCorreo(correo);
 
 	}
-	private void agregarCorreo(String email) {		
+
+	private void agregarCorreo(String email) {
 		correo = new ProveedorCorreos();
 		correo.setColaborador(Sesion.getInstance().getColaborador());
 		correo.setCorreoElectronico(email);
@@ -275,8 +244,7 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 		mtContacto.fireTableDataChanged();
 	}
 
-
-	private void pedirInformacionPago(){
+	private void pedirInformacionPago() {
 		abrirBuscadorBanco();
 	}
 
@@ -287,23 +255,24 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 	}
 
 	private void gestionarProveedor() {
-		estadoInicial(false);
-		accion = "MODIFICAR";
-
-		//Cargar campos de texto
+		if (proveedor == null) {
+			return;
+		}
+		// Cargar campos de texto
 		ventana.gettDireccion().setText(proveedor.getDireccion());
 		ventana.gettIdentificacion().setText(proveedor.getIdentificacion());
 		ventana.gettNombreCompleto().setText(proveedor.getNombreCompleto());
 
-		//Cargar listas
-		mtContacto.setContacto(proveedor.getListaContactos());
-		mtCorreo.setCorreo(proveedor.getListaCorreos());
-		mtInformacionPago.setInformacion(proveedor.getInformacionesPago());
-		mtContacto.fireTableDataChanged();
-		mtCorreo.fireTableDataChanged();
-		mtInformacionPago.fireTableDataChanged();
-	}
+		// Cargar listas
+		correos = proveedor.getListaCorreos();
+		mtCorreo.setCorreo(correos);
 
+		contactos = proveedor.getListaContactos();
+		mtContacto.setContacto(contactos);
+
+		informacionesPagos = proveedor.getInformacionesPago();
+		mtInformacionPago.setInformacion(informacionesPagos);
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -311,20 +280,17 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 
 	}
 
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
-
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
-
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -341,11 +307,9 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 		}
 	}
 
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
-
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -353,83 +317,77 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 
 	}
 
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == ventana.getlContactos()) {
 			Font font = ventana.getlContactos().getFont();
-			HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
+			HashMap<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
 			attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 			ventana.getlContactos().setFont(font.deriveFont(attributes));
 		}
 
 		if (e.getSource() == ventana.getlCorreos()) {
 			Font font = ventana.getlCorreos().getFont();
-			HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
+			HashMap<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
 			attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 			ventana.getlCorreos().setFont(font.deriveFont(attributes));
 		}
 
 		if (e.getSource() == ventana.getlInformacionPago()) {
 			Font font = ventana.getlInformacionPago().getFont();
-			HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
+			HashMap<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
 			attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 			ventana.getlInformacionPago().setFont(font.deriveFont(attributes));
 		}
 
 	}
-
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource() == ventana.getlContactos()) {
 			Font font = ventana.getlContactos().getFont();
-			HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
+			HashMap<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
 			attributes.put(TextAttribute.UNDERLINE, -1);
 			ventana.getlContactos().setFont(font.deriveFont(attributes));
 		}
 
 		if (e.getSource() == ventana.getlCorreos()) {
 			Font font = ventana.getlCorreos().getFont();
-			HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
+			HashMap<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
 			attributes.put(TextAttribute.UNDERLINE, -1);
 			ventana.getlCorreos().setFont(font.deriveFont(attributes));
 		}
 
 		if (e.getSource() == ventana.getlInformacionPago()) {
 			Font font = ventana.getlInformacionPago().getFont();
-			HashMap<TextAttribute,Object> attributes = new HashMap<>(font.getAttributes());
+			HashMap<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
 			attributes.put(TextAttribute.UNDERLINE, -1);
 			ventana.getlInformacionPago().setFont(font.deriveFont(attributes));
 		}
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}
 
-
 	@Override
 	public void nuevo() {
+		estadoInicial();
 		accion = "NUEVO";
-		estadoInicial(true);
-		ventana.getlMensaje().setText(accion+" REGISTRO");
+		ventana.getlMensaje().setText(accion + " REGISTRO");
 		ventana.gettNombreCompleto().requestFocus();
 
 	}
-
 
 	@Override
 	public void modificar() {
+		estadoInicial();
 		accion = "MODIFICAR";
-		estadoInicial(true);
-		ventana.getlMensaje().setText(accion+" REGISTRO");
+		ventana.getlMensaje().setText(accion + " REGISTRO");
 		ventana.gettNombreCompleto().requestFocus();
 
 	}
-
 
 	@Override
 	public void eliminar() {
@@ -437,12 +395,11 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 
 	}
 
-
 	@Override
 	public void guardar() {
 		if (!validarFormulario()) {
 			ventana.getlMensaje().setForeground(Color.red);
-			ventana.getlMensaje().setText("VERIFIQUE LA INFORMACION NUEVAMENTE");			
+			ventana.getlMensaje().setText("VERIFIQUE LA INFORMACION NUEVAMENTE");
 			return;
 		}
 
@@ -470,8 +427,6 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 		proveedor.setListaCorreos(correos);
 		proveedor.setInformacionesPago(informacionesPagos);
 
-		ventana.getlMensaje().setForeground(Color.yellow);
-
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(proveedor);
@@ -480,9 +435,10 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 				dao.modificar(proveedor);
 				ventana.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
 			}
-			
+
 			dao.commit();
-			estadoInicial(true);
+			modificar();
+			setProveedor(proveedor);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);
@@ -490,10 +446,9 @@ public class VentanaProveedorControlador implements AccionesABM, ActionListener,
 
 	}
 
-
 	@Override
 	public void cancelar() {
-		estadoInicial(true);
+		estadoInicial();
 
 	}
 

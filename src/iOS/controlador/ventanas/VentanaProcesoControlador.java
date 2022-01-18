@@ -120,8 +120,8 @@ public class VentanaProcesoControlador implements AccionesABM, ProcesoInterface,
 			proceso = new Proceso();
 			proceso.setColaborador(Sesion.getInstance().getColaborador());
 		}
-
 		proceso.setDescripcion(ventana.gettNombreCompleto().getText());
+		
 		try {
 			proceso.setIcon(EventosUtil.entradaImagen(archivo));
 		} catch (Exception e1) {

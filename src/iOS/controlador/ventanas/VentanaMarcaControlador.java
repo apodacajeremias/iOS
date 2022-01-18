@@ -41,6 +41,8 @@ public class VentanaMarcaControlador implements AccionesABM, ActionListener, Mou
 	private void estadoInicial(boolean b) {
 		EventosUtil.limpiarCampoPersonalizado(ventanaMarca.gettNombreMarca());
 		EventosUtil.limpiarCampoPersonalizado(ventanaMarca.getlMensaje());
+		
+		accion = null;
 	}
 
 	private boolean validarFormulario() {
@@ -109,16 +111,16 @@ public class VentanaMarcaControlador implements AccionesABM, ActionListener, Mou
 
 	@Override
 	public void nuevo() {
-		accion = "NUEVO";
 		estadoInicial(false);
+		accion = "NUEVO";
 		ventanaMarca.getlMensaje().setText(accion + " REGISTRO");
 		ventanaMarca.gettNombreMarca().requestFocus();
 	}
 
 	@Override
 	public void modificar() {
-		accion = "MODIFICAR";
 		estadoInicial(false);
+		accion = "MODIFICAR";
 		ventanaMarca.getlMensaje().setText(accion + " REGISTRO");
 		ventanaMarca.gettNombreMarca().requestFocus();
 	}
@@ -150,8 +152,8 @@ public class VentanaMarcaControlador implements AccionesABM, ActionListener, Mou
 				ventanaMarca.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
 			}
 			dao.commit();
-//			Metodos.getInstance().registrar(marca, accion, marca.registrar());
-			estadoInicial(true);
+			modificar();
+			setMarca(marca);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);

@@ -1,17 +1,12 @@
 package iOS.vista.ventanas;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
-
-import iOS.controlador.util.ConnectionHelper;
-import iOS.controlador.util.EventosUtil;
 import iOS.controlador.ventanas.VentanaProcesoControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -24,30 +19,6 @@ import iOS.vista.ventanas.principales.VentanaAcceso;
  *
  */
 public class VentanaProceso extends VentanaGenerica {
-	
-	public static void main(String[] args) {
-		try {
-			BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.osLookAndFeelDecorated;
-			BeautyEyeLNFHelper.launchBeautyEyeLNF();
-			ConnectionHelper.setUp();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					VentanaProceso dialog = new VentanaProceso();
-					dialog.setUpControlador();
-					dialog.setVisible(true);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-					EventosUtil.formatException(ex);
-				}
-			}
-
-		});
-	}
 
 	/**
 	 * 
@@ -111,27 +82,27 @@ public class VentanaProceso extends VentanaGenerica {
 		getPanelFormulario().add(lblEstado);
 
 		lIcono = new JLabel("");
-		lIcono.setBounds(282, 80, 50, 50);
+		lIcono.setBounds(161, 76, 65, 65);
 		getPanelFormulario().add(lIcono);
-		lIcono.setIcon(new ImageIcon(VentanaAcceso.class.getResource("/img/LOGO_IOS.png")));
+		lIcono.setIcon(new ImageIcon(VentanaAcceso.class.getResource("/img/NoDisponible.png")));
 		lIcono.setForeground(Color.DARK_GRAY);
 		lIcono.setHorizontalAlignment(SwingConstants.CENTER);
 
 		LabelPersonalizado lblprsnlzdAgregarIcono = new LabelPersonalizado(0);
 		lblprsnlzdAgregarIcono.setText("Agregar Icono");
-		lblprsnlzdAgregarIcono.setBounds(342, 80, 100, 15);
+		lblprsnlzdAgregarIcono.setBounds(236, 80, 100, 15);
 		getPanelFormulario().add(lblprsnlzdAgregarIcono);
 
 		LabelPersonalizado lblprsnlzdpxpx = new LabelPersonalizado(0);
 		lblprsnlzdpxpx.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblprsnlzdpxpx.setText("50px * 50px");
-		lblprsnlzdpxpx.setBounds(342, 98, 100, 10);
+		lblprsnlzdpxpx.setText("64px * 64px");
+		lblprsnlzdpxpx.setBounds(236, 98, 100, 10);
 		getPanelFormulario().add(lblprsnlzdpxpx);
 
 		btnAbrirArchivos = new MiBoton((String) null);
 		btnAbrirArchivos.setActionCommand("AbrirArchivos");
 		btnAbrirArchivos.setText("...");
-		btnAbrirArchivos.setBounds(342, 110, 100, 20);
+		btnAbrirArchivos.setBounds(236, 110, 100, 20);
 		getPanelFormulario().add(btnAbrirArchivos);
 	}
 

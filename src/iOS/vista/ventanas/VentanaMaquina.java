@@ -46,38 +46,38 @@ public class VentanaMaquina extends VentanaGenerica {
 		getPanelFormulario().add(tNombreCompleto);
 
 		LabelPersonalizado lblprsnlzdNombreCompleto = new LabelPersonalizado(0);
-		lblprsnlzdNombreCompleto.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdNombreCompleto.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdNombreCompleto.setText("Nombre descriptivo de la maquina");
 		lblprsnlzdNombreCompleto.setBounds(20, 20, 307, 20);
 		getPanelFormulario().add(lblprsnlzdNombreCompleto);
 
 		LabelPersonalizado lblprsnlzdIdentificacion_1 = new LabelPersonalizado(0);
-		lblprsnlzdIdentificacion_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdIdentificacion_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdIdentificacion_1.setText("Tipo de maquina");
 		lblprsnlzdIdentificacion_1.setBounds(20, 80, 354, 20);
 		getPanelFormulario().add(lblprsnlzdIdentificacion_1);
 
 		lblID = new LabelPersonalizado(0);
-		lblID.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblID.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblID.setText("ID 000");
 		lblID.setBounds(20, 141, 432, 20);
 		getPanelFormulario().add(lblID);
 
 		lblFechaRegistro = new LabelPersonalizado(0);
-		lblFechaRegistro.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblFechaRegistro.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblFechaRegistro.setText("Registrado en diciembre 12, 2021");
 		lblFechaRegistro.setBounds(20, 201, 432, 20);
 		getPanelFormulario().add(lblFechaRegistro);
 		
 		lblColaborador = new LabelPersonalizado(0);
 		lblColaborador.setText("Registrado por ADMIN ROOT");
-		lblColaborador.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblColaborador.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblColaborador.setBounds(20, 170, 432, 20);
 		getPanelFormulario().add(lblColaborador);
 		
 		lblEstado = new LabelPersonalizado(0);
 		lblEstado.setText("MAQUINA ACTIVA");
-		lblEstado.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblEstado.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblEstado.setBounds(20, 232, 432, 20);
 		getPanelFormulario().add(lblEstado);
 		

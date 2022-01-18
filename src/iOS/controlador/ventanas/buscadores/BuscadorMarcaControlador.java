@@ -37,7 +37,7 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 		setUpEvents();
 		recuperarTodo();
 	}
-	
+
 	public void setInterfaz(MarcaInterface interfaz) {
 		this.interfaz = interfaz;
 	}
@@ -63,6 +63,10 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 	}
 
 	private void seleccionarRegistro(int posicion) {
+		if (posicion < 0) {
+			marca = null;
+			return;
+		}
 		marca = lista.get(posicion);
 		// Se pasa el valor seleccionado a la interfaz
 		interfaz.setMarca(marca);
@@ -88,23 +92,29 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// doble clic en un registro de la tabla
-		if (e.getSource() == bMarca.getTable() && e.getClickCount() == 1 ) {
+		if (e.getSource() == bMarca.getTable() && e.getClickCount() == 1) {
 			seleccionarRegistro(bMarca.getTable().getSelectedRow());
 		}
-		
+
 		if (e.getSource() == bMarca.getTable() && e.getClickCount() == 2) {
 			seleccionarRegistro(bMarca.getTable().getSelectedRow());
 			bMarca.dispose();
 		}
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == bMarca.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(bMarca.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == bMarca.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(bMarca.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -119,18 +129,22 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 	public void nuevo() {
 		VentanaMarca ventana = new VentanaMarca();
 		ventana.setUpControlador();
-		ventana.setVisible(true);
 		ventana.getControlador().nuevo();
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(bMarca);
+		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
 		VentanaMarca ventana = new VentanaMarca();
 		ventana.setUpControlador();
-		ventana.getControlador().setMarca(marca);
-		ventana.setVisible(true);
 		ventana.getControlador().modificar();
-		
+		ventana.getControlador().setMarca(marca);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(bMarca);
+		ventana.setVisible(true);
+
 	}
 
 	@Override

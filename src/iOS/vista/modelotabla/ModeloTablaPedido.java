@@ -53,7 +53,8 @@ public class ModeloTablaPedido extends AbstractTableModel {
 		case 1:
 			return lista.get(r).getCliente().getNombreCompleto();
 		case 2:
-			return EventosUtil.separadorMiles(lista.get(r).getSumaPagos())+" de "+EventosUtil.separadorMiles((double) lista.get(r).getPrecioPagar());
+			return EventosUtil.separadorMiles(lista.get(r).getSumaPagos()) + " de "
+					+ EventosUtil.separadorMiles((double) lista.get(r).getPrecioPagar());
 		case 3:
 			String pedido = "";
 			String estado = "";
@@ -64,14 +65,15 @@ public class ModeloTablaPedido extends AbstractTableModel {
 			} else {
 				pedido = "PEDIDO";
 			}
+			if ((lista.get(r).isPedidoCarteleria() && lista.get(r).isPedidoCarteleria())
+					|| (!lista.get(r).isPedidoCarteleria() && !lista.get(r).isPedidoCarteleria())) {
+				tipo = "INDEFINIDO";
+			}
 			if (lista.get(r).isPedidoCarteleria() == true) {
 				tipo = "CARTELERIA";
 			}
 			if (lista.get(r).isPedidoCostura() == true) {
 				tipo = "CONFECCION";
-			}
-			if ((lista.get(r).isPedidoCarteleria() && lista.get(r).isPedidoCarteleria()) || (!lista.get(r).isPedidoCarteleria() && !lista.get(r).isPedidoCarteleria())) {
-				tipo = "INDEFINIDO";
 			}
 			if (lista.get(r).isEstado()) {
 				estado = "VIGENTE";

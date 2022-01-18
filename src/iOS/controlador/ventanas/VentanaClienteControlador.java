@@ -91,7 +91,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 		representantes = new ArrayList<Representante>();
 		modeloTablaRepresentante.setLista(representantes);
 	}
-	
+
 	private void agregarRepresentante(Cliente r) {
 		if (r == null) {
 			return;
@@ -109,7 +109,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 				return;
 			}
 		}
-		
+
 		representante = new Representante();
 		representante.setColaborador(Sesion.getInstance().getColaborador());
 		representante.setRepresentante(r);
@@ -167,9 +167,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 				|| ventana.gettIdentificacion().getText().equals("00000000")
 				|| ventana.gettIdentificacion().getText().equals("000000000")
 				|| ventana.gettIdentificacion().getText().equals("0000000000")) {
-
-			ventana.getlMensaje().setText("Los datos CÉDULA/RUC están incorrectos");
-			ventana.getlMensaje().setForeground(Color.RED);
+			JOptionPane.showMessageDialog(ventana, "El documento de identidad no es correcto");
 			ventana.gettIdentificacion().requestFocus();
 			return false;
 		}
@@ -181,9 +179,8 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 				|| ventana.gettContacto().getText().equals("000000000")
 				|| ventana.gettContacto().getText().equals("0000000000")) {
 
-			ventana.getlMensaje().setForeground(Color.RED);
-			ventana.getlMensaje().setText("El contacto es incorrecto");
-			ventana.gettIdentificacion().requestFocus();
+			JOptionPane.showMessageDialog(ventana, "El contacto no es correcto");
+			ventana.gettContacto().requestFocus();
 			return false;
 		}
 		if (ventana.gettIdentificacion().getText().isEmpty() && ventana.gettContacto().getText().isEmpty()) {
@@ -217,6 +214,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 		estadoInicial(true);
 		accion = "MODIFICAR";
 		ventana.getlMensaje().setText(accion + " REGISTRO");
+		ventana.gettNombreCompleto().requestFocus();
 	}
 
 	@Override
@@ -254,6 +252,10 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 			cliente = new Cliente();
 			cliente.setColaborador(Sesion.getInstance().getColaborador());
 		}
+
+		cliente.setEsB2B(ventana.getRdB2B().isSelected());
+		cliente.setEsB2C(ventana.getRdB2C().isSelected());
+
 		if (ventana.getRdB2C().isSelected()) {
 			agregarRepresentante(cliente);
 		}
@@ -261,8 +263,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 		cliente.setNombreCompleto(ventana.gettNombreCompleto().getText());
 		cliente.setContacto(ventana.gettContacto().getText());
 		cliente.setDireccion(ventana.gettDireccion().getText());
-		cliente.setEsB2B(ventana.getRdB2B().isSelected());
-		cliente.setEsB2C(ventana.getRdB2C().isSelected());
+
 		if (ventana.gettIdentificacion().getText().isEmpty()) {
 			cliente.setIdentificacion(ventana.gettIdentificacion().getText());
 		}
@@ -287,7 +288,6 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 				dao.modificar(cliente);
 			}
 			dao.commit();
-//			Metodos.getInstance().registrar(cliente, accion, cliente.registrar());
 			try {
 				interfaz.setCliente(cliente);
 				ventana.dispose();
@@ -297,6 +297,9 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 				ventana.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
 			}
 		} catch (Exception e) {
+			if (e.getCause().getClass() == ConstraintViolationException.class) {
+				JOptionPane.showMessageDialog(null, "Numero de documento de identidad repetido, verifique");
+			}
 			dao.rollBack();
 			e.printStackTrace();
 		}
@@ -317,6 +320,8 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 		ventana.setUpControlador();
 		ventana.getControlador().setRepresentante(true);
 		ventana.getControlador().setInterfaz(this);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(ventana);
 		ventana.setVisible(true);
 	}
 

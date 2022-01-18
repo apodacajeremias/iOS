@@ -697,6 +697,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 				detalle.setPrecioDetalle(precioDetalle(detalle));
 				mtPedidoDetalle.fireTableDataChanged();
 				mtDetalleMaterial.fireTableDataChanged();
+				realizarCalculos();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -748,6 +749,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		buscador.setTitle(buscador.getTitle().concat(": CONFECCION"));
 		buscador.getControlador().recuperarTodo(false, true);
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(ventana);
 		buscador.setVisible(true);
 	}
 
@@ -758,6 +760,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		BuscadorMaterial buscador = new BuscadorMaterial();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(ventana);
 		buscador.setVisible(true);
 	}
 
@@ -765,6 +768,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		BuscadorCliente buscador = new BuscadorCliente();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(ventana);
 		buscador.setVisible(true);
 	}
 

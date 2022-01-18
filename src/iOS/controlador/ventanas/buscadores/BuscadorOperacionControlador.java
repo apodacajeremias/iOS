@@ -20,7 +20,8 @@ import iOS.vista.modelotabla.ModeloTablaOperacion;
 import iOS.vista.ventanas.buscadores.BuscadorModulo;
 import iOS.vista.ventanas.buscadores.BuscadorOperacion;
 
-public class BuscadorOperacionControlador implements KeyListener, MouseListener, AccionesABM, OperacionInterface, ModuloInterface {
+public class BuscadorOperacionControlador
+		implements KeyListener, MouseListener, AccionesABM, OperacionInterface, ModuloInterface {
 	private BuscadorOperacion buscador;
 	private ModeloTablaOperacion modeloTabla;
 	private OperacionDao dao;
@@ -67,23 +68,25 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 	}
 
 	private void seleccionarRegistro(int posicion) {
-		operacion = lista.get(posicion);
-		
-		if (operacion == null) {
+		if (posicion < 0) {
+			operacion = null;
 			return;
 		}
+		operacion = lista.get(posicion);
 	}
+
 	private boolean moduloConOperacionRepetida(String nombre, Modulo modulo) {
 		for (int i = 0; i < lista.size(); i++) {
-			if (lista.get(i).getNombreOperacion().equalsIgnoreCase(nombre) && lista.get(i).getModulo().getId() == modulo.getId()) {
-				return true; //HAY REPETIDO
+			if (lista.get(i).getNombreOperacion().equalsIgnoreCase(nombre)
+					&& lista.get(i).getModulo().getId() == modulo.getId()) {
+				return true; // HAY REPETIDO
 			}
 		}
 		return false;
 
 	}
-	
-	private boolean moduloVacio(Modulo modulo){
+
+	private boolean moduloVacio(Modulo modulo) {
 		if (modulo == null) {
 			return true;
 		}
@@ -92,7 +95,6 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 		}
 		return false;
 	}
-
 
 	@Override
 	public void setOperacion(Operacion modulo) {
@@ -103,24 +105,24 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 	@Override
 	public void nuevo() {
 		String nombre = JOptionPane.showInputDialog("Defina la operacion");
-		try{
+		try {
 			while (nombre.isEmpty()) {
 				nombre = JOptionPane.showInputDialog("Operacion no definida");
 				if (nombre == null) {
 					return;
 				}
 			}
-			
+
 			abrirBuscadorModulo();
-			
+
 			if (moduloVacio(modulo)) {
 				return;
 			}
-			
+
 			if (moduloConOperacionRepetida(nombre, modulo)) {
 				return;
 			}
-			
+
 			operacion = new Operacion();
 			operacion.setNombreOperacion(nombre.toUpperCase());
 			operacion.setModulo(modulo);
@@ -160,7 +162,7 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1 ) {
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
 
@@ -173,14 +175,16 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -214,13 +218,13 @@ public class BuscadorOperacionControlador implements KeyListener, MouseListener,
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void setModulo(Modulo modulo) {
 		this.modulo = modulo;
-		
+
 	}
-	
+
 	private void abrirBuscadorModulo() {
 		BuscadorModulo buscador = new BuscadorModulo();
 		buscador.setUpControlador();

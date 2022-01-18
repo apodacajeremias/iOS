@@ -435,6 +435,8 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		BuscadorProveedor buscador = new BuscadorProveedor();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(transaccionCompra);
+		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 
@@ -456,6 +458,8 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		BuscadorMaterial buscador = new BuscadorMaterial();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(transaccionCompra);
+		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 

@@ -65,6 +65,10 @@ public class BuscadorSectorControlador implements KeyListener, MouseListener, Ac
 	}
 
 	private void seleccionarRegistro(int posicion) {
+		if (posicion < 0) {
+			sector = null;
+			return;
+		}
 		sector = sectores.get(posicion);
 	}
 
@@ -107,10 +111,16 @@ public class BuscadorSectorControlador implements KeyListener, MouseListener, Ac
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -126,18 +136,23 @@ public class BuscadorSectorControlador implements KeyListener, MouseListener, Ac
 		VentanaSector ventana = new VentanaSector();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
-	
 	}
 
 	@Override
 	public void modificar() {
+		if (sector == null) {
+			return;
+		}
 		VentanaSector ventana = new VentanaSector();
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setSector(sector);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
-		
 
 	}
 

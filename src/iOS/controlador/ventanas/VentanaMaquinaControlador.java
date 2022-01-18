@@ -16,12 +16,6 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 	private Maquina maquina;
 	private String accion;
 
-	private MaquinaInterface interfaz;
-
-	public void setInterfaz(MaquinaInterface interfaz) {
-		this.interfaz = interfaz;
-	}
-
 	public VentanaMaquinaControlador(VentanaMaquina ventanaMaquina) {
 		this.ventana = ventanaMaquina;
 		this.ventana.getMiToolBar().setAcciones(this);
@@ -39,7 +33,7 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 
 	}
 
-	private void estadoInicial(boolean b) {
+	private void estadoInicial() {
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettNombreCompleto());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getLblColaborador());
@@ -65,7 +59,7 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 
 	@Override
 	public void nuevo() {
-		estadoInicial(true);
+		estadoInicial();
 		accion = "NUEVO";
 		maquina = null;
 		ventana.getlMensaje().setText(accion + " REGISTRO");
@@ -75,9 +69,10 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 
 	@Override
 	public void modificar() {
-		estadoInicial(true);
+		estadoInicial();
 		accion = "MODIFICAR";
 		ventana.getlMensaje().setText(accion + " REGISTRO");
+		ventana.gettNombreCompleto().requestFocus();
 	}
 
 	@Override
@@ -106,15 +101,9 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 				dao.modificar(maquina);
 			}
 			dao.commit();
-//			Metodos.getInstance().registrar(maquina, accion, maquina.registrar());
-			try {
-				interfaz.setMaquina(maquina);
-				ventana.dispose();
-			} catch (Exception e) {
-				modificar();
-				setMaquina(maquina);
-				ventana.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
-			}
+			modificar();
+			setMaquina(maquina);
+			ventana.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
 		} catch (Exception e) {
 			dao.rollBack();
 			e.printStackTrace();
@@ -124,7 +113,7 @@ public class VentanaMaquinaControlador implements AccionesABM, MaquinaInterface 
 
 	@Override
 	public void cancelar() {
-		estadoInicial(true);
+		estadoInicial();
 	}
 
 	public void salir() {

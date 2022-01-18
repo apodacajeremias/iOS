@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +15,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -232,6 +234,17 @@ public class EventosUtil {
 		FileInputStream entrada;
 		try {
 			entrada = new FileInputStream(archivo);
+			BufferedImage img = ImageIO.read(entrada);
+			/*
+			 * 64 x 64 sería el tamaño recomendable
+			 */
+
+			int width = img.getWidth();
+			int height = img.getHeight();
+			if (width != 64 || height != 64) {
+				JOptionPane.showMessageDialog(null, "El ancho y alto recomendado es de 64px");
+				return null;
+			}
 			entrada.read(bytesIMG);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

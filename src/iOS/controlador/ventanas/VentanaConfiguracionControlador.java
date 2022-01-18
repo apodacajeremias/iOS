@@ -1,11 +1,17 @@
 package iOS.controlador.ventanas;
 
-
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ConfiguracionDao;
@@ -15,100 +21,96 @@ import iOS.modelo.singleton.Sesion;
 import iOS.vista.ventanas.VentanaConfiguracion;
 
 public class VentanaConfiguracionControlador implements ActionListener, AccionesABM {
-	private VentanaConfiguracion vConfiguracion;
+	private VentanaConfiguracion ventana;
 	private String accion;
 	public static String modulo = "CONFIGURACION";
-	
+
 	private ConfiguracionDao dao;
 	private Configuracion configuracion;
 
+	private byte[] bytesIMG;
+	private File archivo;
+	private JFileChooser selectorArchivos = new JFileChooser();
+	private FileFilter filtro = new FileNameExtensionFilter("Archivos png (.png)", "png");
 	public VentanaConfiguracionControlador(VentanaConfiguracion vConfiguracion) {
-		this.vConfiguracion = vConfiguracion;
+		this.ventana = vConfiguracion;
 		vConfiguracion.getMiToolBar().setAcciones(this);
 		dao = new ConfiguracionDao();
+		estadoInicial();
 		recuperarConfiguracion();
-		estadoInicial(true);
+	}
+	
+	private void abrirBuscadorImagenes() {
+		selectorArchivos.setFileFilter(filtro);
+		if (selectorArchivos.showDialog(ventana, "Seleccionar") == JFileChooser.APPROVE_OPTION) {
+			archivo = selectorArchivos.getSelectedFile();
+			if (archivo.canRead()) {
+				if (archivo.getName().endsWith("png")) {
+					bytesIMG = EventosUtil.entradaImagen(archivo);
+					ventana.getlIcono().setIcon(new ImageIcon(bytesIMG));
+				} else {
+					JOptionPane.showMessageDialog(ventana, "Seleccione una imagen png");
+				}
+			}
+		}
 	}
 
 	private void recuperarConfiguracion() {
-		configuracion = dao.recuperarUltimo();
-		if (configuracion == null) {
-			accion = "NUEVO";
-		} else {
-			accion = "MODIFICAR";
-			vConfiguracion.gettNombreEmpresa().setText(configuracion.getEmpresa());
-			vConfiguracion.gettContacto().setText(configuracion.getTelefono());
-			vConfiguracion.gettContribuyente().setText(configuracion.getRegistroUnico());
-			vConfiguracion.gettTitular().setText(configuracion.getTitular());
-			vConfiguracion.gettRegistroP().setText(configuracion.getRegistroProfesional());
-			vConfiguracion.gettCedula().setText(configuracion.getCedulaTitular());
-			vConfiguracion.gettUbicacion().setText(configuracion.getUbicacion());
-		}
+		configuracion = dao.recuperarUltimaConfiguracion();
+
+		setConfiguracion(configuracion);
+
 	}
 
 	private boolean validarFormulario() {
-		if (vConfiguracion.gettNombreEmpresa().getText().isEmpty()) {
+		if (ventana.gettNombreEmpresa().getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Faltan datos", "Verificar", JOptionPane.ERROR_MESSAGE);
-			vConfiguracion.gettNombreEmpresa().requestFocus();
+			ventana.gettNombreEmpresa().requestFocus();
 			return false;
 		}
-		
-		if (vConfiguracion.gettContacto().getText().isEmpty()) {
+		if (ventana.gettDireccion().getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Faltan datos", "Verificar", JOptionPane.ERROR_MESSAGE);
-			vConfiguracion.gettContacto().requestFocus();
+			ventana.gettDireccion().requestFocus();
 			return false;
 		}
-		
-		if (vConfiguracion.gettContribuyente().getText().isEmpty()) {
+		if (ventana.gettRUC().getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Faltan datos", "Verificar", JOptionPane.ERROR_MESSAGE);
-			vConfiguracion.gettContribuyente().requestFocus();
+			ventana.gettRUC().requestFocus();
 			return false;
 		}
-		
-		if (vConfiguracion.gettTitular().getText().isEmpty()) {
+
+		if (ventana.gettTelefono().getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Faltan datos", "Verificar", JOptionPane.ERROR_MESSAGE);
-			vConfiguracion.gettTitular().requestFocus();
+			ventana.gettTelefono().requestFocus();
 			return false;
 		}
-		
-		if (vConfiguracion.gettRegistroP().getText().isEmpty()) {
+		if (ventana.gettSitioWeb().getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Faltan datos", "Verificar", JOptionPane.ERROR_MESSAGE);
-			vConfiguracion.gettRegistroP().requestFocus();
+			ventana.gettSitioWeb().requestFocus();
 			return false;
-		}
-		
-		if (vConfiguracion.gettCedula().getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Faltan datos", "Verificar", JOptionPane.ERROR_MESSAGE);
-			vConfiguracion.gettCedula().requestFocus();
-			return false;
-		}
-		
-		if (vConfiguracion.gettUbicacion().getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Faltan datos", "Verificar", JOptionPane.ERROR_MESSAGE);
-			vConfiguracion.gettUbicacion().requestFocus();
-			return false;
+		} 
+		if (!ventana.gettSitioWeb().getText().isEmpty()) {
+			try {
+				new URL(ventana.gettSitioWeb().getText()).toURI();
+				return true;
+			} catch (URISyntaxException exception) {
+				JOptionPane.showMessageDialog(ventana, "URL de pagina web invalida, verifique.");
+				return false;
+			} catch (MalformedURLException exception) {
+				JOptionPane.showMessageDialog(ventana, "URL de pagina web invalida, verifique.");
+				return false;
+			}
 		}
 		return true;
 	}
 
-	// METODO VACIAR FORMULARIO
-	private void vaciarFormulario() {
-		EventosUtil.limpiarCampoPersonalizado(vConfiguracion.gettNombreEmpresa());
-		EventosUtil.limpiarCampoPersonalizado(vConfiguracion.gettContacto());
-		EventosUtil.limpiarCampoPersonalizado(vConfiguracion.gettContribuyente());
-		EventosUtil.limpiarCampoPersonalizado(vConfiguracion.gettTitular());
-		EventosUtil.limpiarCampoPersonalizado(vConfiguracion.gettRegistroP());
-
-	}
-
-	private void estadoInicial(boolean b) {
-		EventosUtil.estadosCampoPersonalizado(vConfiguracion.gettNombreEmpresa(), b);
-		EventosUtil.estadosCampoPersonalizado(vConfiguracion.gettContribuyente(), b);
-		EventosUtil.estadosCampoPersonalizado(vConfiguracion.gettContacto(), b);
-		EventosUtil.estadosCampoPersonalizado(vConfiguracion.gettTitular(), b);
-		EventosUtil.estadosCampoPersonalizado(vConfiguracion.gettRegistroP(), b);
-		EventosUtil.estadosCampoPersonalizado(vConfiguracion.gettCedula(), b);
-		EventosUtil.estadosCampoPersonalizado(vConfiguracion.gettUbicacion(), b);
+	private void estadoInicial() {
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettDireccion());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettNombreEmpresa());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettRUC());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettSitioWeb());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettTelefono());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlIcono());
 	}
 
 	@Override
@@ -120,11 +122,14 @@ public class VentanaConfiguracionControlador implements ActionListener, Acciones
 		case "Cancelar":
 			cancelar();
 			break;
+		case "AbrirArchivos":
+			abrirBuscadorImagenes();
+			break;
 		default:
 			break;
 		}
 	}
-	
+
 	@Override
 	public void guardar() {
 		if (!validarFormulario()) {
@@ -133,61 +138,86 @@ public class VentanaConfiguracionControlador implements ActionListener, Acciones
 		if (accion.equals("NUEVO")) {
 			configuracion = new Configuracion();
 			configuracion.setColaborador(Sesion.getInstance().getColaborador());
-			
-		}
-		configuracion.setTitular(vConfiguracion.gettTitular().getText());
-		configuracion.setRegistroProfesional(vConfiguracion.gettRegistroP().getText());
-		configuracion.setEmpresa(vConfiguracion.gettNombreEmpresa().getText());
-		configuracion.setTelefono(vConfiguracion.gettContacto().getText());
-		configuracion.setRegistroUnico(vConfiguracion.gettContribuyente().getText());
-		configuracion.setCedulaTitular(vConfiguracion.gettCedula().getText());
-		configuracion.setUbicacion(vConfiguracion.gettUbicacion().getText());
 
-		dao = new ConfiguracionDao();
+		}
+		configuracion.setDireccion(ventana.gettDireccion().getText());
+		configuracion.setNombreEmpresa(ventana.gettNombreEmpresa().getText());
+		configuracion.setRucEmpresa(ventana.gettRUC().getText());
+		configuracion.setSitioWeb(ventana.gettSitioWeb().getText());
+		configuracion.setTelefono(ventana.gettTelefono().getText());
+		try {
+			configuracion.setIcon(EventosUtil.entradaImagen(archivo));
+		} catch (Exception e1) {
+			configuracion.setIcon(null);
+			e1.printStackTrace();
+		}
+
+		
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(configuracion);
-				dao.commit();
-				vConfiguracion.dispose();
-				vConfiguracion.getLblAccion().setText("Guardado");
+				ventana.getLblAccion().setText("Guardado");
 			} else {
 				dao.modificar(configuracion);
-				dao.commit();
-				vConfiguracion.dispose();
-				vConfiguracion.getLblAccion().setText("Actualizado");
+				ventana.getLblAccion().setText("Actualizado");
 			}
-			
-//			Metodos.getInstance().registrar(configuracion, accion, configuracion.registrar());
-			
+			dao.commit();
+			modificar();
+			setConfiguracion(configuracion);
 		} catch (Exception e) {
 			dao.rollBack();
 			EventosUtil.formatException(e);
 		}
-		
+
 	}
 
 	@Override
 	public void cancelar() {
-		vaciarFormulario();
-		vConfiguracion.dispose();
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
+		estadoInicial();
 	}
 
 	@Override
 	public void nuevo() {
-		// TODO Auto-generated method stub
-		
+		estadoInicial();
+		accion = "NUEVO";
+		ventana.getlMensaje().setText(accion + " REGISTRO");
+		ventana.gettNombreEmpresa().requestFocus();
 	}
 
 	@Override
 	public void modificar() {
-		// TODO Auto-generated method stub
-		
+		estadoInicial();
+		accion = "MODIFICAR";
+		ventana.getlMensaje().setText(accion + " REGISTRO");
+		ventana.gettNombreEmpresa().requestFocus();
 	}
 
 	@Override
 	public void eliminar() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	public void setConfiguracion(Configuracion configuracion) {
+		this.configuracion = configuracion;
+
+		if (configuracion == null) {
+			estadoInicial();
+			return;
+		}
+
+		ventana.gettNombreEmpresa().setText(configuracion.getNombreEmpresa());
+		ventana.gettDireccion().setText(configuracion.getDireccion());
+		ventana.gettRUC().setText(configuracion.getRucEmpresa());
+		ventana.gettSitioWeb().setText(configuracion.getSitioWeb());
+		ventana.gettTelefono().setText(configuracion.getTelefono());
+		try {
+			ventana.getlIcono().setIcon(new ImageIcon(configuracion.getIcon()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

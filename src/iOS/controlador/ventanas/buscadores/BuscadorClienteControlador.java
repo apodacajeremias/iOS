@@ -102,7 +102,9 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		}
 		// doble clic en un registro de la tabla
 		if (e.getSource() == buscador.getTable() && e.getClickCount() == 2) {
-			seleccionarRegistro(buscador.getTable().getSelectedRow());
+			if (cliente == null) {
+				return;
+			}
 
 			if (representante) {
 				interfaz.setRepresentante(cliente);
@@ -151,6 +153,8 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
 		ventana.getControlador().setInterfaz(this);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
 
@@ -164,6 +168,8 @@ public class BuscadorClienteControlador implements KeyListener, MouseListener, A
 		ventana.getControlador().modificar();
 		ventana.getControlador().setCliente(cliente);
 		ventana.getControlador().setInterfaz(this);
+		ventana.setAlwaysOnTop(true);
+		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
 

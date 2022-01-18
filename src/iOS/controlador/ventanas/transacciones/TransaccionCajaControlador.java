@@ -908,6 +908,8 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		BuscadorColaborador buscador = new BuscadorColaborador();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(ventana);
+		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 
@@ -915,8 +917,9 @@ public class TransaccionCajaControlador implements ActionListener, MouseListener
 		BuscadorPedido buscador = new BuscadorPedido();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
-		buscador.setVisible(true);
+		buscador.setLocationRelativeTo(ventana);
 		buscador.setAlwaysOnTop(true);
+		buscador.setVisible(true);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,33 +33,27 @@ public class Configuracion {
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 
-	@Column(nullable = true)
-	private String empresa;
+	@Column(nullable = false)
+	private String nombreEmpresa;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
+	private String rucEmpresa;
+	
+	@Column(nullable = false)
 	private String telefono;
-
+	
+	@Column(nullable = false)
+	private String sitioWeb;
+	
+	@Column(nullable = false)
+	private String direccion;
+	
+	@Lob
 	@Column(nullable = true)
-	private String registroUnico;
-
-	@Column(nullable = true)
-	private String titular;
-
-	@Column(nullable = true)
-	private String registroProfesional;
-
-	@Column(nullable = true)
-	private String cedulaTitular;
-
-	@Column(nullable = true)
-	private String ubicacion;
+	private byte[] icon;
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Date getFechaRegistro() {
@@ -85,12 +80,20 @@ public class Configuracion {
 		this.colaborador = colaborador;
 	}
 
-	public String getEmpresa() {
-		return empresa;
+	public String getNombreEmpresa() {
+		return nombreEmpresa;
 	}
 
-	public void setEmpresa(String empresa) {
-		this.empresa = empresa;
+	public void setNombreEmpresa(String nombreEmpresa) {
+		this.nombreEmpresa = nombreEmpresa;
+	}
+
+	public String getRucEmpresa() {
+		return rucEmpresa;
+	}
+
+	public void setRucEmpresa(String rucEmpresa) {
+		this.rucEmpresa = rucEmpresa;
 	}
 
 	public String getTelefono() {
@@ -101,52 +104,37 @@ public class Configuracion {
 		this.telefono = telefono;
 	}
 
-	public String getRegistroUnico() {
-		return registroUnico;
+	public String getSitioWeb() {
+		return sitioWeb;
 	}
 
-	public void setRegistroUnico(String registroUnico) {
-		this.registroUnico = registroUnico;
+	public void setSitioWeb(String sitioWeb) {
+		this.sitioWeb = sitioWeb;
 	}
 
-	public String getTitular() {
-		return titular;
+	public String getDireccion() {
+		return direccion;
 	}
 
-	public void setTitular(String titular) {
-		this.titular = titular;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
-	public String getRegistroProfesional() {
-		return registroProfesional;
+	public byte[] getIcon() {
+		return icon;
 	}
 
-	public void setRegistroProfesional(String registroProfesional) {
-		this.registroProfesional = registroProfesional;
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 
-	public String getCedulaTitular() {
-		return cedulaTitular;
-	}
-
-	public void setCedulaTitular(String cedulaTitular) {
-		this.cedulaTitular = cedulaTitular;
-	}
-
-	public String getUbicacion() {
-		return ubicacion;
-	}
-
-	public void setUbicacion(String ubicacion) {
-		this.ubicacion = ubicacion;
-	}
-
-	public String registrar() {
-		return "Configuracion [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
-				+ colaborador + ", empresa=" + empresa + ", telefono=" + telefono + ", registroUnico=" + registroUnico
-				+ ", titular=" + titular + ", registroProfesional=" + registroProfesional + ", cedulaTitular="
-				+ cedulaTitular + ", ubicacion=" + ubicacion + "]";
+	public void setId(int id) {
+		this.id = id;
 	}
 	
+	@Override
+	public String toString() {
+		return nombreEmpresa;
+	}
 	
 }

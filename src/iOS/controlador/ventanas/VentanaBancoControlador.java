@@ -1,14 +1,14 @@
 package iOS.controlador.ventanas;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.BancoDao;
@@ -20,9 +20,8 @@ import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaProveedorCuenta;
 import iOS.vista.ventanas.VentanaBanco;
 
-public class VentanaBancoControlador
-		implements AccionesABM, ActionListener, MouseListener, KeyListener, BancoInterface {
-	private VentanaBanco ventanaBanco;
+public class VentanaBancoControlador implements AccionesABM, ActionListener, BancoInterface {
+	private VentanaBanco ventana;
 	private BancoDao dao;
 	private EntidadBancaria banco;
 
@@ -32,98 +31,57 @@ public class VentanaBancoControlador
 	private ModeloTablaProveedorCuenta mtProveedorCuenta;
 
 	public VentanaBancoControlador(VentanaBanco ventanaBanco) {
-		this.ventanaBanco = ventanaBanco;
-		this.ventanaBanco.getMiToolBar().setAcciones(this);
+		this.ventana = ventanaBanco;
+		this.ventana.getMiToolBar().setAcciones(this);
 
 		mtProveedorCuenta = new ModeloTablaProveedorCuenta();
-		this.ventanaBanco.gettProveedorCuenta().setModel(mtProveedorCuenta);
+		this.ventana.gettProveedorCuenta().setModel(mtProveedorCuenta);
 
 		dao = new BancoDao();
-		nuevo();
-		estadoInicial(true);
 		setUpEvents();
-
 	}
 
-	private void estadoInicial(boolean b) {
-		EventosUtil.estadosCampoPersonalizado(ventanaBanco.gettNombreBanco(), b);
-		EventosUtil.limpiarCampoPersonalizado(ventanaBanco.gettNombreBanco());
+	private void estadoInicial() {
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettNombreBanco());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettNumeroAtencion());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettSitioWeb());
 
-		EventosUtil.estadosBotones(ventanaBanco.getMiToolBar().getbtModificar(), !b);
-		EventosUtil.estadosBotones(ventanaBanco.getMiToolBar().getbtEliminar(), !b);
-		EventosUtil.estadosBotones(ventanaBanco.getMiToolBar().getbtCancelar(), !b);
-		EventosUtil.estadosBotones(ventanaBanco.getMiToolBar().getbtGuardar(), b);
+		accion = null;
+		vaciarTabla();
+	}
 
+	private void vaciarTabla() {
+		items = new ArrayList<InformacionPago>();
+		mtProveedorCuenta.setInformacion(items);
 	}
 
 	private void setUpEvents() {
 		// ACTION LISTENER
 
 		// MOUSE LISTENER
-		this.ventanaBanco.gettProveedorCuenta().addMouseListener(this);
 
 		// KEY LISTENER
-		this.ventanaBanco.gettNombreBanco().addKeyListener(this);
-		this.ventanaBanco.gettProveedorCuenta().addKeyListener(this);
 
 	}
 
 	private boolean validarFormulario() {
-		if (ventanaBanco.gettNombreBanco().getText().isEmpty()) {
-			ventanaBanco.getlMensaje().setText("El nombre de la entidad bancaria está vacío");
-			ventanaBanco.getlMensaje().setForeground(Color.RED);
+		if (ventana.gettNombreBanco().getText().isEmpty()) {
+			JOptionPane.showMessageDialog(ventana, "Nombre de la entidad bancaria es requerida.");
 			return false;
 		}
-
+		if (!ventana.gettSitioWeb().getText().isEmpty()) {
+			try {
+				new URL(ventana.gettSitioWeb().getText()).toURI();
+				return true;
+			} catch (URISyntaxException exception) {
+				JOptionPane.showMessageDialog(ventana, "URL de pagina web invalida, verifique.");
+				return false;
+			} catch (MalformedURLException exception) {
+				JOptionPane.showMessageDialog(ventana, "URL de pagina web invalida, verifique.");
+				return false;
+			}
+		}
 		return true;
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -135,18 +93,19 @@ public class VentanaBancoControlador
 
 	@Override
 	public void nuevo() {
+		estadoInicial();
 		accion = "NUEVO";
-		estadoInicial(false);
-		ventanaBanco.getlMensaje().setText(accion + " REGISTRO");
-		ventanaBanco.gettNombreBanco().requestFocus();
+		ventana.getlMensaje().setText(accion + " REGISTRO");
+		ventana.gettNombreBanco().requestFocus();
 
 	}
 
 	@Override
 	public void modificar() {
+		estadoInicial();
 		accion = "MODIFICAR";
-		estadoInicial(false);
-		ventanaBanco.getlMensaje().setText(accion + " REGISTRO");
+		ventana.getlMensaje().setText(accion + " REGISTRO");
+		ventana.gettNombreBanco().requestFocus();
 
 	}
 
@@ -166,31 +125,33 @@ public class VentanaBancoControlador
 			banco.setColaborador(Sesion.getInstance().getColaborador());
 		}
 
-		banco.setNombreBanco(ventanaBanco.gettNombreBanco().getText());
+		banco.setNombreBanco(ventana.gettNombreBanco().getText());
+		banco.setNumeroAtencion(ventana.gettNumeroAtencion().getText());
+		banco.setPaginaWeb(ventana.gettSitioWeb().getText());
 		banco.setInformacionesPago(null);
 
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(banco);
-				ventanaBanco.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
+				ventana.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
 			} else {
 				dao.modificar(banco);
-				ventanaBanco.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
+				ventana.getlMensaje().setText("REGISTRO MODIFICADO CON ÉXITO");
 			}
 			dao.commit();
-//			Metodos.getInstance().registrar(banco, accion, banco.registrar());
-			estadoInicial(true);
+			modificar();
+			setBanco(banco);
 		} catch (Exception e) {
 			dao.rollBack();
-			EventosUtil.formatException(e);
+			e.printStackTrace();
 		}
 
 	}
 
 	@Override
 	public void cancelar() {
-		EventosUtil.limpiarCampoPersonalizado(ventanaBanco.getlMensaje());
-		estadoInicial(true);
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
+		estadoInicial();
 
 	}
 
@@ -206,11 +167,17 @@ public class VentanaBancoControlador
 			return;
 		}
 
-		ventanaBanco.gettNombreBanco().setText(banco.getNombreBanco());
-		items = dao.recuperarInformacionPagoPorBanco(banco.getId());
+		ventana.gettNombreBanco().setText(banco.getNombreBanco());
+		ventana.gettSitioWeb().setText(banco.getPaginaWeb());
+		ventana.gettNumeroAtencion().setText(banco.getNumeroAtencion());
 
-		mtProveedorCuenta.setInformacion(items);
-		mtProveedorCuenta.fireTableDataChanged();
+		try {
+			items = banco.getInformacionesPago();
+			mtProveedorCuenta.setInformacion(items);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }

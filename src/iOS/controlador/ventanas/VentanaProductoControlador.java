@@ -390,6 +390,7 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 				interfaz.setProducto(producto);
 				ventana.dispose();
 			} catch (Exception e) {
+				modificar();
 				setProducto(producto);
 			}
 		} catch (Exception e) {

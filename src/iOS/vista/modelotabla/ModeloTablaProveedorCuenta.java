@@ -64,6 +64,7 @@ public class ModeloTablaProveedorCuenta extends AbstractTableModel{
 			row.setNumeroCuenta((String) aValue);
 		}		
 		super.setValueAt(aValue, r, c);
+		fireTableDataChanged();
 	}
 	
 	@Override

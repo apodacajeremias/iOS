@@ -2,31 +2,34 @@ package iOS.modelo.dao;
 
 
 
-import java.util.List;
+import org.hibernate.query.Query;
 
 import iOS.modelo.entidades.Configuracion;
 
 public class ConfiguracionDao extends GenericDao<Configuracion>{
-	private List<Configuracion> configuraciones;
-	private Configuracion configuracion;
-
 	public ConfiguracionDao() {
 		super(Configuracion.class);
 		
 	}
 	
-	public Configuracion recuperarUltimo() {
+	public Configuracion recuperarUltimaConfiguracion() {
+		getSession().beginTransaction();
+
+		Configuracion resultado = new Configuracion();
+
+		String sql = "FROM Configuracion WHERE id = (SELECT MAX(id) FROM Configuracion) ORDER BY ID DESC";
+
 		try {
-			configuraciones = recuperarTodo();
-			for (int i = 0; i < configuraciones.size(); i++) {
-				configuracion = configuraciones.get(i);		} 
-			
-			return configuracion;
+			@SuppressWarnings("unchecked")
+			Query<Configuracion> query = getSession().createQuery(sql);
+			resultado = query.getSingleResult();
+			commit();
 		} catch (Exception e) {
-			return null;
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
 		}
-			
-		
+		return resultado;
 	}
 	
 	

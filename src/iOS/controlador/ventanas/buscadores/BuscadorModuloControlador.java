@@ -26,7 +26,6 @@ public class BuscadorModuloControlador implements KeyListener, MouseListener, Ac
 	private List<Modulo> lista = new ArrayList<Modulo>();
 	private Modulo modulo;
 
-
 	public BuscadorModuloControlador(BuscadorModulo buscador) {
 		this.buscador = buscador;
 		this.buscador.getToolbar().setAcciones(this);
@@ -64,22 +63,23 @@ public class BuscadorModuloControlador implements KeyListener, MouseListener, Ac
 	}
 
 	private void seleccionarRegistro(int posicion) {
-		modulo = lista.get(posicion);
-		
-		if (modulo == null) {
+		if (posicion < 0) {
+			modulo = null;
 			return;
 		}
+		modulo = lista.get(posicion);
+
 	}
+
 	private boolean verificarModuloRepetido(String nombre) {
 		for (int i = 0; i < lista.size(); i++) {
 			if (lista.get(i).getNombreModulo().equalsIgnoreCase(nombre)) {
-				return false; //HAY REPETIDO
+				return false; // HAY REPETIDO
 			}
 		}
 		return true;
 
 	}
-
 
 	@Override
 	public void setModulo(Modulo modulo) {
@@ -90,14 +90,14 @@ public class BuscadorModuloControlador implements KeyListener, MouseListener, Ac
 	@Override
 	public void nuevo() {
 		String nombre = JOptionPane.showInputDialog("Introduzco el nombre del módulo");
-		try{
+		try {
 			while (nombre.isEmpty()) {
 				nombre = JOptionPane.showInputDialog("Corrija el modulo");
 				if (nombre == null) {
 					return;
 				}
 			}
-			
+
 			if (!verificarModuloRepetido(nombre)) {
 				return;
 			}
@@ -139,7 +139,7 @@ public class BuscadorModuloControlador implements KeyListener, MouseListener, Ac
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1 ) {
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
 			seleccionarRegistro(buscador.getTable().getSelectedRow());
 		}
 
@@ -152,14 +152,16 @@ public class BuscadorModuloControlador implements KeyListener, MouseListener, Ac
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getSource() == buscador.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(buscador.getTable().getSelectedRow());
+		}
 	}
 
 	@Override

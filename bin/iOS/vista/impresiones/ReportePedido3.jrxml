@@ -15,7 +15,7 @@
 		<field name="archivo" class="java.lang.String">
 			<fieldDescription><![CDATA[archivo]]></fieldDescription>
 		</field>
-		<field name="precioDetalle" class="java.lang.Integer">
+		<field name="precioDetalle" class="java.lang.Double">
 			<fieldDescription><![CDATA[precioDetalle]]></fieldDescription>
 		</field>
 		<field name="medidaDetalle" class="java.lang.Double">
@@ -33,7 +33,7 @@
 		<field name="id" class="java.lang.Integer">
 			<fieldDescription><![CDATA[id]]></fieldDescription>
 		</field>
-		<field name="precioProducto" class="java.lang.Integer">
+		<field name="precioProducto" class="java.lang.Double">
 			<fieldDescription><![CDATA[precioProducto]]></fieldDescription>
 		</field>
 	</subDataset>
@@ -76,7 +76,7 @@
 	<field name="pedidoCostura" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[pedidoCostura]]></fieldDescription>
 	</field>
-	<field name="precioPagar" class="java.lang.Integer">
+	<field name="precioPagar" class="java.lang.Double">
 		<fieldDescription><![CDATA[precioPagar]]></fieldDescription>
 	</field>
 	<field name="pagosPedido" class="java.util.List">
@@ -85,7 +85,7 @@
 	<field name="pedidoDetalles" class="java.util.List">
 		<fieldDescription><![CDATA[pedidoDetalles]]></fieldDescription>
 	</field>
-	<field name="descuentoTotal" class="java.lang.Integer">
+	<field name="descuentoTotal" class="java.lang.Double">
 		<fieldDescription><![CDATA[descuentoTotal]]></fieldDescription>
 	</field>
 	<field name="metrosTotal" class="java.lang.Double">
@@ -97,7 +97,7 @@
 	<field name="cliente.nombreCompleto" class="iOS.modelo.entidades.Cliente">
 		<fieldDescription><![CDATA[cliente]]></fieldDescription>
 	</field>
-	<field name="sumatoriaPrecio" class="java.lang.Integer">
+	<field name="sumatoriaPrecio" class="java.lang.Double">
 		<fieldDescription><![CDATA[sumatoriaPrecio]]></fieldDescription>
 	</field>
 	<field name="pedidoCarteleria" class="java.lang.Boolean">

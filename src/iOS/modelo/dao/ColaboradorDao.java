@@ -58,7 +58,11 @@ public class ColaboradorDao extends GenericDao<Colaborador> {
 	public Colaborador verificarAcceso(String usuario, String password) {
 		getSession().beginTransaction();
 		Colaborador colaborador = new Colaborador();
-		String sql = "from Colaborador " + "where upper(usuario) like :usuario " + "and password like :password";
+		String sql = "FROM Colaborador " 
+		+ "WHERE UPPER(usuario) LIKE :usuario " 
+				+ "AND password LIKE :password "
+				+ "AND fueDesvinculado = false "
+				+ "AND esActivo = true";
 
 		try {
 			@SuppressWarnings("unchecked")

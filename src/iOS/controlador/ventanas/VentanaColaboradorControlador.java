@@ -290,7 +290,6 @@ public class VentanaColaboradorControlador
 				dao.modificar(colaborador);
 			}
 			dao.commit();
-//			Metodos.getInstance().registrar(colaborador, accion, colaborador.registrar());
 			modificar();
 			setColaborador(colaborador);
 		} catch (Exception e) {
@@ -302,7 +301,7 @@ public class VentanaColaboradorControlador
 
 	@Override
 	public void cancelar() {
-		// TODO Auto-generated method stub
+		estadoInicial(true);
 	}
 
 	@Override
@@ -317,9 +316,6 @@ public class VentanaColaboradorControlador
 		if (colaborador == null) {
 			return;
 		}
-
-		System.out.println(colaborador);
-
 		ventana.gettContacto().setText(colaborador.getContacto());
 		ventana.gettIdentificacion().setText(colaborador.getIdentificacion());
 		ventana.gettNombreCompleto().setText(colaborador.getNombreCompleto());

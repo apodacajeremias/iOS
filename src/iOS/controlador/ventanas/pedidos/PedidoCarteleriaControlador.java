@@ -693,6 +693,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 				detalle.setPrecioDetalle(precioDetalle(detalle));
 				mtPedidoDetalle.fireTableDataChanged();
 				mtDetalleMaterial.fireTableDataChanged();
+				realizarCalculos();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -739,6 +740,8 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		buscador.setTitle(buscador.getTitle().concat(": CARTELERIA"));
 		buscador.getControlador().setInterfaz(this);
 		buscador.getControlador().recuperarTodo(true, false);
+		buscador.setLocationRelativeTo(ventana);
+		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 
@@ -749,6 +752,8 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		BuscadorMaterial buscador = new BuscadorMaterial();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(ventana);
+		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 
@@ -756,6 +761,8 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		BuscadorCliente buscador = new BuscadorCliente();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setLocationRelativeTo(ventana);
+		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 

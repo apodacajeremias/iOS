@@ -66,7 +66,7 @@ public class VentanaColaborador extends VentanaGenerica {
 		getPanelFormulario().setBounds(18, 10, 320, 230);
 
 		LabelPersonalizado lblprsnlzdNombreCompleto = new LabelPersonalizado(0);
-		lblprsnlzdNombreCompleto.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdNombreCompleto.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdNombreCompleto.setText("Nombre Completo");
 		lblprsnlzdNombreCompleto.setBounds(10, 20, 300, 20);
 		getPanelFormulario().add(lblprsnlzdNombreCompleto);
@@ -77,7 +77,7 @@ public class VentanaColaborador extends VentanaGenerica {
 		getPanelFormulario().add(tNombreCompleto);
 
 		LabelPersonalizado lblprsnlzdIdentificacin = new LabelPersonalizado(0);
-		lblprsnlzdIdentificacin.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdIdentificacin.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdIdentificacin.setText("Identificaci\u00F3n");
 		lblprsnlzdIdentificacin.setBounds(10, 76, 300, 20);
 		getPanelFormulario().add(lblprsnlzdIdentificacin);
@@ -88,7 +88,7 @@ public class VentanaColaborador extends VentanaGenerica {
 		getPanelFormulario().add(tIdentificacion);
 
 		LabelPersonalizado lblprsnlzdNombreCompleto_1_1 = new LabelPersonalizado(0);
-		lblprsnlzdNombreCompleto_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdNombreCompleto_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdNombreCompleto_1_1.setText("Contacto");
 		lblprsnlzdNombreCompleto_1_1.setBounds(10, 131, 300, 20);
 		getPanelFormulario().add(lblprsnlzdNombreCompleto_1_1);
@@ -114,7 +114,7 @@ public class VentanaColaborador extends VentanaGenerica {
 		pAcceso.setLayout(null);
 
 		LabelPersonalizado lblprsnlzdUsuario = new LabelPersonalizado(0);
-		lblprsnlzdUsuario.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdUsuario.setText("Usuario");
 		lblprsnlzdUsuario.setBounds(10, 20, 300, 20);
 		pAcceso.add(lblprsnlzdUsuario);
@@ -125,13 +125,13 @@ public class VentanaColaborador extends VentanaGenerica {
 		pAcceso.add(tUsuario);
 
 		LabelPersonalizado lblprsnlzdContrasea = new LabelPersonalizado(0);
-		lblprsnlzdContrasea.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdContrasea.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdContrasea.setText("Contrase\u00F1a");
 		lblprsnlzdContrasea.setBounds(10, 72, 300, 20);
 		pAcceso.add(lblprsnlzdContrasea);
 
 		LabelPersonalizado lblprsnlzdNombreCompleto_1_1_1 = new LabelPersonalizado(0);
-		lblprsnlzdNombreCompleto_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdNombreCompleto_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdNombreCompleto_1_1_1.setText("Rol");
 		lblprsnlzdNombreCompleto_1_1_1.setBounds(10, 135, 300, 20);
 		pAcceso.add(lblprsnlzdNombreCompleto_1_1_1);
@@ -157,34 +157,34 @@ public class VentanaColaborador extends VentanaGenerica {
 		rdEsEncargado = new JRadioButton("\u00BFEs encargado?");
 		rdEsEncargado.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		rdEsEncargado.setBackground(Color.WHITE);
-		rdEsEncargado.setBounds(10, 90, 300, 25);
+		rdEsEncargado.setBounds(10, 76, 300, 25);
 		pLaboral.add(rdEsEncargado);
 
 		LabelPersonalizado lblprsnlzdSector = new LabelPersonalizado(0);
-		lblprsnlzdSector.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdSector.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdSector.setText("Sector");
 		lblprsnlzdSector.setBounds(10, 20, 300, 20);
 		pLaboral.add(lblprsnlzdSector);
 
 		cbSector = new JComboBox();
 		cbSector.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		cbSector.setBounds(10, 50, 300, 25);
+		cbSector.setBounds(10, 40, 300, 25);
 		pLaboral.add(cbSector);
 
 		rdDesvinculado = new JRadioButton("\u00BFDesvinculado?");
 		rdDesvinculado.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		rdDesvinculado.setBackground(Color.WHITE);
-		rdDesvinculado.setBounds(10, 130, 300, 25);
+		rdDesvinculado.setBounds(10, 126, 300, 25);
 		pLaboral.add(rdDesvinculado);
 
 		lFechaVinculacion = new LabelPersonalizado(0);
 		lFechaVinculacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lFechaVinculacion.setBounds(10, 170, 300, 15);
+		lFechaVinculacion.setBounds(10, 170, 300, 20);
 		pLaboral.add(lFechaVinculacion);
 
 		lFechaDesvinculacion = new LabelPersonalizado(0);
 		lFechaDesvinculacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lFechaDesvinculacion.setBounds(10, 200, 300, 15);
+		lFechaDesvinculacion.setBounds(10, 200, 300, 20);
 		pLaboral.add(lFechaDesvinculacion);
 
 		pSalario = new JPanel();
@@ -196,25 +196,25 @@ public class VentanaColaborador extends VentanaGenerica {
 		getContentPane().add(pSalario);
 
 		LabelPersonalizado lblprsnlzdTipo = new LabelPersonalizado(0);
-		lblprsnlzdTipo.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdTipo.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdTipo.setText("Tipo");
 		lblprsnlzdTipo.setBounds(10, 28, 300, 20);
 		pSalario.add(lblprsnlzdTipo);
 
 		cbTipoSalario = new JComboBox();
-		cbTipoSalario.setModel(new DefaultComboBoxModel(new String[] { "MINIMO", "COMISION", "DIFERENCIAL" }));
+		cbTipoSalario.setModel(new DefaultComboBoxModel(new String[] {"MINIMO", "COMISION", "JORNAL", "DIFERENCIAL"}));
 		cbTipoSalario.setBounds(10, 50, 300, 25);
 		pSalario.add(cbTipoSalario);
 
 		LabelPersonalizado lblprsnlzdValor = new LabelPersonalizado(0);
-		lblprsnlzdValor.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblprsnlzdValor.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblprsnlzdValor.setText("Valor");
 		lblprsnlzdValor.setBounds(10, 86, 300, 20);
 		pSalario.add(lblprsnlzdValor);
 
 		tValorSalario = new CampoNumeroPersonalizado();
 		tValorSalario.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tValorSalario.setBounds(10, 105, 300, 25);
+		tValorSalario.setBounds(10, 107, 300, 25);
 		pSalario.add(tValorSalario);
 
 		rdActivarAcceso = new JRadioButton("\u00BFActivar acceso?");

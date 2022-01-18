@@ -141,6 +141,8 @@ public class BuscadorPedidoControlador implements ActionListener, ClienteInterfa
 		BuscadorCliente buscador = new BuscadorCliente();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
+		buscador.setAlwaysOnTop(true);
+		buscador.setLocationRelativeTo(bPedido);
 		buscador.setVisible(true);
 	}
 	

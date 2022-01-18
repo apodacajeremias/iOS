@@ -116,7 +116,6 @@ public class VentanaMaterialControlador implements AccionesABM, MaterialInterfac
 		accion = "MODIFICAR";
 		ventana.getlMensaje().setText(accion + " REGISTRO");
 		ventana.gettNombreMaterial().requestFocus();
-
 	}
 
 	@Override
@@ -195,7 +194,7 @@ public class VentanaMaterialControlador implements AccionesABM, MaterialInterfac
 				interfaz.setMaterial(material);
 				ventana.dispose();
 			} catch (Exception e) {
-				estadoInicial(false);
+				modificar();
 				setMaterial(material);
 				ventana.getlMensaje().setText("REGISTRO GUARDADO CON ÉXITO");
 			}

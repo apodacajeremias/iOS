@@ -36,8 +36,10 @@ import iOS.vista.ventanas.VentanaColaborador;
 import iOS.vista.ventanas.VentanaConfiguracion;
 import iOS.vista.ventanas.VentanaMaquina;
 import iOS.vista.ventanas.VentanaMarca;
+import iOS.vista.ventanas.VentanaMaterial;
 import iOS.vista.ventanas.VentanaProceso;
 import iOS.vista.ventanas.VentanaProducto;
+import iOS.vista.ventanas.VentanaSector;
 import iOS.vista.ventanas.buscadores.BuscadorCliente;
 import iOS.vista.ventanas.buscadores.BuscadorColaborador;
 import iOS.vista.ventanas.buscadores.BuscadorProceso;
@@ -90,7 +92,7 @@ public class VentanaPrincipal extends JFrame {
 		mnRegistros.setFont(new Font("Tahoma", Font.BOLD, 14));
 		menuBar.add(mnRegistros);
 
-		JMenuItem mnItemBanco = new JMenuItem("Bancos");
+		JMenuItem mnItemBanco = new JMenuItem("Banco");
 		mnItemBanco.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -100,7 +102,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemBanco.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemBanco);
 
-		JMenuItem mnItemCliente = new JMenuItem("Clientes");
+		JMenuItem mnItemCliente = new JMenuItem("Cliente");
 		mnItemCliente.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -110,7 +112,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemCliente);
 
-		JMenuItem mnItemColaborador = new JMenuItem("Colaboradores");
+		JMenuItem mnItemColaborador = new JMenuItem("Colaborador");
 		mnItemColaborador.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -120,7 +122,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemColaborador.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemColaborador);
 
-		JMenuItem mnItemConfiguracion = new JMenuItem("Configuraciones");
+		JMenuItem mnItemConfiguracion = new JMenuItem("Configuracion");
 		mnItemConfiguracion.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -130,7 +132,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemConfiguracion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemConfiguracion);
 
-		JMenuItem mnItemMarca = new JMenuItem("Marcas");
+		JMenuItem mnItemMarca = new JMenuItem("Marca");
 		mnItemMarca.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -140,7 +142,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemMarca.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemMarca);
 
-		JMenuItem mnItemMaterial = new JMenuItem("Materiales");
+		JMenuItem mnItemMaterial = new JMenuItem("Material");
 		mnItemMaterial.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -150,7 +152,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemMaterial.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemMaterial);
 
-		JMenuItem mnItemProducto = new JMenuItem("Productos");
+		JMenuItem mnItemProducto = new JMenuItem("Producto");
 		mnItemProducto.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -161,15 +163,12 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mnItemMaquina = new JMenuItem("Maquina");
 		mnItemMaquina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaMaquina ventana = new VentanaMaquina();
-				ventana.setUpControlador();
-				ventana.getControlador().nuevo();
-				ventana.setVisible(true);
+				abrirVentanaMaquina();
 			}
 		});
 		mnRegistros.add(mnItemMaquina);
 
-		JMenuItem mnItemProceso = new JMenuItem("Procesos");
+		JMenuItem mnItemProceso = new JMenuItem("Proceso");
 		mnItemProceso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirVentanaProceso();
@@ -179,7 +178,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemProducto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemProducto);
 
-		JMenuItem mnItemProveedor = new JMenuItem("Proveedores");
+		JMenuItem mnItemProveedor = new JMenuItem("Proveedor");
 		mnItemProveedor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -189,7 +188,7 @@ public class VentanaPrincipal extends JFrame {
 		mnItemProveedor.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemProveedor);
 
-		JMenuItem mnItemSector = new JMenuItem("Sectores");
+		JMenuItem mnItemSector = new JMenuItem("Sector");
 		mnItemSector.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -554,13 +553,13 @@ public class VentanaPrincipal extends JFrame {
 		panelFondo.add(lblVersion);
 	}
 
-	protected void abrirTransaccionProduccion() {
+	private void abrirTransaccionProduccion() {
 		TransaccionProduccion ventana = new TransaccionProduccion();
 		ventana.setUpControlador();
 		ventana.setVisible(true);
 	}
 
-	protected void abrirReporteCaja() {
+	private void abrirReporteCaja() {
 		ReporteCaja ventana = new ReporteCaja();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
@@ -622,22 +621,22 @@ public class VentanaPrincipal extends JFrame {
 		ventana.setVisible(true);
 	}
 
-	protected void abrirTransaccionRol() {
+	private void abrirTransaccionRol() {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void abrirTransaccionExistencia() {
+	private void abrirTransaccionExistencia() {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void abrirTransaccionDeposito() {
+	private void abrirTransaccionDeposito() {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void abrirTransaccionCompra() {
+	private void abrirTransaccionCompra() {
 		TransaccionCompra ventana = new TransaccionCompra();
 		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
 			ventana.setUpControlador();
@@ -645,7 +644,7 @@ public class VentanaPrincipal extends JFrame {
 		}
 	}
 
-	protected void abrirBuscadorRol() {
+	private void abrirBuscadorRol() {
 		BuscadorRol ventana = new BuscadorRol();
 		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
 			ventana.setUpControlador();
@@ -653,12 +652,12 @@ public class VentanaPrincipal extends JFrame {
 		}
 	}
 
-	protected void abrirBuscadorProveedor() {
-		// TODO Auto-generated method stub
+	private void abrirBuscadorProveedor() {
+
 
 	}
 
-	protected void abrirBuscadorProducto() {
+	private void abrirBuscadorProducto() {
 		BuscadorProducto ventana = new BuscadorProducto();
 		ventana.setUpControlador();
 		ventana.getControlador().recuperarTodo(false, false);
@@ -672,47 +671,47 @@ public class VentanaPrincipal extends JFrame {
 
 	}
 
-	protected void abrirBuscadorPedido() {
+	private void abrirBuscadorPedido() {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void abrirBuscadorOperacion() {
+	private void abrirBuscadorOperacion() {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void abrirBuscadorModulo() {
+	private void abrirBuscadorModulo() {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void abrirBuscadorMaterial() {
+	private void abrirBuscadorMaterial() {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void abrirBuscadorSector() {
+	private void abrirBuscadorSector() {
 		BuscadorSector ventana = new BuscadorSector();
 		ventana.setUpControlador();
 		ventana.setVisible(true);
 
 	}
 
-	protected void abrirBuscadorColaborador() {
+	private void abrirBuscadorColaborador() {
 		BuscadorColaborador ventana = new BuscadorColaborador();
 		ventana.setUpControlador();
 		ventana.setVisible(true);
 	}
 
-	protected void abrirBuscadorCliente() {
+	private void abrirBuscadorCliente() {
 		BuscadorCliente ventana = new BuscadorCliente();
 		ventana.setUpControlador();
 		ventana.setVisible(true);
 
 	}
 
-	protected void abrirBuscadorBanco() {
+	private void abrirBuscadorBanco() {
 		// TODO Auto-generate ventana d method stub
 
 	}
@@ -724,45 +723,64 @@ public class VentanaPrincipal extends JFrame {
 
 	}
 
-	protected void abrirVentanaSector() {
-		// TODO Auto-generated method stub
+	private void abrirVentanaSector() {
+		VentanaSector ventana = new VentanaSector();
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
+		ventana.setVisible(true);
 
 	}
 
-	protected void abrirVentanaMaterial() {
-		// TODO Auto-generated method stub
+	private void abrirVentanaMaterial() {
+		VentanaMaterial ventana = new VentanaMaterial();
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
+		ventana.setVisible(true);
 
 	}
 
-	protected void abrirVentanaColaborador() {
+	private void abrirVentanaMaquina() {
+		VentanaMaquina ventana = new VentanaMaquina();
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
+		ventana.setVisible(true);
+
+	}
+
+	private void abrirVentanaColaborador() {
 		VentanaColaborador ventana = new VentanaColaborador();
 		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
 			ventana.setUpControlador();
 			ventana.getControlador().nuevo();
+			ventana.setLocationRelativeTo(this);
 			ventana.setVisible(true);
 		}
 	}
 
 	private void abrirVentanaBanco() {
 		VentanaBanco ventana = new VentanaBanco();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.setVisible(true);
-		}
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
+		ventana.setVisible(true);
 	}
 
 	private void abrirVentanaCliente() {
 		VentanaCliente ventana = new VentanaCliente();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.setVisible(true);
-		}
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
+		ventana.setVisible(true);
 	}
 
 	private void abrirVentanaProceso() {
 		VentanaProceso ventana = new VentanaProceso();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
 		ventana.setVisible(true);
 	}
 
@@ -770,26 +788,29 @@ public class VentanaPrincipal extends JFrame {
 		VentanaProducto ventana = new VentanaProducto();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
 		ventana.setVisible(true);
 	}
 
 	private void abrirVentanaConfiguracion() {
 		VentanaConfiguracion ventana = new VentanaConfiguracion();
-		if (EventosUtil.liberarAcceso(Sesion.getInstance().getColaborador(), ventana.modulo, "ABRIR")) {
-			ventana.setUpControlador();
-			ventana.setVisible(true);
-		}
+		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
+		ventana.setVisible(true);
 	}
 
 	private void abrirVentanaMarca() {
 		VentanaMarca ventana = new VentanaMarca();
 		ventana.setUpControlador();
+		ventana.getControlador().nuevo();
+		ventana.setLocationRelativeTo(this);
 		ventana.setVisible(true);
 	}
 
 	public void recuperarConfiguracion() {
 		ConfiguracionDao dao = new ConfiguracionDao();
-		Configuracion configuracion = dao.recuperarPorId(1);
+		Configuracion configuracion = dao.recuperarUltimaConfiguracion();
 		if (configuracion == null) {
 			abrirVentanaConfiguracion();
 		}

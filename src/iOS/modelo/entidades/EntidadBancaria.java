@@ -36,6 +36,12 @@ public class EntidadBancaria {
 
 	@Column(nullable = false)
 	private String nombreBanco;
+	
+	@Column(nullable = true)
+	private String paginaWeb;
+	
+	@Column(nullable = true)
+	private String numeroAtencion;
 
 	@OneToMany(mappedBy = "entidadBancaria")
 	private List<InformacionPago> informacionesPago;
@@ -44,24 +50,12 @@ public class EntidadBancaria {
 		return id;
 	}
 
-	public String getNombreBanco() {
-		return nombreBanco;
-	}
-
-	public List<InformacionPago> getInformacionesPago() {
-		return informacionesPago;
-	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public void setNombreBanco(String nombreBanco) {
-		this.nombreBanco = nombreBanco;
-	}
-
-	public void setInformacionesPago(List<InformacionPago> informacionesPago) {
-		this.informacionesPago = informacionesPago;
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
 	public void setFechaRegistro(Date fechaRegistro) {
@@ -84,13 +78,40 @@ public class EntidadBancaria {
 		this.colaborador = colaborador;
 	}
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
+	public String getNombreBanco() {
+		return nombreBanco;
 	}
 
+	public void setNombreBanco(String nombreBanco) {
+		this.nombreBanco = nombreBanco;
+	}
+
+	public String getPaginaWeb() {
+		return paginaWeb;
+	}
+
+	public void setPaginaWeb(String paginaWeb) {
+		this.paginaWeb = paginaWeb;
+	}
+
+	public String getNumeroAtencion() {
+		return numeroAtencion;
+	}
+
+	public void setNumeroAtencion(String numeroAtencion) {
+		this.numeroAtencion = numeroAtencion;
+	}
+
+	public List<InformacionPago> getInformacionesPago() {
+		return informacionesPago;
+	}
+
+	public void setInformacionesPago(List<InformacionPago> informacionesPago) {
+		this.informacionesPago = informacionesPago;
+	}
+	
 	@Override
 	public String toString() {
 		return nombreBanco;
 	}
-
 }
