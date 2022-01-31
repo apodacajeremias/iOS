@@ -1,5 +1,6 @@
 package iOS.modelo.entidades;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -80,10 +81,10 @@ public class PedidoDetalleConfeccion {
 	private Producto producto;
 
 	@OneToMany(mappedBy = "pedidoDetalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<Produccion> producciones;
+	private List<Produccion> producciones = new ArrayList<Produccion>();
 
 	@OneToMany(mappedBy = "detalleConfeccion", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<PedidoDetalleMaterial> materiales;
+	private List<PedidoDetalleMaterial> materiales = new ArrayList<PedidoDetalleMaterial>();
 
 	@ColumnDefault("false")
 	@Column(nullable = false)

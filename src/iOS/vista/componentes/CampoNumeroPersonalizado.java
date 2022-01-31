@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,10 +24,10 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 
 	public CampoNumeroPersonalizado() {
 		this.addKeyListener(this);
-		this.groupingSeparator = formatter.getDecimalFormatSymbols().getGroupingSeparator()+"";
-		this.decimalSeparator = formatter.getDecimalFormatSymbols().getDecimalSeparator()+"";
-		this.groupingSeparator = formato.getDecimalFormatSymbols().getGroupingSeparator()+"";
-		this.border = this.getBorder(); 
+		this.groupingSeparator = formatter.getDecimalFormatSymbols().getGroupingSeparator() + "";
+		this.decimalSeparator = formatter.getDecimalFormatSymbols().getDecimalSeparator() + "";
+		this.groupingSeparator = formato.getDecimalFormatSymbols().getGroupingSeparator() + "";
+		this.border = this.getBorder();
 		setHorizontalAlignment(SwingConstants.LEFT);
 	}
 
@@ -66,7 +64,7 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 	public void error() {
 		this.setBorder(BorderFactory.createLineBorder(Color.RED));
 		new Timer().schedule(new TimerTask() {
-			 
+
 			@Override
 			public void run() {
 				CampoNumeroPersonalizado.this.setBorder(border);
@@ -74,7 +72,6 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 		}, 300);
 	}
 
-	 
 	@Override
 	public String getText() {
 		String str = super.getText().replace(groupingSeparator, "");
@@ -92,7 +89,6 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 		}
 	}
 
-	 
 	@Override
 	public void keyReleased(KeyEvent keyEvent) {
 		char c = keyEvent.getKeyChar();
@@ -102,7 +98,6 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 		}
 	}
 
-	 
 	@Override
 	public void keyPressed(KeyEvent e) {
 	}
@@ -114,41 +109,6 @@ public class CampoNumeroPersonalizado extends JTextField implements KeyListener 
 				if (getText().length() == lim) {
 					evt.consume();
 				}
-			}
-		});
-	}
-	
-	public void avisar(){
-		setBorder(BorderFactory.createLineBorder(Color.red, 2));
-		addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setBorder(BorderFactory.createLineBorder(null));
-				requestFocus();
 			}
 		});
 	}

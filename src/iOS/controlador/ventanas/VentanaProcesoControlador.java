@@ -175,12 +175,7 @@ public class VentanaProcesoControlador implements AccionesABM, ProcesoInterface,
 		ventana.getLblFechaRegistro().setText("Registrado el " + EventosUtil.formatoFecha(proceso.getFechaRegistro()));
 		ventana.getLblID().setText("ID " + proceso.getId());
 		
-		try {
-			ventana.getlIcono().setIcon(new ImageIcon(proceso.getIcon()));
-		} catch (Exception e) {
-			ventana.getlIcono().setText("N/A");
-			e.printStackTrace();
-		}
+		ventana.getlIcono().setIcon(new ImageIcon(proceso.getIcon()));
 	}
 
 	@Override

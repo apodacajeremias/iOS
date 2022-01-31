@@ -49,6 +49,9 @@ public class Material {
 
 	@Column(nullable = false)
 	private String tipoCobro;
+	
+	@Column(nullable = true)
+	private String tipoMaterial;
 
 	@OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<ProductoMaterial> productos = new ArrayList<ProductoMaterial>();

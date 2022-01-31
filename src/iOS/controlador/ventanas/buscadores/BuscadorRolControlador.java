@@ -77,7 +77,6 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 		TransaccionRol transaccion = new TransaccionRol();
 		transaccion.setUpControlador();
 		transaccion.getControlador().nuevo();
-		transaccion.setAlwaysOnTop(true);
 		transaccion.setLocationRelativeTo(buscador);
 		transaccion.setVisible(true);
 	}
@@ -91,7 +90,6 @@ public class BuscadorRolControlador implements KeyListener, MouseListener, Accio
 		TransaccionRol ventana = new TransaccionRol();
 		ventana.setUpControlador();
 		ventana.getControlador().setRol(rol);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}

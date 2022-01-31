@@ -1,5 +1,6 @@
 package iOS.modelo.singleton;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import iOS.modelo.entidades.Caja;
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Cliente;
 import iOS.modelo.entidades.Pedido;
+import iOS.modelo.entidades.PedidoDetalleConfeccion;
+import iOS.modelo.entidades.PedidoDetalles;
 import iOS.modelo.entidades.Produccion;
 import net.sf.jasperreports.engine.JRException;
 
@@ -146,7 +149,11 @@ public class Metodos {
 	public void imprimirPedidoCarteleriaIndividual(Pedido pedido) {
 		if (pedido == null) {
 			return;
-		}
+		} 
+//		else {
+//			imprimirPedidoCarteleriaIndividualNuevoFormato(pedido);
+//			return;
+//		}
 		int opcion = JOptionPane.showConfirmDialog(null, "¿Desea imprimir?", "Impresion", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 		if (opcion == JOptionPane.OK_OPTION) {
@@ -165,6 +172,37 @@ public class Metodos {
 			ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
 			try {
 				conexionReporte.generarReporte(pedidos, parametros, "PedidoImpreso4");
+				conexionReporte.ventanaReporte.setLocationRelativeTo(null);
+				conexionReporte.ventanaReporte.setVisible(true);
+			} catch (JRException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+	}
+
+	public void imprimirPedidoCarteleriaIndividualNuevoFormato(Pedido pedido) {
+		if (pedido == null) {
+			return;
+		}
+		int opcion = JOptionPane.showConfirmDialog(null, "¿Desea imprimir?", "Impresion", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.INFORMATION_MESSAGE);
+		if (opcion == JOptionPane.OK_OPTION) {
+			HashMap<String, Object> parametros = new HashMap<>();
+			InputStream logo = ConexionReporte.class.getResourceAsStream("/img/LOGO_IOS.png");
+			parametros.put("LOGO_EMPRESA", logo);
+			parametros.put("NOMBRE_EMPRESA", Sesion.getInstance().getConfiguracion().getNombreEmpresa());
+			parametros.put("RUC_EMPRESA", Sesion.getInstance().getConfiguracion().getRucEmpresa());
+			parametros.put("SITIOWEB_EMPRESA", Sesion.getInstance().getConfiguracion().getSitioWeb());
+			parametros.put("DIRECCION_EMPRESA", Sesion.getInstance().getConfiguracion().getDireccion());
+			parametros.put("CONTACTO_EMPRESA", Sesion.getInstance().getConfiguracion().getTelefono());
+
+			List<Pedido> pedidos = new ArrayList<Pedido>();
+			pedidos.add(pedido);
+
+			ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
+			try {
+				conexionReporte.generarReporte(pedidos, parametros, "PedidoImpresoNuevoFormato");
 				conexionReporte.ventanaReporte.setLocationRelativeTo(null);
 				conexionReporte.ventanaReporte.setVisible(true);
 			} catch (JRException e) {
@@ -305,6 +343,43 @@ public class Metodos {
 		ConexionReporte<Produccion> conexionReporte = new ConexionReporte<Produccion>();
 		try {
 			conexionReporte.generarReporte(lista, parametros, "ReporteProduccion");
+			conexionReporte.ventanaReporte.setLocationRelativeTo(null);
+			conexionReporte.ventanaReporte.setVisible(true);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void imprimirReporteProductoSector(List<PedidoDetalles> carteleria, List<PedidoDetalleConfeccion> confeccion, String tipoReporte, String claseReporte) {
+		if (carteleria.size() + confeccion.size() <= 0) {
+			JOptionPane.showMessageDialog(null, "No hay registros para realizar la impresión.");
+			return;
+		}
+		HashMap<String, Object> parametros = new HashMap<>();
+		parametros.put("SOLICITANTE", Sesion.getInstance().getColaborador().toString());
+
+		// Diario Mensual
+		parametros.put("TIPO_REPORTE", tipoReporte);
+
+		// Carteleria, costura o ambos
+		parametros.put("CLASE_REPORTE", claseReporte);
+		
+		parametros.put("carteleria", carteleria);
+		
+		parametros.put("confeccion", confeccion);
+		
+		Pedido pedido = new Pedido();
+		List<Pedido> pedidos = new ArrayList<Pedido>();
+		pedido.setPedidoDetalles(carteleria);
+		pedido.setPedidosConfecciones(confeccion);
+		pedidos.add(pedido);
+		
+
+		// Creando reportes
+		ConexionReporte<Pedido> conexionReporte = new ConexionReporte<Pedido>();
+		try {
+			conexionReporte.generarReporte(pedidos, parametros, "ReporteProductoSector");
 			conexionReporte.ventanaReporte.setLocationRelativeTo(null);
 			conexionReporte.ventanaReporte.setVisible(true);
 		} catch (JRException e) {

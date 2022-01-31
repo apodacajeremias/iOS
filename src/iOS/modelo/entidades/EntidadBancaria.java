@@ -1,5 +1,6 @@
 package iOS.modelo.entidades;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class EntidadBancaria {
 	private String numeroAtencion;
 
 	@OneToMany(mappedBy = "entidadBancaria")
-	private List<InformacionPago> informacionesPago;
+	private List<InformacionPago> informacionesPago = new ArrayList<InformacionPago>();
 
 	public int getId() {
 		return id;

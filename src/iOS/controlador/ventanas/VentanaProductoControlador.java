@@ -23,6 +23,7 @@ import iOS.modelo.entidades.Material;
 import iOS.modelo.entidades.Proceso;
 import iOS.modelo.entidades.Producto;
 import iOS.modelo.entidades.ProductoMaterial;
+import iOS.modelo.entidades.Sector;
 import iOS.modelo.interfaces.AccionesABM;
 import iOS.modelo.interfaces.MaterialInterface;
 import iOS.modelo.interfaces.ProcesoInterface;
@@ -85,6 +86,8 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 
 		dao = new ProductoDao();
 		setUpEvents();
+		
+		cargarSectores();
 	}
 
 	// Para iniciar
@@ -117,11 +120,18 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 		ventana.getlMensaje().setText("");
 		ventana.getLblValor().setText("Precio de Venta ");
 
-		ventana.gettCosto().setEditable(false);
+		ventana.gettCosto().setEditable(true);
 
 		vaciarTablas();
 	}
 
+	private void cargarSectores() {
+		List<Sector> sectores = Sesion.getInstance().getSectores();
+		for (int i = 0; i < sectores.size(); i++) {
+			ventana.getCbSector().addItem(sectores.get(i));
+		}
+	}
+	
 	private void vaciarTablas() {
 		productoMateriales = new ArrayList<>();
 		tablaProductoMaterial.setLista(productoMateriales);
@@ -152,7 +162,16 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			productoMaterial.setCosto(material.getCosto());
 			productoMaterial.setMaterial(material);
 			productoMaterial.setSubtotal(material.getCosto());
-			productoMaterial.setTieneMedidaFija(false);
+
+			switch (material.getTipoCobro()) {
+			case "UNIDAD":
+				productoMaterial.setTieneMedidaFija(false);
+				break;
+			default:
+				productoMaterial.setTieneMedidaFija(true);
+				break;
+			}
+
 			productoMateriales.add(productoMaterial);
 			tablaProductoMaterial.setLista(productoMateriales);
 			calcularPrecioVenta();
@@ -200,7 +219,6 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			tablaProceso.setLista(procesos);
 			return remove;
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 		return false;
@@ -270,23 +288,24 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 				}
 			}
 		}
-		if (ventana.gettCosto().getValue() <= 0) {
-			JOptionPane.showMessageDialog(ventana, "Costo no puede ser cero");
-			return false;
-		}
-		if (ventana.gettPorcentajeSobreCosto().getValue() <= 0) {
-			JOptionPane.showMessageDialog(ventana, "Porcentaje de ganancia sobre costo no puede ser cero");
-			return false;
-		}
-		if (ventana.gettPrecioVenta().getValue() <= 0) {
-			JOptionPane.showMessageDialog(ventana, "Precio de venta no puede ser cero");
-			return false;
-		}
-
-		if (ventana.gettPrecioVenta().getValue() <= ventana.gettCosto().getValue()) {
-			JOptionPane.showMessageDialog(ventana, "Precio de venta no puede ser menor que el costo");
-			return false;
-		}
+		//HASTA IMPLEMENTAR TODO SE SACAN ESTAS VALIDACIONES
+//		if (ventana.gettCosto().getValue() <= 0) {
+//			JOptionPane.showMessageDialog(ventana, "Costo no puede ser cero");
+//			return false;
+//		}
+//		if (ventana.gettPorcentajeSobreCosto().getValue() <= 0) {
+//			JOptionPane.showMessageDialog(ventana, "Porcentaje de ganancia sobre costo no puede ser cero");
+//			return false;
+//		}
+//		if (ventana.gettPrecioVenta().getValue() <= 0) {
+//			JOptionPane.showMessageDialog(ventana, "Precio de venta no puede ser cero");
+//			return false;
+//		}
+//
+//		if (ventana.gettPrecioVenta().getValue() <= ventana.gettCosto().getValue()) {
+//			JOptionPane.showMessageDialog(ventana, "Precio de venta no puede ser menor que el costo");
+//			return false;
+//		}
 
 		if (ventana.getRdMedidasFijas().isSelected()) {
 			if (ventana.gettMedidaAlto().getValue() + ventana.gettMedidaAncho().getValue() <= 0) {
@@ -296,19 +315,19 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			}
 		}
 
-		if (productoMateriales == null || productoMateriales.size() <= 0) {
-			ventana.getBtnAgregarMaterial().requestFocus();
-			JOptionPane.showMessageDialog(ventana,
-					"El producto debe registrarse con todos los materiales que usan para su produccion");
-			return false;
-		}
+//		if (productoMateriales == null || productoMateriales.size() <= 0) {
+//			ventana.getBtnAgregarMaterial().requestFocus();
+//			JOptionPane.showMessageDialog(ventana,
+//					"El producto debe registrarse con todos los materiales que usan para su produccion");
+//			return false;
+//		}
 
-		if (procesos == null || procesos.size() <= 0) {
-			ventana.getBtnAgregarProceso().requestFocus();
-			JOptionPane.showMessageDialog(ventana,
-					"El producto debe registrarse con todos los procesos y etapas que son necesarios para su produccion completa");
-			return false;
-		}
+//		if (procesos == null || procesos.size() <= 0) {
+//			ventana.getBtnAgregarProceso().requestFocus();
+//			JOptionPane.showMessageDialog(ventana,
+//					"El producto debe registrarse con todos los procesos y etapas que son necesarios para su produccion completa");
+//			return false;
+//		}
 
 		return true;
 	}
@@ -358,6 +377,7 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 		producto.setProductoCostura(ventana.getRdConfeccion().isSelected());
 		producto.setTieneMedidaFija(ventana.getRdMedidasFijas().isSelected());
 		producto.setTipoCobro(ventana.getCbTipoCobro().getSelectedItem().toString());
+		producto.setSector((Sector) ventana.getCbSector().getSelectedItem());
 		switch (ventana.gettCodigoReferencia().getText().length()) {
 		case 0:
 			producto.setCodigoReferencia(null);
@@ -412,6 +432,8 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 		BuscadorMaterial ventana = new BuscadorMaterial();
 		ventana.setUpControlador();
 		ventana.getControlador().setInterfaz(this);
+
+		ventana.setLocationRelativeTo(this.ventana);
 		ventana.setVisible(true);
 
 	}
@@ -420,6 +442,7 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 		BuscadorProceso ventana = new BuscadorProceso();
 		ventana.setUpControlador();
 		ventana.getControlador().setInterfaz(this);
+		ventana.setLocationRelativeTo(this.ventana);
 		ventana.setVisible(true);
 
 	}
@@ -428,6 +451,11 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 		try {
+			productoMateriales = producto.getMateriales();
+			tablaProductoMaterial.setLista(productoMateriales);
+			procesos = producto.getProcesos();
+			tablaProceso.setLista(procesos);
+
 			ventana.getRdCarteleria().setSelected(producto.isProductoCarteleria());
 			ventana.getRdConfeccion().setSelected(producto.isProductoCostura());
 			ventana.getCbTipoCobro().setSelectedItem(producto.getTipoCobro());
@@ -439,15 +467,19 @@ public class VentanaProductoControlador implements AccionesABM, ProductoInterfac
 			ventana.gettNombreProducto().setText(producto.getDescripcion());
 			ventana.gettPorcentajeSobreCosto().setValue(producto.getPorcentajeSobreCosto());
 			ventana.gettPrecioVenta().setValue(producto.getPrecioMaximo());
-
-			productoMateriales = producto.getMateriales();
-			tablaProductoMaterial.setLista(productoMateriales);
-			procesos = producto.getProcesos();
-			tablaProceso.setLista(procesos);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return;
+		}
+		
+		try {
+			ventana.getCbSector().getModel().setSelectedItem(producto.getSector());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			ventana.getCbSector().getModel().setSelectedItem(null);
 		}
 	}
 

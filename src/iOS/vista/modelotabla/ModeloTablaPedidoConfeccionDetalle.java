@@ -59,8 +59,14 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 		case 4:
 			return detalle.get(r).getMolde();
 		case 5:
+			if (detalle.get(r).getMateriales().size() <= 0) {
+				return "ɸ";
+			}
 			return EventosUtil.separadorMiles(detalle.get(r).getCosto());
 		case 6:
+			if (detalle.get(r).getMateriales().size() <= 0) {
+				return "ɸ";
+			}
 			return EventosUtil.separadorDecimales(detalle.get(r).getPorcentajeSobreCosto());
 		case 7:
 			return EventosUtil.separadorMiles(detalle.get(r).getPrecioProducto());
@@ -178,6 +184,10 @@ public class ModeloTablaPedidoConfeccionDetalle extends AbstractTableModel {
 		case 3:
 			return true;
 		case 4:
+			return true;
+		case 7:
+			return true;
+		case 8:
 			return true;
 		default:
 			return false;

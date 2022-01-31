@@ -7,19 +7,17 @@ import javax.swing.table.AbstractTableModel;
 
 import iOS.modelo.entidades.Producto;
 
-public class ModeloTablaProducto extends AbstractTableModel {
+public class ModeloTablaProductoSector extends AbstractTableModel {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7615729955805818086L;
-	
-	private String[] columnas = {"DESCRIPCION"};
+	private static final long serialVersionUID = 1864475015388508652L;
+	private String[] columnas = { "PRODUCTO","COSTO","PRECIO" };
 	private List<Producto> lista = new ArrayList<>();
-	
-	public void setLista(List<Producto> lista) {
+
+	public void setProductos(List<Producto> lista) {
 		this.lista = lista;
-		fireTableDataChanged();
 	}
 
 	@Override
@@ -33,19 +31,21 @@ public class ModeloTablaProducto extends AbstractTableModel {
 		// TODO Auto-generated method stub
 		return columnas.length;
 	}
-	
+
 	@Override
 	public String getColumnName(int column) {
-		// TODO Auto-generated method stub
 		return columnas[column];
 	}
-	
-	
+
 	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		switch (columnIndex) {
+	public Object getValueAt(int r, int c) {
+		switch (c) {
 		case 0:
-			return lista.get(rowIndex);
+			return lista.get(r);
+		case 1:
+			return lista.get(r).getCosto();
+		case 2:
+			return lista.get(r).getPrecioMaximo();
 		default:
 			break;
 		}
@@ -53,4 +53,3 @@ public class ModeloTablaProducto extends AbstractTableModel {
 	}
 
 }
-

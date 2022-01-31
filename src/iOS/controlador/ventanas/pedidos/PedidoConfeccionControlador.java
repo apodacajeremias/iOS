@@ -1,5 +1,6 @@
 package iOS.controlador.ventanas.pedidos;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -181,16 +182,20 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			return;
 		}
 		if (p.isProductoCarteleria()) {
-			JOptionPane.showMessageDialog(ventana, "Este producto es de carteleria.");
+			 Toolkit.getDefaultToolkit().beep();
+			//JOptionPane.showMessageDialog(ventana, "Este producto es de carteleria.");
 			return;
 		}
 		if (producto.getTipoCobro().equalsIgnoreCase("METRO CUADRADO")) {
-			JOptionPane.showMessageDialog(ventana, "Este producto es por METRO CUADRADO, no se agregará el producto.");
+			 Toolkit.getDefaultToolkit().beep();
+			//JOptionPane.showMessageDialog(ventana, "Este producto es por METRO CUADRADO, no se agregará el producto.");
 			return;
 		}
 		if (!limitarItems(detalles)) {
 			return;
 		}
+		
+		ventana.getlProducto().setText(producto.getDescripcion());
 		try {
 			detalle = new PedidoDetalleConfeccion();
 			detalle.setArchivo("Sin indicaciones.");
@@ -219,10 +224,18 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 
 		asociarMaterial(detalle);
 
-		detalle.setCosto(costoProducto(detalle));
-		detalle.setPorcentajeSobreCosto(detalle.getProducto().getPorcentajeSobreCosto());
-		detalle.setPrecioDetalle(precioDetalle(detalle));
-		detalle.setPrecioProducto(precioProducto(detalle));
+		if (detalle.getMateriales().size() <= 0) {
+			detalle.setCosto(0);
+			detalle.setPorcentajeSobreCosto(0);
+			detalle.setPrecioDetalle(detalle.getProducto().getPrecioMaximo());
+			detalle.setPrecioProducto(detalle.getProducto().getPrecioMaximo());
+		} else {
+			detalle.setCosto(costoProducto(detalle));
+			detalle.setPorcentajeSobreCosto(detalle.getProducto().getPorcentajeSobreCosto());
+			detalle.setPrecioDetalle(precioDetalle(detalle));
+			detalle.setPrecioProducto(precioProducto(detalle));
+		}
+		
 
 		// Para la tabla que se muestra
 		crearComboBoxTabla();
@@ -747,7 +760,7 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 		BuscadorProducto buscador = new BuscadorProducto();
 		buscador.setUpControlador();
 		buscador.setTitle(buscador.getTitle().concat(": CONFECCION"));
-		buscador.getControlador().recuperarTodo(false, true);
+		buscador.getControlador().recuperarTodo(false, false);
 		buscador.getControlador().setInterfaz(this);
 		buscador.setLocationRelativeTo(ventana);
 		buscador.setVisible(true);
@@ -783,7 +796,6 @@ public class PedidoConfeccionControlador implements ActionListener, MouseListene
 			return;
 		}
 		vaciarTablaMaterial();
-		ventana.getlProducto().setText(producto.getDescripcion());
 		agregarDetalle(producto);
 	}
 

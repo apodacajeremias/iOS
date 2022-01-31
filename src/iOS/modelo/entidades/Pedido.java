@@ -96,6 +96,9 @@ public class Pedido {
 
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
 	private List<CajaMovimiento> pagosPedido;
+	
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+	private List<Imagen> imagenes;
 
 	@Column(nullable = true)
 	private boolean pedidoCostura;
@@ -181,8 +184,7 @@ public class Pedido {
 			pedidosConfecciones = pedidosConfecciones.stream()
 					.sorted(Comparator.comparing(PedidoDetalleConfeccion::getId)).collect(Collectors.toList());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Sin confeccion");
 		}
 		return pedidosConfecciones;
 	}
@@ -330,8 +332,7 @@ public class Pedido {
 							.mapToDouble(b -> b.getValorUS() * b.getCotizacionUS()).sum());
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Exception("Sin pagos");
 		}
 		return sumaPagos;
 	}
@@ -353,8 +354,7 @@ public class Pedido {
 			producciones = producciones.stream().sorted(Comparator.comparing(Produccion::getId))
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			new Exception("Sin produccion");
 		}
 		return producciones;
 	}
@@ -429,4 +429,14 @@ public class Pedido {
 	public String toString() {
 		return id + " - " + fechaRegistro;
 	}
+
+	public List<Imagen> getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(List<Imagen> imagenes) {
+		this.imagenes = imagenes;
+	}
+	
+	
 }

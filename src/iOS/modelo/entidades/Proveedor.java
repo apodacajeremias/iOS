@@ -1,5 +1,6 @@
 package iOS.modelo.entidades;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,23 +39,23 @@ public class Proveedor {
 	@Column(nullable = false)
 	private String nombreCompleto;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = true)
 	private String identificacion;
 
 	@Column(nullable = true)
 	private String direccion;
 
 	@OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<ProveedorContactos> listaContactos;
+	private List<ProveedorContactos> listaContactos = new ArrayList<ProveedorContactos>();
 
 	@OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<ProveedorCorreos> listaCorreos;
+	private List<ProveedorCorreos> listaCorreos = new ArrayList<ProveedorCorreos>();
 
 	@OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<InformacionPago> informacionesPago;
+	private List<InformacionPago> informacionesPago = new ArrayList<InformacionPago>();
 
 	@OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<Compra> compras;
+	private List<Compra> compras = new ArrayList<Compra>();
 
 	public int getId() {
 		return id;

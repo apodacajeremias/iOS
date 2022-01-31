@@ -2,12 +2,13 @@ package iOS.vista.ventanas;
 
 import java.awt.Font;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+
 import iOS.controlador.ventanas.VentanaMaquinaControlador;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
 import iOS.vista.componentes.VentanaGenerica;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 /**
  * @author 59598

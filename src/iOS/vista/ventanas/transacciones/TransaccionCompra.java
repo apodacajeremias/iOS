@@ -16,6 +16,8 @@ import javax.swing.border.TitledBorder;
 import com.toedter.calendar.JDateChooser;
 
 import iOS.controlador.ventanas.transacciones.TransaccionCompraControlador;
+import iOS.modelo.entidades.InformacionPago;
+import iOS.modelo.entidades.Sector;
 import iOS.vista.componentes.CampoNumeroPersonalizado;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -27,7 +29,7 @@ public class TransaccionCompra extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 7515380163909231472L;
-	
+
 	private JTable table;
 	private MiBoton btnBuscarProveedor;
 	private MiBoton btnBuscarMaterial;
@@ -48,19 +50,14 @@ public class TransaccionCompra extends JDialog {
 	private CampoNumeroPersonalizado tValorNTCR;
 	private CampoTextoPersonalizado tNroFactura;
 	private CampoTextoPersonalizado tNroNTCR;
-	@SuppressWarnings("rawtypes")
-	private JComboBox cbInformacionPago;
+	private JComboBox<InformacionPago> cbInformacionPago;
 	private JPanel panelCompra;
-	
+	private JComboBox<Sector> cbSector;
+
 	public void setUpControlador() {
 		controlador = new TransaccionCompraControlador(this);
 	}
 
-	/**
-	 * Create the dialog.
-	 */
-	
-	@SuppressWarnings("rawtypes")
 	public TransaccionCompra() {
 		setResizable(false);
 		setType(Type.POPUP);
@@ -72,15 +69,16 @@ public class TransaccionCompra extends JDialog {
 		setModal(true);
 		setTitle("Registro de Compras");
 		getContentPane().setLayout(null);
-		
+
 		JPanel panelDetalle = new JPanel();
-		panelDetalle.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Detalles de Compra", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelDetalle.setBounds(15, 172, 1244, 453);
+		panelDetalle.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Detalles de Compra",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelDetalle.setBounds(425, 11, 839, 618);
 		getContentPane().add(panelDetalle);
 		panelDetalle.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 58, 1224, 380);
+		scrollPane.setBounds(10, 53, 819, 554);
 		panelDetalle.add(scrollPane);
 
 		table = new JTable();
@@ -91,7 +89,7 @@ public class TransaccionCompra extends JDialog {
 
 		btnBuscarMaterial = new MiBoton("Buscar");
 		btnBuscarMaterial.setText("Material");
-		btnBuscarMaterial.setBounds(1134, 14, 100, 30);
+		btnBuscarMaterial.setBounds(10, 14, 100, 30);
 		panelDetalle.add(btnBuscarMaterial);
 		btnBuscarMaterial.setActionCommand("BuscarMaterial");
 
@@ -99,13 +97,13 @@ public class TransaccionCompra extends JDialog {
 		btnAgregar.setVisible(false);
 		btnAgregar.setText("Repetir material");
 		btnAgregar.setActionCommand("Agregar");
-		btnAgregar.setBounds(994, 14, 130, 30);
+		btnAgregar.setBounds(699, 14, 130, 30);
 		panelDetalle.add(btnAgregar);
 
 		lMaterial = new LabelPersonalizado(0);
 		lMaterial.setHorizontalAlignment(SwingConstants.RIGHT);
 		lMaterial.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lMaterial.setBounds(282, 17, 702, 25);
+		lMaterial.setBounds(119, 17, 600, 25);
 		panelDetalle.add(lMaterial);
 
 		btnSalir = new MiBoton("Salir");
@@ -115,147 +113,162 @@ public class TransaccionCompra extends JDialog {
 		getContentPane().add(btnSalir);
 
 		JPanel panelProveedor = new JPanel();
-		panelProveedor.setBorder(new TitledBorder(null, "Informaci\u00F3n del Proveedor", TitledBorder.LEFT, TitledBorder.TOP, null, null));
-		panelProveedor.setBounds(625, 11, 634, 150);
+		panelProveedor.setBorder(new TitledBorder(null, "Informaci\u00F3n del Proveedor", TitledBorder.LEFT,
+				TitledBorder.TOP, null, null));
+		panelProveedor.setBounds(15, 362, 400, 308);
 		getContentPane().add(panelProveedor);
 		panelProveedor.setLayout(null);
 
-		btnBuscarProveedor = new MiBoton("Buscar");
-		btnBuscarProveedor.setBounds(524, 15, 100, 30);
+		btnBuscarProveedor = new MiBoton("...");
+		btnBuscarProveedor.setText("...");
+		btnBuscarProveedor.setBounds(342, 18, 50, 20);
 		panelProveedor.add(btnBuscarProveedor);
 		btnBuscarProveedor.setActionCommand("BuscarProveedor");
 
 		lProveedor = new LabelPersonalizado(0);
 		lProveedor.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lProveedor.setBounds(10, 18, 500, 25);
+		lProveedor.setBounds(6, 18, 330, 20);
 		panelProveedor.add(lProveedor);
 
 		LabelPersonalizado lblprsnlzdEmisinDelCompra_2_1 = new LabelPersonalizado(0);
 		lblprsnlzdEmisinDelCompra_2_1.setText("Identificaci\u00F3n");
-		lblprsnlzdEmisinDelCompra_2_1.setBounds(10, 45, 83, 15);
+		lblprsnlzdEmisinDelCompra_2_1.setBounds(10, 45, 185, 15);
 		panelProveedor.add(lblprsnlzdEmisinDelCompra_2_1);
 
 		lIdentificacion = new LabelPersonalizado(0);
 		lIdentificacion.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lIdentificacion.setBounds(10, 60, 110, 15);
+		lIdentificacion.setBounds(10, 60, 185, 15);
 		panelProveedor.add(lIdentificacion);
 
 		LabelPersonalizado lblprsnlzdEmisinDelCompra_2_1_1 = new LabelPersonalizado(0);
 		lblprsnlzdEmisinDelCompra_2_1_1.setText("Contacto");
-		lblprsnlzdEmisinDelCompra_2_1_1.setBounds(10, 86, 57, 15);
+		lblprsnlzdEmisinDelCompra_2_1_1.setBounds(205, 49, 185, 15);
 		panelProveedor.add(lblprsnlzdEmisinDelCompra_2_1_1);
 
 		lContacto = new LabelPersonalizado(0);
 		lContacto.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lContacto.setBounds(10, 101, 120, 15);
+		lContacto.setBounds(205, 64, 185, 15);
 		panelProveedor.add(lContacto);
 
 		panelCompra = new JPanel();
-		panelCompra.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Informaci\u00F3n de Compra", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelCompra.setBounds(15, 11, 600, 150);
+		panelCompra.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Informaci\u00F3n de Compra",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelCompra.setBounds(15, 11, 400, 340);
 		getContentPane().add(panelCompra);
 		panelCompra.setLayout(null);
 
 		lNroCompra = new LabelPersonalizado(0);
-		lNroCompra.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lNroCompra.setBounds(53, 33, 110, 25);
+		lNroCompra.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lNroCompra.setBounds(10, 30, 185, 15);
 		panelCompra.add(lNroCompra);
 
 		LabelPersonalizado lblprsnlzdEmisinDelCompra_2 = new LabelPersonalizado(0);
+		lblprsnlzdEmisinDelCompra_2.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblprsnlzdEmisinDelCompra_2.setText("Registro de Compra");
-		lblprsnlzdEmisinDelCompra_2.setBounds(53, 59, 123, 15);
+		lblprsnlzdEmisinDelCompra_2.setBounds(10, 55, 185, 15);
 		panelCompra.add(lblprsnlzdEmisinDelCompra_2);
 
 		lFechaHora = new LabelPersonalizado(0);
-		lFechaHora.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lFechaHora.setBounds(53, 75, 114, 15);
+		lFechaHora.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lFechaHora.setBounds(9, 74, 185, 15);
 		panelCompra.add(lFechaHora);
 
 		LabelPersonalizado lblprsnlzdEmisinDelCompra_2_2 = new LabelPersonalizado(0);
+		lblprsnlzdEmisinDelCompra_2_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblprsnlzdEmisinDelCompra_2_2.setText("Valor de Factura");
-		lblprsnlzdEmisinDelCompra_2_2.setBounds(229, 59, 114, 15);
+		lblprsnlzdEmisinDelCompra_2_2.setBounds(10, 242, 185, 15);
 		panelCompra.add(lblprsnlzdEmisinDelCompra_2_2);
 
 		lValorFactura = new LabelPersonalizado(0);
 		lValorFactura.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lValorFactura.setBounds(229, 75, 140, 15);
+		lValorFactura.setBounds(10, 258, 185, 15);
 		panelCompra.add(lValorFactura);
 
 		LabelPersonalizado lblprsnlzdMetrosDelCompra = new LabelPersonalizado(0);
 		lblprsnlzdMetrosDelCompra.setText("Valor NTCR");
-		lblprsnlzdMetrosDelCompra.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblprsnlzdMetrosDelCompra.setBounds(229, 101, 97, 15);
+		lblprsnlzdMetrosDelCompra.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblprsnlzdMetrosDelCompra.setBounds(10, 284, 185, 15);
 		panelCompra.add(lblprsnlzdMetrosDelCompra);
-		
+
 		LabelPersonalizado lblprsnlzdEmisinDelCompra_2_3 = new LabelPersonalizado(0);
+		lblprsnlzdEmisinDelCompra_2_3.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblprsnlzdEmisinDelCompra_2_3.setText("Fecha real de Compra");
-		lblprsnlzdEmisinDelCompra_2_3.setBounds(53, 101, 139, 15);
+		lblprsnlzdEmisinDelCompra_2_3.setBounds(10, 101, 185, 15);
 		panelCompra.add(lblprsnlzdEmisinDelCompra_2_3);
-		
+
 		dtchFechaRealCompra = new JDateChooser();
-		dtchFechaRealCompra.setBounds(53, 117, 100, 20);
+		dtchFechaRealCompra.setBounds(10, 117, 185, 20);
 		panelCompra.add(dtchFechaRealCompra);
-		
+
 		LabelPersonalizado lblprsnlzdValorPago = new LabelPersonalizado(0);
 		lblprsnlzdValorPago.setText("Valor Pago");
-		lblprsnlzdValorPago.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdValorPago.setBounds(229, 17, 97, 15);
+		lblprsnlzdValorPago.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblprsnlzdValorPago.setBounds(10, 200, 185, 15);
 		panelCompra.add(lblprsnlzdValorPago);
-		
+
 		lValorPago = new LabelPersonalizado(0);
-		lValorPago.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lValorPago.setBounds(229, 33, 110, 25);
+		lValorPago.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lValorPago.setBounds(10, 216, 185, 15);
 		panelCompra.add(lValorPago);
-		
+
 		tValorNTCR = new CampoNumeroPersonalizado();
 		tValorNTCR.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		tValorNTCR.setBounds(229, 117, 100, 20);
+		tValorNTCR.setBounds(10, 300, 185, 20);
 		panelCompra.add(tValorNTCR);
-		
+
 		LabelPersonalizado lblprsnlzdFacturaDbito = new LabelPersonalizado(0);
 		lblprsnlzdFacturaDbito.setText("Factura D\u00E9bito");
-		lblprsnlzdFacturaDbito.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblprsnlzdFacturaDbito.setBounds(396, 17, 97, 15);
+		lblprsnlzdFacturaDbito.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblprsnlzdFacturaDbito.setBounds(205, 15, 185, 15);
 		panelCompra.add(lblprsnlzdFacturaDbito);
-		
+
 		tNroFactura = new CampoTextoPersonalizado();
 		tNroFactura.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		tNroFactura.setBounds(396, 33, 150, 20);
+		tNroFactura.setBounds(205, 31, 185, 20);
 		panelCompra.add(tNroFactura);
-		
+
 		LabelPersonalizado lblprsnlzdMetrosDelCompra_2 = new LabelPersonalizado(0);
 		lblprsnlzdMetrosDelCompra_2.setText("Nota de Cr\u00E9dito");
-		lblprsnlzdMetrosDelCompra_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblprsnlzdMetrosDelCompra_2.setBounds(396, 59, 97, 15);
+		lblprsnlzdMetrosDelCompra_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblprsnlzdMetrosDelCompra_2.setBounds(205, 57, 185, 15);
 		panelCompra.add(lblprsnlzdMetrosDelCompra_2);
-		
+
 		tNroNTCR = new CampoTextoPersonalizado();
 		tNroNTCR.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		tNroNTCR.setBounds(396, 75, 150, 20);
+		tNroNTCR.setBounds(205, 73, 185, 20);
 		panelCompra.add(tNroNTCR);
-		
+
 		LabelPersonalizado lblprsnlzdCompra_1 = new LabelPersonalizado(0);
-		lblprsnlzdCompra_1.setText("Compra");
-		lblprsnlzdCompra_1.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblprsnlzdCompra_1.setBounds(53, 17, 70, 15);
+		lblprsnlzdCompra_1.setText("ID Compra");
+		lblprsnlzdCompra_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblprsnlzdCompra_1.setBounds(10, 15, 185, 15);
 		panelCompra.add(lblprsnlzdCompra_1);
-		
+
 		LabelPersonalizado lblprsnlzdMetrosDelCompra_2_1 = new LabelPersonalizado(0);
 		lblprsnlzdMetrosDelCompra_2_1.setText("Informaci\u00F3n de Pago");
-		lblprsnlzdMetrosDelCompra_2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblprsnlzdMetrosDelCompra_2_1.setBounds(396, 101, 128, 15);
+		lblprsnlzdMetrosDelCompra_2_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblprsnlzdMetrosDelCompra_2_1.setBounds(205, 99, 185, 15);
 		panelCompra.add(lblprsnlzdMetrosDelCompra_2_1);
-		
-		cbInformacionPago = new JComboBox();
-		cbInformacionPago.setBounds(396, 117, 150, 20);
+
+		cbInformacionPago = new JComboBox<InformacionPago>();
+		cbInformacionPago.setBounds(205, 115, 185, 20);
 		panelCompra.add(cbInformacionPago);
+
+		LabelPersonalizado lblprsnlzdMetrosDelCompra_2_1_1 = new LabelPersonalizado(0);
+		lblprsnlzdMetrosDelCompra_2_1_1.setText("Sector de Compra");
+		lblprsnlzdMetrosDelCompra_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblprsnlzdMetrosDelCompra_2_1_1.setBounds(10, 153, 185, 15);
+		panelCompra.add(lblprsnlzdMetrosDelCompra_2_1_1);
+
+		cbSector = new JComboBox<Sector>();
+		cbSector.setBounds(10, 169, 185, 20);
+		panelCompra.add(cbSector);
 
 		btnGuardar = new MiBoton("Guardar");
 		btnGuardar.setActionCommand("Guardar");
 		btnGuardar.setText("Guardar");
 		btnGuardar.setBounds(1029, 640, 100, 30);
 		getContentPane().add(btnGuardar);
-
 	}
 
 	public static long getSerialversionuid() {
@@ -338,14 +351,16 @@ public class TransaccionCompra extends JDialog {
 		return tNroNTCR;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public JComboBox getCbInformacionPago() {
+	public JComboBox<InformacionPago> getCbInformacionPago() {
 		return cbInformacionPago;
 	}
 
 	public JPanel getPanelCompra() {
 		return panelCompra;
 	}
-	
-	
+
+	public JComboBox<Sector> getCbSector() {
+		return cbSector;
+	}
+
 }

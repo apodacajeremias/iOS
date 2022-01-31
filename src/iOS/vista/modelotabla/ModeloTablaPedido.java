@@ -14,7 +14,7 @@ public class ModeloTablaPedido extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1864475015388508652L;
-	private String[] columnas = { "PEDIDO", "CLIENTE", "PAGOS/PRECIO", "TIPO" };
+	private String[] columnas = { "PEDIDO", "CLIENTE", "PAGOS/PRECIO", "TIPO", "VENDEDOR" };
 	private List<Pedido> lista = new ArrayList<>();
 
 	public void setPedidos(List<Pedido> lista) {
@@ -82,6 +82,8 @@ public class ModeloTablaPedido extends AbstractTableModel {
 			}
 
 			return pedido + " " + tipo + " " + estado;
+		case 4:
+			return lista.get(r).getColaborador();
 		default:
 			break;
 		}

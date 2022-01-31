@@ -69,7 +69,6 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 			lista = lista.stream().filter(l -> l.isEstado() == true && l.isProductoCarteleria() == productoCarteleria && l.isProductoCostura() == productoConfeccion).collect(Collectors.toList());
 		}
 		mtProducto.setLista(lista);
-		mtProducto.fireTableDataChanged();
 	}
 
 	public void recuperarTodo(boolean productoCarteleria, boolean productoConfeccion) {
@@ -84,7 +83,6 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 		}
 		
 		mtProducto.setLista(lista);
-		mtProducto.fireTableDataChanged();
 	}
 
 	private void seleccionarRegistro(int posicion) {
@@ -162,7 +160,6 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
 		ventana.getControlador().setInterfaz(this);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
@@ -177,7 +174,6 @@ public class BuscadorProductoControlador implements KeyListener, MouseListener, 
 		ventana.getControlador().modificar();
 		ventana.getControlador().setProducto(producto);
 		ventana.getControlador().setInterfaz(this);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}

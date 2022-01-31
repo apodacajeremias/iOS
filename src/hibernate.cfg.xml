@@ -28,6 +28,7 @@
 		<mapping class="iOS.modelo.entidades.DepositoExistencia"></mapping>
 		<mapping class="iOS.modelo.entidades.EntidadBancaria"></mapping>
 		<mapping class="iOS.modelo.entidades.Existencia"></mapping>
+		<mapping class="iOS.modelo.entidades.Imagen"></mapping>
 		<mapping class="iOS.modelo.entidades.InformacionPago"></mapping>
 		<mapping class="iOS.modelo.entidades.Maquina"></mapping>
 		<mapping class="iOS.modelo.entidades.Marca"></mapping>

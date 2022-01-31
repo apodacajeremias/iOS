@@ -13,7 +13,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
+import iOS.controlador.util.EventosUtil;
 import iOS.modelo.entidades.Representante;
+import iOS.modelo.singleton.Sesion;
 
 public class PedidoGenerico extends JDialog {
 	/**
@@ -50,6 +52,8 @@ public class PedidoGenerico extends JDialog {
 	private JRadioButton rbDetallado;
 	private LabelPersonalizado lProduccion;
 	private JComboBox<Representante> cbRepresentantes;
+	private LabelPersonalizado lImagenes;
+	private MiBoton btnAgregarImagen;
 
 	public PedidoGenerico() {
 		getContentPane().setEnabled(false);
@@ -146,6 +150,23 @@ public class PedidoGenerico extends JDialog {
 		cbRepresentantes.setBounds(20, 119, 350, 25);
 		cbRepresentantes.setActionCommand("comboBoxChanged");
 		panelCliente.add(cbRepresentantes);
+
+		lImagenes = new LabelPersonalizado(0);
+		lImagenes.setText("3 Imagenes");
+		lImagenes.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lImagenes.setBounds(20, 191, 173, 20);
+		panelCliente.add(lImagenes);
+
+		btnAgregarImagen = new MiBoton((String) null);
+		btnAgregarImagen.setActionCommand("AgregarImagen");
+		btnAgregarImagen.setText("Agregar");
+		btnAgregarImagen.setBounds(203, 191, 100, 20);
+		panelCliente.add(btnAgregarImagen);
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			btnAgregarImagen.setEnabled(true);
+		} else {
+			btnAgregarImagen.setEnabled(false);
+		}
 
 		JPanel panelPedido = new JPanel();
 		panelPedido.setBorder(new TitledBorder(null, "Informaci\u00F3n del Pedido", TitledBorder.LEADING,
@@ -436,6 +457,14 @@ public class PedidoGenerico extends JDialog {
 
 	public JComboBox<Representante> getCbRepresentantes() {
 		return cbRepresentantes;
+	}
+
+	public LabelPersonalizado getlImagenes() {
+		return lImagenes;
+	}
+
+	public MiBoton getBtnAgregarImagen() {
+		return btnAgregarImagen;
 	}
 
 }

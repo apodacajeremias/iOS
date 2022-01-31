@@ -136,7 +136,6 @@ public class BuscadorSectorControlador implements KeyListener, MouseListener, Ac
 		VentanaSector ventana = new VentanaSector();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
@@ -150,7 +149,6 @@ public class BuscadorSectorControlador implements KeyListener, MouseListener, Ac
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setSector(sector);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 

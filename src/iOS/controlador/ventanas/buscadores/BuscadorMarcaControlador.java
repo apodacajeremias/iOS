@@ -130,7 +130,6 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 		VentanaMarca ventana = new VentanaMarca();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(bMarca);
 		ventana.setVisible(true);
 	}
@@ -141,7 +140,6 @@ public class BuscadorMarcaControlador implements KeyListener, MouseListener, Acc
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setMarca(marca);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(bMarca);
 		ventana.setVisible(true);
 

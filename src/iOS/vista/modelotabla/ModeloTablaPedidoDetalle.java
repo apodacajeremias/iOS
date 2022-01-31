@@ -14,7 +14,7 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -545738629065442036L;
-	private String[] columnas = { "PRODUCTO", "INDICACIONES", "ALTO cm", "ANCHO cm ", "�REA m2", "CANT.", "COSTO", "%",
+	private String[] columnas = { "PRODUCTO", "INDICACIONES", "ALTO cm", "ANCHO cm ", "ÁREA m2", "CANT.", "COSTO", "%",
 			"PRECIO", "SUBTOTAL" };
 
 	private List<PedidoDetalles> detalle = new ArrayList<>();
@@ -62,8 +62,14 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 		case 5:
 			return EventosUtil.separadorMiles((double) detalle.get(r).getCantidadDetalle());
 		case 6:
+			if (detalle.get(r).getMateriales().size() <= 0) {
+				return "ɸ";
+			}
 			return EventosUtil.separadorMiles(detalle.get(r).getCosto());
 		case 7:
+			if (detalle.get(r).getMateriales().size() <= 0) {
+				return "ɸ";
+			}
 			return EventosUtil.separadorDecimales(detalle.get(r).getPorcentajeSobreCosto());
 		case 8:
 			return EventosUtil.separadorMiles((double) detalle.get(r).getPrecioProducto());
@@ -142,7 +148,14 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 			try {
 				String nv = aValue.toString().replace(",", "").replace(".", "").replace("cm", "").replace("m", "")
 						.replace("\\scm", "").replace("\\sm", "").replace("\\s", "");
-				row.setPrecioDetalle(Integer.parseInt(nv));
+				if (Integer.parseInt(nv) >= 45000) {
+					row.setPrecioDetalle(Integer.parseInt(nv));
+				} else {
+					row.setPrecioDetalle(45000);
+				}
+				if (row.getProducto().getTipoCobro().equalsIgnoreCase("UNIDAD")) {
+					row.setPrecioDetalle(Integer.parseInt(nv));
+				}
 				row.setPrecioProducto((int) calcularPrecio(row, row.getPrecioDetalle()));
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -231,7 +244,14 @@ public class ModeloTablaPedidoDetalle extends AbstractTableModel {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-
+		if (row.getProducto().getTipoCobro().equalsIgnoreCase("UNIDAD")) {
+			
+		} else {
+			if (subtotal < 45000) {
+				subtotal = 45000;
+			}
+		}
+		
 		return subtotal;
 
 	}

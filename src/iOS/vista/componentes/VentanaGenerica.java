@@ -22,24 +22,21 @@ public class VentanaGenerica extends JDialog {
 	 * Create the dialog.
 	 */
 	public VentanaGenerica() {
-		setBackground(new Color(51, 51, 51));
 		getContentPane().setBackground(new Color(255, 255, 255));
+		setBounds(100, 100, 500, 500);
 		setResizable(false);
 		setType(Type.NORMAL);
-		setBounds(100, 100, 500, 500);
-		//centrad
 		setLocationRelativeTo(this);
-		//Evita que la ventana pierda el foco hasta que se cierre
-		setModal(true);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		getContentPane().setLayout(null);
-		
+
 		panelFormulario = new JPanel();
 		panelFormulario.setBackground(new Color(255, 255, 255));
 		panelFormulario.setBorder(new MatteBorder(2, 2, 2, 2, new Color(240, 248, 255)));
 		panelFormulario.setBounds(10, 10, 474, 370);
 		getContentPane().add(panelFormulario);
 		panelFormulario.setLayout(null);
-				
+
 		miToolBar = new MiToolbar();
 		miToolBar.getbtSalir().addActionListener(new ActionListener() {
 			@Override
@@ -49,7 +46,7 @@ public class VentanaGenerica extends JDialog {
 		});
 		miToolBar.setBounds(10, 420, 474, 40);
 		getContentPane().add(miToolBar);
-		
+
 		lMensaje = new LabelPersonalizado(10);
 		lMensaje.setText("REGISTRO ACTUALIZADO CON \u00C9XITO");
 		lMensaje.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -73,7 +70,5 @@ public class VentanaGenerica extends JDialog {
 	public LabelPersonalizado getlMensaje() {
 		return lMensaje;
 	}
-	
-	
-	
+
 }

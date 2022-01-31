@@ -35,13 +35,17 @@ public class Compra {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Sector sector;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Proveedor proveedor;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = true)
 	private InformacionPago informacionPago;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -180,13 +184,14 @@ public class Compra {
 		this.compraDetalles = compraDetalles;
 	}
 
-	public String registrar() {
-		return "Compra [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
-				+ colaborador + ", proveedor=" + proveedor + ", informacionPago=" + informacionPago
-				+ ", fechaRegistroCompra=" + fechaRegistroCompra + ", fechaCompra=" + fechaCompra + ", valorCompra="
-				+ valorCompra + ", valorNTCR=" + valorNTCR + ", valorPago=" + valorPago + ", nroFactura=" + nroFactura
-				+ ", nroNTCR=" + nroNTCR + ", compraDetalles=" + compraDetalles + "]";
+	public Sector getSector() {
+		return sector;
 	}
 
+	public void setSector(Sector sector) {
+		this.sector = sector;
+	}
+	
+	
 	
 }

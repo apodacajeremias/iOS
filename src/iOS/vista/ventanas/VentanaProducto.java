@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import iOS.controlador.ventanas.VentanaProductoControlador;
+import iOS.modelo.entidades.Sector;
 import iOS.vista.componentes.CampoNumeroPersonalizado;
 import iOS.vista.componentes.CampoTextoPersonalizado;
 import iOS.vista.componentes.LabelPersonalizado;
@@ -47,6 +48,7 @@ public class VentanaProducto extends VentanaGenerica {
 	private JRadioButton rdCarteleria;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JRadioButton rdConfeccion;
+	private JComboBox<Sector> cbSector;
 
 	public void setUpControlador() {
 		controlador = new VentanaProductoControlador(this);
@@ -187,7 +189,7 @@ public class VentanaProducto extends VentanaGenerica {
 		tCosto.setBounds(15, 228, 270, 30);
 		getPanelFormulario().add(tCosto);
 
-		rdCarteleria = new JRadioButton("Carteleria");
+		rdCarteleria = new JRadioButton("Impresion");
 		buttonGroup.add(rdCarteleria);
 		rdCarteleria.setFont(new Font("Dialog", Font.PLAIN, 18));
 		rdCarteleria.setBounds(15, 6, 130, 30);
@@ -242,9 +244,12 @@ public class VentanaProducto extends VentanaGenerica {
 		LabelPersonalizado labelPersonalizado_1 = new LabelPersonalizado(0);
 		labelPersonalizado_1.setBounds(546, 489, 84, 40);
 		getContentPane().add(labelPersonalizado_1);
+
+		cbSector = new JComboBox<Sector>();
+		cbSector.setBounds(656, 20, 328, 30);
+		getContentPane().add(cbSector);
 	}
 
-	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -324,4 +329,9 @@ public class VentanaProducto extends VentanaGenerica {
 	public JRadioButton getRdConfeccion() {
 		return rdConfeccion;
 	}
+
+	public JComboBox<Sector> getCbSector() {
+		return cbSector;
+	}
+
 }

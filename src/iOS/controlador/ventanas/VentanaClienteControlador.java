@@ -82,6 +82,11 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettIdentificacion());
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettNombreCompleto());
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
+		
+		ventana.getRdB2B().setSelected(false);
+		ventana.getRdB2C().setSelected(false);
+		
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlMensaje());
 
 		accion = null;
 		vaciarListaRepresentantes();
@@ -320,8 +325,7 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 		ventana.setUpControlador();
 		ventana.getControlador().setRepresentante(true);
 		ventana.getControlador().setInterfaz(this);
-		ventana.setAlwaysOnTop(true);
-		ventana.setLocationRelativeTo(ventana);
+		ventana.setLocationRelativeTo(this.ventana);
 		ventana.setVisible(true);
 	}
 
@@ -400,3 +404,4 @@ public class VentanaClienteControlador implements AccionesABM, ClienteInterface,
 		return popup;
 	}
 }
+

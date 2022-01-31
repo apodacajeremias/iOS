@@ -144,7 +144,6 @@ public class BuscadorProcesoControlador implements KeyListener, MouseListener, A
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
 		ventana.getControlador().setInterfaz(this);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
@@ -159,7 +158,6 @@ public class BuscadorProcesoControlador implements KeyListener, MouseListener, A
 		ventana.getControlador().modificar();
 		ventana.getControlador().setProceso(proceso);
 		ventana.getControlador().setInterfaz(this);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}

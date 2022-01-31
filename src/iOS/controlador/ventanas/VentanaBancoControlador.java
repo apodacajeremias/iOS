@@ -2,9 +2,6 @@ package iOS.controlador.ventanas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,18 +65,6 @@ public class VentanaBancoControlador implements AccionesABM, ActionListener, Ban
 		if (ventana.gettNombreBanco().getText().isEmpty()) {
 			JOptionPane.showMessageDialog(ventana, "Nombre de la entidad bancaria es requerida.");
 			return false;
-		}
-		if (!ventana.gettSitioWeb().getText().isEmpty()) {
-			try {
-				new URL(ventana.gettSitioWeb().getText()).toURI();
-				return true;
-			} catch (URISyntaxException exception) {
-				JOptionPane.showMessageDialog(ventana, "URL de pagina web invalida, verifique.");
-				return false;
-			} catch (MalformedURLException exception) {
-				JOptionPane.showMessageDialog(ventana, "URL de pagina web invalida, verifique.");
-				return false;
-			}
 		}
 		return true;
 

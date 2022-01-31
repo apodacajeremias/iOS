@@ -1,17 +1,20 @@
 package iOS.modelo.entidades;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,7 +22,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class InformacionPago {
+public class Imagen {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
@@ -32,73 +35,30 @@ public class InformacionPago {
 	@Column(nullable = false)
 	private boolean estado = true;
 
+	@Column(nullable = false)
+	private String nombreImagen;
+
+	@Column(nullable = false)
+	private String rutaImagen;
+
+	@Lob
+	@Column(nullable = false)
+	private byte[] imagen;
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 
-	@Column(nullable = false)
-	private String numeroCuenta;
-
-	@Column(nullable = false)
-	private String nombreCuenta;
-
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Proveedor proveedor;
-
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private EntidadBancaria entidadBancaria;
-
-	@OneToMany(mappedBy = "informacionPago", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<Compra> compras = new ArrayList<Compra>();
+	private Pedido pedido;
 
 	public int getId() {
 		return id;
 	}
 
-	public String getNumeroCuenta() {
-		return numeroCuenta;
-	}
-
-	public String getNombreCuenta() {
-		return nombreCuenta;
-	}
-
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-
-	public EntidadBancaria getEntidadBancaria() {
-		return entidadBancaria;
-	}
-
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public void setNumeroCuenta(String numeroCuenta) {
-		this.numeroCuenta = numeroCuenta;
-	}
-
-	public void setNombreCuenta(String nombreCuenta) {
-		this.nombreCuenta = nombreCuenta;
-	}
-
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	public void setEntidadBancaria(EntidadBancaria entidadBancaria) {
-		this.entidadBancaria = entidadBancaria;
-	}
-
-	public List<Compra> getCompras() {
-		return compras;
-	}
-
-	public void setCompras(List<Compra> compras) {
-		this.compras = compras;
 	}
 
 	public Date getFechaRegistro() {
@@ -117,6 +77,23 @@ public class InformacionPago {
 		this.estado = estado;
 	}
 
+	public String getNombreImagen() {
+		return nombreImagen;
+	}
+
+	public void setNombreImagen(String nombreImagen) {
+		this.nombreImagen = nombreImagen;
+	}
+
+	public String getRutaImagen() {
+		System.out.println(rutaImagen);
+		return rutaImagen;
+	}
+
+	public void setRutaImagen(String rutaImagen) {
+		this.rutaImagen = rutaImagen;
+	}
+
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
@@ -125,9 +102,33 @@ public class InformacionPago {
 		this.colaborador = colaborador;
 	}
 
-	@Override
-	public String toString() {
-		return entidadBancaria + ": " + nombreCuenta + " " + numeroCuenta;
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public InputStream getImagen() {
+		InputStream image = null;
+		File file = null;
+		try {
+			file = new File(rutaImagen);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {			
+			image = new FileInputStream(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
+	}
+
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
 	}
 
 }

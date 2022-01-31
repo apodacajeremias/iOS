@@ -18,6 +18,7 @@ import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Colaborador;
 import iOS.modelo.entidades.Pedido;
+import iOS.modelo.entidades.Sector;
 import iOS.modelo.singleton.Metodos;
 import iOS.modelo.singleton.Sesion;
 import iOS.vista.modelotabla.ModeloTablaPedido;
@@ -42,6 +43,7 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 		estadoInicial(true);
 		setUpEvents();
 		cargarColaboradores();
+		cargarSectores();
 	}
 
 	private void setUpEvents() {
@@ -62,6 +64,18 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 		}
 		reporte.getPanelEspecifico().getCbColaborador().getModel()
 				.setSelectedItem(Sesion.getInstance().getColaborador());
+	}
+
+	private void cargarSectores() {
+		reporte.getCbSector().addItem(null);
+		if (EventosUtil.liberarAccesoSegunRol(Sesion.getInstance().getColaborador(), "ADMINISTRADOR")) {
+			for (int i = 0; i < Sesion.getInstance().getSectores().size(); i++) {
+				reporte.getCbSector().addItem(Sesion.getInstance().getSectores().get(i));
+			}
+		} else {
+			reporte.getCbSector().addItem(Sesion.getInstance().getColaborador().getSector());
+		}
+		reporte.getCbSector().getModel().setSelectedItem(null);
 	}
 
 	private void estadoInicial(boolean b) {
@@ -106,7 +120,13 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 					.collect(Collectors.toList());
 
 		} else if (reporte.getPanelEspecifico().getRdTodoColaborador().isSelected()) {
-			pedidos = pedidos.stream().filter(c -> c.isEsPresupuesto() == false).collect(Collectors.toList());
+			Sector sector = (Sector) reporte.getCbSector().getSelectedItem();
+			if (sector == null) {
+				pedidos = pedidos.stream().filter(c -> c.isEsPresupuesto() == false).collect(Collectors.toList());	
+			} else {
+				pedidos = pedidos.stream().filter(c -> c.isEsPresupuesto() == false && c.getColaborador().getSector().getId() == sector.getId()).collect(Collectors.toList());
+			}
+			
 
 		} else if (reporte.getPanelEspecifico().getRdColaboradorEspecifico().isSelected()) {
 			Colaborador cc = (Colaborador) reporte.getPanelEspecifico().getCbColaborador().getSelectedItem();
@@ -151,6 +171,7 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 	private void imprimir() {
 		String tipoReporte = "";
 		String claseReporte = "";
+		Sector sector = (Sector) reporte.getCbSector().getSelectedItem();
 		if (reporte.getPanelGeneral().getRdHoy().isSelected()) {
 			tipoReporte = "REPORTE DIARIO. FECHA: " + EventosUtil.formatoFecha(new Date());
 
@@ -160,7 +181,7 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 					+ EventosUtil.formatoFecha(reporte.getPanelGeneral().getcFechaHasta().getDate());
 		}
 
-		claseReporte = "REPORTE GENERAL SEGUN FILTROS";
+		claseReporte = "REPORTE GENERAL SEGUN FILTROS, SECTOR: "+sector;
 		Metodos.getInstance().imprimirReportePedido(pedidos, tipoReporte, claseReporte);
 
 	}
@@ -211,11 +232,21 @@ public class ReportePedidoControlador implements ActionListener, MouseListener {
 		if (pedido == null) {
 			return;
 		}
-		TransaccionPedido ventana = new TransaccionPedido();
-		ventana.setUpCarteleriaControlador();
-		ventana.getCarteleriaControlador().modificar();
-		ventana.getCarteleriaControlador().setPedido(pedido);
-		ventana.setVisible(true);
+		if (pedido.isPedidoCarteleria()) {
+			TransaccionPedido ventana = new TransaccionPedido();
+			ventana.setUpCarteleriaControlador();
+			ventana.getCarteleriaControlador().modificar();
+			ventana.getCarteleriaControlador().setPedido(pedido);
+			ventana.setVisible(true);
+		}
+		if (pedido.isPedidoCostura()) {
+			TransaccionPedido ventana = new TransaccionPedido();
+			ventana.setUpConfeccionControlador();
+			ventana.getConfeccionControlador().modificar();
+			ventana.getConfeccionControlador().setPedido(pedido);
+			ventana.setVisible(true);
+		}
+		
 	}
 
 	@Override

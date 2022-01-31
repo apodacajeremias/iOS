@@ -104,10 +104,16 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == bProveedor.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(bProveedor.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == bProveedor.getTable() && e.getClickCount() == 1) {
+			seleccionarRegistro(bProveedor.getTable().getSelectedRow());
+		}
 	}
 
 	@Override
@@ -123,7 +129,6 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 		VentanaProveedor ventana = new VentanaProveedor();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(bProveedor);
 		ventana.setVisible(true);
 	}
@@ -137,7 +142,6 @@ public class BuscadorProveedorControlador implements KeyListener, MouseListener,
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setProveedor(proveedor);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(bProveedor);
 		ventana.setVisible(true);
 

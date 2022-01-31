@@ -77,9 +77,9 @@ public class VentanaAcceso extends JDialog {
 	public VentanaAcceso() {
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("INGRESAR");
-		setAlwaysOnTop(true);
 		setResizable(false);
 		setBounds(100, 100, 400, 260);
+		setAlwaysOnTop(true);
 		setLocationRelativeTo(this);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

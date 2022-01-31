@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 
 import iOS.modelo.entidades.CajaMovimiento;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Configuracion;
 import iOS.modelo.entidades.Cotizacion;
 import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
@@ -255,6 +256,26 @@ public class ColaboradorDao extends GenericDao<Colaborador> {
 			rollBack();
 		}
 
+		return resultado;
+	}
+	
+	public Configuracion recuperarUltimaConfiguracion() {
+		getSession().beginTransaction();
+
+		Configuracion resultado = new Configuracion();
+
+		String sql = "FROM Configuracion WHERE id = (SELECT MAX(id) FROM Configuracion) ORDER BY ID DESC";
+
+		try {
+			@SuppressWarnings("unchecked")
+			Query<Configuracion> query = getSession().createQuery(sql);
+			resultado = query.getSingleResult();
+			commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rollBack();
+		}
 		return resultado;
 	}
 }

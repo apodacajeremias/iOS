@@ -7,6 +7,7 @@ import java.util.List;
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.ColaboradorDao;
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Configuracion;
 import iOS.modelo.entidades.Cotizacion;
 import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
@@ -26,10 +27,12 @@ public class VentanaAccesoControlador implements ActionListener {
 
 	private Rol rol;
 	private List<Rol> roles;
-	
+
 	private List<Maquina> maquinas;
-	
+
 	private Cotizacion cotizacion;
+
+	private Configuracion configuracion;
 
 	public VentanaAccesoControlador(VentanaAcceso ventana) {
 		this.ventana = ventana;
@@ -59,6 +62,7 @@ public class VentanaAccesoControlador implements ActionListener {
 			roles = dao.recuperarRolesOrdenadoPorNombre();
 			maquinas = dao.recuperarMaquinasOrdenadoPorNombre();
 			cotizacion = dao.recuperarUltimaCotizacion();
+			configuracion = dao.recuperarUltimaConfiguracion();
 			abrirVentanaPrincipal();
 		}
 	}
@@ -73,6 +77,7 @@ public class VentanaAccesoControlador implements ActionListener {
 			Sesion.getInstance().setRoles(roles);
 			Sesion.getInstance().setMaquinas(maquinas);
 			Sesion.getInstance().setCotizacion(cotizacion);
+			Sesion.getInstance().setConfiguracion(configuracion);
 			VentanaPrincipal principal = new VentanaPrincipal();
 			principal.getLblPODAC().setText(Sesion.getInstance().getColaborador().toString());
 			if (EventosUtil.liberarAccesoSegunRol(colaborador, "ADMINISTRADOR")) {

@@ -3,7 +3,6 @@ package iOS.vista.ventanas.principales;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -53,9 +52,9 @@ import iOS.vista.ventanas.reportes.ReporteCliente;
 import iOS.vista.ventanas.reportes.ReporteColaborador;
 import iOS.vista.ventanas.reportes.ReportePedido;
 import iOS.vista.ventanas.reportes.ReporteProduccion;
+import iOS.vista.ventanas.reportes.ReporteProductoSector;
 import iOS.vista.ventanas.transacciones.TransaccionCaja;
 import iOS.vista.ventanas.transacciones.TransaccionCompra;
-import iOS.vista.ventanas.transacciones.TransaccionPagoPedido;
 import iOS.vista.ventanas.transacciones.TransaccionProduccion;
 
 public class VentanaPrincipal extends JFrame {
@@ -121,16 +120,6 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnItemColaborador.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
 		mnRegistros.add(mnItemColaborador);
-
-		JMenuItem mnItemConfiguracion = new JMenuItem("Configuracion");
-		mnItemConfiguracion.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				abrirVentanaConfiguracion();
-			}
-		});
-		mnItemConfiguracion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
-		mnRegistros.add(mnItemConfiguracion);
 
 		JMenuItem mnItemMarca = new JMenuItem("Marca");
 		mnItemMarca.addActionListener(new ActionListener() {
@@ -404,22 +393,6 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMovimientos.add(mntmPedidoCostura);
 
-		JMenuItem mnItemPagoPedido = new JMenuItem("Relacionar pagos con pedidos");
-		mnItemPagoPedido.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					setCursor(new Cursor(Cursor.WAIT_CURSOR));
-					TransaccionPagoPedido ventana = new TransaccionPagoPedido();
-					ventana.setUpControlador();
-					ventana.setVisible(true);
-					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				} catch (Exception e) {
-					e.printStackTrace();
-					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			}
-		});
-		mnMovimientos.add(mnItemPagoPedido);
 		mnItemRol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnMovimientos.add(mnItemRol);
 
@@ -473,6 +446,14 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnReportes.add(mnItemReporteProduccion);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Reporte de venta de productos por sector");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirReporteProductoSector();
+			}
+		});
+		mnReportes.add(mntmNewMenuItem_1);
 
 		mnConfiguracion = new JMenu("CONFIGURACIONES");
 		mnConfiguracion.setVisible(false);
@@ -486,6 +467,14 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnConfiguracion.add(mnItemCotizacion);
+
+		JMenuItem mntmNewMenuItem = new JMenuItem("Configuracion");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrirVentanaConfiguracion();
+			}
+		});
+		mnConfiguracion.add(mntmNewMenuItem);
 
 		/*
 		 * Se obtiene nustro toolbar para los botones de paciente renta vehiculo y salir
@@ -598,6 +587,12 @@ public class VentanaPrincipal extends JFrame {
 		ventana.setVisible(true);
 
 	}
+	
+	private void abrirReporteProductoSector() {
+		ReporteProductoSector ventana = new ReporteProductoSector();
+		ventana.setUpControlador();
+		ventana.setVisible(true);
+	}
 
 	private void abrirTransaccionCaja() {
 		TransaccionCaja ventana = new TransaccionCaja();
@@ -653,7 +648,6 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void abrirBuscadorProveedor() {
-
 
 	}
 

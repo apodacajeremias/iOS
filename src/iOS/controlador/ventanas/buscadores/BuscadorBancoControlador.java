@@ -132,18 +132,19 @@ public class BuscadorBancoControlador implements KeyListener, MouseListener, Acc
 		VentanaBanco ventana = new VentanaBanco();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
 
 	@Override
 	public void modificar() {
+		if (banco == null) {
+			return;
+		}
 		VentanaBanco ventana = new VentanaBanco();
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setBanco(banco);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 

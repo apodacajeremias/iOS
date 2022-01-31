@@ -1,5 +1,6 @@
 package iOS.controlador.ventanas.pedidos;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,18 +10,23 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import iOS.controlador.util.EventosUtil;
 import iOS.modelo.dao.PedidoDao;
 import iOS.modelo.entidades.Cliente;
+import iOS.modelo.entidades.Imagen;
 import iOS.modelo.entidades.Material;
 import iOS.modelo.entidades.Pedido;
 import iOS.modelo.entidades.PedidoDetalleMaterial;
@@ -54,9 +60,19 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	private PedidoDetalleMaterial material;
 	private List<PedidoDetalleMaterial> materiales = new ArrayList<PedidoDetalleMaterial>();
 
+	private Imagen imagen;
+	private List<Imagen> imagenes = new ArrayList<Imagen>();
+
 	private String accion;
 
 	private Cliente cliente;
+
+	private byte[] bytesIMG;
+	private File archivo;
+	private JFileChooser selectorArchivos = new JFileChooser();
+	private FileFilter png = new FileNameExtensionFilter("PNG", "png");
+	private FileFilter jpg = new FileNameExtensionFilter("JPG", "jpg");
+	private FileFilter jpeg = new FileNameExtensionFilter("JPEG", "jpeg");
 
 	public PedidoCarteleriaControlador(TransaccionPedido ventana) {
 		this.ventana = ventana;
@@ -74,6 +90,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 
 	private void setUpEvents() {
 		ventana.getBtnAgregar().addActionListener(this);
+		ventana.getBtnAgregarImagen().addActionListener(this);
 		ventana.getBtnBuscarCliente().addActionListener(this);
 		ventana.getBtnBuscarProducto().addActionListener(this);
 		ventana.getBtnGuardar().addActionListener(this);
@@ -103,12 +120,18 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		EventosUtil.limpiarCampoPersonalizado(ventana.getlVendedor());
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettDescuentoPedido());
 		EventosUtil.limpiarCampoPersonalizado(ventana.gettResponsable());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlProduccion());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlImagenes());
+		
+		ventana.getlImagenes().setText("Agregar Imagen");
+		
 		accion = null;
 		cliente = null;
 		detalle = null;
 		producto = null;
 		vaciarTablaDetalle();
 		vaciarTablaMaterial();
+		vaciarImagenes();
 	}
 
 	private void formatoTabla() {
@@ -119,15 +142,68 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	private void vaciarTablaDetalle() {
 		detalles = new ArrayList<PedidoDetalles>();
 		mtPedidoDetalle.setDetalle(detalles);
-		System.out.println("vaciarTablaDetalle");
+	}
+
+	private void vaciarImagenes() {
+		imagenes = new ArrayList<Imagen>();
 	}
 
 	private void vaciarTablaMaterial() {
 		materiales = new ArrayList<PedidoDetalleMaterial>();
 		mtDetalleMaterial.setMateriales(materiales);
-		System.out.println("vaciarTablaMaterial");
-		System.out.println("size " + materiales.size());
 	}
+
+	private void abrirBuscadorImagenes() {
+		selectorArchivos.setFileFilter(png);
+		selectorArchivos.setFileFilter(jpg);
+		selectorArchivos.setFileFilter(jpeg);
+		if (selectorArchivos.showDialog(ventana, "Seleccionar") == JFileChooser.APPROVE_OPTION) {
+			archivo = selectorArchivos.getSelectedFile();
+			if (archivo.canRead()) {
+				if (archivo.getName().endsWith("png") || archivo.getName().endsWith("jpg")
+						|| archivo.getName().endsWith("jpeg")) {
+					agregarImagen(archivo);
+				} else {
+					JOptionPane.showMessageDialog(ventana, "Seleccione una imagen");
+				}
+			}
+		}
+	}
+
+	private void agregarImagen(File archivo) {
+		bytesIMG = EventosUtil.entradaImagen(archivo);
+		imagen = new Imagen();
+		imagen.setImagen(bytesIMG);
+		imagen.setColaborador(Sesion.getInstance().getColaborador());
+//		imagen.setImagen(bytesIMG);
+		imagen.setNombreImagen(archivo.getName());
+		imagen.setRutaImagen(archivo.getAbsolutePath());
+		imagenes.add(imagen);
+		ventana.getlImagenes().setText(imagenes.size() + " imagen/es");
+		System.out.println(bytesIMG);
+	}
+
+	private void quitarImagen(int posicion) {
+		if (posicion < 0) {
+			return;
+		}
+		imagenes.remove(posicion);
+		ventana.getlImagenes().setText(imagenes.size() + " imagen/es");
+	}
+
+//	private void guardarImagen(File archivo, byte[] bytesIMG) throws IOException {
+//		File directorio = new File("/sistema/backup_imagenes");
+//		if (!directorio.exists()) {
+//			if (directorio.mkdirs()) {
+//				System.out.println("Directorio creado");
+//			} else {
+//				System.out.println("Error al crear directorio");
+//			}
+//		}
+//		System.out.println(directorio.getPath());
+//		EventosUtil.salidaImagen(archivo, bytesIMG);
+//
+//	}
 
 	// Se agregar el producto al detalle pero con los valores por defecto
 	private void agregarDetalle(Producto p) {
@@ -135,25 +211,29 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			return;
 		}
 		if (p.isProductoCostura()) {
-			JOptionPane.showMessageDialog(ventana, "Este producto es de confeccion.");
+			Toolkit.getDefaultToolkit().beep();
+			// JOptionPane.showMessageDialog(ventana, "Este producto es de confeccion.");
 			return;
 		}
 		if (!limitarItems(detalles)) {
 			return;
 		}
+
+		ventana.getlProducto().setText(producto.getDescripcion());
+
 		try {
 			detalle = new PedidoDetalles();
 			detalle.setArchivo("Sin indicaciones");
 			detalle.setCantidadDetalle(1);
 			detalle.setColaborador(Sesion.getInstance().getColaborador());
-			detalle.setCosto(0);
 			detalle.setFechaModificado(new Date());
 			detalle.setFechaUltimoRegistroProduccion(new Date());
 			detalle.setGananciaDetalle(0);
 			detalle.setMedidaAlto(100);
 			detalle.setMedidaAncho(100);
 			detalle.setMedidaDetalle(1);
-			detalle.setPorcentajeSobreCosto(50);
+			detalle.setPorcentajeSobreCosto(0);
+			detalle.setCosto(0);
 			detalle.setPrecioDetalle(0);
 			detalle.setPrecioProducto(0);
 			detalle.setProduccionFinalizada(false);
@@ -177,10 +257,17 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 
 		asociarMaterial(detalle);
 
-		detalle.setCosto(costoProducto(detalle));
-		detalle.setPorcentajeSobreCosto(detalle.getProducto().getPorcentajeSobreCosto());
-		detalle.setPrecioDetalle(precioDetalle(detalle));
-		detalle.setPrecioProducto(precioProducto(detalle));
+		if (detalle.getMateriales().size() <= 0) {
+			detalle.setCosto(0);
+			detalle.setPorcentajeSobreCosto(0);
+			detalle.setPrecioDetalle(detalle.getProducto().getPrecioMaximo());
+			detalle.setPrecioProducto(detalle.getProducto().getPrecioMaximo());
+		} else {
+			detalle.setCosto(costoProducto(detalle));
+			detalle.setPorcentajeSobreCosto(detalle.getProducto().getPorcentajeSobreCosto());
+			detalle.setPrecioDetalle(precioDetalle(detalle));
+			detalle.setPrecioProducto(precioProducto(detalle));
+		}
 
 		// Para la tabla que se muestra
 		detalles.add(detalle);
@@ -298,6 +385,10 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		System.out.println("costoMetroC " + costoMetroC);
 		System.out.println("costoMetroL " + costoMetroL);
 		System.out.println("precioDetalle " + precioDetalle);
+
+		if (precioDetalle < 45000) {
+			precioDetalle = 45000;
+		}
 		return precioDetalle;
 	}
 
@@ -600,6 +691,11 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			}
 		}
 
+		for (int i = 0; i < imagenes.size(); i++) {
+			imagenes.get(i).setPedido(pedido);
+		}
+		pedido.setImagenes(imagenes);
+
 		try {
 			if (accion.equals("NUEVO")) {
 				dao.insertar(pedido);
@@ -608,9 +704,9 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 				dao.modificar(pedido);
 			}
 			dao.commit();
-			Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido);
 			modificar();
 			setPedido(pedido);
+			Metodos.getInstance().imprimirPedidoCarteleriaIndividual(pedido);
 		} catch (Exception e) {
 			dao.rollBack();
 			e.printStackTrace();
@@ -695,8 +791,7 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 				mtDetalleMaterial.fireTableDataChanged();
 				realizarCalculos();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				System.err.println("propertyChange");
 			}
 		}
 	}
@@ -704,12 +799,19 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
+		case "AgregarImagen":
+			abrirBuscadorImagenes();
+			break;
 		case "comboBoxChanged":
-			Representante r = (Representante) ventana.getCbRepresentantes().getSelectedItem();
-			String s = r.getRepresentante().getNombreCompleto() + ", " + r.getRepresentante().getContacto();
-			System.out.println(s);
 			ventana.gettResponsable().setText(null);
-			ventana.gettResponsable().setText(s);
+			try {
+				Representante r = (Representante) ventana.getCbRepresentantes().getSelectedItem();
+				String s = r.getRepresentante().getNombreCompleto() + ", " + r.getRepresentante().getContacto();
+				System.out.println(s);
+				ventana.gettResponsable().setText(s);
+			} catch (Exception e1) {
+				System.err.println("comboBoxChanged");
+			}
 			break;
 		case "BuscarCliente":
 			abrirBuscadorCliente();
@@ -739,9 +841,8 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		buscador.setUpControlador();
 		buscador.setTitle(buscador.getTitle().concat(": CARTELERIA"));
 		buscador.getControlador().setInterfaz(this);
-		buscador.getControlador().recuperarTodo(true, false);
+		buscador.getControlador().recuperarTodo(false, false);
 		buscador.setLocationRelativeTo(ventana);
-		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 
@@ -753,7 +854,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
 		buscador.setLocationRelativeTo(ventana);
-		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 
@@ -762,7 +862,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
 		buscador.setLocationRelativeTo(ventana);
-		buscador.setAlwaysOnTop(true);
 		buscador.setVisible(true);
 	}
 
@@ -777,7 +876,6 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 			return;
 		}
 		vaciarTablaMaterial();
-		ventana.getlProducto().setText(producto.getDescripcion());
 		agregarDetalle(producto);
 	}
 
@@ -861,8 +959,10 @@ public class PedidoCarteleriaControlador implements ActionListener, MouseListene
 		ventana.getlVendedor().setText(pedido.getColaborador().toString());
 		ventana.gettDescuentoPedido().setValue((double) pedido.getDescuentoTotal());
 		ventana.gettResponsable().setText(pedido.getInformacionResponsable());
+		ventana.getlProduccion().setText(!pedido.isProduccionFinalizada() ? "NO FINALIZADO" : "CONCLUIDO");
+		ventana.getlImagenes().setText(pedido.getImagenes().size() + " imagen/es");
 
-		ventana.getlProduccion().setText(pedido.isProduccionFinalizada() ? "NO FINALIZADO" : "CONCLUIDO");
+		imagenes = pedido.getImagenes();
 		try {
 			ventana.getCbRepresentantes().getModel().setSelectedItem(pedido.getRepresentante());
 		} catch (Exception e) {

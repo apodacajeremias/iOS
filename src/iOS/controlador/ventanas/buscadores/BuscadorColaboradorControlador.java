@@ -136,7 +136,6 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 		VentanaColaborador ventana = new VentanaColaborador();
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
@@ -150,7 +149,6 @@ public class BuscadorColaboradorControlador implements KeyListener, MouseListene
 		ventana.setUpControlador();
 		ventana.getControlador().modificar();
 		ventana.getControlador().setColaborador(colaborador);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 

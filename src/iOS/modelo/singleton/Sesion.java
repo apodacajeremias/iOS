@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import iOS.modelo.entidades.Colaborador;
+import iOS.modelo.entidades.Configuracion;
 import iOS.modelo.entidades.Cotizacion;
 import iOS.modelo.entidades.Maquina;
 import iOS.modelo.entidades.Rol;
@@ -25,6 +26,8 @@ public class Sesion {
 	private List<Maquina> maquinas;
 
 	private Cotizacion cotizacion;
+	
+	private Configuracion configuracion;
 
 	private Sesion() {
 	}
@@ -101,7 +104,6 @@ public class Sesion {
 	public Cotizacion getCotizacion() {
 		if (cotizacion == null) {
 			JOptionPane.showMessageDialog(null, "Debe cargar la cotizacion del dia");
-			return null;
 		}
 		return cotizacion;
 	}
@@ -110,4 +112,17 @@ public class Sesion {
 		this.cotizacion = cotizacion;
 	}
 
+	public Configuracion getConfiguracion() {
+		if (configuracion == null) {
+			JOptionPane.showMessageDialog(null, "Debe cargar la configuracion en PANEL>CONFIGURACIONES>CONFIGURACION con un perfil de ADM.");
+		}
+		return configuracion;
+	}
+
+	public void setConfiguracion(Configuracion configuracion) {
+		this.configuracion = configuracion;
+	}
+
+	
+	
 }

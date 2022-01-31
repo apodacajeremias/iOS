@@ -50,9 +50,51 @@ public class ModeloTablaProductoMaterial extends AbstractTableModel {
 		case 1:
 			return lista.get(rowIndex).isTieneMedidaFija();
 		case 2:
-			return EventosUtil.separadorMiles(lista.get(rowIndex).getAncho());
+			switch (lista.get(rowIndex).getMaterial().getTipoCobro()) {
+			case "UNIDAD":
+				if (lista.get(rowIndex).isTieneMedidaFija()) {
+					return EventosUtil.separadorMiles(lista.get(rowIndex).getAlto());
+				} else {
+					return "ɸ";
+				}
+			case "METRO CUADRADO":
+				if (lista.get(rowIndex).isTieneMedidaFija()) {
+					return EventosUtil.separadorMiles(lista.get(rowIndex).getAlto());
+				} else {
+					return "~";
+				}
+			case "METRO LINEAL":
+				if (lista.get(rowIndex).isTieneMedidaFija()) {
+					return EventosUtil.separadorMiles(lista.get(rowIndex).getAlto());
+				} else {
+					return "~";
+				}
+			default:
+				break;
+			}
 		case 3:
-			return EventosUtil.separadorMiles(lista.get(rowIndex).getAlto());
+			switch (lista.get(rowIndex).getMaterial().getTipoCobro()) {
+			case "UNIDAD":
+				if (lista.get(rowIndex).isTieneMedidaFija()) {
+					return EventosUtil.separadorMiles(lista.get(rowIndex).getAncho());
+				} else {
+					return "ɸ";
+				}
+			case "METRO CUADRADO":
+				if (lista.get(rowIndex).isTieneMedidaFija()) {
+					return EventosUtil.separadorMiles(lista.get(rowIndex).getAncho());
+				} else {
+					return "~";
+				}
+			case "METRO LINEAL":
+				if (lista.get(rowIndex).isTieneMedidaFija()) {
+					return EventosUtil.separadorMiles(lista.get(rowIndex).getArea());
+				} else {
+					return "~";
+				}
+			default:
+				break;
+			}
 		case 4:
 			return lista.get(rowIndex).isEditable();
 		case 5:
@@ -77,14 +119,18 @@ public class ModeloTablaProductoMaterial extends AbstractTableModel {
 			registro.setTieneMedidaFija(!registro.isTieneMedidaFija());
 		} else if (2 == c) {
 			try {
-				registro.setAlto((double) aValue);
+				registro.setAlto(Double.parseDouble((String) aValue));
+				registro.setArea(area(registro));
+				registro.setSubtotal(subtotal(registro));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (3 == c) {
 			try {
-				registro.setAncho((double) aValue);
+				registro.setAncho(Double.parseDouble((String) aValue));
+				registro.setArea(area(registro));
+				registro.setSubtotal(subtotal(registro));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -93,8 +139,7 @@ public class ModeloTablaProductoMaterial extends AbstractTableModel {
 			registro.setEditable(!registro.isEditable());
 		} else if (6 == c) {
 			try {
-				registro.setCantidad(
-						Double.parseDouble(aValue.toString().replace(".", "").replace(",", "").replace("\\s", "")));
+				registro.setCantidad(Double.parseDouble(aValue.toString().replace(",", ".").replace("\\s", "")));
 				registro.setSubtotal(subtotal(registro));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -122,14 +167,35 @@ public class ModeloTablaProductoMaterial extends AbstractTableModel {
 		}
 	}
 
+	private double area(ProductoMaterial registro) {
+		double area = 0;
+		try {
+			area = (registro.getAlto() * registro.getAncho()) / 10000;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return area;
+	}
+
 	private double subtotal(ProductoMaterial registro) {
 		double subtotal = 0;
 		try {
-			subtotal = registro.getCosto() * registro.getCantidad();
+			switch (registro.getMaterial().getTipoCobro()) {
+			case "UNIDAD":
+				subtotal = registro.getCosto() * registro.getCantidad();
+				break;
+			case "METRO CUADRADO":
+				subtotal = (registro.getCosto() * registro.getCantidad() * registro.getArea());
+				break;
+			case "METRO LINEAL":
+				subtotal = (registro.getCosto() * registro.getCantidad() * registro.getArea());
+				break;
+			default:
+				break;
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		return subtotal;
 	}
-
 }

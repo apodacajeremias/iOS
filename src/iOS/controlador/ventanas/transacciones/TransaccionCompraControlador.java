@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 import iOS.controlador.util.EventosUtil;
@@ -27,6 +26,7 @@ import iOS.modelo.entidades.InformacionPago;
 import iOS.modelo.entidades.Marca;
 import iOS.modelo.entidades.Material;
 import iOS.modelo.entidades.Proveedor;
+import iOS.modelo.entidades.Sector;
 import iOS.modelo.interfaces.CompraInterface;
 import iOS.modelo.interfaces.MarcaInterface;
 import iOS.modelo.interfaces.MaterialInterface;
@@ -40,7 +40,7 @@ import iOS.vista.ventanas.transacciones.TransaccionCompra;
 
 public class TransaccionCompraControlador implements ActionListener, MouseListener, KeyListener, CompraInterface,
 		ProveedorInterface, MaterialInterface, PropertyChangeListener, MarcaInterface {
-	private TransaccionCompra transaccionCompra;
+	private TransaccionCompra ventana;
 	private ModeloTablaCompraDetalle mtCompraDetalle;
 	private CompraDao dao;
 	private Compra compra;
@@ -61,9 +61,9 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 	private int descuento;
 
 	public TransaccionCompraControlador(TransaccionCompra transaccionCompra) {
-		this.transaccionCompra = transaccionCompra;
+		this.ventana = transaccionCompra;
 		this.mtCompraDetalle = new ModeloTablaCompraDetalle();
-		this.transaccionCompra.getTable().setModel(mtCompraDetalle);
+		this.ventana.getTable().setModel(mtCompraDetalle);
 
 		dao = new CompraDao();
 		daoMarca = new MarcaDao();
@@ -73,51 +73,53 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		nuevo();
 
 		recuperarMarcas();
+
+		cargarSectores();
 	}
 
 	private void estadoInicial(boolean b) {
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlContacto());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlFechaHora());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlIdentificacion());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlMaterial());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlNroCompra());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlProveedor());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlValorFactura());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getlValorPago());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.gettNroFactura());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.gettNroNTCR());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.gettValorNTCR());
-		EventosUtil.limpiarCampoPersonalizado(transaccionCompra.getCbInformacionPago());
-		EventosUtil.estadosCampoPersonalizado(transaccionCompra.getPanelCompra(), false);
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlContacto());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlFechaHora());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlIdentificacion());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlMaterial());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlNroCompra());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlProveedor());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlValorFactura());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getlValorPago());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettNroFactura());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettNroNTCR());
+		EventosUtil.limpiarCampoPersonalizado(ventana.gettValorNTCR());
+		EventosUtil.limpiarCampoPersonalizado(ventana.getCbInformacionPago());
+		EventosUtil.estadosCampoPersonalizado(ventana.getPanelCompra(), false);
 
-		transaccionCompra.gettValorNTCR().setText("0");
-		transaccionCompra.getlValorFactura().setText("0");
-		transaccionCompra.getlValorPago().setText("0");
-		transaccionCompra.gettNroFactura().setText("N/A");
-		transaccionCompra.gettNroNTCR().setText("N/A");
-		transaccionCompra.getlFechaHora().setText(sdf.format(new Date()));
+		ventana.gettValorNTCR().setText("0");
+		ventana.getlValorFactura().setText("0");
+		ventana.getlValorPago().setText("0");
+		ventana.gettNroFactura().setText("N/A");
+		ventana.gettNroNTCR().setText("N/A");
+		ventana.getlFechaHora().setText(sdf.format(new Date()));
 
 		detalles = new ArrayList<>();
 		mtCompraDetalle.setDetalle(detalles);
 		mtCompraDetalle.fireTableDataChanged();
 
 		// Botones que se mantienen disponibles si o si
-		EventosUtil.estadosBotones(transaccionCompra.getBtnBuscarProveedor(), true);
-		EventosUtil.estadosBotones(transaccionCompra.getBtnSalir(), true);
+		EventosUtil.estadosBotones(ventana.getBtnBuscarProveedor(), true);
+		EventosUtil.estadosBotones(ventana.getBtnSalir(), true);
 
 		// Cuando setProveedor, se activa
-		EventosUtil.estadosBotones(transaccionCompra.getBtnBuscarMaterial(), false);
+		EventosUtil.estadosBotones(ventana.getBtnBuscarMaterial(), false);
 
 		// Cuando setMaterial, se activa
-		EventosUtil.estadosBotones(transaccionCompra.getBtnAgregar(), false);
+		EventosUtil.estadosBotones(ventana.getBtnAgregar(), false);
 
 		// Si se selecciona un detalle
 		// EventosUtil.estadosBotones(transaccionCompra.getBtnAnular(), false);
 
 		// Si es presupuesto
-		EventosUtil.estadosBotones(transaccionCompra.getBtnGuardar(), false);
+		EventosUtil.estadosBotones(ventana.getBtnGuardar(), false);
 
-		transaccionCompra.getBtnBuscarProveedor().requestFocus();
+		ventana.getBtnBuscarProveedor().requestFocus();
 
 	}
 
@@ -125,15 +127,32 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		// MOUSE LISTENER
 
 		// ACTION LISTENER
-		this.transaccionCompra.getBtnBuscarProveedor().addActionListener(this);
-		this.transaccionCompra.getBtnBuscarMaterial().addActionListener(this);
-		this.transaccionCompra.getBtnGuardar().addActionListener(this);
+		this.ventana.getBtnBuscarProveedor().addActionListener(this);
+		this.ventana.getBtnBuscarMaterial().addActionListener(this);
+		this.ventana.getBtnGuardar().addActionListener(this);
 
 		// KEY LISTENER
 
 		// PROPERTY CHANGES
-		this.transaccionCompra.getTable().addPropertyChangeListener(this);
-		this.transaccionCompra.gettValorNTCR().addPropertyChangeListener(this);
+		this.ventana.getTable().addPropertyChangeListener(this);
+		this.ventana.gettValorNTCR().addPropertyChangeListener(this);
+	}
+
+	private void cargarSectores() {
+		ventana.getCbSector().removeAllItems();
+		ventana.getCbSector().addItem(null);
+		for (int i = 0; i < Sesion.getInstance().getSectores().size(); i++) {
+			ventana.getCbSector().addItem(Sesion.getInstance().getSectores().get(i));
+		}
+	}
+
+	private void cargarInformacionPago(List<InformacionPago> info) {
+		ventana.getCbInformacionPago().removeAllItems();
+		ventana.getCbInformacionPago().addItem(null);
+		for (int i = 0; i < info.size(); i++) {
+			ventana.getCbInformacionPago().addItem(info.get(i));
+		}
+
 	}
 
 	private String limitarDouble(double valor) {
@@ -145,9 +164,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 		// luego se acorta
 		v = df.format(valor);
-
 		return v;
-
 	}
 
 	private void agregarItem() {
@@ -188,7 +205,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		mtCompraDetalle.setDetalle(detalles);
 		mtCompraDetalle.fireTableDataChanged();
 
-		transaccionCompra.getBtnBuscarMaterial().requestFocus();
+		ventana.getBtnBuscarMaterial().requestFocus();
 	}
 
 	private int obtenerFila(int posicion) {
@@ -222,7 +239,7 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 			// y pasamos los metros m2 resultantes limitandos los decimales a dos digitos
 			String metro = limitarDouble(metros);
 
-			transaccionCompra.getTable().setValueAt(metro, i, 5);
+			ventana.getTable().setValueAt(metro, i, 5);
 			mtCompraDetalle.fireTableDataChanged();
 		}
 	}
@@ -230,44 +247,47 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 	private void totalCompra() {
 		total = 0;
 		dif = 0;
-		descuento = Integer.parseInt(transaccionCompra.gettValorNTCR().getText());
+		descuento = Integer.parseInt(ventana.gettValorNTCR().getText());
 		for (int i = 0; i < detalles.size(); i++) {
 			total += (detalles.get(i).getCostoMaterial() * detalles.get(i).getCantidadDetalle());
 		}
 		dif = total - descuento;
-		transaccionCompra.getlValorFactura().setText(formatter.format(total));
-		transaccionCompra.getlValorPago().setText(formatter.format(dif));
+		ventana.getlValorFactura().setText(formatter.format(total));
+		ventana.getlValorPago().setText(formatter.format(dif));
 	}
 
 	private boolean validarFormulario() {
 		if (proveedor == null) {
-			transaccionCompra.getBtnBuscarProveedor().requestFocus();
+			ventana.getBtnBuscarProveedor().requestFocus();
 			return false;
 		}
 		if (detalles == null) {
-			transaccionCompra.getBtnBuscarMaterial().requestFocus();
+			ventana.getBtnBuscarMaterial().requestFocus();
 			return false;
 		}
-		if (Integer.parseInt(transaccionCompra.gettValorNTCR().getText()) > 0
-				&& transaccionCompra.gettNroNTCR().getText().isEmpty()) {
-			transaccionCompra.gettNroNTCR().requestFocus();
+		if (Integer.parseInt(ventana.gettValorNTCR().getText()) > 0 && ventana.gettNroNTCR().getText().isEmpty()) {
+			ventana.gettNroNTCR().requestFocus();
 			return false;
 		}
 
-		if (transaccionCompra.gettNroFactura().getText().isEmpty()) {
-			transaccionCompra.gettNroFactura().requestFocus();
+		if (ventana.gettNroFactura().getText().isEmpty()) {
+			ventana.gettNroFactura().requestFocus();
 			return false;
 		}
-		if (transaccionCompra.gettNroNTCR().getText().isEmpty()) {
-			transaccionCompra.gettNroNTCR().requestFocus();
+		if (ventana.gettNroNTCR().getText().isEmpty()) {
+			ventana.gettNroNTCR().requestFocus();
 			return false;
 		}
-		if (transaccionCompra.gettValorNTCR().getText().isEmpty()) {
-			transaccionCompra.gettValorNTCR().requestFocus();
+		if (ventana.gettValorNTCR().getText().isEmpty()) {
+			ventana.gettValorNTCR().requestFocus();
 			return false;
 		}
-		if (transaccionCompra.getCbInformacionPago().getSelectedIndex() == 0) {
-			transaccionCompra.getCbInformacionPago().requestFocus();
+		if (ventana.getCbInformacionPago().getSelectedIndex() == 0) {
+			ventana.getCbInformacionPago().requestFocus();
+			return false;
+		}
+		if (ventana.getCbSector().getSelectedIndex() == 0) {
+			ventana.getCbSector().requestFocus();
 			return false;
 		}
 		return true;
@@ -288,10 +308,10 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		compra.setValorNTCR(descuento);
 		compra.setValorPago(dif);
 		compra.setFechaCompra(new Date());
-		compra.setNroFactura(transaccionCompra.gettNroFactura().getText());
-		compra.setNroNTCR(transaccionCompra.gettNroNTCR().getText());
+		compra.setNroFactura(ventana.gettNroFactura().getText());
+		compra.setNroNTCR(ventana.gettNroNTCR().getText());
 
-		informacionPago = (InformacionPago) transaccionCompra.getCbInformacionPago().getSelectedItem();
+		informacionPago = (InformacionPago) ventana.getCbInformacionPago().getSelectedItem();
 		compra.setInformacionPago(informacionPago);
 
 		for (int i = 0; i < detalles.size(); i++) {
@@ -299,6 +319,8 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		}
 
 		compra.setCompraDetalles(detalles);
+		
+		compra.setSector((Sector) ventana.getCbSector().getSelectedItem());
 
 		try {
 			if (accion.equals("NUEVO")) {
@@ -331,11 +353,11 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getSource() == transaccionCompra.getTable()) {
+		if (evt.getSource() == ventana.getTable()) {
 			calcularMedidaDetalle();
 			totalCompra();
 		}
-		if (evt.getSource() == transaccionCompra.gettValorNTCR()) {
+		if (evt.getSource() == ventana.gettValorNTCR()) {
 			totalCompra();
 		}
 
@@ -361,9 +383,9 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == transaccionCompra.getTable()) {
-			obtenerColumna(transaccionCompra.getTable().getSelectedRow());
-			obtenerFila(transaccionCompra.getTable().getSelectedColumn());
+		if (e.getSource() == ventana.getTable()) {
+			obtenerColumna(ventana.getTable().getSelectedRow());
+			obtenerFila(ventana.getTable().getSelectedColumn());
 		}
 
 	}
@@ -414,29 +436,22 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		gestionarProveedor();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void gestionarProveedor() {
-		transaccionCompra.getCbInformacionPago().setModel(new DefaultComboBoxModel(new String[] { "Seleccionar" }));
-		transaccionCompra.getCbInformacionPago().setSelectedIndex(0);
+		ventana.getlProveedor().setText(proveedor.getNombreCompleto());
+		ventana.getlIdentificacion().setText(proveedor.getIdentificacion());
+		ventana.getlContacto().setText(proveedor.getListaContactos().toString());
 
-		transaccionCompra.getlProveedor().setText(proveedor.getNombreCompleto());
-		transaccionCompra.getlIdentificacion().setText(proveedor.getIdentificacion());
-		transaccionCompra.getlContacto().setText(proveedor.getListaContactos().toString());
+		cargarInformacionPago(proveedor.getInformacionesPago());
 
-		for (int i = 0; i < proveedor.getInformacionesPago().size(); i++) {
-			transaccionCompra.getCbInformacionPago().addItem(proveedor.getInformacionesPago().get(i));
-		}
-
-		EventosUtil.estadosCampoPersonalizado(transaccionCompra.getPanelCompra(), true);
-		EventosUtil.estadosBotones(transaccionCompra.getBtnBuscarMaterial(), true);
+		EventosUtil.estadosCampoPersonalizado(ventana.getPanelCompra(), true);
+		EventosUtil.estadosBotones(ventana.getBtnBuscarMaterial(), true);
 	}
 
 	private void abrirBuscadorProveedor() {
 		BuscadorProveedor buscador = new BuscadorProveedor();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
-		buscador.setLocationRelativeTo(transaccionCompra);
-		buscador.setAlwaysOnTop(true);
+		buscador.setLocationRelativeTo(ventana);
 		buscador.setVisible(true);
 	}
 
@@ -449,17 +464,16 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 	}
 
 	private void gestionarMaterial() {
-		transaccionCompra.getlMaterial().setText(material.getDescripcion());
-		EventosUtil.estadosBotones(transaccionCompra.getBtnAgregar(), true);
-		EventosUtil.estadosBotones(transaccionCompra.getBtnGuardar(), true);
+		ventana.getlMaterial().setText(material.getDescripcion());
+		EventosUtil.estadosBotones(ventana.getBtnAgregar(), true);
+		EventosUtil.estadosBotones(ventana.getBtnGuardar(), true);
 	}
 
 	private void abrirBuscadorMaterial() {
 		BuscadorMaterial buscador = new BuscadorMaterial();
 		buscador.setUpControlador();
 		buscador.getControlador().setInterfaz(this);
-		buscador.setLocationRelativeTo(transaccionCompra);
-		buscador.setAlwaysOnTop(true);
+		buscador.setLocationRelativeTo(ventana);
 		buscador.setVisible(true);
 	}
 
@@ -485,10 +499,10 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 		}
 
 		// se agrega model al JTable
-		transaccionCompra.getTable().setRowHeight(22);// altura de filas
+		ventana.getTable().setRowHeight(22);// altura de filas
 		// se indica que columna tendra el JComboBox
-		transaccionCompra.getTable().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
-		transaccionCompra.getTable().setDefaultRenderer(Object.class, new CeldaRenderer(1, "ComboBox"));
+		ventana.getTable().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
+		ventana.getTable().setDefaultRenderer(Object.class, new CeldaRenderer(1, "ComboBox"));
 	}
 
 	private void recuperarMarcas() {
@@ -504,19 +518,21 @@ public class TransaccionCompraControlador implements ActionListener, MouseListen
 
 	private void gestionarCompra() {
 		// Informacion de la compra
-		transaccionCompra.getlNroCompra().setText(String.valueOf(compra.getId()));
-		transaccionCompra.getlFechaHora().setText(sdf.format(compra.getFechaRegistroCompra()));
-		transaccionCompra.getDtchFechaRealCompra().setDate(compra.getFechaCompra());
-		transaccionCompra.getlValorFactura().setText(formatter.format(compra.getValorCompra()));
-		transaccionCompra.getlValorPago().setText(formatter.format(compra.getValorPago()));
-		transaccionCompra.gettValorNTCR().setText(formatter.format(compra.getValorNTCR()));
-		transaccionCompra.gettNroFactura().setText(compra.getNroFactura());
-		transaccionCompra.gettNroNTCR().setText(compra.getNroNTCR());
+		ventana.getlNroCompra().setText(String.valueOf(compra.getId()));
+		ventana.getlFechaHora().setText(sdf.format(compra.getFechaRegistroCompra()));
+		ventana.getDtchFechaRealCompra().setDate(compra.getFechaCompra());
+		ventana.getlValorFactura().setText(formatter.format(compra.getValorCompra()));
+		ventana.getlValorPago().setText(formatter.format(compra.getValorPago()));
+		ventana.gettValorNTCR().setText(formatter.format(compra.getValorNTCR()));
+		ventana.gettNroFactura().setText(compra.getNroFactura());
+		ventana.gettNroNTCR().setText(compra.getNroNTCR());
 
 		// Informacion proveedor
-		transaccionCompra.getlProveedor().setText(compra.getProveedor().getNombreCompleto());
-		transaccionCompra.getlIdentificacion().setText(compra.getProveedor().getIdentificacion());
-		transaccionCompra.getlContacto().setText(compra.getProveedor().getListaContactos().get(0).getNumeroTelefono());
+		setProveedor(compra.getProveedor());
+
+		// CB
+		ventana.getCbInformacionPago().getModel().setSelectedItem(compra.getInformacionPago());
+		ventana.getCbSector().getModel().setSelectedItem(compra.getSector());
 
 		// Detalles de la compra
 		detalles = compra.getCompraDetalles();

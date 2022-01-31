@@ -38,6 +38,10 @@ public class Producto {
 	@JoinColumn(nullable = false)
 	private Colaborador colaborador;
 
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Sector sector;
+
 	@ColumnDefault("0")
 	@Column(nullable = false)
 	private double porcentajeSobreCosto;
@@ -88,12 +92,12 @@ public class Producto {
 	private boolean productoCostura;
 
 	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<PedidoDetalles> pedidoDetalles;
+	private List<PedidoDetalles> pedidoDetalleCarteleriaes = new ArrayList<PedidoDetalles>();
 
 	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<PedidoDetalleConfeccion> pedidoDetalleConfecciones;
+	private List<PedidoDetalleConfeccion> pedidoDetalleConfecciones = new ArrayList<PedidoDetalleConfeccion>();
 
-	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = false)
+	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductoMaterial> materiales = new ArrayList<ProductoMaterial>();
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -129,6 +133,14 @@ public class Producto {
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
+	}
+
+	public Sector getSector() {
+		return sector;
+	}
+
+	public void setSector(Sector sector) {
+		this.sector = sector;
 	}
 
 	public double getPorcentajeSobreCosto() {
@@ -211,6 +223,14 @@ public class Producto {
 		this.anchoProducto = anchoProducto;
 	}
 
+	public double getAreaProducto() {
+		return areaProducto;
+	}
+
+	public void setAreaProducto(double areaProducto) {
+		this.areaProducto = areaProducto;
+	}
+
 	public boolean isProductoCarteleria() {
 		return productoCarteleria;
 	}
@@ -227,12 +247,12 @@ public class Producto {
 		this.productoCostura = productoCostura;
 	}
 
-	public List<PedidoDetalles> getPedidoDetalles() {
-		return pedidoDetalles;
+	public List<PedidoDetalles> getPedidoDetalleCarteleriaes() {
+		return pedidoDetalleCarteleriaes;
 	}
 
-	public void setPedidoDetalles(List<PedidoDetalles> pedidoDetalles) {
-		this.pedidoDetalles = pedidoDetalles;
+	public void setPedidoDetalleCarteleriaes(List<PedidoDetalles> pedidoDetalleCarteleriaes) {
+		this.pedidoDetalleCarteleriaes = pedidoDetalleCarteleriaes;
 	}
 
 	public List<PedidoDetalleConfeccion> getPedidoDetalleConfecciones() {
@@ -259,28 +279,8 @@ public class Producto {
 		this.procesos = procesos;
 	}
 
-	public double getAreaProducto() {
-		return areaProducto;
-	}
-
-	public void setAreaProducto(double areaProducto) {
-		this.areaProducto = areaProducto;
-	}
-
-	public String registrar() {
-		return "Producto [id=" + id + ", fechaRegistro=" + fechaRegistro + ", estado=" + estado + ", colaborador="
-				+ colaborador + ", porcentajeSobreCosto=" + porcentajeSobreCosto + ", costo=" + costo
-				+ ", precioMinimo=" + precioMinimo + ", precioMaximo=" + precioMaximo + ", tipoCobro=" + tipoCobro
-				+ ", descripcion=" + descripcion + ", codigoReferencia=" + codigoReferencia + ", tieneMedidaFija="
-				+ tieneMedidaFija + ", altoProducto=" + altoProducto + ", anchoProducto=" + anchoProducto
-				+ ", productoCarteleria=" + productoCarteleria + ", productoCostura=" + productoCostura
-				+ ", pedidoDetalles=" + pedidoDetalles + ", pedidoDetalleConfecciones=" + pedidoDetalleConfecciones
-				+ ", materiales=" + materiales + ", procesos=" + procesos + "]";
-	}
-
 	@Override
 	public String toString() {
-		return descripcion + " - " + tipoCobro;
+		return descripcion;
 	}
-
 }

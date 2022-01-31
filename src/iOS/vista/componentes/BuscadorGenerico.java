@@ -31,7 +31,7 @@ public class BuscadorGenerico extends JDialog {
 		setResizable(false);
 		setType(Type.NORMAL);
 		setLocationRelativeTo(this);
-		setModal(true);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		getContentPane().setLayout(null);
 		
 		tBuscador = new CampoTextoPersonalizado();

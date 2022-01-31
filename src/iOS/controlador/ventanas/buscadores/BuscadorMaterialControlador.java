@@ -134,7 +134,6 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 		ventana.setUpControlador();
 		ventana.getControlador().nuevo();
 		ventana.getControlador().setInterfaz(this);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}
@@ -149,7 +148,6 @@ public class BuscadorMaterialControlador implements KeyListener, MouseListener, 
 		ventana.getControlador().modificar();
 		ventana.getControlador().setMaterial(material);
 		ventana.getControlador().setInterfaz(this);
-		ventana.setAlwaysOnTop(true);
 		ventana.setLocationRelativeTo(buscador);
 		ventana.setVisible(true);
 	}

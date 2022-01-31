@@ -1,5 +1,6 @@
 package iOS.modelo.entidades;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -89,10 +90,10 @@ public class PedidoDetalles {
 	private Producto producto;
 
 	@OneToMany(mappedBy = "pedidoDetalle", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<Produccion> producciones;
+	private List<Produccion> producciones = new ArrayList<Produccion>();
 
 	@OneToMany(mappedBy = "detalleCarteleria", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-	private List<PedidoDetalleMaterial> materiales;
+	private List<PedidoDetalleMaterial> materiales = new ArrayList<PedidoDetalleMaterial>();
 
 	@ColumnDefault("false")
 	@Column(nullable = false)
@@ -222,10 +223,8 @@ public class PedidoDetalles {
 					.collect(Collectors.toList());
 			ultimoEstadoProduccion = producciones.stream().findFirst().get().getProceso();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Sin ultimo estado");
 		}
-		System.out.println(ultimoEstadoProduccion);
 		return ultimoEstadoProduccion;
 	}
 
